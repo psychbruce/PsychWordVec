@@ -1,0 +1,21 @@
+Package: PsychWordVec
+Title: Toolkit for Applying Word Vectors (Word Embeddings) to Psychology
+Version: 0.0.0
+Date: 2022-02-27
+Author: Han-Wu-Shuang Bao [aut, cre]
+Authors@R:
+    c(person(given = "Han-Wu-Shuang",
+             family = "Bao",
+             role = c("aut", "cre"),
+             email = "baohws@foxmail.com"))
+Maintainer: Han-Wu-Shuang Bao <baohws@foxmail.com>
+Description: Toolkit for applying word vectors (word embeddings) to psychology.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+URL: https://github.com/psychbruce/PsychWordVec
+BugReports: https://github.com/psychbruce/PsychWordVec/issues
+Depends: R (>= 4.0.0)
+Imports: bruceR
+Suggests: sweater, wordsalad
+RoxygenNote: 7.1.2
