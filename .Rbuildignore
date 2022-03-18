@@ -1,2 +1,11 @@
+data-raw
+^.*\.pdf$
+^.*\.docx$
+^.Rhistory$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.travis\.yml$
+^LICENSE$
+^cran-comments\.md$
+^CRAN-RELEASE$
+^CRAN-SUBMISSION$

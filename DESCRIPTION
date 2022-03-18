@@ -1,21 +1,31 @@
 Package: PsychWordVec
-Title: Toolkit for Applying Word Vectors (Word Embeddings) to Psychology
-Version: 0.0.0
-Date: 2022-02-27
-Author: Han-Wu-Shuang Bao [aut, cre]
+Title: Toolkit for Word Vectors (Word Embeddings) Research in
+       Psychological and Cognitive Sciences
+Version: 0.0.1
+Date: 2022-03-03
 Authors@R:
     c(person(given = "Han-Wu-Shuang",
              family = "Bao",
              role = c("aut", "cre"),
              email = "baohws@foxmail.com"))
+Author: Han-Wu-Shuang Bao [aut, cre]
 Maintainer: Han-Wu-Shuang Bao <baohws@foxmail.com>
-Description: Toolkit for applying word vectors (word embeddings) to psychology.
+Description:
+  To facilitate research using word vectors (aka. word embeddings),
+  this package provides:
+  (1) a collection of pre-trained word vectors saved in '.RData' format
+  for easier use <https://psychbruce.github.io/WordVector_RData.pdf>;
+  (2) a range of training methods ('word2vec', 'fastText', 'GloVe') for
+  learning word vectors from new text; and
+  (3) a variety of tests (e.g., Word-Embedding Association Test) for
+  examining psychological effects (e.g., implicit attitudes and biases).
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/psychbruce/PsychWordVec
 BugReports: https://github.com/psychbruce/PsychWordVec/issues
 Depends: R (>= 4.0.0)
-Imports: bruceR
-Suggests: sweater, wordsalad
+Imports: bruceR, dplyr, stringr, ggplot2, data.table
+Suggests: sweater, wordsalad,
+          word2vec, text2vec, doc2vec, fastTextR, LSX
 RoxygenNote: 7.1.2
