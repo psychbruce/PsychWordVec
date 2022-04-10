@@ -2,17 +2,40 @@
 % Please edit documentation in R/PsychWordVec.R
 \name{plot_wordvecs}
 \alias{plot_wordvecs}
-\title{Visualize word vector(s).}
+\title{Visualize word vectors.}
 \usage{
-plot_wordvecs(data, words, dims = NULL)
+plot_wordvecs(dt, dims = NULL, step = 0.05, color = "white")
 }
 \arguments{
-\item{data}{Data table (\code{data.table}) with variables \code{word} and \code{vec}.
+\item{dt}{A \code{data.table} returned from \code{\link{get_wordvecs}}.}
 
-See \code{\link{data_transform}} for details about data format.}
+\item{dims}{Dimensions to be plotted (e.g., \code{1:100}).
+Default is \code{NULL} (plot all dimensions).}
 
-\item{words}{[Option 1] Word string (\code{NULL}; a single word; a vector of words).}
+\item{step}{Step for value breaks. Default is \code{0.05}.}
+
+\item{color}{Color of tile border. Default is \code{"white"}.
+To remove the border color, set \code{color=NA}.}
+}
+\value{
+A \code{ggplot} object.
 }
 \description{
-Visualize word vector(s).
+Visualize word vectors.
+}
+\examples{
+d = data_wordvec_normalize(demodata)
+
+dt = get_wordvecs(d, cc("king, queen, man, woman"))
+dt[, QUEEN := king - man + woman]
+dt[, QUEEN := QUEEN / sqrt(sum(QUEEN^2))]  # normalize
+names(dt)[5] = "king - man + woman"
+plot_wordvecs(dt[, c(1,3,4,5,2)], dims=1:50)
+
+dt = get_wordvecs(d, cc("boy, girl, he, she"))
+dt[, GIRL := boy - he + she]
+dt[, GIRL := GIRL / sqrt(sum(GIRL^2))]  # normalize
+names(dt)[5] = "boy - he + she"
+plot_wordvecs(dt[, c(1,3,4,5,2)], dims=1:50)
+
 }

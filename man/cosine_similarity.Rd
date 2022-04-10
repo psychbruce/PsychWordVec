@@ -2,15 +2,15 @@
 % Please edit documentation in R/PsychWordVec.R
 \name{cosine_similarity}
 \alias{cosine_similarity}
-\alias{cosine_distance}
 \title{Cosine similarity/distance between two vectors.}
 \usage{
-cosine_similarity(v1, v2)
-
-cosine_distance(v1, v2)
+cosine_similarity(v1, v2, distance = FALSE)
 }
 \arguments{
 \item{v1, v2}{Numeric vector (of the same length).}
+
+\item{distance}{Compute cosine distance instead?
+Default is \code{FALSE} (cosine similarity).}
 }
 \value{
 A value of cosine similarity/distance.
@@ -27,20 +27,13 @@ Cosine distance =
 
 \code{1 - cosine_similarity(v1, v2)}
 }
-\section{Functions}{
-\itemize{
-\item \code{cosine_similarity}: cosine similarity
-
-\item \code{cosine_distance}: cosine distance (= 1 - cosine similarity)
-}}
-
 \examples{
-cosine_similarity(v1=c(1,1,1), v2=c(2,2,2))  # output: 1
-cosine_similarity(v1=c(1,4,1), v2=c(4,1,1))  # output: 0.5
-cosine_similarity(v1=c(1,1,0), v2=c(0,0,1))  # output: 0
+cosine_similarity(v1=c(1,1,1), v2=c(2,2,2))  # 1
+cosine_similarity(v1=c(1,4,1), v2=c(4,1,1))  # 0.5
+cosine_similarity(v1=c(1,1,0), v2=c(0,0,1))  # 0
 
-cosine_distance(v1=c(1,1,1), v2=c(2,2,2))  # output: 0
-cosine_distance(v1=c(1,4,1), v2=c(4,1,1))  # output: 0.5
-cosine_distance(v1=c(1,1,0), v2=c(0,0,1))  # output: 1
+cosine_similarity(v1=c(1,1,1), v2=c(2,2,2), distance=TRUE)  # 0
+cosine_similarity(v1=c(1,4,1), v2=c(4,1,1), distance=TRUE)  # 0.5
+cosine_similarity(v1=c(1,1,0), v2=c(0,0,1), distance=TRUE)  # 1
 
 }

@@ -2,19 +2,31 @@
 % Please edit documentation in R/PsychWordVec.R
 \name{data_wordvec_load}
 \alias{data_wordvec_load}
-\title{Load word vector data from an ".RData" file.}
+\title{Load word vectors data from ".RData" file.}
 \usage{
-data_wordvec_load(file)
+data_wordvec_load(file, normalize = TRUE)
 }
 \arguments{
-\item{file}{File name of the data (must be .rda or .RData transformed by
+\item{file}{File name (must be .rda or .RData transformed by
 \code{\link{data_transform}}, with only two variables \code{word} and \code{vec}).}
+
+\item{normalize}{Normalize all word vectors to unit length?
+Default is \code{TRUE}, which performs the L2-normalization
+(scaling to unit euclidean length)
+such that the \emph{norm} of each vector in the vector space is 1.
+
+R formula: \code{normalized_vec = vec / sqrt(sum(vec^2))}
+
+Note: Normalization does not change the results of cosine similarity and
+can make the computation faster.}
 }
 \value{
-A \code{data.table} with three variables: \code{word}, \code{vec}, \code{dim} (number of dimensions).
-
-You may drop/delete the variable \code{dim} but should always keep \code{word} and \code{vec} in the data.
+A \code{data.table} with two variables:
+\describe{
+  \item{\code{word}}{words}
+  \item{\code{vec}}{\strong{raw} \emph{or} \strong{normalized} word vectors}
+}
 }
 \description{
-Load word vector data from an ".RData" file.
+Load word vectors data from ".RData" file.
 }

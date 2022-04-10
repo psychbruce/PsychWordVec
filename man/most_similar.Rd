@@ -4,26 +4,96 @@
 \alias{most_similar}
 \title{Find the Top-N most similar words.}
 \usage{
-most_similar(data, word, topn = 10, above = NULL)
+most_similar(data, x, keep = FALSE, topn = 10, above = NULL)
 }
 \arguments{
 \item{data}{Data table (\code{data.table}) with variables \code{word} and \code{vec}.
 
 See \code{\link{data_transform}} for details about data format.}
 
-\item{word}{Word string (a single word).}
+\item{x}{Can be one of the following:
+\itemize{
+  \item{a single word:
+
+  \code{"China"}}
+
+  \item{a list of words:
+
+  \code{c("king", "queen")}}
+
+  \code{cc(" king , queen ; man | woman")}
+
+  \item{an R formula (\code{~ xxx}) specifying
+  words that positively and negatively
+  contribute to the similarity (for word analogy):
+
+  \code{~ boy - he + she}
+
+  \code{~ king - man + woman}
+
+  \code{~ Beijing - China + Japan}}
+}}
+
+\item{keep}{Keep words specified in \code{x} in results?
+Default is \code{FALSE}.}
 
 \item{topn}{Top-N most similar words. Default is \code{10}.}
 
-\item{above}{A threshold of cosine similarity to get all words with
-similarity above this value. Default is \code{NULL}.
+\item{above}{Default is \code{NULL}. Can be one of the following:
+\itemize{
+  \item{a threshold value to find all words with cosine similarities
+  higher than this value}
+  \item{a critical word to find all words with cosine similarities
+  higher than that with this critical word}
+}
 If both \code{topn} and \code{above} are specified, \code{above} wins.}
 }
 \value{
 A \code{data.table} with the most similar words and their cosine similarities.
 The row number of each word in the raw data is also returned,
 which may help determine the relative word frequency in some cases.
+
+Two attributes are appended to the returned \code{data.table} (see examples):
+\code{wordvec} and \code{wordvec.formula}.
+Users may extract them for further use.
 }
 \description{
-Find the Top-N most similar words.
+Find the Top-N most similar words, which replicates the results produced
+by the Python \code{gensim} module \code{most_similar()} function.
+(Exact replication of \code{gensim} requires the same word vectors data,
+not the \code{demodata} used here in examples.)
+}
+\examples{
+d = data_wordvec_normalize(demodata)
+
+most_similar(d, "China")
+most_similar(d, c("king", "queen"))
+most_similar(d, cc(" king , queen ; man | woman "))
+
+# the same as above:
+most_similar(d, ~ China)
+most_similar(d, ~ king + queen)
+most_similar(d, ~ king + queen + man + woman)
+
+most_similar(d, ~ boy - he + she)
+most_similar(d, ~ Jack - he + she)
+most_similar(d, ~ Rose - she + he)
+
+most_similar(d, ~ king - man + woman)
+most_similar(d, ~ Tokyo - Japan + China)
+most_similar(d, ~ Beijing - China + Japan)
+
+most_similar(d, "China", above=0.7)
+most_similar(d, "China", above="Shanghai")
+
+# automatically normalized for more accurate results
+ms = most_similar(demodata, ~ king - man + woman)
+ms
+str(ms)
+attr(ms, "dims")
+attr(ms, "normalized")
+attr(ms, "wordvec.formula")
+attr(ms, "wordvec")
+# final word vector computed according to the formula
+
 }

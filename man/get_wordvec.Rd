@@ -19,3 +19,12 @@ A numeric vector of the word (or \code{NA} if the word is not in the data).
 \description{
 Extract word vector of a single word.
 }
+\examples{
+d = data_wordvec_normalize(demodata)
+
+v1 = get_wordvec(demodata, "China")  # raw vector
+v2 = get_wordvec(d, "China")  # normalized vector
+cor(v1, v2)
+cosine_similarity(v1, v2)
+
+}

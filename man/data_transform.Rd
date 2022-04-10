@@ -17,7 +17,7 @@ data_transform(
 \arguments{
 \item{file.load}{File name of raw data (must be plain text).
 
-Data should be in this format (values separated by \code{sep}):
+Data must be in this format (values separated by \code{sep}):
 
 cat 0.001 0.002 0.003 0.004 0.005 ... 0.300
 

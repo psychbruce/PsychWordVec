@@ -4,7 +4,15 @@
 \alias{get_wordvecs}
 \title{Extract word vectors of multiple words.}
 \usage{
-get_wordvecs(data, words = NULL, pattern = NULL)
+get_wordvecs(
+  data,
+  words = NULL,
+  pattern = NULL,
+  plot = FALSE,
+  plot.dims = NULL,
+  plot.step = 0.05,
+  plot.border = "white"
+)
 }
 \arguments{
 \item{data}{Data table (\code{data.table}) with variables \code{word} and \code{vec}.
@@ -13,14 +21,74 @@ See \code{\link{data_transform}} for details about data format.}
 
 \item{words}{[Option 1] Word string (\code{NULL}; a single word; a vector of words).}
 
-\item{pattern}{[Option 2] Pattern of regular expression (see \code{\link[stringr:str_detect]{str_detect}}).}
+\item{pattern}{[Option 2] Pattern of regular expression (see \code{\link[stringr:str_subset]{str_subset}}).}
+
+\item{plot}{Generate a plot to illustrate the word vectors? Default is \code{FALSE}.}
+
+\item{plot.dims}{Dimensions to be plotted (e.g., \code{1:100}).
+Default is \code{NULL} (plot all dimensions).}
+
+\item{plot.step}{Step for value breaks. Default is \code{0.05}.}
+
+\item{plot.border}{Color of tile border. Default is \code{"white"}.
+To remove the border color, set \code{color=NA}.}
 }
 \value{
-A \code{data.table} with words as columns and dimensions of word vectors as rows.
+A \code{data.table} with words as columns and dimensions as rows.
 }
 \description{
 Extract word vectors of multiple words,
 using either wordlist (a vector of words; using \code{words})
 or regular expression (a pattern of words; using \code{pattern}).
 If both (\code{words} and \code{pattern}) are specified, \code{words} wins.
+}
+\examples{
+d = data_wordvec_normalize(demodata)
+
+dt1 = get_wordvecs(d, c("China", "Japan", "Korea"))
+dt2 = get_wordvecs(d, cc(" China, Japan; Korea "))
+dt3 = get_wordvecs(d, pattern="Chin[ae]|Japan|Korea")
+
+## a more complex example:
+
+words = cc("
+China
+Chinese
+Japan
+Japanese
+good
+bad
+great
+terrible
+morning
+evening
+king
+queen
+man
+woman
+he
+she
+cat
+dog
+")
+
+dt = get_wordvecs(
+  d, words,
+  plot=TRUE,
+  plot.dims=1:100,
+  plot.step=0.06)
+
+\dontrun{
+
+# if you want to change something:
+attr(dt, "ggplot") +
+  scale_fill_viridis_b(n.breaks=10, show.limits=TRUE) +
+  theme(legend.key.height=unit(0.1, "npc"))
+
+# or to save the plot:
+ggsave(attr(dt, "ggplot"),
+       filename="wordvecs.png",
+       width=8, height=5, dpi=500)
+}
+
 }
