@@ -29,3 +29,8 @@ d = data_wordvec_normalize(demodata)
 data_wordvec_normalize(d)  # already normalized
 
 }
+\seealso{
+\code{\link{data_transform}}
+
+\code{\link{data_wordvec_load}}
+}

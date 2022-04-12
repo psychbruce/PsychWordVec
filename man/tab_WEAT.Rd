@@ -4,9 +4,13 @@
 \alias{tab_WEAT}
 \title{Tabulate cosine similarity for WEAT / WEFAT analysis.}
 \usage{
-tab_WEAT(data, T1 = NULL, T2 = NULL, A1 = NULL, A2 = NULL, labels = NULL)
+tab_WEAT(data, T1, T2, A1, A2, labels)
 }
 \arguments{
+\item{data}{Data table (\code{data.table}) with variables \code{word} and \code{vec}.
+
+See \code{\link{data_transform}} for details about data format.}
+
 \item{T1, T2}{Target words. If only \code{T1} is specified,
 then data for single-target WEAT (i.e., WEFAT; Caliskan et al., 2017)
 can be tabulated.}
@@ -20,7 +24,9 @@ Should be a named \code{list}, such as (the default)
 \value{
 A \code{list} of objects:
 \describe{
-  \item{\code{data}}{
+  \item{\code{words.valid}}{
+    valid (actually matched) words}
+  \item{\code{data.raw}}{
     \code{data.table} of cosine similarities between all word pairs}
   \item{\code{data.mean}}{
     \code{data.table} of \emph{mean} cosine similarities
@@ -53,8 +59,11 @@ weat
 
 wefat = tab_WEAT(
   demodata,
-  T1=cc("engineer, manager, officer, lawyer, scientist,
-         doctor, consultant, teacher, clerk, nurse"),
+  T1=cc("
+    architect, boss, leader, engineer, CEO, officer, manager,
+    lawyer, scientist, doctor, psychologist, investigator,
+    consultant, programmer, teacher, clerk, counselor,
+    salesperson, therapist, psychotherapist, nurse"),
   A1=cc("male, man, boy, brother, he, him, his, son"),
   A2=cc("female, woman, girl, sister, she, her, hers, daughter"),
   labels=list(T1="Occupation", A1="Male", A2="Female"))
@@ -65,4 +74,7 @@ wefat
 Caliskan, A., Bryson, J. J., & Narayanan, A. (2017).
 Semantics derived automatically from language corpora contain human-like biases.
 \emph{Science, 356}(6334), 183-186.
+}
+\seealso{
+\code{\link{tab_similarity}}
 }

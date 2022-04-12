@@ -30,3 +30,8 @@ A \code{data.table} with two variables:
 \description{
 Load word vectors data from ".RData" file.
 }
+\seealso{
+\code{\link{data_transform}}
+
+\code{\link{data_wordvec_normalize}}
+}

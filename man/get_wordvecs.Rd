@@ -31,7 +31,7 @@ Default is \code{NULL} (plot all dimensions).}
 \item{plot.step}{Step for value breaks. Default is \code{0.05}.}
 
 \item{plot.border}{Color of tile border. Default is \code{"white"}.
-To remove the border color, set \code{color=NA}.}
+To remove the border color, set \code{plot.border=NA}.}
 }
 \value{
 A \code{data.table} with words as columns and dimensions as rows.
@@ -45,9 +45,11 @@ If both (\code{words} and \code{pattern}) are specified, \code{words} wins.
 \examples{
 d = data_wordvec_normalize(demodata)
 
-dt1 = get_wordvecs(d, c("China", "Japan", "Korea"))
-dt2 = get_wordvecs(d, cc(" China, Japan; Korea "))
-dt3 = get_wordvecs(d, pattern="Chin[ae]|Japan|Korea")
+get_wordvecs(d, c("China", "Japan", "Korea"))
+get_wordvecs(d, cc(" China, Japan; Korea "))
+
+## specify `pattern`:
+dt = get_wordvecs(d, pattern="Chin[ae]|Japan|Korea")
 
 ## a more complex example:
 
@@ -91,4 +93,9 @@ ggsave(attr(dt, "ggplot"),
        width=8, height=5, dpi=500)
 }
 
+}
+\seealso{
+\code{\link{get_wordvec}}
+
+\code{\link{plot_wordvecs}}
 }

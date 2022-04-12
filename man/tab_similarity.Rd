@@ -7,12 +7,19 @@
 tab_similarity(data, words, distance = FALSE)
 }
 \arguments{
+\item{data}{Data table (\code{data.table}) with variables \code{word} and \code{vec}.
+
+See \code{\link{data_transform}} for details about data format.}
+
+\item{words}{[Option 1] Word string (\code{NULL}; a single word; a vector of words).}
+
 \item{distance}{Compute cosine distance instead?
 Default is \code{FALSE} (cosine similarity).}
 }
 \value{
 A \code{data.table} of all combinations of the words,
-with their wordpair and cosine similarity/distance.
+with their wordpair and cosine similarity/distance
+(\code{cos_sim} or \code{cos_dist}).
 }
 \description{
 Tabulate cosine similarity/distance of all word pairs.
@@ -24,4 +31,7 @@ dts
 dts = tab_similarity(demodata, cc("Beijing, China, Tokyo, Japan"))
 dts
 
+}
+\seealso{
+\code{\link{tab_WEAT}}
 }

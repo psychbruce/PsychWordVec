@@ -4,7 +4,7 @@
 \alias{plot_wordvecs}
 \title{Visualize word vectors.}
 \usage{
-plot_wordvecs(dt, dims = NULL, step = 0.05, color = "white")
+plot_wordvecs(dt, dims = NULL, step = 0.05, border = "white")
 }
 \arguments{
 \item{dt}{A \code{data.table} returned from \code{\link{get_wordvecs}}.}
@@ -14,8 +14,8 @@ Default is \code{NULL} (plot all dimensions).}
 
 \item{step}{Step for value breaks. Default is \code{0.05}.}
 
-\item{color}{Color of tile border. Default is \code{"white"}.
-To remove the border color, set \code{color=NA}.}
+\item{border}{Color of tile border. Default is \code{"white"}.
+To remove the border color, set \code{border=NA}.}
 }
 \value{
 A \code{ggplot} object.
@@ -38,4 +38,23 @@ dt[, GIRL := GIRL / sqrt(sum(GIRL^2))]  # normalize
 names(dt)[5] = "boy - he + she"
 plot_wordvecs(dt[, c(1,3,4,5,2)], dims=1:50)
 
+\dontrun{
+
+dt = get_wordvecs(d, cc("
+  male, man, boy, he, his,
+  female, woman, girl, she, her"))
+
+p = plot_wordvecs(dt, dims=1:100)
+
+# if you want to change something:
+p + theme(legend.key.height=unit(0.1, "npc"))
+
+# or to save the plot:
+ggsave(p, filename="wordvecs.png",
+       width=8, height=5, dpi=500)
+}
+
+}
+\seealso{
+\code{\link{get_wordvecs}}
 }

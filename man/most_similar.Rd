@@ -97,3 +97,10 @@ attr(ms, "wordvec")
 # final word vector computed according to the formula
 
 }
+\seealso{
+\code{\link{cosine_similarity}}
+
+\code{\link{pair_similarity}}
+
+\code{\link{tab_similarity}}
+}

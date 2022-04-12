@@ -1,8 +1,8 @@
 Package: PsychWordVec
 Title: Toolkit for Word Embeddings (Word Vectors) Research in
        Psychological and Cognitive Sciences
-Version: 0.0.2
-Date: 2022-04-11
+Version: 0.0.3
+Date: 2022-04-12
 Authors@R:
     c(person(given = "Han-Wu-Shuang",
              family = "Bao",
@@ -21,10 +21,10 @@ Description:
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
+LazyDataCompression: xz
 URL: https://github.com/psychbruce/PsychWordVec
 BugReports: https://github.com/psychbruce/PsychWordVec/issues
 Depends: R (>= 4.0.0)
 Imports: bruceR, dplyr, stringr, ggplot2, data.table
-Suggests: sweater, wordsalad,
-          word2vec, text2vec, doc2vec, fastTextR, LSX
+Suggests: sweater, wordsalad, word2vec, text2vec, fastTextR
 RoxygenNote: 7.1.2

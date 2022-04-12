@@ -5,7 +5,7 @@
 #' @import ggplot2
 #' @import data.table
 #' @importFrom dplyr %>% select left_join
-#' @importFrom bruceR %notin% cc dtime import export Print
+#' @importFrom bruceR %notin% cc dtime import export Glue Print
 .onAttach = function(libname, pkgname) {
   ## Version Check
   inst.ver=as.character(utils::packageVersion("PsychWordVec"))
@@ -96,6 +96,11 @@ bruceR::cc
 #' Default is \code{FALSE} (cosine similarity).
 #'
 #' @return A value of cosine similarity/distance.
+#'
+#' @seealso
+#' \code{\link{most_similar}}
+#'
+#' \code{\link{pair_similarity}}
 #'
 #' @examples
 #' cosine_similarity(v1=c(1,1,1), v2=c(2,2,2))  # 1
@@ -220,6 +225,11 @@ data_transform = function(file.load, file.save=NULL,
 #'   \item{\code{vec}}{\strong{raw} \emph{or} \strong{normalized} word vectors}
 #' }
 #'
+#' @seealso
+#' \code{\link{data_transform}}
+#'
+#' \code{\link{data_wordvec_normalize}}
+#'
 #' @export
 data_wordvec_load = function(file, normalize=TRUE) {
   t0 = Sys.time()
@@ -269,6 +279,11 @@ data_wordvec_load = function(file, normalize=TRUE) {
 #' @return
 #' A \code{data.table} with \strong{normalized} word vectors.
 #'
+#' @seealso
+#' \code{\link{data_transform}}
+#'
+#' \code{\link{data_wordvec_load}}
+#'
 #' @examples
 #' d = data_wordvec_normalize(demodata)
 #'
@@ -293,19 +308,32 @@ data_wordvec_normalize = function(data) {
 
 #### Demo Data ####
 
-# library(PsychWordVec)
-# d = data_wordvec_load("data-raw/GoogleNews/word2vec_googlenews_eng_1word.RData",
-#                       normalize=FALSE)
-# demodata = head(d[!str_detect(word, "[^A-Za-z]")], 20000)
-# usethis::use_data(demodata, overwrite=TRUE, compress="xz")
 
-#' Demo data (corpus: Google News; algorithm: word2vec; vocabulary: 20000; dimensions: 300).
+if(FALSE) {
+  library(PsychWordVec)
+  d1 = data_wordvec_load("data-raw/GoogleNews/word2vec_googlenews_eng_1word.RData",
+                         normalize=FALSE)
+  # demodata = head(d1[!str_detect(word, "[^A-Za-z]")], 10000)  # Size < 5MB is OK!
+  # demodata = head(d1[!str_detect(word, "[^A-Za-z]")], 50000)
+  # bruceR::export(demodata[, .(word)], "data-raw/demodata_1.xlsx")
+  filter = bruceR::import("data-raw/demodata_filter.xlsx", as="data.table")
+  demodata = d1[word %in% filter[use==1]$word]
+  usethis::use_data(demodata, overwrite=TRUE, compress="xz")
+
+  # d2 = data_wordvec_load("data-raw/GoogleNews/word2vec_googlenews_eng_2words.RData",
+  #                        normalize=FALSE)
+  # bruceR::export(d2[1:20000, .(word)], "data-raw/demodata_2.xlsx")
+}
+
+
+#' Demo data (corpus: Google News; algorithm: word2vec; vocabulary: 10000; dimensions: 300).
 #'
 #' @description
-#' This demo data contains a sample of Top-20k frequent English single words
-#' with their 300-d word embeddings (word vectors) trained using
-#' the "word2vec" algorithm based on the Google News corpus
-#' (for data source and details, see the URL in Source).
+#' This demo data contains a sample of 10000 English words
+#' with their 300-d word embeddings (word vectors) trained
+#' using the "word2vec" algorithm based on the Google News corpus.
+#' Most of these 10000 words are from the Top-10k frequent wordlist,
+#' whereas a few are selected from less frequent words and appended.
 #'
 #' @format
 #' A \code{data.table} with two variables \code{word} and \code{vec},
@@ -335,6 +363,11 @@ NULL
 #' @return
 #' A numeric vector of the word (or \code{NA} if the word is not in the data).
 #'
+#' @seealso
+#' \code{\link{get_wordvecs}}
+#'
+#' \code{\link{plot_wordvecs}}
+#'
 #' @examples
 #' d = data_wordvec_normalize(demodata)
 #'
@@ -346,21 +379,12 @@ NULL
 #' @export
 get_wordvec = function(data, word) {
   WORD = word
-  if(!is.data.table(data))
-    stop("Data must be of class `data.table`.", call.=FALSE)
-  if(is.null(attr(data, "normalized")))
+  if(!is.data.table(data) | is.null(attr(data, "normalized")))
     stop("Data must be loaded using `data_wordvec_load()`.", call.=FALSE)
+  if(length(WORD)>1)
+    stop("Please use `get_wordvecs()` for more than one word.", call.=FALSE)
   di = data[word %in% WORD]
-  if(nrow(di)==1) {
-    vec = di[[1, "vec"]]
-  } else if(nrow(di)==0) {
-    vec = NA
-    warning("    Word not found!", call.=FALSE)
-  } else if(nrow(di)>1) {
-    vec = di[[1, "vec"]]
-    warning("    Multiple words are found! Return the first word vector.
-    Please use `get_wordvecs()` to obtain multiple vectors!", call.=FALSE)
-  }
+  if(nrow(di)==1) vec = di[[1, "vec"]] else vec = NA
   return(vec)
 }
 
@@ -380,17 +404,24 @@ get_wordvec = function(data, word) {
 #' Default is \code{NULL} (plot all dimensions).
 #' @param plot.step Step for value breaks. Default is \code{0.05}.
 #' @param plot.border Color of tile border. Default is \code{"white"}.
-#' To remove the border color, set \code{color=NA}.
+#' To remove the border color, set \code{plot.border=NA}.
 #'
 #' @return
 #' A \code{data.table} with words as columns and dimensions as rows.
 #'
+#' @seealso
+#' \code{\link{get_wordvec}}
+#'
+#' \code{\link{plot_wordvecs}}
+#'
 #' @examples
 #' d = data_wordvec_normalize(demodata)
 #'
-#' dt1 = get_wordvecs(d, c("China", "Japan", "Korea"))
-#' dt2 = get_wordvecs(d, cc(" China, Japan; Korea "))
-#' dt3 = get_wordvecs(d, pattern="Chin[ae]|Japan|Korea")
+#' get_wordvecs(d, c("China", "Japan", "Korea"))
+#' get_wordvecs(d, cc(" China, Japan; Korea "))
+#'
+#' ## specify `pattern`:
+#' dt = get_wordvecs(d, pattern="Chin[ae]|Japan|Korea")
 #'
 #' ## a more complex example:
 #'
@@ -442,12 +473,14 @@ get_wordvecs = function(data, words=NULL, pattern=NULL,
                         plot.border="white") {
   dt = data.table()
   if(is.null(words)) {
-    if(is.null(pattern))
+    if(is.null(pattern)) {
       stop("Please specify either `words` or `pattern`!", call.=FALSE)
-    else
+    } else {
       words = str_subset(data$word, pattern)
+      Print("{length(words)} words are matched...")
+    }
   }
-  data.subset = data[word %in% words]
+  data.subset = data[word %in% words]  # much faster
   for(word in words) {
     wordvec = get_wordvec(data, word)
     if(length(wordvec)==1)  # NA
@@ -455,8 +488,11 @@ get_wordvecs = function(data, words=NULL, pattern=NULL,
     else
       dt[, word] = wordvec
   }
+  if(length(dt) < length(words))
+    message("Warning: Some words are not found!")
   if(plot) {
-    p = plot_wordvecs(dt, dims=plot.dims, step=plot.step, color=plot.border)
+    p = plot_wordvecs(dt, dims=plot.dims,
+                      step=plot.step, border=plot.border)
     attr(dt, "ggplot") = p
     print(p)
   }
@@ -470,11 +506,14 @@ get_wordvecs = function(data, words=NULL, pattern=NULL,
 #' @param dims Dimensions to be plotted (e.g., \code{1:100}).
 #' Default is \code{NULL} (plot all dimensions).
 #' @param step Step for value breaks. Default is \code{0.05}.
-#' @param color Color of tile border. Default is \code{"white"}.
-#' To remove the border color, set \code{color=NA}.
+#' @param border Color of tile border. Default is \code{"white"}.
+#' To remove the border color, set \code{border=NA}.
 #'
 #' @return
 #' A \code{ggplot} object.
+#'
+#' @seealso
+#' \code{\link{get_wordvecs}}
 #'
 #' @examples
 #' d = data_wordvec_normalize(demodata)
@@ -491,8 +530,24 @@ get_wordvecs = function(data, words=NULL, pattern=NULL,
 #' names(dt)[5] = "boy - he + she"
 #' plot_wordvecs(dt[, c(1,3,4,5,2)], dims=1:50)
 #'
+#' \dontrun{
+#'
+#' dt = get_wordvecs(d, cc("
+#'   male, man, boy, he, his,
+#'   female, woman, girl, she, her"))
+#'
+#' p = plot_wordvecs(dt, dims=1:100)
+#'
+#' # if you want to change something:
+#' p + theme(legend.key.height=unit(0.1, "npc"))
+#'
+#' # or to save the plot:
+#' ggsave(p, filename="wordvecs.png",
+#'        width=8, height=5, dpi=500)
+#' }
+#'
 #' @export
-plot_wordvecs = function(dt, dims=NULL, step=0.05, color="white") {
+plot_wordvecs = function(dt, dims=NULL, step=0.05, border="white") {
   if(!is.null(dims)) dt = dt[dims, ]
   steps = step*(0:100)
   breaks = sort(unique(c(steps, -steps)))
@@ -501,8 +556,9 @@ plot_wordvecs = function(dt, dims=NULL, step=0.05, color="white") {
   dp = melt(dt, measure.vars=names(dt),
             variable.name="word", value.name="value")
   dp$dim = rep(1:nrow(dt), length(dt))
+  value = NULL
   ggplot(dp, aes(x=dim, y=factor(word, levels=rev(names(dt))))) +
-    geom_tile(aes(fill=value), color=color) +
+    geom_tile(aes(fill=value), color=border) +
     scale_x_discrete(expand=expansion()) +
     scale_y_discrete(expand=expansion()) +
     # scale_fill_binned(type="viridis", n.breaks=8, show.limits=TRUE) +
@@ -510,7 +566,10 @@ plot_wordvecs = function(dt, dims=NULL, step=0.05, color="white") {
     # scale_fill_steps2(n.breaks=8, show.limits=TRUE) +
     scale_fill_steps2(breaks=breaks, limits=c(-max, max), show.limits=TRUE) +
     labs(x="Dimension", y="Word", fill=NULL,
-         title="Word Vector (" %^% ifelse(is.null(dims), "", "Subset of ") %^% nrow(dt) %^% " Dimensions)") +
+         title=paste0("Word Vector (",
+                      ifelse(is.null(dims), "", "Subset of "),
+                      nrow(dt),
+                      " Dimensions)")) +
     theme_void(base_size=12) +
     theme(axis.ticks.y=element_line(0.5, color="grey", lineend="butt"),
           axis.ticks.length.y=unit(0.2, "lines"),
@@ -579,6 +638,13 @@ plot_wordvecs = function(dt, dims=NULL, step=0.05, color="white") {
 #' \code{wordvec} and \code{wordvec.formula}.
 #' Users may extract them for further use.
 #'
+#' @seealso
+#' \code{\link{cosine_similarity}}
+#'
+#' \code{\link{pair_similarity}}
+#'
+#' \code{\link{tab_similarity}}
+#'
 #' @examples
 #' d = data_wordvec_normalize(demodata)
 #'
@@ -620,7 +686,7 @@ most_similar = function(data, x, keep=FALSE, topn=10, above=NULL) {
   }
   ms = data.table()
   if(inherits(x, "character"))
-    f = as.formula(paste("~", paste(x, collapse="+")))
+    f = stats::as.formula(paste("~", paste(x, collapse="+")))
   else if(inherits(x, "formula"))
     f = x
   else
@@ -647,7 +713,7 @@ most_similar = function(data, x, keep=FALSE, topn=10, above=NULL) {
   if(keep==FALSE)
     data = data[word %notin% x]
   if(is.null(above)) {
-    ms = head(data[order(-cos_sim), c("word", "cos_sim", "row_id")], topn)
+    ms = utils::head(data[order(-cos_sim), c("word", "cos_sim", "row_id")], topn)
   } else if(is.numeric(above)) {
     ms = data[order(-cos_sim), c("word", "cos_sim", "row_id")][cos_sim >= above]
   } else if(is.character(above)) {
@@ -700,11 +766,15 @@ pair_similarity = function(data, word1, word2, distance=FALSE) {
 #' Tabulate cosine similarity/distance of all word pairs.
 #'
 #' @inheritParams cosine_similarity
-#' @inheritParams plot_wordvecs
+#' @inheritParams get_wordvecs
 #'
 #' @return
 #' A \code{data.table} of all combinations of the words,
-#' with their wordpair and cosine similarity/distance.
+#' with their wordpair and cosine similarity/distance
+#' (\code{cos_sim} or \code{cos_dist}).
+#'
+#' @seealso
+#' \code{\link{tab_WEAT}}
 #'
 #' @examples
 #' dts = tab_similarity(demodata, cc("king, queen, man, woman"))
@@ -723,18 +793,24 @@ tab_similarity = function(data, words, distance=FALSE) {
       vec / sqrt(sum(vec^2))  # L2-normalized (unit euclidean length)
     })
   }
+
   dt = get_wordvecs(data, words)
-  words.mat = utils::combn(words, 2)
+  if(length(dt) < length(words))
+    warning("    Some words are not found!", call.=FALSE)
+
+  words.valid = names(dt)
+  words.mat = utils::combn(words.valid, 2)
   dts = data.table(
     word1 = words.mat[1,],
     word2 = words.mat[2,],
-    wordpair = as.character(utils::combn(words, 2, function(x) paste(x, collapse="-"))),
+    wordpair = as.character(utils::combn(words.valid, 2, function(x) paste(x, collapse="-"))),
     cos_sim = as.numeric(utils::combn(dt, 2, function(x) sum(x[[1]] * x[[2]])))
   )
   if(distance) {
-    dts$cos_dis = 1 - dts$cos_sim
+    dts$cos_dist = 1 - dts$cos_sim
     dts$cos_sim = NULL
   }
+
   return(dts)
 }
 
@@ -753,7 +829,9 @@ tab_similarity = function(data, words, distance=FALSE) {
 #' @return
 #' A \code{list} of objects:
 #' \describe{
-#'   \item{\code{data}}{
+#'   \item{\code{words.valid}}{
+#'     valid (actually matched) words}
+#'   \item{\code{data.raw}}{
 #'     \code{data.table} of cosine similarities between all word pairs}
 #'   \item{\code{data.mean}}{
 #'     \code{data.table} of \emph{mean} cosine similarities
@@ -774,6 +852,9 @@ tab_similarity = function(data, words, distance=FALSE) {
 #' Semantics derived automatically from language corpora contain human-like biases.
 #' \emph{Science, 356}(6334), 183-186.
 #'
+#' @seealso
+#' \code{\link{tab_similarity}}
+#'
 #' @examples
 #' ## Remember: cc() is more convenient than c()!
 #'
@@ -788,21 +869,24 @@ tab_similarity = function(data, words, distance=FALSE) {
 #'
 #' wefat = tab_WEAT(
 #'   demodata,
-#'   T1=cc("engineer, manager, officer, lawyer, scientist,
-#'          doctor, consultant, teacher, clerk, nurse"),
+#'   T1=cc("
+#'     architect, boss, leader, engineer, CEO, officer, manager,
+#'     lawyer, scientist, doctor, psychologist, investigator,
+#'     consultant, programmer, teacher, clerk, counselor,
+#'     salesperson, therapist, psychotherapist, nurse"),
 #'   A1=cc("male, man, boy, brother, he, him, his, son"),
 #'   A2=cc("female, woman, girl, sister, she, her, hers, daughter"),
 #'   labels=list(T1="Occupation", A1="Male", A2="Female"))
 #' wefat
 #'
 #' @export
-tab_WEAT = function(data, T1=NULL, T2=NULL, A1=NULL, A2=NULL,
-                    labels=NULL) {
-  if(is.null(A1)) stop("Please specify `A1`.", call.=FALSE)
-  if(is.null(A2)) stop("Please specify `A2`.", call.=FALSE)
-  if(is.null(T1)) stop("Please specify `T1`.", call.=FALSE)
-  if(is.null(labels)) {
-    if(is.null(T2))
+tab_WEAT = function(data, T1, T2, A1, A2, labels) {
+  if(missing(A1)) stop("Please specify `A1`.", call.=FALSE)
+  if(missing(A2)) stop("Please specify `A2`.", call.=FALSE)
+  if(missing(T1)) stop("Please specify `T1`.", call.=FALSE)
+  if(missing(T2)) T2 = NULL
+  if(missing(labels)) {
+    if(missing(T2))
       labels = list(T1="Target", T2=NA, A1="Attrib1", A2="Attrib2")
     else
       labels = list(T1="Target1", T2="Target2", A1="Attrib1", A2="Attrib2")
@@ -816,11 +900,16 @@ tab_WEAT = function(data, T1=NULL, T2=NULL, A1=NULL, A2=NULL,
       vec / sqrt(sum(vec^2))  # L2-normalized (unit euclidean length)
     })
   }
+
   dt = get_wordvecs(data, words)
+  if(length(dt) < length(words))
+    warning("    Some words are not found!", call.=FALSE)
+  # valid words:
   T1 = T1[T1 %in% names(dt)]
   T2 = T2[T2 %in% names(dt)]
   A1 = A1[A1 %in% names(dt)]
   A2 = A2[A2 %in% names(dt)]
+
   dweat = rbind(
     expand.grid(Target=labels$T1, Attrib=labels$A1, T_word=T1, A_word=A1),
     expand.grid(Target=labels$T1, Attrib=labels$A2, T_word=T1, A_word=A2),
@@ -833,19 +922,22 @@ tab_WEAT = function(data, T1=NULL, T2=NULL, A1=NULL, A2=NULL,
     sum(dt[[T_word]] * dt[[A_word]])
   })
   dweat = as.data.table(dweat)
-  Target = Attrib = T_word = cos_sim = NULL
+
+  . = Target = Attrib = T_word = cos_sim = cos_sim_mean = cos_sim_diff = std_mean = std_diff = NULL
+
   dweat.mean = dweat[, .(
     Target = Target[1],
     cos_sim_mean = mean(cos_sim)
   ), by=.(T_word, Attrib)]
   dweat.sd = dweat[, .(
     Target = Target[1],
-    std_dev = sd(cos_sim)
+    std_dev = stats::sd(cos_sim)
   ), by=T_word]
   dweat.mean = dweat.mean[order(Target, T_word, Attrib),
                           .(Target, T_word, Attrib, cos_sim_mean)]
   dweat.mean = left_join(dweat.mean, dweat.sd, by=c("Target", "T_word"))
   dweat.mean$std_mean = dweat.mean$cos_sim_mean / dweat.mean$std_dev
+
   dweat.diff = dweat.mean[, .(
     Target = Target[1],
     cos_sim_diff = cos_sim_mean[1] - cos_sim_mean[2],
@@ -866,15 +958,17 @@ tab_WEAT = function(data, T1=NULL, T2=NULL, A1=NULL, A2=NULL,
     code_diff = paste(labels$T1, "vs.", labels$T2, "::", labels$A1, "vs.", labels$A2)
     eff_type = "WEAT (Word-Embedding Association Test)"
     dweat.diff$std_diff = NULL
-    std_dev = sd(dweat.diff$cos_sim_diff)
+    std_dev = stats::sd(dweat.diff$cos_sim_diff)
     dweat.diff$std_dev = std_dev
     mean_diffs = dweat.diff[, .(
       mean_diff = mean(cos_sim_diff)
     ), by=Target]$mean_diff
     eff_size = (mean_diffs[1] - mean_diffs[2]) / std_dev
   }
+
   return(list(
-    data=dweat,
+    words.valid=list(T1=T1, T2=T2, A1=A1, A2=A2),
+    data.raw=dweat,
     data.mean=dweat.mean,
     data.diff=dweat.diff,
     code.diff=code_diff,
