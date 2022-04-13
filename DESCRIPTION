@@ -14,10 +14,12 @@ Description:
   This package provides:
   (1) a collection of pre-trained word vectors saved in '.RData' format
   <https://psychbruce.github.io/PsychWordVec/WordVector_RData.pdf>;
-  (2) a variety of tests (e.g., Word-Embedding Association Test) for
+  (2) a variety of functions for processing, analyzing, and visualizing
+  word vectors (e.g., find the most similar words to a given word);
+  (3) a range of tests (e.g., Word-Embedding Association Test) for
   examining psychological effects (e.g., implicit attitude/bias); and
-  (3) a range of training methods ('word2vec', 'GloVe', 'fastText') for
-  learning word vectors from new text corpora.
+  (4) a set of training methods ('word2vec', 'GloVe', 'fastText') for
+  learning word vectors from new text corpora (coming soon).
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
