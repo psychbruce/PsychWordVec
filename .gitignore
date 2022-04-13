@@ -43,3 +43,6 @@ data-raw
 
 # Word file
 *.docx
+
+# Others
+docs
