@@ -2,7 +2,7 @@
 
 Toolkit for Word Embeddings (Word Vectors) Research in Psychological and Cognitive Sciences.
 
-This package provides: (1) a collection of pre-trained [word vectors](https://en.wikipedia.org/wiki/Word_embedding) saved in `.RData` format ([WordVector_RData.pdf](https://psychbruce.github.io/PsychWordVec/WordVector_RData.pdf)); (2) a range of training methods ([word2vec](https://en.wikipedia.org/wiki/Word2vec), [GloVe](https://en.wikipedia.org/wiki/GloVe_(machine_learning)), [fastText](https://en.wikipedia.org/wiki/FastText)) for learning word vectors from new text corpora; and (3) a variety of tests (e.g., [Word-Embedding Association Test](https://doi.org/10.1126/science.aal4230)) for examining psychological effects (e.g., implicit attitudes and biases).
+This package provides: (1) a collection of pre-trained [word vectors](https://en.wikipedia.org/wiki/Word_embedding) saved in `.RData` format ([WordVector_RData.pdf](https://psychbruce.github.io/PsychWordVec/WordVector_RData.pdf)); (2) a variety of tests (e.g., [Word-Embedding Association Test](https://doi.org/10.1126/science.aal4230)) for examining psychological effects (e.g., implicit attitude/bias); and (3) a range of training methods ([word2vec](https://en.wikipedia.org/wiki/Word2vec), [GloVe](https://en.wikipedia.org/wiki/GloVe_(machine_learning)), [fastText](https://en.wikipedia.org/wiki/FastText)) for learning word vectors from new text corpora.
 
 <!-- badges: start -->
 

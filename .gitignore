@@ -38,11 +38,13 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
-# Raw data
-data-raw
-
-# Word file
-*.docx
+# CRAN
+^cran-comments\.md$
+^CRAN-RELEASE$
 
 # Others
+*.docx
+data-raw
+ignore
 docs
+pkgdown
