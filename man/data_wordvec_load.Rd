@@ -30,6 +30,12 @@ A \code{data.table} with two variables:
 \description{
 Load word vectors data from ".RData" file.
 }
+\section{Download}{
+
+Download pre-trained word vectors data (\code{.RData}):
+\url{https://psychbruce.github.io/WordVector_RData.pdf}
+}
+
 \seealso{
 \code{\link{data_transform}}
 

@@ -42,6 +42,12 @@ using either wordlist (a vector of words; using \code{words})
 or regular expression (a pattern of words; using \code{pattern}).
 If both (\code{words} and \code{pattern}) are specified, \code{words} wins.
 }
+\section{Download}{
+
+Download pre-trained word vectors data (\code{.RData}):
+\url{https://psychbruce.github.io/WordVector_RData.pdf}
+}
+
 \examples{
 d = data_wordvec_normalize(demodata)
 

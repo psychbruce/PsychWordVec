@@ -24,6 +24,12 @@ with their wordpair and cosine similarity/distance
 \description{
 Tabulate cosine similarity/distance of all word pairs.
 }
+\section{Download}{
+
+Download pre-trained word vectors data (\code{.RData}):
+\url{https://psychbruce.github.io/WordVector_RData.pdf}
+}
+
 \examples{
 dts = tab_similarity(demodata, cc("king, queen, man, woman"))
 dts

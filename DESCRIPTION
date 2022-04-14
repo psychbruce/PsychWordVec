@@ -13,7 +13,7 @@ Maintainer: Han-Wu-Shuang Bao <baohws@foxmail.com>
 Description:
   This package provides:
   (1) a collection of pre-trained word vectors saved in '.RData' format
-  <https://psychbruce.github.io/PsychWordVec/WordVector_RData.pdf>;
+  <https://psychbruce.github.io/WordVector_RData.pdf>;
   (2) a variety of functions for processing, analyzing, and visualizing
   word vectors (e.g., find the most similar words to a given word);
   (3) a range of tests (e.g., Word-Embedding Association Test) for
@@ -24,7 +24,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 LazyDataCompression: xz
-URL: https://github.com/psychbruce/PsychWordVec
+URL: https://psychbruce.github.io/PsychWordVec/
 BugReports: https://github.com/psychbruce/PsychWordVec/issues
 Depends: R (>= 4.0.0)
 Imports: bruceR, dplyr, stringr, ggplot2, data.table

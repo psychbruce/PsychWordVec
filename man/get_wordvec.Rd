@@ -19,6 +19,12 @@ A numeric vector of the word (or \code{NA} if the word is not in the data).
 \description{
 Extract word vector of a single word.
 }
+\section{Download}{
+
+Download pre-trained word vectors data (\code{.RData}):
+\url{https://psychbruce.github.io/WordVector_RData.pdf}
+}
+
 \examples{
 d = data_wordvec_normalize(demodata)
 

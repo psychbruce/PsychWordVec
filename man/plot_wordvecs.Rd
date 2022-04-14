@@ -23,6 +23,12 @@ A \code{ggplot} object.
 \description{
 Visualize word vectors.
 }
+\section{Download}{
+
+Download pre-trained word vectors data (\code{.RData}):
+\url{https://psychbruce.github.io/WordVector_RData.pdf}
+}
+
 \examples{
 d = data_wordvec_normalize(demodata)
 

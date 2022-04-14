@@ -45,6 +45,12 @@ A \code{list} of objects:
 \description{
 Tabulate cosine similarity for WEAT / WEFAT analysis.
 }
+\section{Download}{
+
+Download pre-trained word vectors data (\code{.RData}):
+\url{https://psychbruce.github.io/WordVector_RData.pdf}
+}
+
 \examples{
 ## Remember: cc() is more convenient than c()!
 

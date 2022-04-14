@@ -63,6 +63,12 @@ by the Python \code{gensim} module \code{most_similar()} function.
 (Exact replication of \code{gensim} requires the same word vectors data,
 not the \code{demodata} used here in examples.)
 }
+\section{Download}{
+
+Download pre-trained word vectors data (\code{.RData}):
+\url{https://psychbruce.github.io/WordVector_RData.pdf}
+}
+
 \examples{
 d = data_wordvec_normalize(demodata)
 

@@ -22,6 +22,12 @@ A value of cosine similarity/distance.
 \description{
 Compute cosine similarity/distance for a pair of words.
 }
+\section{Download}{
+
+Download pre-trained word vectors data (\code{.RData}):
+\url{https://psychbruce.github.io/WordVector_RData.pdf}
+}
+
 \examples{
 pair_similarity(demodata, "China", "Chinese")
 

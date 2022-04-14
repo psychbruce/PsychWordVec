@@ -57,6 +57,9 @@
     \u221a ggplot2
     \u221a data.table
     >>
+
+    Download pre-trained word vectors data (.RData):
+    https://psychbruce.github.io/WordVector_RData.pdf
     \n
     ")
   } else {
@@ -159,6 +162,10 @@ cosine_similarity = function(v1, v2, distance=FALSE) {
 #' @return
 #' A \code{data.table} with two variables: \code{word} and \code{vec}.
 #'
+#' @section Download:
+#' Download pre-trained word vectors data (\code{.RData}):
+#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#'
 #' @export
 data_transform = function(file.load, file.save=NULL,
                           encoding="UTF-8", sep=" ", header=FALSE,
@@ -225,6 +232,10 @@ data_transform = function(file.load, file.save=NULL,
 #'   \item{\code{vec}}{\strong{raw} \emph{or} \strong{normalized} word vectors}
 #' }
 #'
+#' @section Download:
+#' Download pre-trained word vectors data (\code{.RData}):
+#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#'
 #' @seealso
 #' \code{\link{data_transform}}
 #'
@@ -278,6 +289,10 @@ data_wordvec_load = function(file, normalize=TRUE) {
 #'
 #' @return
 #' A \code{data.table} with \strong{normalized} word vectors.
+#'
+#' @section Download:
+#' Download pre-trained word vectors data (\code{.RData}):
+#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
 #'
 #' @seealso
 #' \code{\link{data_transform}}
@@ -363,6 +378,10 @@ NULL
 #' @return
 #' A numeric vector of the word (or \code{NA} if the word is not in the data).
 #'
+#' @section Download:
+#' Download pre-trained word vectors data (\code{.RData}):
+#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#'
 #' @seealso
 #' \code{\link{get_wordvecs}}
 #'
@@ -408,6 +427,10 @@ get_wordvec = function(data, word) {
 #'
 #' @return
 #' A \code{data.table} with words as columns and dimensions as rows.
+#'
+#' @section Download:
+#' Download pre-trained word vectors data (\code{.RData}):
+#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
 #'
 #' @seealso
 #' \code{\link{get_wordvec}}
@@ -511,6 +534,10 @@ get_wordvecs = function(data, words=NULL, pattern=NULL,
 #'
 #' @return
 #' A \code{ggplot} object.
+#'
+#' @section Download:
+#' Download pre-trained word vectors data (\code{.RData}):
+#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
 #'
 #' @seealso
 #' \code{\link{get_wordvecs}}
@@ -638,6 +665,10 @@ plot_wordvecs = function(dt, dims=NULL, step=0.05, border="white") {
 #' \code{wordvec} and \code{wordvec.formula}.
 #' Users may extract them for further use.
 #'
+#' @section Download:
+#' Download pre-trained word vectors data (\code{.RData}):
+#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#'
 #' @seealso
 #' \code{\link{cosine_similarity}}
 #'
@@ -739,6 +770,10 @@ most_similar = function(data, x, keep=FALSE, topn=10, above=NULL) {
 #'
 #' @return A value of cosine similarity/distance.
 #'
+#' @section Download:
+#' Download pre-trained word vectors data (\code{.RData}):
+#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#'
 #' @examples
 #' pair_similarity(demodata, "China", "Chinese")
 #'
@@ -772,6 +807,10 @@ pair_similarity = function(data, word1, word2, distance=FALSE) {
 #' A \code{data.table} of all combinations of the words,
 #' with their wordpair and cosine similarity/distance
 #' (\code{cos_sim} or \code{cos_dist}).
+#'
+#' @section Download:
+#' Download pre-trained word vectors data (\code{.RData}):
+#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
 #'
 #' @seealso
 #' \code{\link{tab_WEAT}}
@@ -846,6 +885,10 @@ tab_similarity = function(data, words, distance=FALSE) {
 #'   \item{\code{eff.size}}{
 #'     effect size for WEAT (a single value) or WEFAT (a data table)}
 #' }
+#'
+#' @section Download:
+#' Download pre-trained word vectors data (\code{.RData}):
+#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
 #'
 #' @references
 #' Caliskan, A., Bryson, J. J., & Narayanan, A. (2017).

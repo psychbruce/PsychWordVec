@@ -50,3 +50,9 @@ A \code{data.table} with two variables: \code{word} and \code{vec}.
 \description{
 Transform plain text data of word vectors into a compressed ".RData" file.
 }
+\section{Download}{
+
+Download pre-trained word vectors data (\code{.RData}):
+\url{https://psychbruce.github.io/WordVector_RData.pdf}
+}
+
