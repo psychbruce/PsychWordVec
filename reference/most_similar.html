@@ -95,6 +95,13 @@ Two attributes are appended to the returned <code>data.table</code> (see example
 Users may extract them for further use.</p>
     </div>
     <div class="section level2">
+    <h2 id="download">Download<a class="anchor" aria-label="anchor" href="#download"></a></h2>
+    
+
+<p>Download pre-trained word vectors data (<code>.RData</code>):
+<a href="https://psychbruce.github.io/WordVector_RData.pdf" class="external-link">https://psychbruce.github.io/WordVector_RData.pdf</a></p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="cosine_similarity.html">cosine_similarity</a></code></p>
 <p><code><a href="pair_similarity.html">pair_similarity</a></code></p>
@@ -134,7 +141,7 @@ Users may extract them for further use.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  8:      lady 0.3581903   5357</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9:     lover 0.3425792   9925</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10:      pope 0.3420032   7630</span>
-<span class="r-in"><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://rdrr.io/pkg/bruceR/man/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">" king , queen ; man | woman "</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">" king , queen ; man | woman "</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ king + queen + man + woman</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            word   cos_sim row_id</span>
@@ -323,14 +330,14 @@ Users may extract them for further use.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "normalized")= logi TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "wordvec")= num [1:300] -0.0055 -0.06705 -0.04519 0.03875 -0.00286 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "wordvec.formula")=Class 'formula'  language ~king - man + woman</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".Environment")=&lt;environment: 0x5607a2dc8440&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".Environment")=&lt;environment: 0x5624911d56f8&gt; </span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ms</span>, <span class="st">"dims"</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 300</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ms</span>, <span class="st">"normalized"</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ms</span>, <span class="st">"wordvec.formula"</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ~king - man + woman</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5607a2dc8440&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5624911d56f8&gt;</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ms</span>, <span class="st">"wordvec"</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1] -0.0055029992 -0.0670502053 -0.0451917763  0.0387523404 -0.0028627068</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [6] -0.0311541918  0.0722744639 -0.0547962213 -0.0020958381  0.1267937027</span>

@@ -95,6 +95,13 @@ Should be a named <code>list</code>, such as (the default)
 
 </dl></div>
     <div class="section level2">
+    <h2 id="download">Download<a class="anchor" aria-label="anchor" href="#download"></a></h2>
+    
+
+<p>Download pre-trained word vectors data (<code>.RData</code>):
+<a href="https://psychbruce.github.io/WordVector_RData.pdf" class="external-link">https://psychbruce.github.io/WordVector_RData.pdf</a></p>
+    </div>
+    <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Caliskan, A., Bryson, J. J., &amp; Narayanan, A. (2017).
 Semantics derived automatically from language corpora contain human-like biases.
@@ -111,10 +118,10 @@ Semantics derived automatically from language corpora contain human-like biases.
 <span class="r-in"></span>
 <span class="r-in"><span class="va">weat</span> <span class="op">=</span> <span class="fu">tab_WEAT</span><span class="op">(</span></span>
 <span class="r-in">  <span class="va">demodata</span>,</span>
-<span class="r-in">  T1<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/bruceR/man/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"king, King"</span><span class="op">)</span>,</span>
-<span class="r-in">  T2<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/bruceR/man/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"queen, Queen"</span><span class="op">)</span>,</span>
-<span class="r-in">  A1<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/bruceR/man/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"male, man, boy, brother, he, him, his, son"</span><span class="op">)</span>,</span>
-<span class="r-in">  A2<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/bruceR/man/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"female, woman, girl, sister, she, her, hers, daughter"</span><span class="op">)</span>,</span>
+<span class="r-in">  T1<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"king, King"</span><span class="op">)</span>,</span>
+<span class="r-in">  T2<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"queen, Queen"</span><span class="op">)</span>,</span>
+<span class="r-in">  A1<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"male, man, boy, brother, he, him, his, son"</span><span class="op">)</span>,</span>
+<span class="r-in">  A2<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"female, woman, girl, sister, she, her, hers, daughter"</span><span class="op">)</span>,</span>
 <span class="r-in">  labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>T1<span class="op">=</span><span class="st">"King"</span>, T2<span class="op">=</span><span class="st">"Queen"</span>, A1<span class="op">=</span><span class="st">"Male"</span>, A2<span class="op">=</span><span class="st">"Female"</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">weat</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $words.valid</span>
@@ -231,19 +238,14 @@ Semantics derived automatically from language corpora contain human-like biases.
 <span class="r-in"></span>
 <span class="r-in"><span class="va">wefat</span> <span class="op">=</span> <span class="fu">tab_WEAT</span><span class="op">(</span></span>
 <span class="r-in">  <span class="va">demodata</span>,</span>
-<span class="r-in">  T1<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/bruceR/man/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"</span>
+<span class="r-in">  T1<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"</span>
 <span class="r-in">    architect, boss, leader, engineer, CEO, officer, manager,</span>
 <span class="r-in">    lawyer, scientist, doctor, psychologist, investigator,</span>
 <span class="r-in">    consultant, programmer, teacher, clerk, counselor,</span>
 <span class="r-in">    salesperson, therapist, psychotherapist, nurse"</span><span class="op">)</span>,</span>
-<span class="r-in">  A1<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/bruceR/man/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"male, man, boy, brother, he, him, his, son"</span><span class="op">)</span>,</span>
-<span class="r-in">  A2<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/bruceR/man/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"female, woman, girl, sister, she, her, hers, daughter"</span><span class="op">)</span>,</span>
+<span class="r-in">  A1<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"male, man, boy, brother, he, him, his, son"</span><span class="op">)</span>,</span>
+<span class="r-in">  A2<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"female, woman, girl, sister, she, her, hers, daughter"</span><span class="op">)</span>,</span>
 <span class="r-in">  labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>T1<span class="op">=</span><span class="st">"Occupation"</span>, A1<span class="op">=</span><span class="st">"Male"</span>, A2<span class="op">=</span><span class="st">"Female"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">X</span> "" not found...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">X</span> "" not found...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">X</span> "" not found...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Warning: Some words are not found!</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>    Some words are not found!</span>
 <span class="r-in"><span class="va">wefat</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $words.valid</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $words.valid$T1</span>

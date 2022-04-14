@@ -69,13 +69,20 @@ with their wordpair and cosine similarity/distance
 (<code>cos_sim</code> or <code>cos_dist</code>).</p>
     </div>
     <div class="section level2">
+    <h2 id="download">Download<a class="anchor" aria-label="anchor" href="#download"></a></h2>
+    
+
+<p>Download pre-trained word vectors data (<code>.RData</code>):
+<a href="https://psychbruce.github.io/WordVector_RData.pdf" class="external-link">https://psychbruce.github.io/WordVector_RData.pdf</a></p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="tab_WEAT.html">tab_WEAT</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">dts</span> <span class="op">=</span> <span class="fu">tab_similarity</span><span class="op">(</span><span class="va">demodata</span>, <span class="fu"><a href="https://rdrr.io/pkg/bruceR/man/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"king, queen, man, woman"</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">dts</span> <span class="op">=</span> <span class="fu">tab_similarity</span><span class="op">(</span><span class="va">demodata</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"king, queen, man, woman"</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">dts</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    word1 word2    wordpair   cos_sim</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:  king queen  king-queen 0.6510958</span>
@@ -85,7 +92,7 @@ with their wordpair and cosine similarity/distance
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5: queen woman queen-woman 0.3161813</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6:   man woman   man-woman 0.7664012</span>
 <span class="r-in"></span>
-<span class="r-in"><span class="va">dts</span> <span class="op">=</span> <span class="fu">tab_similarity</span><span class="op">(</span><span class="va">demodata</span>, <span class="fu"><a href="https://rdrr.io/pkg/bruceR/man/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"Beijing, China, Tokyo, Japan"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">dts</span> <span class="op">=</span> <span class="fu">tab_similarity</span><span class="op">(</span><span class="va">demodata</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"Beijing, China, Tokyo, Japan"</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">dts</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      word1 word2      wordpair   cos_sim</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: Beijing China Beijing-China 0.7648461</span>

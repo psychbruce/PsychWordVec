@@ -69,6 +69,13 @@ To remove the border color, set <code>border=NA</code>.</p></dd>
     <p>A <code>ggplot</code> object.</p>
     </div>
     <div class="section level2">
+    <h2 id="download">Download<a class="anchor" aria-label="anchor" href="#download"></a></h2>
+    
+
+<p>Download pre-trained word vectors data (<code>.RData</code>):
+<a href="https://psychbruce.github.io/WordVector_RData.pdf" class="external-link">https://psychbruce.github.io/WordVector_RData.pdf</a></p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="get_wordvecs.html">get_wordvecs</a></code></p></div>
     </div>
@@ -78,7 +85,7 @@ To remove the border color, set <code>border=NA</code>.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_normalize.html">data_wordvec_normalize</a></span><span class="op">(</span><span class="va">demodata</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> All word vectors have now been normalized.</span>
 <span class="r-in"></span>
-<span class="r-in"><span class="va">dt</span> <span class="op">=</span> <span class="fu"><a href="get_wordvecs.html">get_wordvecs</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://rdrr.io/pkg/bruceR/man/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"king, queen, man, woman"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">dt</span> <span class="op">=</span> <span class="fu"><a href="get_wordvecs.html">get_wordvecs</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"king, queen, man, woman"</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">dt</span><span class="op">[</span>, <span class="va">QUEEN</span> <span class="op">:=</span> <span class="va">king</span> <span class="op">-</span> <span class="va">man</span> <span class="op">+</span> <span class="va">woman</span><span class="op">]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              king        queen         man       woman        QUEEN</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1:  0.043406531  0.001733313  0.14116230  0.09156568 -0.006190088</span>
@@ -109,7 +116,7 @@ To remove the border color, set <code>border=NA</code>.</p></dd>
 <span class="r-in"><span class="fu">plot_wordvecs</span><span class="op">(</span><span class="va">dt</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">2</span><span class="op">)</span><span class="op">]</span>, dims<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span><span class="op">)</span></span>
 <span class="r-plt img"><img src="plot_wordvecs-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="va">dt</span> <span class="op">=</span> <span class="fu"><a href="get_wordvecs.html">get_wordvecs</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://rdrr.io/pkg/bruceR/man/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"boy, girl, he, she"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">dt</span> <span class="op">=</span> <span class="fu"><a href="get_wordvecs.html">get_wordvecs</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"boy, girl, he, she"</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">dt</span><span class="op">[</span>, <span class="va">GIRL</span> <span class="op">:=</span> <span class="va">boy</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span><span class="op">]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               boy         girl           he         she         GIRL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1:  0.083967962  0.047750749  0.109257091  0.04049595  0.015206823</span>
@@ -142,7 +149,7 @@ To remove the border color, set <code>border=NA</code>.</p></dd>
 <span class="r-in"></span>
 <span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="va">dt</span> <span class="op">=</span> <span class="fu"><a href="get_wordvecs.html">get_wordvecs</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://rdrr.io/pkg/bruceR/man/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"</span>
+<span class="r-in"><span class="va">dt</span> <span class="op">=</span> <span class="fu"><a href="get_wordvecs.html">get_wordvecs</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"</span>
 <span class="r-in">  male, man, boy, he, his,</span>
 <span class="r-in">  female, woman, girl, she, her"</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"></span>
