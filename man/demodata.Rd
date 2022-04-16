@@ -2,7 +2,7 @@
 % Please edit documentation in R/PsychWordVec.R
 \name{demodata}
 \alias{demodata}
-\title{Demo data (corpus: Google News; algorithm: word2vec; vocabulary: 10000; dimensions: 300).}
+\title{Demo data (corpus: Google News; algorithm: word2vec; vocabulary: 8000; dimensions: 300).}
 \format{
 A \code{data.table} with two variables \code{word} and \code{vec},
 transformed from the raw data (see the URL in Source) into \code{.RData}
@@ -15,9 +15,9 @@ Google Code - word2vec (\url{https://code.google.com/archive/p/word2vec/})
 data(demodata)
 }
 \description{
-This demo data contains a sample of 10000 English words
+This demo data contains a sample of 8000 English words
 with their 300-d word embeddings (word vectors) trained
 using the "word2vec" algorithm based on the Google News corpus.
-Most of these 10000 words are from the Top-10k frequent wordlist,
+Most of these words are from the Top 8000 frequent wordlist,
 whereas a few are selected from less frequent words and appended.
 }

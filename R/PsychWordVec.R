@@ -341,13 +341,13 @@ if(FALSE) {
 }
 
 
-#' Demo data (corpus: Google News; algorithm: word2vec; vocabulary: 10000; dimensions: 300).
+#' Demo data (corpus: Google News; algorithm: word2vec; vocabulary: 8000; dimensions: 300).
 #'
 #' @description
-#' This demo data contains a sample of 10000 English words
+#' This demo data contains a sample of 8000 English words
 #' with their 300-d word embeddings (word vectors) trained
 #' using the "word2vec" algorithm based on the Google News corpus.
-#' Most of these 10000 words are from the Top-10k frequent wordlist,
+#' Most of these words are from the Top 8000 frequent wordlist,
 #' whereas a few are selected from less frequent words and appended.
 #'
 #' @format
@@ -444,7 +444,12 @@ get_wordvec = function(data, word) {
 #' get_wordvecs(d, cc(" China, Japan; Korea "))
 #'
 #' ## specify `pattern`:
-#' dt = get_wordvecs(d, pattern="Chin[ae]|Japan|Korea")
+#' get_wordvecs(d, pattern="Chin[ae]|Japan|Korea")
+#'
+#' ## plot word vectors:
+#' get_wordvecs(d, cc("China, Japan, Korea,
+#'                     Mac, Linux, Windows"),
+#'              plot=TRUE, plot.dims=1:100)
 #'
 #' ## a more complex example:
 #'

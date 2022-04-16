@@ -55,7 +55,12 @@ get_wordvecs(d, c("China", "Japan", "Korea"))
 get_wordvecs(d, cc(" China, Japan; Korea "))
 
 ## specify `pattern`:
-dt = get_wordvecs(d, pattern="Chin[ae]|Japan|Korea")
+get_wordvecs(d, pattern="Chin[ae]|Japan|Korea")
+
+## plot word vectors:
+get_wordvecs(d, cc("China, Japan, Korea,
+                    Mac, Linux, Windows"),
+             plot=TRUE, plot.dims=1:100)
 
 ## a more complex example:
 

@@ -1,8 +1,8 @@
 # PsychWordVec
 
-Toolkit for Word Embeddings (Word Vectors) Research in Psychological and Cognitive Sciences.
+Toolkit for Word Embedding Research in Psychological Science.
 
-This package provides: (1) a collection of pre-trained [word vectors](https://en.wikipedia.org/wiki/Word_embedding) saved in `.RData` format ([WordVector_RData.pdf](https://psychbruce.github.io/WordVector_RData.pdf)); (2) a variety of functions for processing, analyzing, and visualizing word vectors (e.g., find the most similar words to a given word); (3) a range of tests (e.g., [Word-Embedding Association Test](https://doi.org/10.1126/science.aal4230)) for examining psychological effects (e.g., implicit attitude/bias); and (4) a set of training methods ([word2vec](https://en.wikipedia.org/wiki/Word2vec), [GloVe](https://en.wikipedia.org/wiki/GloVe_(machine_learning)), [fastText](https://en.wikipedia.org/wiki/FastText)) for learning word vectors from new text corpora (*coming soon*).
+An integrated word-vector toolkit that provides: (1) a collection of pre-trained [word vectors](https://en.wikipedia.org/wiki/Word_embedding) in the `.RData` format ([WordVector_RData.pdf](https://psychbruce.github.io/WordVector_RData.pdf)); (2) a variety of functions for processing, analyzing, and visualizing word vectors (e.g., find the most similar words to a given word); (3) a range of tests (e.g., Word-Embedding Association Test) for examining psychological effects (e.g., implicit attitude/bias); and (4) a set of training methods ([word2vec](https://en.wikipedia.org/wiki/Word2vec), [GloVe](https://en.wikipedia.org/wiki/GloVe), [fastText](https://en.wikipedia.org/wiki/FastText)) for learning word vectors from new text corpora (*coming soon*).
 
 <!-- badges: start -->
 
@@ -22,4 +22,4 @@ Homepage: [psychbruce.github.io](https://psychbruce.github.io)
 
 ## Citation
 
--   Bao, H.-W.-S. (2022). PsychWordVec: Toolkit for word embeddings (word vectors) research in psychological and cognitive sciences. R package version 0.0.x. <https://CRAN.R-project.org/package=PsychWordVec>
+-   Bao, H.-W.-S. (2022). PsychWordVec: Toolkit for word embedding research in psychological science. R package version 0.0.x. <https://CRAN.R-project.org/package=PsychWordVec>

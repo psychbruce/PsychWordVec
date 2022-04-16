@@ -41,9 +41,9 @@ vignettes/*.pdf
 # CRAN
 ^cran-comments\.md$
 ^CRAN-RELEASE$
+^CRAN-SUBMISSION$
 
 # Others
-*.docx
 data-raw
 ignore
 docs
