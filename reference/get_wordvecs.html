@@ -138,8 +138,50 @@ To remove the border color, set <code>plot.border=NA</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 300: -0.02931099  0.008636121  0.077552886</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## specify `pattern`:</span></span>
-<span class="r-in"><span class="va">dt</span> <span class="op">=</span> <span class="fu">get_wordvecs</span><span class="op">(</span><span class="va">d</span>, pattern<span class="op">=</span><span class="st">"Chin[ae]|Japan|Korea"</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">get_wordvecs</span><span class="op">(</span><span class="va">d</span>, pattern<span class="op">=</span><span class="st">"Chin[ae]|Japan|Korea"</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 words are matched...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            China        Japan     Chinese     Japanese      Korean        Korea</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1: -0.02697318  0.018329469 -0.04985132  0.003658937  0.02635512  0.033778005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:  0.04999036  0.090237829  0.04593451  0.091899336  0.11745195  0.133294179</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:  0.04010034  0.060275982  0.07940573  0.062968012  0.03810029 -0.021963288</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:  0.03056975  0.030490640  0.02581589  0.029782102  0.02850357  0.001675763</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5: -0.04711339 -0.095877693 -0.03204736 -0.093941412 -0.05127785 -0.014011015</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 296: -0.01393625 -0.087418077  0.04593451 -0.055820224 -0.05213705 -0.072705831</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 297: -0.06761304 -0.105042608 -0.06907951 -0.119128757 -0.08479435 -0.115117643</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 298:  0.05070960  0.048291315  0.06694317  0.074540472  0.02363348  0.015374394</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 299:  0.03452576  0.002103985  0.05448025  0.001999554 -0.05614764 -0.043017655</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 300: -0.02931099  0.008636121 -0.03275947  0.009104821  0.03867319  0.077552886</span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co">## plot word vectors:</span></span>
+<span class="r-in"><span class="fu">get_wordvecs</span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"China, Japan, Korea,</span>
+<span class="r-in">                    Mac, Linux, Windows"</span><span class="op">)</span>,</span>
+<span class="r-in">             plot<span class="op">=</span><span class="cn">TRUE</span>, plot.dims<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span></span>
+<span class="r-plt img"><img src="get_wordvecs-1.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            China        Japan        Korea          Mac        Linux</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1: -0.02697318  0.018329469  0.033778005 -0.017270569  0.068922067</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:  0.04999036  0.090237829  0.133294179 -0.012575617 -0.118698961</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:  0.04010034  0.060275982 -0.021963288 -0.052985444 -0.071656892</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:  0.03056975  0.030490640  0.001675763  0.078136677  0.030358376</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5: -0.04711339 -0.095877693 -0.014011015 -0.057009737 -0.045400893</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 296: -0.01393625 -0.087418077 -0.072705831 -0.088532396 -0.001282133</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 297: -0.06761304 -0.105042608 -0.115117643 -0.063716664  0.025572363</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 298:  0.05070960  0.048291315  0.015374394 -0.005407505  0.072751102</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 299:  0.03452576  0.002103985 -0.043017655 -0.016767489 -0.063451858</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 300: -0.02931099  0.008636121  0.077552886  0.040912906  0.056341033</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            Windows</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:  0.0596512714</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2: -0.0797136210</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3: -0.0818534443</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4: -0.0143777935</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5: -0.0738285592</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 296:  0.0235396994</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 297:  0.0005308471</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 298:  0.0098973674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 299:  0.0572438332</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 300:  0.1321425780</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## a more complex example:</span></span>
 <span class="r-in"></span>
@@ -169,7 +211,7 @@ To remove the border color, set <code>plot.border=NA</code>.</p></dd>
 <span class="r-in">  plot<span class="op">=</span><span class="cn">TRUE</span>,</span>
 <span class="r-in">  plot.dims<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>,</span>
 <span class="r-in">  plot.step<span class="op">=</span><span class="fl">0.06</span><span class="op">)</span></span>
-<span class="r-plt img"><img src="get_wordvecs-1.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="get_wordvecs-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
 <span class="r-in"></span>
