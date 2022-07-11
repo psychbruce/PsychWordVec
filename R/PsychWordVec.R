@@ -262,6 +262,9 @@ data_transform = function(file.load.txt, file.save.rda=NULL,
         }))
     )]
     dt$x = NULL
+    dims = unique(sapply(dt$vec, length))
+    if(length(dims) > 1)
+      warning("The number of dimensions is not consistent between words!", call.=FALSE)
     ndim = length(dt[[1, "vec"]])
     Print("Word vectors data: {nrow(dt)} words, {ndim} dimensions (time cost = {dtime(t0, 'auto')})")
   }
@@ -293,14 +296,7 @@ data_transform = function(file.load.txt, file.save.rda=NULL,
 #' @param file.load.rda File name (must be .rda or .RData transformed by
 #' \code{\link{data_transform}}, with only two variables \code{word} and \code{vec}).
 #' @param normalize Normalize all word vectors to unit length?
-#' Default is \code{TRUE}, which performs the L2-normalization
-#' (scaling to unit euclidean length)
-#' such that the \emph{norm} of each vector in the vector space is 1.
-#'
-#' R formula: \code{normalized_vec = vec / sqrt(sum(vec^2))}
-#'
-#' Note: Normalization does not change the results of cosine similarity and
-#' can make the computation faster.
+#' Default is \code{FALSE}. See \code{\link{data_wordvec_normalize}}.
 #'
 #' @return
 #' A \code{data.table} with two variables:
@@ -321,7 +317,7 @@ data_transform = function(file.load.txt, file.save.rda=NULL,
 #' \code{\link{data_wordvec_subset}}
 #'
 #' @export
-data_wordvec_load = function(file.load.rda, normalize=TRUE) {
+data_wordvec_load = function(file.load.rda, normalize=FALSE) {
   t0 = Sys.time()
   check_load_validity(file.load.rda)
   cat("Loading...")
@@ -333,20 +329,15 @@ data_wordvec_load = function(file.load.rda, normalize=TRUE) {
   rm(envir)
   if(!all(c("word", "vec") %in% names(data)))
     stop("Data file must be preprocessed using `data_transform()`!", call.=FALSE)
-  if(normalize) {
-    data$vec = lapply(data$vec, function(vec) {
-      vec / sqrt(sum(vec^2))  # L2-normalized (unit euclidean length)
-    })
-  }
-  dims = unique(sapply(data$vec, length))
+  ndim = length(data[[1, "vec"]])
+  attr(data, "dims") = ndim
+  attr(data, "normalized") = normalize
+  if(normalize) data = normalize(data)
   gc()  # Garbage Collection: Free the Memory
   cat("\015")
-  Print("<<green \u221a>> Word vector data: {nrow(data)} words, {dims[1]} dims (loading time: {dtime(t0)})")
-  if(normalize) cat("  All word vectors have been normalized.\n")
-  if(length(dims) > 1)
-    warning("The number of dimensions is not consistent between words!", call.=FALSE)
-  attr(data, "dims") = dims
-  attr(data, "normalized") = normalize
+  Print("<<green \u221a>> Word vector data: {nrow(data)} words, {ndim} dims (loading time: {dtime(t0)})")
+  if(normalize)
+    Print("<<green \u221a>> All word vectors have now been normalized.")
   return(data)
 }
 
@@ -391,13 +382,20 @@ data_wordvec_normalize = function(data) {
   if(attr(data, "normalized")) {
     Print("<<red \u221a>> Word vectors have already been normalized.")
   } else {
-    data$vec = lapply(data$vec, function(vec) {
-      vec / sqrt(sum(vec^2))  # L2-normalized (unit euclidean length)
-    })
-    attr(data, "normalized") = TRUE
+    data = normalize(data)
     Print("<<green \u221a>> All word vectors have now been normalized.")
   }
+  gc()  # Garbage Collection: Free the Memory
   invisible(data)
+}
+
+
+normalize = function(data) {
+  # L2-normalized (unit euclidean length)
+  vec = NULL
+  data[, vec := lapply(vec, function(vec) { vec / sqrt(sum(vec^2)) } )]
+  attr(data, "normalized") = TRUE
+  return(data)
 }
 
 
@@ -469,7 +467,7 @@ data_wordvec_subset = function(data=NULL, words=NULL, pattern=NULL,
   }
   check_data_validity(data)
   words.valid = check_word_validity(data, words, pattern)
-  data.subset = data[word %in% words.valid]  # much faster
+  dt = data[word %in% words.valid]  # much faster
   if(!is.null(file.save.rda)) {
     t1 = Sys.time()
     cat("\n")
@@ -479,13 +477,13 @@ data_wordvec_subset = function(data=NULL, words=NULL, pattern=NULL,
                       `2`="bzip2",
                       `3`="xz",
                       compress)
-    save(data.subset, file=file.save.rda,
+    save(dt, file=file.save.rda,
          compress=compress,
          compression_level=compress.level)
     Print("<<green \u221a>> Saved to \"{file.save.rda}\" (time cost = {dtime(t1, 'auto')})")
   }
   gc()  # Garbage Collection: Free the Memory
-  invisible(data.subset)
+  invisible(dt)
 }
 
 
@@ -911,6 +909,7 @@ most_similar = function(data, x, keep=FALSE, topn=10, above=NULL) {
   } else {
     stop("`above` must be a numeric value or a character string.", call.=FALSE)
   }
+  gc()  # Garbage Collection: Free the Memory
   attr(ms, "wordvec") = wordvec
   attr(ms, "wordvec.formula") = f
   Print("<<bold <<cyan [Word Vector]>>>> =~ {as.character(f[2])}")
@@ -937,12 +936,8 @@ most_similar = function(data, x, keep=FALSE, topn=10, above=NULL) {
 #' @export
 pair_similarity = function(data, word1, word2, distance=FALSE) {
   check_data_validity(data)
-  if(attr(data, "normalized")==FALSE) {
-    data = data[word %in% c(word1, word2)]
-    data$vec = lapply(data$vec, function(vec) {
-      vec / sqrt(sum(vec^2))  # L2-normalized (unit euclidean length)
-    })
-  }
+  if(attr(data, "normalized")==FALSE)
+    data = normalize(data[word %in% c(word1, word2)])
   dt = get_wordvecs(data, c(word1, word2))
   if(distance)
     return(1 - sum(dt[[1]] * dt[[2]]))
@@ -982,12 +977,8 @@ pair_similarity = function(data, word1, word2, distance=FALSE) {
 tab_similarity = function(data, words=NULL, pattern=NULL, distance=FALSE) {
   check_data_validity(data)
   words = check_word_validity(data, words, pattern)
-  if(attr(data, "normalized")==FALSE) {
-    data = data[word %in% words]
-    data$vec = lapply(data$vec, function(vec) {
-      vec / sqrt(sum(vec^2))  # L2-normalized (unit euclidean length)
-    })
-  }
+  if(attr(data, "normalized")==FALSE)
+    data = normalize(data[word %in% words])
   dt = get_wordvecs(data, words)
   words.valid = names(dt)
   words.mat = utils::combn(words.valid, 2)
@@ -1087,12 +1078,8 @@ tab_WEAT = function(data, T1, T2, A1, A2, labels) {
   }
   check_data_validity(data)
   words = c(T1, T2, A1, A2)
-  if(attr(data, "normalized")==FALSE) {
-    data = data[word %in% words]
-    data$vec = lapply(data$vec, function(vec) {
-      vec / sqrt(sum(vec^2))  # L2-normalized (unit euclidean length)
-    })
-  }
+  if(attr(data, "normalized")==FALSE)
+    data = normalize(data[word %in% words])
 
   dt = get_wordvecs(data, words)
   # valid words:

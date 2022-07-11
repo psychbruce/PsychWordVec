@@ -4,21 +4,14 @@
 \alias{data_wordvec_load}
 \title{Load word vectors data from ".RData" file.}
 \usage{
-data_wordvec_load(file.load.rda, normalize = TRUE)
+data_wordvec_load(file.load.rda, normalize = FALSE)
 }
 \arguments{
 \item{file.load.rda}{File name (must be .rda or .RData transformed by
 \code{\link{data_transform}}, with only two variables \code{word} and \code{vec}).}
 
 \item{normalize}{Normalize all word vectors to unit length?
-Default is \code{TRUE}, which performs the L2-normalization
-(scaling to unit euclidean length)
-such that the \emph{norm} of each vector in the vector space is 1.
-
-R formula: \code{normalized_vec = vec / sqrt(sum(vec^2))}
-
-Note: Normalization does not change the results of cosine similarity and
-can make the computation faster.}
+Default is \code{FALSE}. See \code{\link{data_wordvec_normalize}}.}
 }
 \value{
 A \code{data.table} with two variables:
