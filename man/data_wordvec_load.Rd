@@ -4,10 +4,10 @@
 \alias{data_wordvec_load}
 \title{Load word vectors data from ".RData" file.}
 \usage{
-data_wordvec_load(file, normalize = TRUE)
+data_wordvec_load(file.load.rda, normalize = TRUE)
 }
 \arguments{
-\item{file}{File name (must be .rda or .RData transformed by
+\item{file.load.rda}{File name (must be .rda or .RData transformed by
 \code{\link{data_transform}}, with only two variables \code{word} and \code{vec}).}
 
 \item{normalize}{Normalize all word vectors to unit length?
@@ -40,4 +40,6 @@ Download pre-trained word vectors data (\code{.RData}):
 \code{\link{data_transform}}
 
 \code{\link{data_wordvec_normalize}}
+
+\code{\link{data_wordvec_subset}}
 }

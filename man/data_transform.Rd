@@ -5,17 +5,17 @@
 \title{Transform plain text data of word vectors into a compressed ".RData" file.}
 \usage{
 data_transform(
-  file.load,
-  file.save = NULL,
-  encoding = "UTF-8",
+  file.load.txt,
+  file.save.rda = NULL,
+  encoding = "auto",
   sep = " ",
-  header = FALSE,
+  header = "auto",
   compress = "bzip2",
   compress.level = 9
 )
 }
 \arguments{
-\item{file.load}{File name of raw data (must be plain text).
+\item{file.load.txt}{File name of raw data (must be plain text).
 
 Data must be in this format (values separated by \code{sep}):
 
@@ -23,14 +23,16 @@ cat 0.001 0.002 0.003 0.004 0.005 ... 0.300
 
 dog 0.301 0.302 0.303 0.304 0.305 ... 0.600}
 
-\item{file.save}{File name of to-be-saved R data (must be .rda or .RData).}
+\item{file.save.rda}{File name of to-be-saved R data (must be .rda or .RData).}
 
-\item{encoding}{File encoding. Default is \code{"UTF-8"}.}
+\item{encoding}{File encoding. Default is \code{"auto"} (using \code{\link[vroom:vroom_lines]{vroom::vroom_lines()}} to fast read the file).
+If specified to any other value (e.g., \code{"UTF-8"}), then it uses \code{\link[base:readLines]{readLines()}} to read the file, which is much slower than \code{vroom}.}
 
 \item{sep}{Column separator. Default is \code{" "}.}
 
-\item{header}{First row is header or meta-information? Default is \code{FALSE}.
-If \code{TRUE}, then the first row will be removed.}
+\item{header}{Is the 1st row a header (e.g., meta-information such as "2000000 300")?
+Default is \code{"auto"}, which automatically determines whether there is a header.
+If \code{TRUE}, then the 1st row will be dropped.}
 
 \item{compress}{Compression method for the saved file. Default is \code{"bzip2"}.
 
@@ -49,6 +51,11 @@ A \code{data.table} with two variables: \code{word} and \code{vec}.
 }
 \description{
 Transform plain text data of word vectors into a compressed ".RData" file.
+
+Speed: In total (preprocess + compress + save),
+it can process about 30000 words per minute
+with the slowest settings (\code{compress="xz"}, \code{compress.level=9})
+on a modern computer (Windows 11, Intel i7 CPU, 32GB RAM, power supply mode).
 }
 \section{Download}{
 
@@ -56,3 +63,10 @@ Download pre-trained word vectors data (\code{.RData}):
 \url{https://psychbruce.github.io/WordVector_RData.pdf}
 }
 
+\seealso{
+\code{\link{data_wordvec_load}}
+
+\code{\link{data_wordvec_normalize}}
+
+\code{\link{data_wordvec_subset}}
+}

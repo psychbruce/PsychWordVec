@@ -109,4 +109,6 @@ ggsave(attr(dt, "ggplot"),
 \code{\link{get_wordvec}}
 
 \code{\link{plot_wordvecs}}
+
+\code{\link{data_wordvec_subset}}
 }

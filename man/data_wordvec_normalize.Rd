@@ -39,4 +39,6 @@ data_wordvec_normalize(d)  # already normalized
 \code{\link{data_transform}}
 
 \code{\link{data_wordvec_load}}
+
+\code{\link{data_wordvec_subset}}
 }

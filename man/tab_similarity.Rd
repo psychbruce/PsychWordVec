@@ -4,7 +4,7 @@
 \alias{tab_similarity}
 \title{Tabulate cosine similarity/distance of all word pairs.}
 \usage{
-tab_similarity(data, words, distance = FALSE)
+tab_similarity(data, words = NULL, pattern = NULL, distance = FALSE)
 }
 \arguments{
 \item{data}{Data table (\code{data.table}) with variables \code{word} and \code{vec}.
@@ -12,6 +12,8 @@ tab_similarity(data, words, distance = FALSE)
 See \code{\link{data_transform}} for details about data format.}
 
 \item{words}{[Option 1] Word string (\code{NULL}; a single word; a vector of words).}
+
+\item{pattern}{[Option 2] Pattern of regular expression (see \code{\link[stringr:str_subset]{str_subset}}).}
 
 \item{distance}{Compute cosine distance instead?
 Default is \code{FALSE} (cosine similarity).}
