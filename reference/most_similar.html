@@ -16,7 +16,7 @@ not the demodata used here in examples.)"><!-- mathjax --><script src="https://c
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,6 +26,9 @@ not the demodata used here in examples.)"><!-- mathjax --><script src="https://c
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -57,7 +60,7 @@ not the <code>demodata</code> used here in examples.)</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">most_similar</span><span class="op">(</span><span class="va">data</span>, <span class="va">x</span>, keep <span class="op">=</span> <span class="cn">FALSE</span>, topn <span class="op">=</span> <span class="fl">10</span>, above <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">most_similar</span><span class="op">(</span><span class="va">data</span>, <span class="va">x</span>, keep <span class="op">=</span> <span class="cn">FALSE</span>, topn <span class="op">=</span> <span class="fl">10</span>, above <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -65,6 +68,8 @@ not the <code>demodata</code> used here in examples.)</p>
     <dl><dt>data</dt>
 <dd><p>Data table (<code>data.table</code>) with variables <code>word</code> and <code>vec</code>.</p>
 <p>See <code><a href="data_transform.html">data_transform</a></code> for details about data format.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>Can be one of the following:</p><ul><li><p>a single word:  <code>"China"</code></p></li>
 <li><p>a list of words:  <code>c("king", "queen")</code></p>
@@ -73,24 +78,35 @@ not the <code>demodata</code> used here in examples.)</p>
   words that positively and negatively
   contribute to the similarity (for word analogy):  <code>~ boy - he + she</code>  <code>~ king - man + woman</code>  <code>~ Beijing - China + Japan</code></p></li>
 </ul></dd>
+
+
 <dt>keep</dt>
 <dd><p>Keep words specified in <code>x</code> in results?
 Default is <code>FALSE</code>.</p></dd>
+
+
 <dt>topn</dt>
 <dd><p>Top-N most similar words. Default is <code>10</code>.</p></dd>
+
+
 <dt>above</dt>
 <dd><p>Default is <code>NULL</code>. Can be one of the following:</p><ul><li><p>a threshold value to find all words with cosine similarities
   higher than this value</p></li>
 <li><p>a critical word to find all words with cosine similarities
   higher than that with this critical word</p></li>
 </ul><p>If both <code>topn</code> and <code>above</code> are specified, <code>above</code> wins.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <code>data.table</code> with the most similar words and their cosine similarities.
+    
+
+<p>A <code>data.table</code> with the most similar words and their cosine similarities.
 The row number of each word in the raw data is also returned,
-which may help determine the relative word frequency in some cases.
-Two attributes are appended to the returned <code>data.table</code> (see examples):
+which may help determine the relative word frequency in some cases.</p>
+
+
+<p>Two attributes are appended to the returned <code>data.table</code> (see examples):
 <code>wordvec</code> and <code>wordvec.formula</code>.
 Users may extract them for further use.</p>
     </div>
@@ -110,10 +126,10 @@ Users may extract them for further use.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_normalize.html">data_wordvec_normalize</a></span><span class="op">(</span><span class="va">demodata</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_normalize.html">data_wordvec_normalize</a></span><span class="op">(</span><span class="va">demodata</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> All word vectors have now been normalized.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="st">"China"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="st">"China"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ China</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          word   cos_sim row_id</span>
@@ -127,7 +143,7 @@ Users may extract them for further use.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  8:     India 0.6004212    485</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9:     Japan 0.5967756    821</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10:        Li 0.5882897   7559</span>
-<span class="r-in"><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"king"</span>, <span class="st">"queen"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"king"</span>, <span class="st">"queen"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ king + queen</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          word   cos_sim row_id</span>
@@ -141,7 +157,7 @@ Users may extract them for further use.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  8:      lady 0.3581903   4631</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9:     lover 0.3425792   7952</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10:      pope 0.3420032   6388</span>
-<span class="r-in"><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">" king , queen ; man | woman "</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">" king , queen ; man | woman "</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ king + queen + man + woman</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            word   cos_sim row_id</span>
@@ -155,9 +171,9 @@ Users may extract them for further use.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  8:      victim 0.4806608   1537</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9:   boyfriend 0.4717627   4811</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10:  girlfriend 0.4709186   3922</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># the same as above:</span></span>
-<span class="r-in"><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="op">~</span> <span class="va">China</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># the same as above:</span></span></span>
+<span class="r-in"><span><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="op">~</span> <span class="va">China</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ China</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          word   cos_sim row_id</span>
@@ -171,7 +187,7 @@ Users may extract them for further use.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  8:     India 0.6004212    485</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9:     Japan 0.5967756    821</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10:        Li 0.5882897   7559</span>
-<span class="r-in"><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="op">~</span> <span class="va">king</span> <span class="op">+</span> <span class="va">queen</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="op">~</span> <span class="va">king</span> <span class="op">+</span> <span class="va">queen</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ king + queen</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          word   cos_sim row_id</span>
@@ -185,7 +201,7 @@ Users may extract them for further use.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  8:      lady 0.3581903   4631</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9:     lover 0.3425792   7952</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10:      pope 0.3420032   6388</span>
-<span class="r-in"><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="op">~</span> <span class="va">king</span> <span class="op">+</span> <span class="va">queen</span> <span class="op">+</span> <span class="va">man</span> <span class="op">+</span> <span class="va">woman</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="op">~</span> <span class="va">king</span> <span class="op">+</span> <span class="va">queen</span> <span class="op">+</span> <span class="va">man</span> <span class="op">+</span> <span class="va">woman</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ king + queen + man + woman</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            word   cos_sim row_id</span>
@@ -199,8 +215,8 @@ Users may extract them for further use.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  8:      victim 0.4806608   1537</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9:   boyfriend 0.4717627   4811</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10:  girlfriend 0.4709186   3922</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="op">~</span> <span class="va">boy</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="op">~</span> <span class="va">boy</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ boy - he + she</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            word   cos_sim row_id</span>
@@ -214,7 +230,7 @@ Users may extract them for further use.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  8:        teen 0.5755065   3542</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9:        baby 0.5672891   1838</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10:       girls 0.5599151   1195</span>
-<span class="r-in"><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="op">~</span> <span class="va">Jack</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="op">~</span> <span class="va">Jack</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ Jack - he + she</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        word   cos_sim row_id</span>
@@ -228,7 +244,7 @@ Users may extract them for further use.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  8:     Ann 0.5765654   4955</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9:   Alice 0.5649283   7340</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10:   Carol 0.5647291   5861</span>
-<span class="r-in"><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="op">~</span> <span class="va">Rose</span> <span class="op">-</span> <span class="va">she</span> <span class="op">+</span> <span class="va">he</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="op">~</span> <span class="va">Rose</span> <span class="op">-</span> <span class="va">she</span> <span class="op">+</span> <span class="va">he</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ Rose - she + he</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         word   cos_sim row_id</span>
@@ -242,8 +258,8 @@ Users may extract them for further use.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  8: Robinson 0.3725750   2698</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9:    Evans 0.3639734   3379</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10:   Duncan 0.3635448   4738</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="op">~</span> <span class="va">king</span> <span class="op">-</span> <span class="va">man</span> <span class="op">+</span> <span class="va">woman</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="op">~</span> <span class="va">king</span> <span class="op">-</span> <span class="va">man</span> <span class="op">+</span> <span class="va">woman</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ king - man + woman</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         word   cos_sim row_id</span>
@@ -257,7 +273,7 @@ Users may extract them for further use.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  8:    crown 0.3164823   5174</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9:     hers 0.3073009   7987</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10: daughter 0.3021213   1078</span>
-<span class="r-in"><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="op">~</span> <span class="va">Tokyo</span> <span class="op">-</span> <span class="va">Japan</span> <span class="op">+</span> <span class="va">China</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="op">~</span> <span class="va">Tokyo</span> <span class="op">-</span> <span class="va">Japan</span> <span class="op">+</span> <span class="va">China</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ Tokyo - Japan + China</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          word   cos_sim row_id</span>
@@ -271,7 +287,7 @@ Users may extract them for further use.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  8:        Li 0.5712056   7559</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9:      Wang 0.5192575   7083</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10:    Moscow 0.5082187   3163</span>
-<span class="r-in"><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="op">~</span> <span class="va">Beijing</span> <span class="op">-</span> <span class="va">China</span> <span class="op">+</span> <span class="va">Japan</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="op">~</span> <span class="va">Beijing</span> <span class="op">-</span> <span class="va">China</span> <span class="op">+</span> <span class="va">Japan</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ Beijing - China + Japan</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          word   cos_sim row_id</span>
@@ -285,15 +301,15 @@ Users may extract them for further use.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  8:    Taiwan 0.4330458   3011</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9:    Moscow 0.4217667   3163</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10: Guangzhou 0.4154183   7992</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="st">"China"</span>, above<span class="op">=</span><span class="fl">0.7</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="st">"China"</span>, above<span class="op">=</span><span class="fl">0.7</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ China</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       word   cos_sim row_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: Chinese 0.7678081    924</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2: Beijing 0.7648461   2086</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3:  Taiwan 0.7081156   3011</span>
-<span class="r-in"><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="st">"China"</span>, above<span class="op">=</span><span class="st">"Shanghai"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">most_similar</span><span class="op">(</span><span class="va">d</span>, <span class="st">"China"</span>, above<span class="op">=</span><span class="st">"Shanghai"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ China</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        word   cos_sim row_id</span>
@@ -301,14 +317,14 @@ Users may extract them for further use.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:  Beijing 0.7648461   2086</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3:   Taiwan 0.7081156   3011</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4: Shanghai 0.6727434   3932</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># automatically normalized for more accurate results</span></span>
-<span class="r-in"><span class="va">ms</span> <span class="op">=</span> <span class="fu">most_similar</span><span class="op">(</span><span class="va">demodata</span>, <span class="op">~</span> <span class="va">king</span> <span class="op">-</span> <span class="va">man</span> <span class="op">+</span> <span class="va">woman</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># automatically normalized for more accurate results</span></span></span>
+<span class="r-in"><span><span class="va">ms</span> <span class="op">=</span> <span class="fu">most_similar</span><span class="op">(</span><span class="va">demodata</span>, <span class="op">~</span> <span class="va">king</span> <span class="op">-</span> <span class="va">man</span> <span class="op">+</span> <span class="va">woman</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">*</span> Results may be inaccurate if word vectors are not normalized.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> All word vectors have now been normalized.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ king - man + woman</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
-<span class="r-in"><span class="va">ms</span></span>
+<span class="r-in"><span><span class="va">ms</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         word   cos_sim row_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:    queen 0.7118192   7855</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:    royal 0.4938203   6754</span>
@@ -320,7 +336,7 @@ Users may extract them for further use.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  8:    crown 0.3164823   5174</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9:     hers 0.3073009   7987</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10: daughter 0.3021213   1078</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">ms</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">ms</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Classes ‘data.table’ and 'data.frame':	10 obs. of  3 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ word   : chr  "queen" "royal" "Queen" "King" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ cos_sim: num  0.712 0.494 0.435 0.375 0.334 ...</span>
@@ -330,15 +346,15 @@ Users may extract them for further use.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "normalized")= logi TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "wordvec")= num [1:300] -0.0055 -0.06705 -0.04519 0.03875 -0.00286 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "wordvec.formula")=Class 'formula'  language ~king - man + woman</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".Environment")=&lt;environment: 0x5616273f35b8&gt; </span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ms</span>, <span class="st">"dims"</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".Environment")=&lt;environment: 0x55627bdabaf8&gt; </span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ms</span>, <span class="st">"dims"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 300</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ms</span>, <span class="st">"normalized"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ms</span>, <span class="st">"normalized"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ms</span>, <span class="st">"wordvec.formula"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ms</span>, <span class="st">"wordvec.formula"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ~king - man + woman</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5616273f35b8&gt;</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ms</span>, <span class="st">"wordvec"</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55627bdabaf8&gt;</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ms</span>, <span class="st">"wordvec"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1] -0.0055029992 -0.0670502053 -0.0451917763  0.0387523404 -0.0028627068</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [6] -0.0311541918  0.0722744639 -0.0547962213 -0.0020958381  0.1267937027</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [11] -0.1177978229 -0.1116193754 -0.0432157999  0.0087648568 -0.0212594939</span>
@@ -399,8 +415,8 @@ Users may extract them for further use.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [286] -0.0035357800 -0.0205028927 -0.0161002229 -0.0182009416  0.0601725192</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [291] -0.0265177060 -0.0849906153 -0.0761131339 -0.1206830347  0.0004351351</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [296]  0.0062921084 -0.0137075363  0.0623639418  0.0806824072  0.0592501645</span>
-<span class="r-in"><span class="co"># final word vector computed according to the formula</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span><span class="co"># final word vector computed according to the formula</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -412,7 +428,7 @@ Users may extract them for further use.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

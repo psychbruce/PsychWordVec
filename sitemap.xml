@@ -13,6 +13,9 @@
     <loc>https://psychbruce.github.io/PsychWordVec/index.html</loc>
   </url>
   <url>
+    <loc>https://psychbruce.github.io/PsychWordVec/news/index.html</loc>
+  </url>
+  <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/cosine_similarity.html</loc>
   </url>
   <url>
@@ -23,6 +26,9 @@
   </url>
   <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/data_wordvec_normalize.html</loc>
+  </url>
+  <url>
+    <loc>https://psychbruce.github.io/PsychWordVec/reference/data_wordvec_subset.html</loc>
   </url>
   <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/demodata.html</loc>

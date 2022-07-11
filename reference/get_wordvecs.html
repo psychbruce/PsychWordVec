@@ -16,7 +16,7 @@ If both (words and pattern) are specified, words wins."><!-- mathjax --><script 
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,6 +26,9 @@ If both (words and pattern) are specified, words wins."><!-- mathjax --><script 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -57,15 +60,15 @@ If both (<code>words</code> and <code>pattern</code>) are specified, <code>words
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_wordvecs</span><span class="op">(</span>
-  <span class="va">data</span>,
-  words <span class="op">=</span> <span class="cn">NULL</span>,
-  pattern <span class="op">=</span> <span class="cn">NULL</span>,
-  plot <span class="op">=</span> <span class="cn">FALSE</span>,
-  plot.dims <span class="op">=</span> <span class="cn">NULL</span>,
-  plot.step <span class="op">=</span> <span class="fl">0.05</span>,
-  plot.border <span class="op">=</span> <span class="st">"white"</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_wordvecs</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  words <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pattern <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  plot <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  plot.dims <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  plot.step <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  plot.border <span class="op">=</span> <span class="st">"white"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -73,24 +76,39 @@ If both (<code>words</code> and <code>pattern</code>) are specified, <code>words
     <dl><dt>data</dt>
 <dd><p>Data table (<code>data.table</code>) with variables <code>word</code> and <code>vec</code>.</p>
 <p>See <code><a href="data_transform.html">data_transform</a></code> for details about data format.</p></dd>
+
+
 <dt>words</dt>
 <dd><p>[Option 1] Word string (<code>NULL</code>; a single word; a vector of words).</p></dd>
+
+
 <dt>pattern</dt>
 <dd><p>[Option 2] Pattern of regular expression (see <code><a href="https://stringr.tidyverse.org/reference/str_subset.html" class="external-link">str_subset</a></code>).</p></dd>
+
+
 <dt>plot</dt>
 <dd><p>Generate a plot to illustrate the word vectors? Default is <code>FALSE</code>.</p></dd>
+
+
 <dt>plot.dims</dt>
 <dd><p>Dimensions to be plotted (e.g., <code>1:100</code>).
 Default is <code>NULL</code> (plot all dimensions).</p></dd>
+
+
 <dt>plot.step</dt>
 <dd><p>Step for value breaks. Default is <code>0.05</code>.</p></dd>
+
+
 <dt>plot.border</dt>
 <dd><p>Color of tile border. Default is <code>"white"</code>.
 To remove the border color, set <code>plot.border=NA</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <code>data.table</code> with words as columns and dimensions as rows.</p>
+    
+
+<p>A <code>data.table</code> with words as columns and dimensions as rows.</p>
     </div>
     <div class="section level2">
     <h2 id="download">Download<a class="anchor" aria-label="anchor" href="#download"></a></h2>
@@ -102,15 +120,16 @@ To remove the border color, set <code>plot.border=NA</code>.</p></dd>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="get_wordvec.html">get_wordvec</a></code></p>
-<p><code><a href="plot_wordvecs.html">plot_wordvecs</a></code></p></div>
+<p><code><a href="plot_wordvecs.html">plot_wordvecs</a></code></p>
+<p><code><a href="data_wordvec_subset.html">data_wordvec_subset</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_normalize.html">data_wordvec_normalize</a></span><span class="op">(</span><span class="va">demodata</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_normalize.html">data_wordvec_normalize</a></span><span class="op">(</span><span class="va">demodata</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> All word vectors have now been normalized.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">get_wordvecs</span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"China"</span>, <span class="st">"Japan"</span>, <span class="st">"Korea"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">get_wordvecs</span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"China"</span>, <span class="st">"Japan"</span>, <span class="st">"Korea"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            China        Japan        Korea</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1: -0.02697318  0.018329469  0.033778005</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   2:  0.04999036  0.090237829  0.133294179</span>
@@ -123,7 +142,7 @@ To remove the border color, set <code>plot.border=NA</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 298:  0.05070960  0.048291315  0.015374394</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 299:  0.03452576  0.002103985 -0.043017655</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 300: -0.02931099  0.008636121  0.077552886</span>
-<span class="r-in"><span class="fu">get_wordvecs</span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">" China, Japan; Korea "</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">get_wordvecs</span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">" China, Japan; Korea "</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            China        Japan        Korea</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1: -0.02697318  0.018329469  0.033778005</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   2:  0.04999036  0.090237829  0.133294179</span>
@@ -136,9 +155,9 @@ To remove the border color, set <code>plot.border=NA</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 298:  0.05070960  0.048291315  0.015374394</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 299:  0.03452576  0.002103985 -0.043017655</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 300: -0.02931099  0.008636121  0.077552886</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## specify `pattern`:</span></span>
-<span class="r-in"><span class="fu">get_wordvecs</span><span class="op">(</span><span class="va">d</span>, pattern<span class="op">=</span><span class="st">"Chin[ae]|Japan|Korea"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## specify `pattern`:</span></span></span>
+<span class="r-in"><span><span class="fu">get_wordvecs</span><span class="op">(</span><span class="va">d</span>, pattern<span class="op">=</span><span class="st">"Chin[ae]|Japan|Korea"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 words are matched...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            China        Japan     Chinese     Japanese      Korean        Korea</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1: -0.02697318  0.018329469 -0.04985132  0.003658937  0.02635512  0.033778005</span>
@@ -152,80 +171,80 @@ To remove the border color, set <code>plot.border=NA</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 298:  0.05070960  0.048291315  0.06694317  0.074540472  0.02363348  0.015374394</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 299:  0.03452576  0.002103985  0.05448025  0.001999554 -0.05614764 -0.043017655</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 300: -0.02931099  0.008636121 -0.03275947  0.009104821  0.03867319  0.077552886</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## plot word vectors:</span></span>
-<span class="r-in"><span class="fu">get_wordvecs</span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"China, Japan, Korea,</span>
-<span class="r-in">                    Mac, Linux, Windows"</span><span class="op">)</span>,</span>
-<span class="r-in">             plot<span class="op">=</span><span class="cn">TRUE</span>, plot.dims<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## plot word vectors:</span></span></span>
+<span class="r-in"><span><span class="fu">get_wordvecs</span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"China, Japan, Korea,</span></span></span>
+<span class="r-in"><span><span class="st">                    Mac, Linux, Windows"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>             plot<span class="op">=</span><span class="cn">TRUE</span>, plot.dims<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="get_wordvecs-1.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            China        Japan        Korea          Mac        Linux</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1: -0.02697318  0.018329469  0.033778005 -0.017270569  0.068922067</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2:  0.04999036  0.090237829  0.133294179 -0.012575617 -0.118698961</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3:  0.04010034  0.060275982 -0.021963288 -0.052985444 -0.071656892</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4:  0.03056975  0.030490640  0.001675763  0.078136677  0.030358376</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5: -0.04711339 -0.095877693 -0.014011015 -0.057009737 -0.045400893</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 296: -0.01393625 -0.087418077 -0.072705831 -0.088532396 -0.001282133</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 297: -0.06761304 -0.105042608 -0.115117643 -0.063716664  0.025572363</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 298:  0.05070960  0.048291315  0.015374394 -0.005407505  0.072751102</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 299:  0.03452576  0.002103985 -0.043017655 -0.016767489 -0.063451858</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 300: -0.02931099  0.008636121  0.077552886  0.040912906  0.056341033</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            Windows</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1:  0.0596512714</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2: -0.0797136210</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3: -0.0818534443</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4: -0.0143777935</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5: -0.0738285592</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ---              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 296:  0.0235396994</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 297:  0.0005308471</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 298:  0.0098973674</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 299:  0.0572438332</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 300:  0.1321425780</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## a more complex example:</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">words</span> <span class="op">=</span> <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"</span>
-<span class="r-in">China</span>
-<span class="r-in">Chinese</span>
-<span class="r-in">Japan</span>
-<span class="r-in">Japanese</span>
-<span class="r-in">good</span>
-<span class="r-in">bad</span>
-<span class="r-in">great</span>
-<span class="r-in">terrible</span>
-<span class="r-in">morning</span>
-<span class="r-in">evening</span>
-<span class="r-in">king</span>
-<span class="r-in">queen</span>
-<span class="r-in">man</span>
-<span class="r-in">woman</span>
-<span class="r-in">he</span>
-<span class="r-in">she</span>
-<span class="r-in">cat</span>
-<span class="r-in">dog</span>
-<span class="r-in">"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">dt</span> <span class="op">=</span> <span class="fu">get_wordvecs</span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">d</span>, <span class="va">words</span>,</span>
-<span class="r-in">  plot<span class="op">=</span><span class="cn">TRUE</span>,</span>
-<span class="r-in">  plot.dims<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>,</span>
-<span class="r-in">  plot.step<span class="op">=</span><span class="fl">0.06</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            China        Japan       Windows        Korea          Mac</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1: -0.02697318  0.018329469  0.0596512714  0.033778005 -0.017270569</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:  0.04999036  0.090237829 -0.0797136210  0.133294179 -0.012575617</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:  0.04010034  0.060275982 -0.0818534443 -0.021963288 -0.052985444</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:  0.03056975  0.030490640 -0.0143777935  0.001675763  0.078136677</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5: -0.04711339 -0.095877693 -0.0738285592 -0.014011015 -0.057009737</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 296: -0.01393625 -0.087418077  0.0235396994 -0.072705831 -0.088532396</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 297: -0.06761304 -0.105042608  0.0005308471 -0.115117643 -0.063716664</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 298:  0.05070960  0.048291315  0.0098973674  0.015374394 -0.005407505</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 299:  0.03452576  0.002103985  0.0572438332 -0.043017655 -0.016767489</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 300: -0.02931099  0.008636121  0.1321425780  0.077552886  0.040912906</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Linux</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:  0.068922067</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2: -0.118698961</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3: -0.071656892</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:  0.030358376</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5: -0.045400893</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 296: -0.001282133</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 297:  0.025572363</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 298:  0.072751102</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 299: -0.063451858</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 300:  0.056341033</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## a more complex example:</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">words</span> <span class="op">=</span> <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">China</span></span></span>
+<span class="r-in"><span><span class="st">Chinese</span></span></span>
+<span class="r-in"><span><span class="st">Japan</span></span></span>
+<span class="r-in"><span><span class="st">Japanese</span></span></span>
+<span class="r-in"><span><span class="st">good</span></span></span>
+<span class="r-in"><span><span class="st">bad</span></span></span>
+<span class="r-in"><span><span class="st">great</span></span></span>
+<span class="r-in"><span><span class="st">terrible</span></span></span>
+<span class="r-in"><span><span class="st">morning</span></span></span>
+<span class="r-in"><span><span class="st">evening</span></span></span>
+<span class="r-in"><span><span class="st">king</span></span></span>
+<span class="r-in"><span><span class="st">queen</span></span></span>
+<span class="r-in"><span><span class="st">man</span></span></span>
+<span class="r-in"><span><span class="st">woman</span></span></span>
+<span class="r-in"><span><span class="st">he</span></span></span>
+<span class="r-in"><span><span class="st">she</span></span></span>
+<span class="r-in"><span><span class="st">cat</span></span></span>
+<span class="r-in"><span><span class="st">dog</span></span></span>
+<span class="r-in"><span><span class="st">"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dt</span> <span class="op">=</span> <span class="fu">get_wordvecs</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">d</span>, <span class="va">words</span>,</span></span>
+<span class="r-in"><span>  plot<span class="op">=</span><span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  plot.dims<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>,</span></span>
+<span class="r-in"><span>  plot.step<span class="op">=</span><span class="fl">0.06</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="get_wordvecs-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># if you want to change something:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">dt</span>, <span class="st">"ggplot"</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu">scale_fill_viridis_b</span><span class="op">(</span>n.breaks<span class="op">=</span><span class="fl">10</span>, show.limits<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu">theme</span><span class="op">(</span>legend.key.height<span class="op">=</span><span class="fu">unit</span><span class="op">(</span><span class="fl">0.1</span>, <span class="st">"npc"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># or to save the plot:</span></span>
-<span class="r-in"><span class="fu">ggsave</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">dt</span>, <span class="st">"ggplot"</span><span class="op">)</span>,</span>
-<span class="r-in">       filename<span class="op">=</span><span class="st">"wordvecs.png"</span>,</span>
-<span class="r-in">       width<span class="op">=</span><span class="fl">8</span>, height<span class="op">=</span><span class="fl">5</span>, dpi<span class="op">=</span><span class="fl">500</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># if you want to change something:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">dt</span>, <span class="st">"ggplot"</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">scale_fill_viridis_b</span><span class="op">(</span>n.breaks<span class="op">=</span><span class="fl">10</span>, show.limits<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">theme</span><span class="op">(</span>legend.key.height<span class="op">=</span><span class="fu">unit</span><span class="op">(</span><span class="fl">0.1</span>, <span class="st">"npc"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># or to save the plot:</span></span></span>
+<span class="r-in"><span><span class="fu">ggsave</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">dt</span>, <span class="st">"ggplot"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>       filename<span class="op">=</span><span class="st">"wordvecs.png"</span>,</span></span>
+<span class="r-in"><span>       width<span class="op">=</span><span class="fl">8</span>, height<span class="op">=</span><span class="fl">5</span>, dpi<span class="op">=</span><span class="fl">500</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -237,7 +256,7 @@ To remove the border color, set <code>plot.border=NA</code>.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

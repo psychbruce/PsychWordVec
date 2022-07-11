@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,6 +20,9 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -48,7 +51,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_wordvec</span><span class="op">(</span><span class="va">data</span>, <span class="va">word</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_wordvec</span><span class="op">(</span><span class="va">data</span>, <span class="va">word</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -56,12 +59,17 @@
     <dl><dt>data</dt>
 <dd><p>Data table (<code>data.table</code>) with variables <code>word</code> and <code>vec</code>.</p>
 <p>See <code><a href="data_transform.html">data_transform</a></code> for details about data format.</p></dd>
+
+
 <dt>word</dt>
 <dd><p>Word string (a single word).</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A numeric vector of the word (or <code>NA</code> if the word is not in the data).</p>
+    
+
+<p>A numeric vector of the word (or <code>NA</code> if the word is not in the data).</p>
     </div>
     <div class="section level2">
     <h2 id="download">Download<a class="anchor" aria-label="anchor" href="#download"></a></h2>
@@ -73,21 +81,22 @@
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="get_wordvecs.html">get_wordvecs</a></code></p>
-<p><code><a href="plot_wordvecs.html">plot_wordvecs</a></code></p></div>
+<p><code><a href="plot_wordvecs.html">plot_wordvecs</a></code></p>
+<p><code><a href="data_wordvec_subset.html">data_wordvec_subset</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_normalize.html">data_wordvec_normalize</a></span><span class="op">(</span><span class="va">demodata</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_normalize.html">data_wordvec_normalize</a></span><span class="op">(</span><span class="va">demodata</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> All word vectors have now been normalized.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">v1</span> <span class="op">=</span> <span class="fu">get_wordvec</span><span class="op">(</span><span class="va">demodata</span>, <span class="st">"China"</span><span class="op">)</span>  <span class="co"># raw vector</span></span>
-<span class="r-in"><span class="va">v2</span> <span class="op">=</span> <span class="fu">get_wordvec</span><span class="op">(</span><span class="va">d</span>, <span class="st">"China"</span><span class="op">)</span>  <span class="co"># normalized vector</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">v1</span>, <span class="va">v2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">v1</span> <span class="op">=</span> <span class="fu">get_wordvec</span><span class="op">(</span><span class="va">demodata</span>, <span class="st">"China"</span><span class="op">)</span>  <span class="co"># raw vector</span></span></span>
+<span class="r-in"><span><span class="va">v2</span> <span class="op">=</span> <span class="fu">get_wordvec</span><span class="op">(</span><span class="va">d</span>, <span class="st">"China"</span><span class="op">)</span>  <span class="co"># normalized vector</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">v1</span>, <span class="va">v2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-in"><span class="fu"><a href="cosine_similarity.html">cosine_similarity</a></span><span class="op">(</span><span class="va">v1</span>, <span class="va">v2</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="cosine_similarity.html">cosine_similarity</a></span><span class="op">(</span><span class="va">v1</span>, <span class="va">v2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -99,7 +108,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

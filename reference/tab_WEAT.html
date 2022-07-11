@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,6 +20,9 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -48,7 +51,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">tab_WEAT</span><span class="op">(</span><span class="va">data</span>, <span class="va">T1</span>, <span class="va">T2</span>, <span class="va">A1</span>, <span class="va">A2</span>, <span class="va">labels</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tab_WEAT</span><span class="op">(</span><span class="va">data</span>, <span class="va">T1</span>, <span class="va">T2</span>, <span class="va">A1</span>, <span class="va">A2</span>, <span class="va">labels</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -56,20 +59,29 @@
     <dl><dt>data</dt>
 <dd><p>Data table (<code>data.table</code>) with variables <code>word</code> and <code>vec</code>.</p>
 <p>See <code><a href="data_transform.html">data_transform</a></code> for details about data format.</p></dd>
+
+
 <dt>T1, T2</dt>
 <dd><p>Target words. If only <code>T1</code> is specified,
 then data for single-target WEAT (i.e., WEFAT; Caliskan et al., 2017)
 can be tabulated.</p></dd>
+
+
 <dt>A1, A2</dt>
 <dd><p>Attribute words. Both should be specified.</p></dd>
+
+
 <dt>labels</dt>
 <dd><p>Labels for target and attribute concepts.
 Should be a named <code>list</code>, such as (the default)
 <code>list(T1="Target1", T2="Target2", A1="Attrib1", A2="Attrib2")</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <code>list</code> of objects:</p><dl><dt><code>words.valid</code></dt>
+    
+
+<p>A <code>list</code> of objects:</p><dl><dt><code>words.valid</code></dt>
 <dd><p>valid (actually matched) words</p></dd>
 
   <dt><code>data.raw</code></dt>
@@ -114,16 +126,16 @@ Semantics derived automatically from language corpora contain human-like biases.
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Remember: cc() is more convenient than c()!</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">weat</span> <span class="op">=</span> <span class="fu">tab_WEAT</span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">demodata</span>,</span>
-<span class="r-in">  T1<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"king, King"</span><span class="op">)</span>,</span>
-<span class="r-in">  T2<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"queen, Queen"</span><span class="op">)</span>,</span>
-<span class="r-in">  A1<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"male, man, boy, brother, he, him, his, son"</span><span class="op">)</span>,</span>
-<span class="r-in">  A2<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"female, woman, girl, sister, she, her, hers, daughter"</span><span class="op">)</span>,</span>
-<span class="r-in">  labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>T1<span class="op">=</span><span class="st">"King"</span>, T2<span class="op">=</span><span class="st">"Queen"</span>, A1<span class="op">=</span><span class="st">"Male"</span>, A2<span class="op">=</span><span class="st">"Female"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">weat</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Remember: cc() is more convenient than c()!</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">weat</span> <span class="op">=</span> <span class="fu">tab_WEAT</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">demodata</span>,</span></span>
+<span class="r-in"><span>  T1<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"king, King"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  T2<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"queen, Queen"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  A1<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"male, man, boy, brother, he, him, his, son"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  A2<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"female, woman, girl, sister, she, her, hers, daughter"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>T1<span class="op">=</span><span class="st">"King"</span>, T2<span class="op">=</span><span class="st">"Queen"</span>, A1<span class="op">=</span><span class="st">"Male"</span>, A2<span class="op">=</span><span class="st">"Female"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">weat</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $words.valid</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $words.valid$T1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "king" "King"</span>
@@ -235,18 +247,18 @@ Semantics derived automatically from language corpora contain human-like biases.
 <span class="r-out co"><span class="r-pr">#&gt;</span> $eff.size</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.715579</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">wefat</span> <span class="op">=</span> <span class="fu">tab_WEAT</span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">demodata</span>,</span>
-<span class="r-in">  T1<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"</span>
-<span class="r-in">    architect, boss, leader, engineer, CEO, officer, manager,</span>
-<span class="r-in">    lawyer, scientist, doctor, psychologist, investigator,</span>
-<span class="r-in">    consultant, programmer, teacher, clerk, counselor,</span>
-<span class="r-in">    salesperson, therapist, psychotherapist, nurse"</span><span class="op">)</span>,</span>
-<span class="r-in">  A1<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"male, man, boy, brother, he, him, his, son"</span><span class="op">)</span>,</span>
-<span class="r-in">  A2<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"female, woman, girl, sister, she, her, hers, daughter"</span><span class="op">)</span>,</span>
-<span class="r-in">  labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>T1<span class="op">=</span><span class="st">"Occupation"</span>, A1<span class="op">=</span><span class="st">"Male"</span>, A2<span class="op">=</span><span class="st">"Female"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">wefat</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">wefat</span> <span class="op">=</span> <span class="fu">tab_WEAT</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">demodata</span>,</span></span>
+<span class="r-in"><span>  T1<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">    architect, boss, leader, engineer, CEO, officer, manager,</span></span></span>
+<span class="r-in"><span><span class="st">    lawyer, scientist, doctor, psychologist, investigator,</span></span></span>
+<span class="r-in"><span><span class="st">    consultant, programmer, teacher, clerk, counselor,</span></span></span>
+<span class="r-in"><span><span class="st">    salesperson, therapist, psychotherapist, nurse"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  A1<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"male, man, boy, brother, he, him, his, son"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  A2<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"female, woman, girl, sister, she, her, hers, daughter"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>T1<span class="op">=</span><span class="st">"Occupation"</span>, A1<span class="op">=</span><span class="st">"Male"</span>, A2<span class="op">=</span><span class="st">"Female"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">wefat</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $words.valid</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $words.valid$T1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "architect"       "boss"            "leader"          "engineer"       </span>
@@ -384,7 +396,7 @@ Semantics derived automatically from language corpora contain human-like biases.
 <span class="r-out co"><span class="r-pr">#&gt;</span> 21:           nurse -1.49061460</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              T_word    eff_size</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -396,7 +408,7 @@ Semantics derived automatically from language corpora contain human-like biases.
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

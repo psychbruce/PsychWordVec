@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,6 +20,9 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -48,7 +51,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">tab_similarity</span><span class="op">(</span><span class="va">data</span>, <span class="va">words</span>, distance <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tab_similarity</span><span class="op">(</span><span class="va">data</span>, words <span class="op">=</span> <span class="cn">NULL</span>, pattern <span class="op">=</span> <span class="cn">NULL</span>, distance <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -56,15 +59,26 @@
     <dl><dt>data</dt>
 <dd><p>Data table (<code>data.table</code>) with variables <code>word</code> and <code>vec</code>.</p>
 <p>See <code><a href="data_transform.html">data_transform</a></code> for details about data format.</p></dd>
+
+
 <dt>words</dt>
 <dd><p>[Option 1] Word string (<code>NULL</code>; a single word; a vector of words).</p></dd>
+
+
+<dt>pattern</dt>
+<dd><p>[Option 2] Pattern of regular expression (see <code><a href="https://stringr.tidyverse.org/reference/str_subset.html" class="external-link">str_subset</a></code>).</p></dd>
+
+
 <dt>distance</dt>
 <dd><p>Compute cosine distance instead?
 Default is <code>FALSE</code> (cosine similarity).</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <code>data.table</code> of all combinations of the words,
+    
+
+<p>A <code>data.table</code> of all combinations of the words,
 with their wordpair and cosine similarity/distance
 (<code>cos_sim</code> or <code>cos_dist</code>).</p>
     </div>
@@ -82,26 +96,26 @@ with their wordpair and cosine similarity/distance
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">dts</span> <span class="op">=</span> <span class="fu">tab_similarity</span><span class="op">(</span><span class="va">demodata</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"king, queen, man, woman"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dts</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dts</span> <span class="op">=</span> <span class="fu">tab_similarity</span><span class="op">(</span><span class="va">demodata</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"king, queen, man, woman"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dts</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    word1 word2    wordpair   cos_sim</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  king queen  king-queen 0.6510958</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  king   man    king-man 0.2294268</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  king woman  king-woman 0.1284797</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: queen   man   queen-man 0.1665822</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: queen woman queen-woman 0.3161813</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:   man woman   man-woman 0.7664012</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">dts</span> <span class="op">=</span> <span class="fu">tab_similarity</span><span class="op">(</span><span class="va">demodata</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"Beijing, China, Tokyo, Japan"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dts</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      word1 word2      wordpair   cos_sim</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: Beijing China Beijing-China 0.7648461</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: Beijing Tokyo Beijing-Tokyo 0.5229628</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: Beijing Japan Beijing-Japan 0.3995245</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:   China Tokyo   China-Tokyo 0.3814305</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:   China Japan   China-Japan 0.5967756</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:   Tokyo Japan   Tokyo-Japan 0.7002254</span>
-<span class="r-in"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:   man woman   man-woman 0.7664012</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:   man  king    man-king 0.2294268</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:   man queen   man-queen 0.1665822</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: woman  king  woman-king 0.1284797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: woman queen woman-queen 0.3161813</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:  king queen  king-queen 0.6510958</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dts</span> <span class="op">=</span> <span class="fu">tab_similarity</span><span class="op">(</span><span class="va">demodata</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"Beijing, China, Tokyo, Japan"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dts</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      word1   word2      wordpair   cos_sim</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:   China   Japan   China-Japan 0.5967756</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:   China Beijing China-Beijing 0.7648461</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:   China   Tokyo   China-Tokyo 0.3814305</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:   Japan Beijing Japan-Beijing 0.3995245</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:   Japan   Tokyo   Japan-Tokyo 0.7002254</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: Beijing   Tokyo Beijing-Tokyo 0.5229628</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -113,7 +127,7 @@ with their wordpair and cosine similarity/distance
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>
