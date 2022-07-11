@@ -130,10 +130,14 @@ or <code>file.load.rda</code> (the name of an .RData file transformed by <code><
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## specify `data` and `words`:</span></span></span>
 <span class="r-in"><span><span class="va">d</span> <span class="op">=</span> <span class="fu">data_wordvec_subset</span><span class="op">(</span><span class="va">demodata</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"China"</span>, <span class="st">"Japan"</span>, <span class="st">"Korea"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">d</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     word                                                             vec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: China -0.073242, 0.135742, 0.108887, 0.083008,-0.127930,-0.227539,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: Japan  0.050781, 0.250000, 0.166992, 0.084473,-0.265625,-0.077148,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: Korea  0.108887, 0.429688,-0.070801, 0.005402,-0.045166,-0.363281,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     word</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: China</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: Japan</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: Korea</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                  vec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:       -0.02697318, 0.04999036, 0.04010034, 0.03056975,-0.04711339,-0.08379688,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:        0.01832947, 0.09023783, 0.06027598, 0.03049064,-0.09587769,-0.02784667,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  0.033778005, 0.133294179,-0.021963288, 0.001675763,-0.014011015,-0.112693960,...</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## specify `data` and `pattern`, and then save the subset:</span></span></span>
 <span class="r-in"><span><span class="fu">data_wordvec_subset</span><span class="op">(</span><span class="va">demodata</span>, pattern<span class="op">=</span><span class="st">"Chin[ae]|Japan|Korea"</span>,</span></span>
@@ -141,12 +145,11 @@ or <code>file.load.rda</code> (the name of an .RData file transformed by <code><
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 words are matched...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Compressing and saving...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> Saved to "subset.RData" (time cost = 0.004 secs)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> Saved to "subset.RData" (time cost = 0.007 secs)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## load the subset:</span></span></span>
 <span class="r-in"><span><span class="va">d.subset</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_load.html">data_wordvec_load</a></span><span class="op">(</span><span class="st">"subset.RData"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Loading...<span style="color: #00BB00;">√</span> Word vector data: 6 words, 300 dims (loading time: 0.08 secs)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   All word vectors have been normalized.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Loading...<span style="color: #00BB00;">√</span> Word vector data: 6 words, 300 dims (loading time: 0.2 secs)</span>
 <span class="r-in"><span><span class="va">d.subset</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        word</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:    China</span>
@@ -167,13 +170,12 @@ or <code>file.load.rda</code> (the name of an .RData file transformed by <code><
 <span class="r-in"><span><span class="fu">data_wordvec_subset</span><span class="op">(</span>file.load.rda<span class="op">=</span><span class="st">"subset.RData"</span>,</span></span>
 <span class="r-in"><span>                    words<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"China"</span>, <span class="st">"Chinese"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                    file.save.rda<span class="op">=</span><span class="st">"new.subset.RData"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Loading...<span style="color: #00BB00;">√</span> Word vector data: 6 words, 300 dims (loading time: 0.08 secs)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Loading...<span style="color: #00BB00;">√</span> Word vector data: 6 words, 300 dims (loading time: 0.2 secs)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Compressing and saving...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> Saved to "new.subset.RData" (time cost = 0.003 secs)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> Saved to "new.subset.RData" (time cost = 0.004 secs)</span>
 <span class="r-in"><span><span class="va">d.new.subset</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_load.html">data_wordvec_load</a></span><span class="op">(</span><span class="st">"new.subset.RData"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Loading...<span style="color: #00BB00;">√</span> Word vector data: 2 words, 300 dims (loading time: 0.08 secs)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   All word vectors have been normalized.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Loading...<span style="color: #00BB00;">√</span> Word vector data: 2 words, 300 dims (loading time: 0.2 secs)</span>
 <span class="r-in"><span><span class="va">d.new.subset</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       word</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:   China</span>

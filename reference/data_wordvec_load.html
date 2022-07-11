@@ -51,7 +51,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">data_wordvec_load</span><span class="op">(</span><span class="va">file.load.rda</span>, normalize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">data_wordvec_load</span><span class="op">(</span><span class="va">file.load.rda</span>, normalize <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -63,12 +63,7 @@
 
 <dt>normalize</dt>
 <dd><p>Normalize all word vectors to unit length?
-Default is <code>TRUE</code>, which performs the L2-normalization
-(scaling to unit euclidean length)
-such that the <em>norm</em> of each vector in the vector space is 1.</p>
-<p>R formula: <code>normalized_vec = vec / sqrt(sum(vec^2))</code></p>
-<p>Note: Normalization does not change the results of cosine similarity and
-can make the computation faster.</p></dd>
+Default is <code>FALSE</code>. See <code><a href="data_wordvec_normalize.html">data_wordvec_normalize</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
