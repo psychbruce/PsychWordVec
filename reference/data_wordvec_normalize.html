@@ -18,7 +18,7 @@ can make the computation faster."><!-- mathjax --><script src="https://cdnjs.clo
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,7 +57,7 @@ can make the computation faster."><!-- mathjax --><script src="https://cdnjs.clo
     <p>L2-normalization (scaling to unit euclidean length):
 the <em>norm</em> of each vector in the vector space will be normalized to 1.</p>
 <p>R formula: <code>normalized_vec = vec / sqrt(sum(vec^2))</code></p>
-<p>Note: Normalization does not change the results of cosine similarity and
+<p><em>Note</em>: Normalization does not change the results of cosine similarity and
 can make the computation faster.</p>
     </div>
 
@@ -69,8 +69,8 @@ can make the computation faster.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
-<dd><p>Data table (<code>data.table</code>) with variables <code>word</code> and <code>vec</code>.</p>
-<p>See <code><a href="data_transform.html">data_transform</a></code> for details about data format.</p></dd>
+<dd><p>A <code>data.table</code> with variables <code>word</code> and <code>vec</code>
+loaded by <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
