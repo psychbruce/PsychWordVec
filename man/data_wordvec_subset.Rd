@@ -5,28 +5,26 @@
 \title{Extract a subset of word vectors data.}
 \usage{
 data_wordvec_subset(
-  data = NULL,
+  x,
   words = NULL,
   pattern = NULL,
-  file.load.rda = NULL,
-  file.save.rda = NULL,
+  file.save = NULL,
   compress = "bzip2",
   compress.level = 9
 )
 }
 \arguments{
-\item{data}{Data table (\code{data.table}) with variables \code{word} and \code{vec}.
-
-See \code{\link{data_transform}} for details about data format.}
+\item{x}{Can be one of the following:
+\itemize{
+  \item{a \code{data.table} loaded by \code{\link{data_wordvec_load}}}
+  \item{an .RData file transformed by \code{\link{data_transform}}}
+}}
 
 \item{words}{[Option 1] Word string (\code{NULL}; a single word; a vector of words).}
 
 \item{pattern}{[Option 2] Pattern of regular expression (see \code{\link[stringr:str_subset]{str_subset}}).}
 
-\item{file.load.rda}{File name (must be .rda or .RData transformed by
-\code{\link{data_transform}}, with only two variables \code{word} and \code{vec}).}
-
-\item{file.save.rda}{File name of to-be-saved R data (must be .rda or .RData).}
+\item{file.save}{File name of to-be-saved R data (must be .RData).}
 
 \item{compress}{Compression method for the saved file. Default is \code{"bzip2"}.
 
@@ -45,8 +43,8 @@ A subset of word vectors data of valid (available) words.
 }
 \description{
 Extract a subset of word vectors data.
-You must specify either \code{data} (a \code{data.table} loaded by \code{\link{data_wordvec_load}})
-or \code{file.load.rda} (the name of an .RData file transformed by \code{\link{data_transform}}).
+You may specify either a \code{data.table} loaded by \code{\link{data_wordvec_load}})
+or an .RData file transformed by \code{\link{data_transform}}).
 }
 \section{Download}{
 
@@ -55,22 +53,22 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-## specify `data` and `words`:
+## specify `x` as a data.table:
 d = data_wordvec_subset(demodata, c("China", "Japan", "Korea"))
 d
 
-## specify `data` and `pattern`, and then save the subset:
+## specify `x` and `pattern`, and save with `file.save`:
 data_wordvec_subset(demodata, pattern="Chin[ae]|Japan|Korea",
-                    file.save.rda="subset.RData")
+                    file.save="subset.RData")
 
 ## load the subset:
 d.subset = data_wordvec_load("subset.RData")
 d.subset
 
-## specify `file.load.rda` and save with `file.save.rda`:
-data_wordvec_subset(file.load.rda="subset.RData",
+## specify `x` as an .RData file and save with `file.save`:
+data_wordvec_subset("subset.RData",
                     words=c("China", "Chinese"),
-                    file.save.rda="new.subset.RData")
+                    file.save="new.subset.RData")
 d.new.subset = data_wordvec_load("new.subset.RData")
 d.new.subset
 

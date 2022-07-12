@@ -7,9 +7,8 @@
 most_similar(data, x, keep = FALSE, topn = 10, above = NULL)
 }
 \arguments{
-\item{data}{Data table (\code{data.table}) with variables \code{word} and \code{vec}.
-
-See \code{\link{data_transform}} for details about data format.}
+\item{data}{A \code{data.table} with variables \code{word} and \code{vec}
+loaded by \code{\link{data_wordvec_load}}.}
 
 \item{x}{Can be one of the following:
 \itemize{

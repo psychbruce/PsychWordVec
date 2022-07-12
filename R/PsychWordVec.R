@@ -140,17 +140,17 @@ check_data_validity = function(data) {
 }
 
 
-check_load_validity = function(file.load.rda) {
-  if(!is.null(file.load.rda))
-    if(!str_detect(file.load.rda, "\\.rda$|\\.[Rr][Dd]ata$"))
-      stop("`file.load.rda` must be .rda or .RData!", call.=FALSE)
+check_load_validity = function(file.load) {
+  if(!is.null(file.load))
+    if(!str_detect(file.load, "\\.rda$|\\.[Rr][Dd]ata$"))
+      stop("`file.load` must be .RData!", call.=FALSE)
 }
 
 
-check_save_validity = function(file.save.rda) {
-  if(!is.null(file.save.rda))
-    if(!str_detect(file.save.rda, "\\.rda$|\\.[Rr][Dd]ata$"))
-      stop("`file.save.rda` must be .rda or .RData!", call.=FALSE)
+check_save_validity = function(file.save) {
+  if(!is.null(file.save))
+    if(!str_detect(file.save, "\\.rda$|\\.[Rr][Dd]ata$"))
+      stop("`file.save` must be .RData!", call.=FALSE)
 }
 
 
@@ -181,19 +181,19 @@ check_word_validity = function(data, words=NULL, pattern=NULL) {
 #' @description
 #' Transform plain text data of word vectors into a compressed ".RData" file.
 #'
-#' Speed: In total (preprocess + compress + save),
+#' \emph{Speed}: In total (preprocess + compress + save),
 #' it can process about 30000 words per minute
 #' with the slowest settings (\code{compress="xz"}, \code{compress.level=9})
-#' on a modern computer (Windows 11, Intel i7 CPU, 32GB RAM, power supply mode).
+#' on a modern computer (HP ProBook 450, Windows 11, Intel i7-1165G7 CPU, 32GB RAM, power supply mode).
 #'
-#' @param file.load.txt File name of raw data (must be plain text).
+#' @param file.load File name of raw data (must be plain text).
 #'
 #' Data must be in this format (values separated by \code{sep}):
 #'
 #' cat 0.001 0.002 0.003 0.004 0.005 ... 0.300
 #'
 #' dog 0.301 0.302 0.303 0.304 0.305 ... 0.600
-#' @param file.save.rda File name of to-be-saved R data (must be .rda or .RData).
+#' @param file.save File name of to-be-saved R data (must be .RData).
 #' @param encoding File encoding. Default is \code{"auto"} (using \code{\link[vroom:vroom_lines]{vroom::vroom_lines()}} to fast read the file).
 #' If specified to any other value (e.g., \code{"UTF-8"}), then it uses \code{\link[base:readLines]{readLines()}} to read the file, which is much slower than \code{vroom}.
 #' @param sep Column separator. Default is \code{" "}.
@@ -226,25 +226,25 @@ check_word_validity = function(data, words=NULL, pattern=NULL) {
 #' \code{\link{data_wordvec_subset}}
 #'
 #' @export
-data_transform = function(file.load.txt, file.save.rda=NULL,
+data_transform = function(file.load, file.save=NULL,
                           encoding="auto", sep=" ", header="auto",
                           compress="bzip2", compress.level=9) {
   t00 = Sys.time()
-  check_save_validity(file.save.rda)
-  if(is.data.table(file.load.txt)) {
-    dt = file.load.txt  # 2 variables: word, vec
+  check_save_validity(file.save)
+  if(is.data.table(file.load)) {
+    dt = file.load  # 2 variables: word, vec
   } else {
     t0 = Sys.time()
     cat("\n")
     Print("****** Data Transformation (~ 30000 words/min in total) ******")
     cat("\n")
-    Print("Loading file... \"{file.load.txt}\"")
+    Print("Loading file... \"{file.load}\"")
     gc()  # Garbage Collection: Free the Memory
     suppressWarnings({
       if(encoding=="auto")
-        d = vroom::vroom_lines(file.load.txt)
+        d = vroom::vroom_lines(file.load)
       else
-        d = readLines(file.load.txt, encoding=encoding)
+        d = readLines(file.load, encoding=encoding)
       if(header=="auto")
         header = nchar(d[1]) < 0.2 * nchar(d[2])
       if(header)
@@ -268,21 +268,22 @@ data_transform = function(file.load.txt, file.save.rda=NULL,
     ndim = length(dt[[1, "vec"]])
     Print("Word vectors data: {nrow(dt)} words, {ndim} dimensions (time cost = {dtime(t0, 'auto')})")
   }
-  if(!is.null(file.save.rda)) {
+  if(!is.null(file.save)) {
     t1 = Sys.time()
     cat("\n")
     k = 9  # coefficient for time estimate (based on preprocessing time cost)
     est.time = format(difftime(Sys.time(), t0, 'mins') * k, digits=1, nsmall=0)
     Print("Compressing and saving... (estimated time cost ~= {est.time})")
+    gc()  # Garbage Collection: Free the Memory
     compress = switch(compress,
                       `1`="gzip",
                       `2`="bzip2",
                       `3`="xz",
                       compress)
-    save(dt, file=file.save.rda,
+    save(dt, file=file.save,
          compress=compress,
          compression_level=compress.level)
-    Print("<<green \u221a>> Saved to \"{file.save.rda}\" (time cost = {dtime(t1, 'mins')})")
+    Print("<<green \u221a>> Saved to \"{file.save}\" (time cost = {dtime(t1, 'mins')})")
   }
   gc()  # Garbage Collection: Free the Memory
   cat("\n")
@@ -291,9 +292,9 @@ data_transform = function(file.load.txt, file.save.rda=NULL,
 }
 
 
-#' Load word vectors data from ".RData" file.
+#' Load word vectors data from an ".RData" file.
 #'
-#' @param file.load.rda File name (must be .rda or .RData transformed by
+#' @param file.load File name (must be .RData transformed by
 #' \code{\link{data_transform}}, with only two variables \code{word} and \code{vec}).
 #' @param normalize Normalize all word vectors to unit length?
 #' Default is \code{FALSE}. See \code{\link{data_wordvec_normalize}}.
@@ -317,12 +318,12 @@ data_transform = function(file.load.txt, file.save.rda=NULL,
 #' \code{\link{data_wordvec_subset}}
 #'
 #' @export
-data_wordvec_load = function(file.load.rda, normalize=FALSE) {
+data_wordvec_load = function(file.load, normalize=FALSE) {
   t0 = Sys.time()
-  check_load_validity(file.load.rda)
+  check_load_validity(file.load)
   cat("Loading...")
   envir = new.env()
-  load(file=file.load.rda, envir=envir)
+  load(file=file.load, envir=envir)
   if(length(ls(envir)) > 1)
     warning("RData file contains multiple objects. Return the first object.", call.=FALSE)
   data = get(ls(envir)[1], envir)
@@ -350,12 +351,11 @@ data_wordvec_load = function(file.load.rda, normalize=FALSE) {
 #'
 #' R formula: \code{normalized_vec = vec / sqrt(sum(vec^2))}
 #'
-#' Note: Normalization does not change the results of cosine similarity and
+#' \emph{Note}: Normalization does not change the results of cosine similarity and
 #' can make the computation faster.
 #'
-#' @param data Data table (\code{data.table}) with variables \code{word} and \code{vec}.
-#'
-#' See \code{\link{data_transform}} for details about data format.
+#' @param data A \code{data.table} with variables \code{word} and \code{vec}
+#' loaded by \code{\link{data_wordvec_load}}.
 #'
 #' @return
 #' A \code{data.table} with \strong{normalized} word vectors.
@@ -403,12 +403,15 @@ normalize = function(data) {
 #'
 #' @description
 #' Extract a subset of word vectors data.
-#' You must specify either \code{data} (a \code{data.table} loaded by \code{\link{data_wordvec_load}})
-#' or \code{file.load.rda} (the name of an .RData file transformed by \code{\link{data_transform}}).
+#' You may specify either a \code{data.table} loaded by \code{\link{data_wordvec_load}})
+#' or an .RData file transformed by \code{\link{data_transform}}).
 #'
 #' @inheritParams data_transform
-#' @inheritParams data_wordvec_load
-#' @inheritParams data_wordvec_normalize
+#' @param x Can be one of the following:
+#' \itemize{
+#'   \item{a \code{data.table} loaded by \code{\link{data_wordvec_load}}}
+#'   \item{an .RData file transformed by \code{\link{data_transform}}}
+#' }
 #' @param words [Option 1] Word string (\code{NULL}; a single word; a vector of words).
 #' @param pattern [Option 2] Pattern of regular expression (see \code{\link[stringr:str_subset]{str_subset}}).
 #'
@@ -427,22 +430,22 @@ normalize = function(data) {
 #' \code{\link{data_wordvec_normalize}}
 #'
 #' @examples
-#' ## specify `data` and `words`:
+#' ## specify `x` as a data.table:
 #' d = data_wordvec_subset(demodata, c("China", "Japan", "Korea"))
 #' d
 #'
-#' ## specify `data` and `pattern`, and then save the subset:
+#' ## specify `x` and `pattern`, and save with `file.save`:
 #' data_wordvec_subset(demodata, pattern="Chin[ae]|Japan|Korea",
-#'                     file.save.rda="subset.RData")
+#'                     file.save="subset.RData")
 #'
 #' ## load the subset:
 #' d.subset = data_wordvec_load("subset.RData")
 #' d.subset
 #'
-#' ## specify `file.load.rda` and save with `file.save.rda`:
-#' data_wordvec_subset(file.load.rda="subset.RData",
+#' ## specify `x` as an .RData file and save with `file.save`:
+#' data_wordvec_subset("subset.RData",
 #'                     words=c("China", "Chinese"),
-#'                     file.save.rda="new.subset.RData")
+#'                     file.save="new.subset.RData")
 #' d.new.subset = data_wordvec_load("new.subset.RData")
 #' d.new.subset
 #'
@@ -450,25 +453,26 @@ normalize = function(data) {
 #' unlink("new.subset.RData")  # delete file for code check
 #'
 #' @export
-data_wordvec_subset = function(data=NULL, words=NULL, pattern=NULL,
-                               file.load.rda=NULL, file.save.rda=NULL,
+data_wordvec_subset = function(x, words=NULL, pattern=NULL,
+                               file.save=NULL,
                                compress="bzip2", compress.level=9) {
-  check_load_validity(file.load.rda)
-  check_save_validity(file.save.rda)
-  if(is.null(data)) {
-    if(is.null(file.load.rda))
-      stop("Please specify either `data` or `file.load.rda`!", call.=FALSE)
-    else
-      data = data_wordvec_load(file.load.rda=file.load.rda,
-                               normalize=FALSE)
+  check_save_validity(file.save)
+  if(is.data.table(x)) {
+    data = x
+    check_data_validity(data)
+  } else if(is.character(x)) {
+    file.load = x
+    if(!str_detect(file.load, "\\.rda$|\\.[Rr][Dd]ata$"))
+      stop("`x` must be .RData!", call.=FALSE)
+    data = data_wordvec_load(file.load)
   } else {
-    if(!is.null(file.load.rda))
-      stop("Please specify either `data` or `file.load.rda`!", call.=FALSE)
+    stop("`x` must be one of them:
+      - a `data.table` loaded by `data_wordvec_load()`
+      - an .RData file transformed by `data_transform()`", call.=FALSE)
   }
-  check_data_validity(data)
   words.valid = check_word_validity(data, words, pattern)
   dt = data[word %in% words.valid]  # much faster
-  if(!is.null(file.save.rda)) {
+  if(!is.null(file.save)) {
     t1 = Sys.time()
     cat("\n")
     Print("Compressing and saving...")
@@ -477,10 +481,10 @@ data_wordvec_subset = function(data=NULL, words=NULL, pattern=NULL,
                       `2`="bzip2",
                       `3`="xz",
                       compress)
-    save(dt, file=file.save.rda,
+    save(dt, file=file.save,
          compress=compress,
          compression_level=compress.level)
-    Print("<<green \u221a>> Saved to \"{file.save.rda}\" (time cost = {dtime(t1, 'auto')})")
+    Print("<<green \u221a>> Saved to \"{file.save}\" (time cost = {dtime(t1, 'auto')})")
   }
   gc()  # Garbage Collection: Free the Memory
   invisible(dt)
@@ -536,7 +540,7 @@ NULL
 
 #' Extract word vector of a single word.
 #'
-#' @inheritParams data_wordvec_subset
+#' @inheritParams data_wordvec_normalize
 #' @param word Word string (a single word).
 #'
 #' @return
@@ -580,6 +584,7 @@ get_wordvec = function(data, word) {
 #' or regular expression (a pattern of words; using \code{pattern}).
 #' If both (\code{words} and \code{pattern}) are specified, \code{words} wins.
 #'
+#' @inheritParams data_wordvec_normalize
 #' @inheritParams data_wordvec_subset
 #' @param plot Generate a plot to illustrate the word vectors? Default is \code{FALSE}.
 #' @param plot.dims Dimensions to be plotted (e.g., \code{1:100}).

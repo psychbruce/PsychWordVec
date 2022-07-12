@@ -7,9 +7,8 @@
 data_wordvec_normalize(data)
 }
 \arguments{
-\item{data}{Data table (\code{data.table}) with variables \code{word} and \code{vec}.
-
-See \code{\link{data_transform}} for details about data format.}
+\item{data}{A \code{data.table} with variables \code{word} and \code{vec}
+loaded by \code{\link{data_wordvec_load}}.}
 }
 \value{
 A \code{data.table} with \strong{normalized} word vectors.
@@ -20,7 +19,7 @@ the \emph{norm} of each vector in the vector space will be normalized to 1.
 
 R formula: \code{normalized_vec = vec / sqrt(sum(vec^2))}
 
-Note: Normalization does not change the results of cosine similarity and
+\emph{Note}: Normalization does not change the results of cosine similarity and
 can make the computation faster.
 }
 \section{Download}{

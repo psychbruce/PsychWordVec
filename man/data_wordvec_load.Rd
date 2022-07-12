@@ -2,12 +2,12 @@
 % Please edit documentation in R/PsychWordVec.R
 \name{data_wordvec_load}
 \alias{data_wordvec_load}
-\title{Load word vectors data from ".RData" file.}
+\title{Load word vectors data from an ".RData" file.}
 \usage{
-data_wordvec_load(file.load.rda, normalize = FALSE)
+data_wordvec_load(file.load, normalize = FALSE)
 }
 \arguments{
-\item{file.load.rda}{File name (must be .rda or .RData transformed by
+\item{file.load}{File name (must be .RData transformed by
 \code{\link{data_transform}}, with only two variables \code{word} and \code{vec}).}
 
 \item{normalize}{Normalize all word vectors to unit length?
@@ -21,7 +21,7 @@ A \code{data.table} with two variables:
 }
 }
 \description{
-Load word vectors data from ".RData" file.
+Load word vectors data from an ".RData" file.
 }
 \section{Download}{
 
