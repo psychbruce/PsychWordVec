@@ -4,20 +4,26 @@
 \alias{tab_WEAT}
 \title{Tabulate cosine similarity for WEAT / WEFAT analysis.}
 \usage{
-tab_WEAT(data, T1, T2, A1, A2, labels)
+tab_WEAT(data, T1, T2, A1, A2, use.pattern = FALSE, labels)
 }
 \arguments{
 \item{data}{A \code{data.table} with variables \code{word} and \code{vec}
 loaded by \code{\link{data_wordvec_load}}.}
 
-\item{T1, T2}{Target words. If only \code{T1} is specified,
-then data for single-target WEAT (i.e., WEFAT; Caliskan et al., 2017)
-can be tabulated.}
+\item{T1, T2}{Target words (a vector of words or a pattern of regular expression).
+If only \code{T1} is specified,
+then it will tabulate data for single-target WEAT
+(i.e., WEFAT; Caliskan et al., 2017).}
 
-\item{A1, A2}{Attribute words. Both should be specified.}
+\item{A1, A2}{Attribute words (a vector of words or a pattern of regular expression).
+Both should be specified.}
 
-\item{labels}{Labels for target and attribute concepts.
-Should be a named \code{list}, such as (the default)
+\item{use.pattern}{Default is \code{FALSE} (using a vector of words).
+If you use regular expression in \code{T1}, \code{T2}, \code{A1}, and \code{A2},
+then please specify this argument as \code{TRUE}.}
+
+\item{labels}{Labels for target and attribute concepts (a named \code{list}),
+such as (the default)
 \code{list(T1="Target1", T2="Target2", A1="Attrib1", A2="Attrib2")}.}
 }
 \value{
@@ -59,6 +65,16 @@ weat = tab_WEAT(
   T2=cc("queen, Queen"),
   A1=cc("male, man, boy, brother, he, him, his, son"),
   A2=cc("female, woman, girl, sister, she, her, hers, daughter"),
+  labels=list(T1="King", T2="Queen", A1="Male", A2="Female"))
+weat
+
+weat = tab_WEAT(
+  demodata,
+  T1="^[kK]ing$",
+  T2="^[qQ]ueen$",
+  A1="^male$|^man$|^boy$|^brother$|^he$|^him$|^his$|^son$",
+  A2="^female$|^woman$|^girl$|^sister$|^she$|^her$|^hers$|^daughter$",
+  use.pattern=TRUE,
   labels=list(T1="King", T2="Queen", A1="Male", A2="Female"))
 weat
 

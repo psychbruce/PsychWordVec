@@ -6,6 +6,7 @@
 
 -   Enhanced all functions.
 -   New `data_wordvec_subset()` function.
+-   Added support for using regular expression pattern in `tab_WEAT()`.
 
 # PsychWordVec 0.0.4 (Apr 2022)
 

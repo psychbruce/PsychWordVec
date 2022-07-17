@@ -272,7 +272,7 @@ data_transform = function(file.load, file.save=NULL,
     t1 = Sys.time()
     cat("\n")
     k = 9  # coefficient for time estimate (based on preprocessing time cost)
-    est.time = format(difftime(Sys.time(), t0, 'mins') * k, digits=1, nsmall=0)
+    est.time = format(difftime(Sys.time(), t0, units='mins') * k, digits=1, nsmall=0)
     Print("Compressing and saving... (estimated time cost ~= {est.time})")
     gc()  # Garbage Collection: Free the Memory
     compress = switch(compress,
@@ -1004,12 +1004,17 @@ tab_similarity = function(data, words=NULL, pattern=NULL, distance=FALSE) {
 #' Tabulate cosine similarity for WEAT / WEFAT analysis.
 #'
 #' @inheritParams tab_similarity
-#' @param T1,T2 Target words. If only \code{T1} is specified,
-#' then data for single-target WEAT (i.e., WEFAT; Caliskan et al., 2017)
-#' can be tabulated.
-#' @param A1,A2 Attribute words. Both should be specified.
-#' @param labels Labels for target and attribute concepts.
-#' Should be a named \code{list}, such as (the default)
+#' @param T1,T2 Target words (a vector of words or a pattern of regular expression).
+#' If only \code{T1} is specified,
+#' then it will tabulate data for single-target WEAT
+#' (i.e., WEFAT; Caliskan et al., 2017).
+#' @param A1,A2 Attribute words (a vector of words or a pattern of regular expression).
+#' Both should be specified.
+#' @param use.pattern Default is \code{FALSE} (using a vector of words).
+#' If you use regular expression in \code{T1}, \code{T2}, \code{A1}, and \code{A2},
+#' then please specify this argument as \code{TRUE}.
+#' @param labels Labels for target and attribute concepts (a named \code{list}),
+#' such as (the default)
 #' \code{list(T1="Target1", T2="Target2", A1="Attrib1", A2="Attrib2")}.
 #'
 #' @return
@@ -1057,6 +1062,16 @@ tab_similarity = function(data, words=NULL, pattern=NULL, distance=FALSE) {
 #'   labels=list(T1="King", T2="Queen", A1="Male", A2="Female"))
 #' weat
 #'
+#' weat = tab_WEAT(
+#'   demodata,
+#'   T1="^[kK]ing$",
+#'   T2="^[qQ]ueen$",
+#'   A1="^male$|^man$|^boy$|^brother$|^he$|^him$|^his$|^son$",
+#'   A2="^female$|^woman$|^girl$|^sister$|^she$|^her$|^hers$|^daughter$",
+#'   use.pattern=TRUE,
+#'   labels=list(T1="King", T2="Queen", A1="Male", A2="Female"))
+#' weat
+#'
 #' wefat = tab_WEAT(
 #'   demodata,
 #'   T1=cc("
@@ -1070,7 +1085,7 @@ tab_similarity = function(data, words=NULL, pattern=NULL, distance=FALSE) {
 #' wefat
 #'
 #' @export
-tab_WEAT = function(data, T1, T2, A1, A2, labels) {
+tab_WEAT = function(data, T1, T2, A1, A2, use.pattern=FALSE, labels) {
   if(missing(A1)) stop("Please specify `A1`.", call.=FALSE)
   if(missing(A2)) stop("Please specify `A2`.", call.=FALSE)
   if(missing(T1)) stop("Please specify `T1`.", call.=FALSE)
@@ -1082,6 +1097,24 @@ tab_WEAT = function(data, T1, T2, A1, A2, labels) {
       labels = list(T1="Target1", T2="Target2", A1="Attrib1", A2="Attrib2")
   }
   check_data_validity(data)
+  if(use.pattern) {
+    if(!is.null(T1)) {
+      Print("T1 ({labels$T1}):")
+      T1 = names(get_wordvecs(data, pattern=T1))
+    }
+    if(!is.null(T2)) {
+      Print("T2 ({labels$T2}):")
+      T2 = names(get_wordvecs(data, pattern=T2))
+    }
+    if(!is.null(A1)) {
+      Print("A1 ({labels$A1}):")
+      A1 = names(get_wordvecs(data, pattern=A1))
+    }
+    if(!is.null(A2)) {
+      Print("A2 ({labels$A2}):")
+      A2 = names(get_wordvecs(data, pattern=A2))
+    }
+  }
   words = c(T1, T2, A1, A2)
   if(attr(data, "normalized")==FALSE)
     data = normalize(data[word %in% words])
