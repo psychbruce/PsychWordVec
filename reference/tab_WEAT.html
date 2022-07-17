@@ -51,7 +51,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tab_WEAT</span><span class="op">(</span><span class="va">data</span>, <span class="va">T1</span>, <span class="va">T2</span>, <span class="va">A1</span>, <span class="va">A2</span>, <span class="va">labels</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tab_WEAT</span><span class="op">(</span><span class="va">data</span>, <span class="va">T1</span>, <span class="va">T2</span>, <span class="va">A1</span>, <span class="va">A2</span>, use.pattern <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">labels</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -62,18 +62,26 @@ loaded by <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</
 
 
 <dt>T1, T2</dt>
-<dd><p>Target words. If only <code>T1</code> is specified,
-then data for single-target WEAT (i.e., WEFAT; Caliskan et al., 2017)
-can be tabulated.</p></dd>
+<dd><p>Target words (a vector of words or a pattern of regular expression).
+If only <code>T1</code> is specified,
+then it will tabulate data for single-target WEAT
+(i.e., WEFAT; Caliskan et al., 2017).</p></dd>
 
 
 <dt>A1, A2</dt>
-<dd><p>Attribute words. Both should be specified.</p></dd>
+<dd><p>Attribute words (a vector of words or a pattern of regular expression).
+Both should be specified.</p></dd>
+
+
+<dt>use.pattern</dt>
+<dd><p>Default is <code>FALSE</code> (using a vector of words).
+If you use regular expression in <code>T1</code>, <code>T2</code>, <code>A1</code>, and <code>A2</code>,
+then please specify this argument as <code>TRUE</code>.</p></dd>
 
 
 <dt>labels</dt>
-<dd><p>Labels for target and attribute concepts.
-Should be a named <code>list</code>, such as (the default)
+<dd><p>Labels for target and attribute concepts (a named <code>list</code>),
+such as (the default)
 <code>list(T1="Target1", T2="Target2", A1="Attrib1", A2="Attrib2")</code>.</p></dd>
 
 </dl></div>
@@ -248,6 +256,135 @@ Semantics derived automatically from language corpora contain human-like biases.
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.715579</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">weat</span> <span class="op">=</span> <span class="fu">tab_WEAT</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">demodata</span>,</span></span>
+<span class="r-in"><span>  T1<span class="op">=</span><span class="st">"^[kK]ing$"</span>,</span></span>
+<span class="r-in"><span>  T2<span class="op">=</span><span class="st">"^[qQ]ueen$"</span>,</span></span>
+<span class="r-in"><span>  A1<span class="op">=</span><span class="st">"^male$|^man$|^boy$|^brother$|^he$|^him$|^his$|^son$"</span>,</span></span>
+<span class="r-in"><span>  A2<span class="op">=</span><span class="st">"^female$|^woman$|^girl$|^sister$|^she$|^her$|^hers$|^daughter$"</span>,</span></span>
+<span class="r-in"><span>  use.pattern<span class="op">=</span><span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>T1<span class="op">=</span><span class="st">"King"</span>, T2<span class="op">=</span><span class="st">"Queen"</span>, A1<span class="op">=</span><span class="st">"Male"</span>, A2<span class="op">=</span><span class="st">"Female"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> T1 (King):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 words are matched...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> T2 (Queen):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 words are matched...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A1 (Male):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 words are matched...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A2 (Female):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 words are matched...</span>
+<span class="r-in"><span><span class="va">weat</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $words.valid</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $words.valid$T1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "King" "king"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $words.valid$T2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Queen" "queen"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $words.valid$A1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "he"      "his"     "him"     "man"     "son"     "boy"     "brother"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [8] "male"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $words.valid$A2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "her"      "she"      "woman"    "daughter" "girl"     "female"   "sister"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [8] "hers"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data.raw</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Target Attrib T_word   A_word    cos_sim</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   King   Male   King       he 0.14808663</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:   King   Male   king       he 0.22512579</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:   King   Male   King      his 0.13784300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   King   Male   king      his 0.17143112</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   King   Male   King      him 0.21191115</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   King   Male   king      him 0.24867882</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:   King   Male   King      man 0.15777646</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:   King   Male   king      man 0.22942676</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:   King   Male   King      son 0.18987593</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   King   Male   king      son 0.21417183</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:   King   Male   King      boy 0.16933196</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:   King   Male   king      boy 0.25351544</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:   King   Male   King  brother 0.22089012</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:   King   Male   king  brother 0.23432925</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:   King   Male   King     male 0.09070985</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:   King   Male   king     male 0.13960424</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:   King Female   King      her 0.07439990</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:   King Female   king      her 0.06532056</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:   King Female   King      she 0.04830619</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:   King Female   king      she 0.06542464</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21:   King Female   King    woman 0.06369529</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22:   King Female   king    woman 0.12847968</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23:   King Female   King daughter 0.11301357</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24:   King Female   king daughter 0.14881282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25:   King Female   King     girl 0.08804782</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26:   King Female   king     girl 0.17236953</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27:   King Female   King   female 0.07212608</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28:   King Female   king   female 0.08971824</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29:   King Female   King   sister 0.08357969</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30:   King Female   king   sister 0.11340389</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31:   King Female   King     hers 0.06238802</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32:   King Female   king     hers 0.10306190</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33:  Queen   Male  Queen       he 0.05188371</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34:  Queen   Male  queen       he 0.09282878</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35:  Queen   Male  Queen      his 0.02713799</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36:  Queen   Male  queen      his 0.06322216</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37:  Queen   Male  Queen      him 0.07582127</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38:  Queen   Male  queen      him 0.13145000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39:  Queen   Male  Queen      man 0.09365463</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40:  Queen   Male  queen      man 0.16658216</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41:  Queen   Male  Queen      son 0.05476228</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42:  Queen   Male  queen      son 0.15659811</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43:  Queen   Male  Queen      boy 0.10297925</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44:  Queen   Male  queen      boy 0.20767608</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45:  Queen   Male  Queen  brother 0.04219659</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46:  Queen   Male  queen  brother 0.11763060</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47:  Queen   Male  Queen     male 0.11256271</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48:  Queen   Male  queen     male 0.18550913</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49:  Queen Female  Queen      her 0.23308440</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50:  Queen Female  queen      her 0.35522259</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51:  Queen Female  Queen      she 0.23824302</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52:  Queen Female  queen      she 0.36242807</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53:  Queen Female  Queen    woman 0.20171619</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54:  Queen Female  queen    woman 0.31618132</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55:  Queen Female  Queen daughter 0.16699306</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56:  Queen Female  queen daughter 0.30513862</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57:  Queen Female  Queen     girl 0.18701451</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58:  Queen Female  queen     girl 0.35005602</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59:  Queen Female  Queen   female 0.18863183</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60:  Queen Female  queen   female 0.26985589</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61:  Queen Female  Queen   sister 0.16349528</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62:  Queen Female  queen   sister 0.25180591</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63:  Queen Female  Queen     hers 0.21118412</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64:  Queen Female  queen     hers 0.31618069</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Target Attrib T_word   A_word    cos_sim</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data.mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Target T_word Attrib cos_sim_mean    std_dev  std_mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:   King   King   Male   0.16580314 0.05640498 2.9395122</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:   King   King Female   0.07569457 0.05640498 1.3419837</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:   King   king   Male   0.21453541 0.06536807 3.2819604</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:   King   king Female   0.11082391 0.06536807 1.6953830</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:  Queen  Queen   Male   0.07012480 0.07224076 0.9707096</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:  Queen  Queen Female   0.19879530 0.07224076 2.7518439</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7:  Queen  queen   Male   0.14018713 0.10032951 1.3972671</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8:  Queen  queen Female   0.31585864 0.10032951 3.1482127</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data.diff</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Target T_word cos_sim_diff   std_dev</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:   King   King   0.09010857 0.1451877</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:   King   king   0.10371150 0.1451877</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  Queen  Queen  -0.12867050 0.1451877</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:  Queen  queen  -0.17567151 0.1451877</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $code.diff</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "King vs. Queen :: Male vs. Female"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $eff.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WEAT (Word-Embedding Association Test)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $eff.size</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.715579</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">wefat</span> <span class="op">=</span> <span class="fu">tab_WEAT</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">demodata</span>,</span></span>
 <span class="r-in"><span>  T1<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"</span></span></span>
@@ -408,7 +545,7 @@ Semantics derived automatically from language corpora contain human-like biases.
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
     </footer></div>
