@@ -4,7 +4,13 @@
 \alias{tab_similarity}
 \title{Tabulate cosine similarity/distance of all word pairs.}
 \usage{
-tab_similarity(data, words = NULL, pattern = NULL, distance = FALSE)
+tab_similarity(
+  data,
+  words = NULL,
+  pattern = NULL,
+  unique = FALSE,
+  distance = FALSE
+)
 }
 \arguments{
 \item{data}{A \code{data.table} with variables \code{word} and \code{vec}
@@ -14,13 +20,17 @@ loaded by \code{\link{data_wordvec_load}}.}
 
 \item{pattern}{[Option 2] Pattern of regular expression (see \code{\link[stringr:str_subset]{str_subset}}).}
 
+\item{unique}{Word pairs: unique pairs (\code{TRUE})
+or full pairs with duplicates (\code{FALSE}; default).}
+
 \item{distance}{Compute cosine distance instead?
 Default is \code{FALSE} (cosine similarity).}
 }
 \value{
-A \code{data.table} of all combinations of the words,
-with their wordpair and cosine similarity/distance
-(\code{cos_sim} or \code{cos_dist}).
+A \code{data.table} of all words and
+their unique or full pairs,
+with their cosine similarity (\code{cos_sim})
+or cosine distance (\code{cos_dist}).
 }
 \description{
 Tabulate cosine similarity/distance of all word pairs.
@@ -32,11 +42,15 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-dts = tab_similarity(demodata, cc("king, queen, man, woman"))
-dts
+tab_similarity(demodata, cc("king, queen, man, woman"))
 
-dts = tab_similarity(demodata, cc("Beijing, China, Tokyo, Japan"))
-dts
+tab_similarity(demodata, cc("king, queen, man, woman"),
+               unique=TRUE)
+
+tab_similarity(demodata, cc("Beijing, China, Tokyo, Japan"))
+
+tab_similarity(demodata, cc("Beijing, China, Tokyo, Japan"),
+               unique=TRUE)
 
 }
 \seealso{

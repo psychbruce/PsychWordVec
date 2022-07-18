@@ -154,16 +154,18 @@ check_save_validity = function(file.save) {
 }
 
 
-check_word_validity = function(data, words=NULL, pattern=NULL) {
+extract_valid_words = function(data, words=NULL, pattern=NULL) {
   if(is.null(words)) {
     if(is.null(pattern)) {
       stop("Please specify either `words` or `pattern`!", call.=FALSE)
     } else {
-      words = str_subset(data$word, pattern)
+      words.valid = str_subset(data$word, pattern)
       Print("{length(words)} words are matched...")
     }
+  } else {
+    words.contain = data[word %in% words]$word
+    words.valid = words[which(words %in% words.contain)]
   }
-  words.valid = data[word %in% words]$word
   if(length(words.valid) < length(words)) {
     for(word in setdiff(words, words.valid))
       Print("<<red X>> \"{word}\" not found...")
@@ -470,7 +472,7 @@ data_wordvec_subset = function(x, words=NULL, pattern=NULL,
       - a `data.table` loaded by `data_wordvec_load()`
       - an .RData file transformed by `data_transform()`", call.=FALSE)
   }
-  words.valid = check_word_validity(data, words, pattern)
+  words.valid = extract_valid_words(data, words, pattern)
   dt = data[word %in% words.valid]  # much faster
   if(!is.null(file.save)) {
     t1 = Sys.time()
@@ -941,13 +943,8 @@ most_similar = function(data, x, keep=FALSE, topn=10, above=NULL) {
 #' @export
 pair_similarity = function(data, word1, word2, distance=FALSE) {
   check_data_validity(data)
-  if(attr(data, "normalized")==FALSE)
-    data = normalize(data[word %in% c(word1, word2)])
   dt = get_wordvecs(data, c(word1, word2))
-  if(distance)
-    return(1 - sum(dt[[1]] * dt[[2]]))
-  else
-    return(sum(dt[[1]] * dt[[2]]))
+  cosine_similarity(dt[[1]], dt[[2]], distance=distance)
 }
 
 
@@ -958,11 +955,14 @@ pair_similarity = function(data, word1, word2, distance=FALSE) {
 #'
 #' @inheritParams cosine_similarity
 #' @inheritParams get_wordvecs
+#' @param unique Word pairs: unique pairs (\code{TRUE})
+#' or full pairs with duplicates (\code{FALSE}; default).
 #'
 #' @return
-#' A \code{data.table} of all combinations of the words,
-#' with their wordpair and cosine similarity/distance
-#' (\code{cos_sim} or \code{cos_dist}).
+#' A \code{data.table} of all words and
+#' their unique or full pairs,
+#' with their cosine similarity (\code{cos_sim})
+#' or cosine distance (\code{cos_dist}).
 #'
 #' @section Download:
 #' Download pre-trained word vectors data (\code{.RData}):
@@ -972,27 +972,40 @@ pair_similarity = function(data, word1, word2, distance=FALSE) {
 #' \code{\link{tab_WEAT}}
 #'
 #' @examples
-#' dts = tab_similarity(demodata, cc("king, queen, man, woman"))
-#' dts
+#' tab_similarity(demodata, cc("king, queen, man, woman"))
 #'
-#' dts = tab_similarity(demodata, cc("Beijing, China, Tokyo, Japan"))
-#' dts
+#' tab_similarity(demodata, cc("king, queen, man, woman"),
+#'                unique=TRUE)
+#'
+#' tab_similarity(demodata, cc("Beijing, China, Tokyo, Japan"))
+#'
+#' tab_similarity(demodata, cc("Beijing, China, Tokyo, Japan"),
+#'                unique=TRUE)
 #'
 #' @export
-tab_similarity = function(data, words=NULL, pattern=NULL, distance=FALSE) {
+tab_similarity = function(data, words=NULL, pattern=NULL,
+                          unique=FALSE, distance=FALSE) {
   check_data_validity(data)
-  words = check_word_validity(data, words, pattern)
-  if(attr(data, "normalized")==FALSE)
-    data = normalize(data[word %in% words])
-  dt = get_wordvecs(data, words)
-  words.valid = names(dt)
-  words.mat = utils::combn(words.valid, 2)
-  dts = data.table(
-    word1 = words.mat[1,],
-    word2 = words.mat[2,],
-    wordpair = as.character(utils::combn(words.valid, 2, function(x) paste(x, collapse="-"))),
-    cos_sim = as.numeric(utils::combn(dt, 2, function(x) sum(x[[1]] * x[[2]])))
-  )
+  words.valid = extract_valid_words(data, words, pattern)
+  dt = data[word %in% words.valid]
+  if(unique) {
+    words.mat = utils::combn(words.valid, 2)
+    dts = data.table(
+      word1 = words.mat[1,],
+      word2 = words.mat[2,]
+    )
+  } else {
+    dts = as.data.table(expand.grid(
+      word2 = words,
+      word1 = words
+    )[c("word1", "word2")])
+  }
+  word1 = word2 = wordpair = NULL
+  dts[, wordpair := paste0(word1, "-", word2)]
+  dts$cos_sim = sapply(1:nrow(dts), function(i) {
+    cosine_similarity(get_wordvec(dt, dts[[i, 1]]),
+                      get_wordvec(dt, dts[[i, 2]]))
+  })
   if(distance) {
     dts$cos_dist = 1 - dts$cos_sim
     dts$cos_sim = NULL
