@@ -51,7 +51,13 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tab_similarity</span><span class="op">(</span><span class="va">data</span>, words <span class="op">=</span> <span class="cn">NULL</span>, pattern <span class="op">=</span> <span class="cn">NULL</span>, distance <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tab_similarity</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  words <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pattern <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  unique <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  distance <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -69,6 +75,11 @@ loaded by <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</
 <dd><p>[Option 2] Pattern of regular expression (see <code><a href="https://stringr.tidyverse.org/reference/str_subset.html" class="external-link">str_subset</a></code>).</p></dd>
 
 
+<dt>unique</dt>
+<dd><p>Word pairs: unique pairs (<code>TRUE</code>)
+or full pairs with duplicates (<code>FALSE</code>; default).</p></dd>
+
+
 <dt>distance</dt>
 <dd><p>Compute cosine distance instead?
 Default is <code>FALSE</code> (cosine similarity).</p></dd>
@@ -78,9 +89,10 @@ Default is <code>FALSE</code> (cosine similarity).</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A <code>data.table</code> of all combinations of the words,
-with their wordpair and cosine similarity/distance
-(<code>cos_sim</code> or <code>cos_dist</code>).</p>
+<p>A <code>data.table</code> of all words and
+their unique or full pairs,
+with their cosine similarity (<code>cos_sim</code>)
+or cosine distance (<code>cos_dist</code>).</p>
     </div>
     <div class="section level2">
     <h2 id="download">Download<a class="anchor" aria-label="anchor" href="#download"></a></h2>
@@ -96,25 +108,63 @@ with their wordpair and cosine similarity/distance
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dts</span> <span class="op">=</span> <span class="fu">tab_similarity</span><span class="op">(</span><span class="va">demodata</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"king, queen, man, woman"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">dts</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    word1 word2    wordpair   cos_sim</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:   man woman   man-woman 0.7664012</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:   man  king    man-king 0.2294268</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:   man queen   man-queen 0.1665822</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: woman  king  woman-king 0.1284797</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: woman queen woman-queen 0.3161813</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:  king queen  king-queen 0.6510958</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">tab_similarity</span><span class="op">(</span><span class="va">demodata</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"king, queen, man, woman"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     word1 word2    wordpair   cos_sim</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:  king  king   king-king 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:  king queen  king-queen 0.6510958</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:  king   man    king-man 0.2294268</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:  king woman  king-woman 0.1284797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: queen  king  queen-king 0.6510958</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: queen queen queen-queen 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: queen   man   queen-man 0.1665822</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: queen woman queen-woman 0.3161813</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:   man  king    man-king 0.2294268</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   man queen   man-queen 0.1665822</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:   man   man     man-man 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:   man woman   man-woman 0.7664012</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13: woman  king  woman-king 0.1284797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14: woman queen woman-queen 0.3161813</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15: woman   man   woman-man 0.7664012</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16: woman woman woman-woman 1.0000000</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">dts</span> <span class="op">=</span> <span class="fu">tab_similarity</span><span class="op">(</span><span class="va">demodata</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"Beijing, China, Tokyo, Japan"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">dts</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      word1   word2      wordpair   cos_sim</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:   China   Japan   China-Japan 0.5967756</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:   China Beijing China-Beijing 0.7648461</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:   China   Tokyo   China-Tokyo 0.3814305</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:   Japan Beijing Japan-Beijing 0.3995245</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:   Japan   Tokyo   Japan-Tokyo 0.7002254</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: Beijing   Tokyo Beijing-Tokyo 0.5229628</span>
+<span class="r-in"><span><span class="fu">tab_similarity</span><span class="op">(</span><span class="va">demodata</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"king, queen, man, woman"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>               unique<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    word1 word2    wordpair   cos_sim</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  king queen  king-queen 0.6510958</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  king   man    king-man 0.2294268</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  king woman  king-woman 0.1284797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: queen   man   queen-man 0.1665822</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: queen woman queen-woman 0.3161813</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:   man woman   man-woman 0.7664012</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">tab_similarity</span><span class="op">(</span><span class="va">demodata</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"Beijing, China, Tokyo, Japan"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       word1   word2        wordpair   cos_sim</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: Beijing Beijing Beijing-Beijing 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: Beijing   China   Beijing-China 0.7648461</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: Beijing   Tokyo   Beijing-Tokyo 0.5229628</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: Beijing   Japan   Beijing-Japan 0.3995245</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   China Beijing   China-Beijing 0.7648461</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   China   China     China-China 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:   China   Tokyo     China-Tokyo 0.3814305</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:   China   Japan     China-Japan 0.5967756</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:   Tokyo Beijing   Tokyo-Beijing 0.5229628</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   Tokyo   China     Tokyo-China 0.3814305</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:   Tokyo   Tokyo     Tokyo-Tokyo 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:   Tokyo   Japan     Tokyo-Japan 0.7002254</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:   Japan Beijing   Japan-Beijing 0.3995245</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:   Japan   China     Japan-China 0.5967756</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:   Japan   Tokyo     Japan-Tokyo 0.7002254</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:   Japan   Japan     Japan-Japan 1.0000000</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">tab_similarity</span><span class="op">(</span><span class="va">demodata</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"Beijing, China, Tokyo, Japan"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>               unique<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      word1 word2      wordpair   cos_sim</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: Beijing China Beijing-China 0.7648461</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: Beijing Tokyo Beijing-Tokyo 0.5229628</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: Beijing Japan Beijing-Japan 0.3995245</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:   China Tokyo   China-Tokyo 0.3814305</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:   China Japan   China-Japan 0.5967756</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:   Tokyo Japan   Tokyo-Japan 0.7002254</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
