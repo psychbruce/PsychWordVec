@@ -111,7 +111,7 @@
 #'
 #' @export
 cosine_similarity = function(v1, v2, distance=FALSE) {
-  if(length(v1)!=length(v2)) stop("v1 and v2 must be of the same length!", call.=FALSE)
+  if(length(v1) != length(v2)) stop("v1 and v2 must have equal length!", call.=FALSE)
   cos_sim = sum(v1 * v2) / ( sqrt(sum(v1^2)) * sqrt(sum(v2^2)) )
   if(distance)
     return(1 - cos_sim)
@@ -996,20 +996,18 @@ tab_similarity = function(data, words=NULL, pattern=NULL,
     )
   } else {
     dts = as.data.table(expand.grid(
-      word2 = words,
-      word1 = words
+      word2 = words.valid,
+      word1 = words.valid
     )[c("word1", "word2")])
   }
   word1 = word2 = wordpair = NULL
   dts[, wordpair := paste0(word1, "-", word2)]
   dts$cos_sim = sapply(1:nrow(dts), function(i) {
     cosine_similarity(get_wordvec(dt, dts[[i, 1]]),
-                      get_wordvec(dt, dts[[i, 2]]))
+                      get_wordvec(dt, dts[[i, 2]]),
+                      distance=distance)
   })
-  if(distance) {
-    dts$cos_dist = 1 - dts$cos_sim
-    dts$cos_sim = NULL
-  }
+  if(distance) names(dts)[4] = "cos_dist"
   return(dts)
 }
 
