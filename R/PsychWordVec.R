@@ -160,7 +160,7 @@ extract_valid_words = function(data, words=NULL, pattern=NULL) {
       stop("Please specify either `words` or `pattern`!", call.=FALSE)
     } else {
       words.valid = str_subset(data$word, pattern)
-      Print("{length(words)} words are matched...")
+      Print("{length(words.valid)} words are matched...")
     }
   } else {
     words.contain = data[word %in% words]$word
