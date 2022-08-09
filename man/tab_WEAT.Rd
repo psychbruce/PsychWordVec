@@ -94,7 +94,7 @@ wefat
 \references{
 Caliskan, A., Bryson, J. J., & Narayanan, A. (2017).
 Semantics derived automatically from language corpora contain human-like biases.
-\emph{Science, 356}(6334), 183-186.
+\emph{Science, 356}(6334), 183--186.
 }
 \seealso{
 \code{\link{tab_similarity}}

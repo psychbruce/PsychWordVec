@@ -671,8 +671,10 @@ get_wordvecs = function(data, words=NULL, pattern=NULL,
                         plot.dims=NULL,
                         plot.step=0.05,
                         plot.border="white") {
-  data.subset = data_wordvec_subset(data, words, pattern)
-  dt = do.call(cbind, lapply(data.subset$word, function(wi) {
+  check_data_validity(data)
+  words.valid = extract_valid_words(data, words, pattern)
+  data.subset = data[word %in% words.valid]
+  dt = do.call(cbind, lapply(words.valid, function(wi) {
     di = data.table(word = data.subset[word %in% wi][[1, "vec"]])
     names(di) = wi
     return(di)
@@ -772,6 +774,135 @@ plot_wordvecs = function(dt, dims=NULL, step=0.05, border="white") {
                                   margin=margin(0, 0, 0.5, 0, "lines")),
           plot.margin=margin(0.05, 0.02, 0.05, 0.01, "npc"),
           plot.background=element_rect(fill="white"))
+}
+
+
+#' Visualize word vectors with dimensionality reduced using t-SNE.
+#'
+#' Visualize word vectors with dimensionality reduced
+#' using the t-Distributed Stochastic Neighbor Embedding (t-SNE) method
+#' (i.e., project high-dimensional vectors into a low-dimensional vector space),
+#' implemented by \code{\link[Rtsne:Rtsne]{Rtsne::Rtsne()}}.
+#' You should specify a random seed if you expect reproducible results.
+#'
+#' @inheritParams plot_wordvecs
+#' @param dims Output dimensionality: \code{2} (default, the most common choice) or \code{3}.
+#' @param colors A character vector specifying (1) the categories of words (for 2-D plot only)
+#' or (2) the exact colors of words (for 2-D and 3-D plot). See examples for its usage.
+#' @param seed Random seed for obtaining reproducible results. Default is \code{NULL}.
+#' @param perplexity Perplexity parameter, should not be larger than (number of words - 1) / 3.
+#' See the \code{\link[Rtsne:Rtsne]{Rtsne}} package for details.
+#' @param theta Speed/accuracy trade-off (increase for less accuracy), set to 0 for exact t-SNE. Default is 0.5.
+#' @param custom.Rtsne User-defined \code{\link[Rtsne:Rtsne]{Rtsne}} object using the same \code{dt}.
+#'
+#' @return
+#' 2-D: A \code{ggplot} object.
+#' You may extract the data from this object using \code{$data}.
+#'
+#' 3-D: Nothing but only the data was invisibly returned,
+#' because \code{\link[rgl:plot3d]{rgl::plot3d()}}
+#' is "called for the side effect of drawing the plot"
+#' and thus cannot return any 3-D plot object.
+#'
+#' @section Download:
+#' Download pre-trained word vectors data (\code{.RData}):
+#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#'
+#' @references
+#' Hinton, G. E., & Salakhutdinov, R. R. (2006).
+#' Reducing the dimensionality of data with neural networks.
+#' \emph{Science, 313}(5786), 504--507.
+#'
+#' van der Maaten, L., & Hinton, G. (2008).
+#' Visualizing data using t-SNE.
+#' \emph{Journal of Machine Learning Research, 9}, 2579--2605.
+#'
+#' @seealso
+#' \code{\link{plot_wordvecs}}
+#'
+#' @examples
+#' d = data_wordvec_normalize(demodata)
+#'
+#' dt = get_wordvecs(d, cc("
+#'   man, woman,
+#'   king, queen,
+#'   China, Beijing,
+#'   Japan, Tokyo"))
+#'
+#' ## 2-D (default):
+#' plot_wordvecs_tSNE(dt, seed=1234)
+#'
+#' plot_wordvecs_tSNE(dt, seed=1234)$data
+#'
+#' colors = c(rep("#2B579A", 4), rep("#B7472A", 4))
+#' plot_wordvecs_tSNE(dt, colors=colors, seed=1234)
+#'
+#' category = c(rep("gender", 4), rep("country", 4))
+#' plot_wordvecs_tSNE(dt, colors=category, seed=1234) +
+#'   scale_x_continuous(limits=c(-200, 200),
+#'                      labels=function(x) x/100) +
+#'   scale_y_continuous(limits=c(-200, 200),
+#'                      labels=function(x) x/100) +
+#'   scale_color_manual(values=c("#B7472A", "#2B579A"))
+#'
+#' ## 3-D:
+#' colors = c(rep("#2B579A", 4), rep("#B7472A", 4))
+#' plot_wordvecs_tSNE(dt, dims=3, colors=colors, seed=1)
+#'
+#' @export
+plot_wordvecs_tSNE = function(dt, dims=2, colors=NULL, seed=NULL,
+                              perplexity=floor((length(dt)-1)/3),
+                              theta=0.5,
+                              custom.Rtsne=NULL) {
+  if(is.null(custom.Rtsne)) {
+    if(length(dt) < 4)
+      stop("`dt` must contain at least 4 words (columns).", call.=FALSE)
+    set.seed(seed)
+    sne = Rtsne::Rtsne(as.data.frame(t(dt)), dims=dims,
+                       perplexity=perplexity, theta=theta)
+  } else {
+    if(!inherits(custom.Rtsne, "Rtsne"))
+      stop("`custom.Rtsne` must be an `Rtsne` object.", call.=FALSE)
+    sne = custom.Rstne
+  }
+  dp = cbind(data.frame(word=names(dt)),
+             as.data.frame(sne$Y))
+  if(dims == 2) {
+    V1 = V2 = word = NULL
+    p = ggplot(dp, aes(x=V1, y=V2, color=colors)) +
+      geom_hline(yintercept=0, color="grey") +
+      geom_vline(xintercept=0, color="grey") +
+      geom_point(show.legend=!all(grepl("#", colors))) +
+      ggrepel::geom_text_repel(aes(label=word),
+                               seed=ifelse(is.null(seed),
+                                           NA, seed),
+                               show.legend=FALSE) +
+      labs(x="t-SNE Dimension 1", y="t-SNE Dimension 2",
+           color="Category",
+           title="Word Vectors (t-SNE for Dimensionality Reduction)") +
+      bruceR::theme_bruce()
+    if(all(grepl("#", colors)))
+      p = p + scale_color_manual(values=sort(unique(colors)))
+    return(p)
+  } else if(dims == 3) {
+    rgl::plot3d(x=dp$V1, y=dp$V2, z=dp$V3,
+                xlab="t-SNE Dimension 1",
+                ylab="t-SNE Dimension 2",
+                zlab="t-SNE Dimension 3",
+                xlim=max(abs(range(dp$V1)))*1.2*c(-1,1),
+                ylim=max(abs(range(dp$V2)))*1.2*c(-1,1),
+                zlim=max(abs(range(dp$V3)))*1.2*c(-1,1),
+                col=colors,
+                size=8)
+    rgl::text3d(x=dp$V1, y=dp$V2, z=dp$V3,
+                color=colors,
+                adj=c(1, 1, 1),
+                texts=dp$word)
+    invisible(dp)
+  } else {
+    stop("Please directly use `Rtsne::Rtsne()` for more than 3 dimensions:
+       sne = Rtsne::Rtsne(as.data.frame(t(dt)), dims=dims)", call.=FALSE)
+  }
 }
 
 
@@ -1056,7 +1187,7 @@ tab_similarity = function(data, words=NULL, pattern=NULL,
 #' @references
 #' Caliskan, A., Bryson, J. J., & Narayanan, A. (2017).
 #' Semantics derived automatically from language corpora contain human-like biases.
-#' \emph{Science, 356}(6334), 183-186.
+#' \emph{Science, 356}(6334), 183--186.
 #'
 #' @seealso
 #' \code{\link{tab_similarity}}
