@@ -800,8 +800,8 @@ plot_wordvecs = function(dt, dims=NULL, step=0.05, border="white") {
 #' You may extract the data from this object using \code{$data}.
 #'
 #' 3-D: Nothing but only the data was invisibly returned,
-#' because \code{\link[rgl:plot3d]{rgl::plot3d()}}
-#' is "called for the side effect of drawing the plot"
+#' because \code{\link[rgl:plot3d]{rgl::plot3d()}} is
+#' "called for the side effect of drawing the plot"
 #' and thus cannot return any 3-D plot object.
 #'
 #' @section Download:
@@ -863,7 +863,7 @@ plot_wordvecs_tSNE = function(dt, dims=2, colors=NULL, seed=NULL,
   } else {
     if(!inherits(custom.Rtsne, "Rtsne"))
       stop("`custom.Rtsne` must be an `Rtsne` object.", call.=FALSE)
-    sne = custom.Rstne
+    sne = custom.Rtsne
   }
   dp = cbind(data.frame(word=names(dt)),
              as.data.frame(sne$Y))
@@ -885,6 +885,7 @@ plot_wordvecs_tSNE = function(dt, dims=2, colors=NULL, seed=NULL,
       p = p + scale_color_manual(values=sort(unique(colors)))
     return(p)
   } else if(dims == 3) {
+    rgl::open3d()
     rgl::plot3d(x=dp$V1, y=dp$V2, z=dp$V3,
                 xlab="t-SNE Dimension 1",
                 ylab="t-SNE Dimension 2",

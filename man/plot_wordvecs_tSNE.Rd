@@ -36,8 +36,8 @@ See the \code{\link[Rtsne:Rtsne]{Rtsne}} package for details.}
 You may extract the data from this object using \code{$data}.
 
 3-D: Nothing but only the data was invisibly returned,
-because \code{\link[rgl:plot3d]{rgl::plot3d()}}
-is "called for the side effect of drawing the plot"
+because \code{\link[rgl:plot3d]{rgl::plot3d()}} is
+"called for the side effect of drawing the plot"
 and thus cannot return any 3-D plot object.
 }
 \description{
