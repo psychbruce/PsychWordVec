@@ -28,6 +28,9 @@
     <loc>https://psychbruce.github.io/PsychWordVec/reference/data_wordvec_normalize.html</loc>
   </url>
   <url>
+    <loc>https://psychbruce.github.io/PsychWordVec/reference/data_wordvec_reshape.html</loc>
+  </url>
+  <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/data_wordvec_subset.html</loc>
   </url>
   <url>
@@ -49,18 +52,27 @@
     <loc>https://psychbruce.github.io/PsychWordVec/reference/pair_similarity.html</loc>
   </url>
   <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/plot_wordvecs.html</loc>
+    <loc>https://psychbruce.github.io/PsychWordVec/reference/plot_wordvec.html</loc>
   </url>
   <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/plot_wordvecs_tSNE.html</loc>
+    <loc>https://psychbruce.github.io/PsychWordVec/reference/plot_wordvec_tSNE.html</loc>
   </url>
   <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/reexports.html</loc>
+  </url>
+  <url>
+    <loc>https://psychbruce.github.io/PsychWordVec/reference/tab_RND.html</loc>
   </url>
   <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/tab_WEAT.html</loc>
   </url>
   <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/tab_similarity.html</loc>
+  </url>
+  <url>
+    <loc>https://psychbruce.github.io/PsychWordVec/reference/train_wordvec.html</loc>
+  </url>
+  <url>
+    <loc>https://psychbruce.github.io/PsychWordVec/reference/utf8_split_default.html</loc>
   </url>
 </urlset>

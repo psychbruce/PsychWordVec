@@ -18,7 +18,7 @@ on a modern computer (HP ProBook 450, Windows 11, Intel i7-1165G7 CPU, 32GB RAM,
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.8</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,22 +88,25 @@ on a modern computer (HP ProBook 450, Windows 11, Intel i7-1165G7 CPU, 32GB RAM,
 
 
 <dt>encoding</dt>
-<dd><p>File encoding. Default is <code>"auto"</code> (using <code><a href="https://vroom.r-lib.org/reference/vroom_lines.html" class="external-link">vroom::vroom_lines()</a></code> to fast read the file).
-If specified to any other value (e.g., <code>"UTF-8"</code>), then it uses <code><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines()</a></code> to read the file, which is much slower than <code>vroom</code>.</p></dd>
+<dd><p>File encoding. Defaults to <code>"auto"</code>
+(using <code><a href="https://vroom.r-lib.org/reference/vroom_lines.html" class="external-link">vroom::vroom_lines()</a></code> to fast read the file).
+If specified to any other value (e.g., <code>"UTF-8"</code>),
+then it uses <code><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines()</a></code> to read the file,
+which is much slower than <code>vroom</code>.</p></dd>
 
 
 <dt>sep</dt>
-<dd><p>Column separator. Default is <code>" "</code>.</p></dd>
+<dd><p>Column separator. Defaults to <code>" "</code>.</p></dd>
 
 
 <dt>header</dt>
 <dd><p>Is the 1st row a header (e.g., meta-information such as "2000000 300")?
-Default is <code>"auto"</code>, which automatically determines whether there is a header.
+Defaults to <code>"auto"</code>, which automatically determines whether there is a header.
 If <code>TRUE</code>, then the 1st row will be dropped.</p></dd>
 
 
 <dt>compress</dt>
-<dd><p>Compression method for the saved file. Default is <code>"bzip2"</code>.</p>
+<dd><p>Compression method for the saved file. Defaults to <code>"bzip2"</code>.</p>
 <p>Options can be:</p><ul><li><p><code>1</code> or <code>"gzip"</code>: modest file size (fastest)</p></li>
 <li><p><code>2</code> or <code>"bzip2"</code>: small file size (fast)</p></li>
 <li><p><code>3</code> or <code>"xz"</code>: minimized file size (slow)</p></li>
@@ -112,7 +115,7 @@ If <code>TRUE</code>, then the 1st row will be dropped.</p></dd>
 
 <dt>compress.level</dt>
 <dd><p>Compression level from <code>0</code> (none) to <code>9</code>
-(maximal compression for minimal file size). Default is <code>9</code>.</p></dd>
+(maximal compression for minimal file size). Defaults to <code>9</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -132,6 +135,7 @@ If <code>TRUE</code>, then the 1st row will be dropped.</p></dd>
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="data_wordvec_load.html">data_wordvec_load</a></code></p>
 <p><code><a href="data_wordvec_normalize.html">data_wordvec_normalize</a></code></p>
+<p><code><a href="data_wordvec_reshape.html">data_wordvec_reshape</a></code></p>
 <p><code><a href="data_wordvec_subset.html">data_wordvec_subset</a></code></p></div>
     </div>
 

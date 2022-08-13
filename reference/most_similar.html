@@ -16,7 +16,7 @@ not the demodata used here in examples.)"><!-- mathjax --><script src="https://c
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.8</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,15 +82,15 @@ loaded by <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</
 
 <dt>keep</dt>
 <dd><p>Keep words specified in <code>x</code> in results?
-Default is <code>FALSE</code>.</p></dd>
+Defaults to <code>FALSE</code>.</p></dd>
 
 
 <dt>topn</dt>
-<dd><p>Top-N most similar words. Default is <code>10</code>.</p></dd>
+<dd><p>Top-N most similar words. Defaults to <code>10</code>.</p></dd>
 
 
 <dt>above</dt>
-<dd><p>Default is <code>NULL</code>. Can be one of the following:</p><ul><li><p>a threshold value to find all words with cosine similarities
+<dd><p>Defaults to <code>NULL</code>. Can be one of the following:</p><ul><li><p>a threshold value to find all words with cosine similarities
   higher than this value</p></li>
 <li><p>a critical word to find all words with cosine similarities
   higher than that with this critical word</p></li>
@@ -346,14 +346,14 @@ Users may extract them for further use.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "normalized")= logi TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "wordvec")= num [1:300] -0.0055 -0.06705 -0.04519 0.03875 -0.00286 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "wordvec.formula")=Class 'formula'  language ~king - man + woman</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".Environment")=&lt;environment: 0x5561d342d2f8&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..- attr(*, ".Environment")=&lt;environment: 0x561d21c53630&gt; </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ms</span>, <span class="st">"dims"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 300</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ms</span>, <span class="st">"normalized"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ms</span>, <span class="st">"wordvec.formula"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ~king - man + woman</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5561d342d2f8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x561d21c53630&gt;</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ms</span>, <span class="st">"wordvec"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1] -0.0055029992 -0.0670502053 -0.0451917763  0.0387523404 -0.0028627068</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [6] -0.0311541918  0.0722744639 -0.0547962213 -0.0020958381  0.1267937027</span>
