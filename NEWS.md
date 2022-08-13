@@ -1,10 +1,13 @@
 **Please check the [latest news (change log)](https://psychbruce.github.io/PsychWordVec/news/index.html) and keep this package updated.**
 
-# PsychWordVec 0.0.7 (Aug 2022)
+# PsychWordVec 0.0.8 (Aug 2022)
 
 ## New Features
 
--   New `plot_wordvecs_tSNE()` function: Visualize 2-D or 3-D word vectors with dimensionality reduced using the t-Distributed Stochastic Neighbor Embedding (t-SNE) method.
+-   New `train_wordvec()` function (still in development).
+-   New `data_wordvec_reshape()` function.
+-   New `tab_RND()` function.
+-   New `plot_wordvec_tSNE()` function: Visualize 2-D or 3-D word vectors with dimensionality reduced using the t-Distributed Stochastic Neighbor Embedding (t-SNE) method.
 
 # PsychWordVec 0.0.6 (Jul 2022)
 

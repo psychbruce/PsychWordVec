@@ -11,7 +11,7 @@ data_wordvec_load(file.load, normalize = FALSE)
 \code{\link{data_transform}}, with only two variables \code{word} and \code{vec}).}
 
 \item{normalize}{Normalize all word vectors to unit length?
-Default is \code{FALSE}. See \code{\link{data_wordvec_normalize}}.}
+Defaults to \code{FALSE}. See \code{\link{data_wordvec_normalize}}.}
 }
 \value{
 A \code{data.table} with two variables:
@@ -33,6 +33,8 @@ Download pre-trained word vectors data (\code{.RData}):
 \code{\link{data_transform}}
 
 \code{\link{data_wordvec_normalize}}
+
+\code{\link{data_wordvec_reshape}}
 
 \code{\link{data_wordvec_subset}}
 }

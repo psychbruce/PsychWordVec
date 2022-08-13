@@ -2,7 +2,7 @@
 % Please edit documentation in R/PsychWordVec.R
 \name{tab_WEAT}
 \alias{tab_WEAT}
-\title{Tabulate cosine similarity for WEAT / WEFAT analysis.}
+\title{Tabulate data for Word Embedding Association Test (WEAT).}
 \usage{
 tab_WEAT(data, T1, T2, A1, A2, use.pattern = FALSE, labels)
 }
@@ -12,15 +12,14 @@ loaded by \code{\link{data_wordvec_load}}.}
 
 \item{T1, T2}{Target words (a vector of words or a pattern of regular expression).
 If only \code{T1} is specified,
-then it will tabulate data for single-target WEAT
-(i.e., WEFAT; Caliskan et al., 2017).}
+it will tabulate data for single-category WEAT (SC-WEAT).}
 
 \item{A1, A2}{Attribute words (a vector of words or a pattern of regular expression).
-Both should be specified.}
+Both must be specified.}
 
-\item{use.pattern}{Default is \code{FALSE} (using a vector of words).
+\item{use.pattern}{Defaults to \code{FALSE} (using a vector of words).
 If you use regular expression in \code{T1}, \code{T2}, \code{A1}, and \code{A2},
-then please specify this argument as \code{TRUE}.}
+please specify this argument as \code{TRUE}.}
 
 \item{labels}{Labels for target and attribute concepts (a named \code{list}),
 such as (the default)
@@ -42,13 +41,17 @@ A \code{list} of objects:
   \item{\code{code.diff}}{
     description for the difference between the two attribute concepts}
   \item{\code{eff.type}}{
-    effect type: WEAT or WEFAT}
+    effect type: WEAT or SC-WEAT}
+  \item{\code{eff.raw}}{
+    raw effect for WEAT (a single value) or SC-WEAT (a data table)}
   \item{\code{eff.size}}{
-    effect size for WEAT (a single value) or WEFAT (a data table)}
+    standardized effect size for WEAT (a single value) or SC-WEAT (a data table)}
 }
 }
 \description{
-Tabulate cosine similarity for WEAT / WEFAT analysis.
+Tabulate data (cosine similarity and standardized effect size) for
+\emph{Word Embedding Association Test} (WEAT) and
+\emph{Single-Category Word Embedding Association Test} (SC-WEAT) analyses.
 }
 \section{Download}{
 
@@ -78,7 +81,7 @@ weat = tab_WEAT(
   labels=list(T1="King", T2="Queen", A1="Male", A2="Female"))
 weat
 
-wefat = tab_WEAT(
+sc_weat = tab_WEAT(
   demodata,
   T1=cc("
     architect, boss, leader, engineer, CEO, officer, manager,
@@ -88,7 +91,7 @@ wefat = tab_WEAT(
   A1=cc("male, man, boy, brother, he, him, his, son"),
   A2=cc("female, woman, girl, sister, she, her, hers, daughter"),
   labels=list(T1="Occupation", A1="Male", A2="Female"))
-wefat
+sc_weat
 
 }
 \references{
@@ -98,4 +101,6 @@ Semantics derived automatically from language corpora contain human-like biases.
 }
 \seealso{
 \code{\link{tab_similarity}}
+
+\code{\link{tab_RND}}
 }

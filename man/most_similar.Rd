@@ -34,11 +34,11 @@ loaded by \code{\link{data_wordvec_load}}.}
 }}
 
 \item{keep}{Keep words specified in \code{x} in results?
-Default is \code{FALSE}.}
+Defaults to \code{FALSE}.}
 
-\item{topn}{Top-N most similar words. Default is \code{10}.}
+\item{topn}{Top-N most similar words. Defaults to \code{10}.}
 
-\item{above}{Default is \code{NULL}. Can be one of the following:
+\item{above}{Defaults to \code{NULL}. Can be one of the following:
 \itemize{
   \item{a threshold value to find all words with cosine similarities
   higher than this value}

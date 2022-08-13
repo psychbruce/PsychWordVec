@@ -13,7 +13,7 @@ loaded by \code{\link{data_wordvec_load}}.}
 \item{word1, word2}{Word string (a single word).}
 
 \item{distance}{Compute cosine distance instead?
-Default is \code{FALSE} (cosine similarity).}
+Defaults to \code{FALSE} (cosine similarity).}
 }
 \value{
 A value of cosine similarity/distance.

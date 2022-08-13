@@ -36,7 +36,7 @@ cosine_similarity(v1, v2)
 \seealso{
 \code{\link{get_wordvecs}}
 
-\code{\link{plot_wordvecs}}
+\code{\link{plot_wordvec}}
 
 \code{\link{data_wordvec_subset}}
 }

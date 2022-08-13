@@ -1,7 +1,7 @@
 Package: PsychWordVec
 Title: Toolkit for Word Embedding Research in Psychological Science
-Version: 0.0.7
-Date: 2022-08-11
+Version: 0.0.8
+Date: 2022-08-13
 Authors@R:
     c(person(given = "Han-Wu-Shuang",
              family = "Bao",

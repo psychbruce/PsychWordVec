@@ -25,16 +25,19 @@ dog 0.301 0.302 0.303 0.304 0.305 ... 0.600}
 
 \item{file.save}{File name of to-be-saved R data (must be .RData).}
 
-\item{encoding}{File encoding. Default is \code{"auto"} (using \code{\link[vroom:vroom_lines]{vroom::vroom_lines()}} to fast read the file).
-If specified to any other value (e.g., \code{"UTF-8"}), then it uses \code{\link[base:readLines]{readLines()}} to read the file, which is much slower than \code{vroom}.}
+\item{encoding}{File encoding. Defaults to \code{"auto"}
+(using \code{\link[vroom:vroom_lines]{vroom::vroom_lines()}} to fast read the file).
+If specified to any other value (e.g., \code{"UTF-8"}),
+then it uses \code{\link[base:readLines]{readLines()}} to read the file,
+which is much slower than \code{vroom}.}
 
-\item{sep}{Column separator. Default is \code{" "}.}
+\item{sep}{Column separator. Defaults to \code{" "}.}
 
 \item{header}{Is the 1st row a header (e.g., meta-information such as "2000000 300")?
-Default is \code{"auto"}, which automatically determines whether there is a header.
+Defaults to \code{"auto"}, which automatically determines whether there is a header.
 If \code{TRUE}, then the 1st row will be dropped.}
 
-\item{compress}{Compression method for the saved file. Default is \code{"bzip2"}.
+\item{compress}{Compression method for the saved file. Defaults to \code{"bzip2"}.
 
 Options can be:
 \itemize{
@@ -44,7 +47,7 @@ Options can be:
 }}
 
 \item{compress.level}{Compression level from \code{0} (none) to \code{9}
-(maximal compression for minimal file size). Default is \code{9}.}
+(maximal compression for minimal file size). Defaults to \code{9}.}
 }
 \value{
 A \code{data.table} with two variables: \code{word} and \code{vec}.
@@ -67,6 +70,8 @@ Download pre-trained word vectors data (\code{.RData}):
 \code{\link{data_wordvec_load}}
 
 \code{\link{data_wordvec_normalize}}
+
+\code{\link{data_wordvec_reshape}}
 
 \code{\link{data_wordvec_subset}}
 }

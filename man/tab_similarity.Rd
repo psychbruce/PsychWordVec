@@ -2,7 +2,7 @@
 % Please edit documentation in R/PsychWordVec.R
 \name{tab_similarity}
 \alias{tab_similarity}
-\title{Tabulate cosine similarity/distance of all word pairs.}
+\title{Tabulate data for cosine similarity/distance of all word pairs.}
 \usage{
 tab_similarity(
   data,
@@ -24,7 +24,7 @@ loaded by \code{\link{data_wordvec_load}}.}
 or full pairs with duplicates (\code{FALSE}; default).}
 
 \item{distance}{Compute cosine distance instead?
-Default is \code{FALSE} (cosine similarity).}
+Defaults to \code{FALSE} (cosine similarity).}
 }
 \value{
 A \code{data.table} of all words and
@@ -33,7 +33,7 @@ with their cosine similarity (\code{cos_sim})
 or cosine distance (\code{cos_dist}).
 }
 \description{
-Tabulate cosine similarity/distance of all word pairs.
+Tabulate data for cosine similarity/distance of all word pairs.
 }
 \section{Download}{
 
@@ -55,4 +55,6 @@ tab_similarity(demodata, cc("Beijing, China, Tokyo, Japan"),
 }
 \seealso{
 \code{\link{tab_WEAT}}
+
+\code{\link{tab_RND}}
 }

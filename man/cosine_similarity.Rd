@@ -10,7 +10,7 @@ cosine_similarity(v1, v2, distance = FALSE)
 \item{v1, v2}{Numeric vector (of the same length).}
 
 \item{distance}{Compute cosine distance instead?
-Default is \code{FALSE} (cosine similarity).}
+Defaults to \code{FALSE} (cosine similarity).}
 }
 \value{
 A value of cosine similarity/distance.

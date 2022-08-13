@@ -22,14 +22,14 @@ loaded by \code{\link{data_wordvec_load}}.}
 
 \item{pattern}{[Option 2] Pattern of regular expression (see \code{\link[stringr:str_subset]{str_subset}}).}
 
-\item{plot}{Generate a plot to illustrate the word vectors? Default is \code{FALSE}.}
+\item{plot}{Generate a plot to illustrate the word vectors? Defaults to \code{FALSE}.}
 
 \item{plot.dims}{Dimensions to be plotted (e.g., \code{1:100}).
-Default is \code{NULL} (plot all dimensions).}
+Defaults to \code{NULL} (plot all dimensions).}
 
-\item{plot.step}{Step for value breaks. Default is \code{0.05}.}
+\item{plot.step}{Step for value breaks. Defaults to \code{0.05}.}
 
-\item{plot.border}{Color of tile border. Default is \code{"white"}.
+\item{plot.border}{Color of tile border. Defaults to \code{"white"}.
 To remove the border color, set \code{plot.border=NA}.}
 }
 \value{
@@ -107,7 +107,7 @@ ggsave(attr(dt, "ggplot"),
 \seealso{
 \code{\link{get_wordvec}}
 
-\code{\link{plot_wordvecs}}
+\code{\link{plot_wordvec}}
 
 \code{\link{data_wordvec_subset}}
 }

@@ -26,7 +26,7 @@ data_wordvec_subset(
 
 \item{file.save}{File name of to-be-saved R data (must be .RData).}
 
-\item{compress}{Compression method for the saved file. Default is \code{"bzip2"}.
+\item{compress}{Compression method for the saved file. Defaults to \code{"bzip2"}.
 
 Options can be:
 \itemize{
@@ -36,7 +36,7 @@ Options can be:
 }}
 
 \item{compress.level}{Compression level from \code{0} (none) to \code{9}
-(maximal compression for minimal file size). Default is \code{9}.}
+(maximal compression for minimal file size). Defaults to \code{9}.}
 }
 \value{
 A subset of word vectors data of valid (available) words.
@@ -82,4 +82,6 @@ unlink("new.subset.RData")  # delete file for code check
 \code{\link{data_wordvec_load}}
 
 \code{\link{data_wordvec_normalize}}
+
+\code{\link{data_wordvec_reshape}}
 }
