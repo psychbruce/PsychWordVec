@@ -54,8 +54,8 @@ FastText algorithm."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/a
     <div class="ref-description section level2">
     <p>Train static word vectors using the
 <code><a href="https://rdrr.io/pkg/word2vec/man/word2vec.html" class="external-link">Word2Vec</a></code>,
-GloVe, or
-FastText algorithm.</p>
+<code><a href="https://rdrr.io/pkg/rsparse/man/GloVe.html" class="external-link">GloVe</a></code>, or
+<code><a href="https://rdrr.io/pkg/fastTextR/man/ft_train.html" class="external-link">FastText</a></code> algorithm.</p>
     </div>
 
     <div class="section level2">
@@ -94,9 +94,9 @@ Defaults to <code><a href="https://rdrr.io/pkg/text2vec/man/tokenizers.html" cla
 
 
 <dt>method</dt>
-<dd><p>Training algorithm:</p><ul><li><p><code>"word2vec"</code> (default)</p></li>
-<li><p><code>"glove"</code></p></li>
-<li><p><code>"fasttext"</code></p></li>
+<dd><p>Training algorithm:</p><ul><li><p><code>"word2vec"</code> (default): using the <code><a href="https://rdrr.io/pkg/word2vec/man/word2vec.html" class="external-link">word2vec</a></code> package</p></li>
+<li><p><code>"glove"</code>: using the <code><a href="https://rdrr.io/pkg/rsparse/man/GloVe.html" class="external-link">rsparse</a></code> package</p></li>
+<li><p><code>"fasttext"</code>: using the <code><a href="https://rdrr.io/pkg/fastTextR/man/ft_train.html" class="external-link">fastTextR</a></code> package</p></li>
 </ul></dd>
 
 
@@ -216,8 +216,13 @@ Defaults to <code>FALSE</code>. See <code><a href="data_wordvec_normalize.html">
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p><a href="https://github.com/maxoodf/word2vec" class="external-link">https://github.com/maxoodf/word2vec</a></p>
-    </div>
+    <p>All-in-one package:</p><ul><li><p><a href="https://CRAN.R-project.org/package=wordsalad" class="external-link">https://CRAN.R-project.org/package=wordsalad</a></p></li>
+</ul><p>Word2Vec:</p><ul><li><p><a href="https://CRAN.R-project.org/package=word2vec" class="external-link">https://CRAN.R-project.org/package=word2vec</a></p></li>
+<li><p><a href="https://github.com/maxoodf/word2vec" class="external-link">https://github.com/maxoodf/word2vec</a></p></li>
+</ul><p>GloVe:</p><ul><li><p><a href="https://CRAN.R-project.org/package=text2vec" class="external-link">https://CRAN.R-project.org/package=text2vec</a></p></li>
+<li><p><a href="https://CRAN.R-project.org/package=rsparse" class="external-link">https://CRAN.R-project.org/package=rsparse</a></p></li>
+</ul><p>FastText:</p><ul><li><p><a href="https://CRAN.R-project.org/package=fastTextR" class="external-link">https://CRAN.R-project.org/package=fastTextR</a></p></li>
+</ul></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -237,23 +242,23 @@ Defaults to <code>FALSE</code>. See <code><a href="data_wordvec_normalize.html">
 <span class="r-out co"><span class="r-pr">#&gt;</span> - Window size: 5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> - Subsampling: 0.001</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> - Min. freq.:  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> Word vectors have been trained (time cost = 17 secs)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> Word vectors have been trained (time cost = 19 secs)</span>
 <span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt1</span>, <span class="op">~</span> <span class="va">father</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">*</span> Results may be inaccurate if word vectors are not normalized.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> All word vectors have now been normalized.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ father - he + she</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            word   cos_sim row_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:      mother 0.8767389    502</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:     husband 0.8453156    649</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:        aunt 0.8318208   3480</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:      sister 0.8208518    811</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:    daughter 0.8026278    603</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   boyfriend 0.7859052   1643</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:     parents 0.7716378    825</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:        wife 0.7527638    314</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:         son 0.7432579    480</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: grandmother 0.7179101   4396</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          word   cos_sim row_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:    mother 0.8506691    502</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:   husband 0.8441984    649</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:    sister 0.8106275    811</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:  daughter 0.8090412    603</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:       son 0.7724012    480</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:       mom 0.7510509   1864</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:      aunt 0.7430656   3480</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:      wife 0.7429989    314</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:    Claire 0.7338367   3498</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: boyfriend 0.7317490   1643</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
