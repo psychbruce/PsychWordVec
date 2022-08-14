@@ -17,8 +17,8 @@ Description:
   word vectors (e.g., find the most similar words to a given word);
   (3) a range of tests (e.g., Word-Embedding Association Test) for
   examining psychological effects (e.g., implicit attitude/bias); and
-  (4) a set of training methods ('word2vec', 'GloVe', 'fastText') for
-  learning word vectors from new text corpora (coming soon).
+  (4) a set of training methods ('Word2Vec', 'GloVe', 'FastText') for
+  learning word vectors from text corpora.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -28,6 +28,6 @@ BugReports: https://github.com/psychbruce/PsychWordVec/issues
 Depends: R (>= 4.0.0)
 Imports: bruceR, dplyr, stringr, data.table, vroom,
          ggplot2, ggrepel, Rtsne, rgl,
-         word2vec, text2vec, fastTextR
+         rsparse, word2vec, text2vec, fastTextR
 Suggests: wordsalad, sweater
 RoxygenNote: 7.2.1

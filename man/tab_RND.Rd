@@ -4,7 +4,7 @@
 \alias{tab_RND}
 \title{Tabulate data for Relative Norm Distance (RND) analysis.}
 \usage{
-tab_RND(data, T1, A1, A2, use.pattern = FALSE, labels, reverse = FALSE)
+tab_RND(data, T1, A1, A2, use.pattern = FALSE, labels, rev = FALSE)
 }
 \arguments{
 \item{data}{A \code{data.table} with variables \code{word} and \code{vec}

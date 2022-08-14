@@ -33,9 +33,9 @@ Defaults to \code{\link[text2vec:space_tokenizer]{text2vec::space_tokenizer()}}.
 
 \item{method}{Training algorithm:
 \itemize{
-  \item{\code{"word2vec"} (default)}
-  \item{\code{"glove"}}
-  \item{\code{"fasttext"}}
+  \item{\code{"word2vec"} (default): using the \code{\link[word2vec:word2vec]{word2vec}} package}
+  \item{\code{"glove"}: using the \code{\link[rsparse:GloVe]{rsparse}} package}
+  \item{\code{"fasttext"}: using the \code{\link[fastTextR:ft_train]{fastTextR}} package}
 }}
 
 \item{dims}{Number of dimensions of word vectors to be trained.
@@ -124,8 +124,8 @@ A \code{data.table} with two variables:
 \description{
 Train static word vectors using the
 \code{\link[word2vec:word2vec]{Word2Vec}},
-GloVe, or
-FastText algorithm.
+\code{\link[rsparse:GloVe]{GloVe}}, or
+\code{\link[fastTextR:ft_train]{FastText}} algorithm.
 }
 \section{Download}{
 
@@ -147,5 +147,22 @@ most_similar(dt1, ~ father - he + she)
 
 }
 \references{
-\url{https://github.com/maxoodf/word2vec}
+All-in-one package:
+\itemize{
+  \item{\url{https://CRAN.R-project.org/package=wordsalad}}
+}
+Word2Vec:
+\itemize{
+  \item{\url{https://CRAN.R-project.org/package=word2vec}}
+  \item{\url{https://github.com/maxoodf/word2vec}}
+}
+GloVe:
+\itemize{
+  \item{\url{https://CRAN.R-project.org/package=text2vec}}
+  \item{\url{https://CRAN.R-project.org/package=rsparse}}
+}
+FastText:
+\itemize{
+  \item{\url{https://CRAN.R-project.org/package=fastTextR}}
+}
 }

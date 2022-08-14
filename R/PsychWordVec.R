@@ -1499,7 +1499,7 @@ tab_WEAT = function(data, T1, T2, A1, A2,
 #' @export
 tab_RND = function(data, T1, A1, A2,
                    use.pattern=FALSE, labels,
-                   reverse=FALSE) {
+                   rev=FALSE) {
   if(missing(A1)) stop("Please specify `A1`.", call.=FALSE)
   if(missing(A2)) stop("Please specify `A2`.", call.=FALSE)
   if(missing(T1)) stop("Please specify `T1`.", call.=FALSE)
@@ -1543,7 +1543,7 @@ tab_RND = function(data, T1, A1, A2,
   })
   drnd$rnd = drnd$norm_dist_A1 - drnd$norm_dist_A2
   drnd$closer_to = ifelse(drnd$rnd < 0, labels$A1, labels$A2)
-  if(reverse) {
+  if(rev) {
     drnd$rnd = -drnd$rnd
     names(drnd)[4] = "rnd_rev"
     interp = c(bruceR::Glue("If RND < 0: {labels$T1} is more associated with {labels$A2} than {labels$A1}"),
@@ -1558,7 +1558,7 @@ tab_RND = function(data, T1, A1, A2,
     data.rnd=drnd,
     code.diff=paste(labels$T1, "::", labels$A1, "vs.", labels$A2),
     eff.type="Relative Norm Distance (RND)",
-    eff.sum=ifelse(reverse, sum(drnd$rnd_rev), sum(drnd$rnd)),
+    eff.sum=ifelse(rev, sum(drnd$rnd_rev), sum(drnd$rnd)),
     eff.interpretation=interp
   ))
 }
@@ -1597,8 +1597,8 @@ pre_tokenize = function(text, tokenizer, collapse="\t") {
 #'
 #' Train static word vectors using the
 #' \code{\link[word2vec:word2vec]{Word2Vec}},
-#' GloVe, or
-#' FastText algorithm.
+#' \code{\link[rsparse:GloVe]{GloVe}}, or
+#' \code{\link[fastTextR:ft_train]{FastText}} algorithm.
 #'
 #' @inheritParams data_transform
 #' @inheritParams data_wordvec_load
@@ -1607,9 +1607,9 @@ pre_tokenize = function(text, tokenizer, collapse="\t") {
 #' Defaults to \code{\link[text2vec:space_tokenizer]{text2vec::space_tokenizer()}}.
 #' @param method Training algorithm:
 #' \itemize{
-#'   \item{\code{"word2vec"} (default)}
-#'   \item{\code{"glove"}}
-#'   \item{\code{"fasttext"}}
+#'   \item{\code{"word2vec"} (default): using the \code{\link[word2vec:word2vec]{word2vec}} package}
+#'   \item{\code{"glove"}: using the \code{\link[rsparse:GloVe]{rsparse}} package}
+#'   \item{\code{"fasttext"}: using the \code{\link[fastTextR:ft_train]{fastTextR}} package}
 #' }
 #' @param dims Number of dimensions of word vectors to be trained.
 #' Common choices include 50, 100, 200, 300, and 500.
@@ -1690,7 +1690,24 @@ pre_tokenize = function(text, tokenizer, collapse="\t") {
 #' \url{https://psychbruce.github.io/WordVector_RData.pdf}
 #'
 #' @references
-#' \url{https://github.com/maxoodf/word2vec}
+#' All-in-one package:
+#' \itemize{
+#'   \item{\url{https://CRAN.R-project.org/package=wordsalad}}
+#' }
+#' Word2Vec:
+#' \itemize{
+#'   \item{\url{https://CRAN.R-project.org/package=word2vec}}
+#'   \item{\url{https://github.com/maxoodf/word2vec}}
+#' }
+#' GloVe:
+#' \itemize{
+#'   \item{\url{https://CRAN.R-project.org/package=text2vec}}
+#'   \item{\url{https://CRAN.R-project.org/package=rsparse}}
+#' }
+#' FastText:
+#' \itemize{
+#'   \item{\url{https://CRAN.R-project.org/package=fastTextR}}
+#' }
 #'
 #' @examples
 #' text = text2vec::movie_review
@@ -1779,10 +1796,10 @@ train_wordvec = function(
     wv = data_wordvec_reshape(as.matrix(model), to="dense", normalize=normalize)
   }
   if(method == "glove") {
-    #
+    model = rsparse::GloVe
   }
   if(method == "fasttext") {
-    #
+    model = fastTextR::fasttext()
   }
   wv = left_join(wv, freq, by=c("word"="token"))
   wv = wv[order(-freq), ]

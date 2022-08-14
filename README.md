@@ -2,7 +2,7 @@
 
 Toolkit for Word Embedding Research in Psychological Science.
 
-An integrated word-vector toolkit that provides: (1) a collection of pre-trained [word vectors](https://en.wikipedia.org/wiki/Word_embedding) in the `.RData` format ([WordVector_RData.pdf](https://psychbruce.github.io/WordVector_RData.pdf)); (2) a variety of functions for processing, analyzing, and visualizing word vectors (e.g., find the most similar words to a given word); (3) a range of tests (e.g., Word-Embedding Association Test) for examining psychological effects (e.g., implicit attitude/bias); and (4) a set of training methods ([word2vec](https://en.wikipedia.org/wiki/Word2vec), [GloVe](https://en.wikipedia.org/wiki/GloVe), [fastText](https://en.wikipedia.org/wiki/FastText)) for learning word vectors from new text corpora (*coming soon*).
+An integrated word-vector toolkit that provides: (1) a collection of pre-trained [word vectors](https://en.wikipedia.org/wiki/Word_embedding) in the `.RData` format ([WordVector_RData.pdf](https://psychbruce.github.io/WordVector_RData.pdf)); (2) a variety of functions for processing, analyzing, and visualizing word vectors (e.g., find the most similar words to a given word); (3) a range of tests (e.g., Word-Embedding Association Test) for examining psychological effects (e.g., implicit attitude/bias); and (4) a set of training methods ([Word2Vec](https://en.wikipedia.org/wiki/Word2vec), [GloVe](https://en.wikipedia.org/wiki/GloVe), [FastText](https://en.wikipedia.org/wiki/FastText)) for learning word vectors from text corpora.
 
 <!-- badges: start -->
 
