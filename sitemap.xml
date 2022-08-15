@@ -61,18 +61,18 @@
     <loc>https://psychbruce.github.io/PsychWordVec/reference/reexports.html</loc>
   </url>
   <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/tab_RND.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/tab_WEAT.html</loc>
-  </url>
-  <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/tab_similarity.html</loc>
   </url>
   <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/train_wordvec.html</loc>
+    <loc>https://psychbruce.github.io/PsychWordVec/reference/test_RND.html</loc>
   </url>
   <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/utf8_split_default.html</loc>
+    <loc>https://psychbruce.github.io/PsychWordVec/reference/test_WEAT.html</loc>
+  </url>
+  <url>
+    <loc>https://psychbruce.github.io/PsychWordVec/reference/tokenize.html</loc>
+  </url>
+  <url>
+    <loc>https://psychbruce.github.io/PsychWordVec/reference/train_wordvec.html</loc>
   </url>
 </urlset>
