@@ -34,11 +34,14 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-d.plain = data_wordvec_reshape(demodata, to="plain")
+d = head(demodata, 10)
+d
+
+d.plain = data_wordvec_reshape(d, to="plain")
 d.plain
 
 d.dense = data_wordvec_reshape(d.plain, to="dense")
-d.dense  # identical to `demodata`
+d.dense  # identical to `d`
 
 }
 \seealso{

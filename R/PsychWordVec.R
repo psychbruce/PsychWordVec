@@ -442,11 +442,14 @@ normalize = function(data) {
 #' \code{\link{data_wordvec_subset}}
 #'
 #' @examples
-#' d.plain = data_wordvec_reshape(demodata, to="plain")
+#' d = head(demodata, 10)
+#' d
+#'
+#' d.plain = data_wordvec_reshape(d, to="plain")
 #' d.plain
 #'
 #' d.dense = data_wordvec_reshape(d.plain, to="dense")
-#' d.dense  # identical to `demodata`
+#' d.dense  # identical to `d`
 #'
 #' @export
 data_wordvec_reshape = function(data, to=c("plain", "dense"),
@@ -770,7 +773,8 @@ get_wordvecs = function(data, words=NULL, pattern=NULL,
 
 #' Visualize word vectors.
 #'
-#' @param dt A \code{data.table} returned from \code{\link{get_wordvecs}}.
+#' @param dt A \code{data.table} returned from \code{\link{get_wordvecs}}
+#' or loaded by \code{\link{data_wordvec_load}}.
 #' @param dims Dimensions to be plotted (e.g., \code{1:100}).
 #' Defaults to \code{NULL} (plot all dimensions).
 #' @param step Step for value breaks. Defaults to \code{0.05}.
@@ -820,6 +824,8 @@ get_wordvecs = function(data, words=NULL, pattern=NULL,
 #'
 #' @export
 plot_wordvec = function(dt, dims=NULL, step=0.05, border="white") {
+  if(!is.null(attr(dt, "normalized")))
+    dt = as.data.table(t(data_wordvec_reshape(dt)))
   if(!is.null(dims)) dt = dt[dims, ]
   steps = step*(0:100)
   breaks = sort(unique(c(steps, -steps)))
@@ -933,6 +939,8 @@ plot_wordvec_tSNE = function(dt, dims=2, colors=NULL, seed=NULL,
                              perplexity=floor((length(dt)-1)/3),
                              theta=0.5,
                              custom.Rtsne=NULL) {
+  if(!is.null(attr(dt, "normalized")))
+    dt = as.data.table(t(data_wordvec_reshape(dt)))
   if(is.null(custom.Rtsne)) {
     if(length(dt) < 4)
       stop("`dt` must contain at least 4 words (columns).", call.=FALSE)
@@ -1180,9 +1188,9 @@ pair_similarity = function(data, word1, word2, distance=FALSE) {
 #' \url{https://psychbruce.github.io/WordVector_RData.pdf}
 #'
 #' @seealso
-#' \code{\link{tab_WEAT}}
+#' \code{\link{test_WEAT}}
 #'
-#' \code{\link{tab_RND}}
+#' \code{\link{test_RND}}
 #'
 #' @examples
 #' tab_similarity(demodata, cc("king, queen, man, woman"))
@@ -1225,7 +1233,7 @@ tab_similarity = function(data, words=NULL, pattern=NULL,
 }
 
 
-#' Tabulate data for Word Embedding Association Test (WEAT).
+#' Word Embedding Association Test (WEAT) and Single-Category WEAT.
 #'
 #' Tabulate data (cosine similarity and standardized effect size) for
 #' \emph{Word Embedding Association Test} (WEAT) and
@@ -1279,12 +1287,12 @@ tab_similarity = function(data, words=NULL, pattern=NULL,
 #' @seealso
 #' \code{\link{tab_similarity}}
 #'
-#' \code{\link{tab_RND}}
+#' \code{\link{test_RND}}
 #'
 #' @examples
 #' ## Remember: cc() is more convenient than c()!
 #'
-#' weat = tab_WEAT(
+#' weat = test_WEAT(
 #'   demodata,
 #'   T1=cc("king, King"),
 #'   T2=cc("queen, Queen"),
@@ -1293,7 +1301,7 @@ tab_similarity = function(data, words=NULL, pattern=NULL,
 #'   labels=list(T1="King", T2="Queen", A1="Male", A2="Female"))
 #' weat
 #'
-#' weat = tab_WEAT(
+#' weat = test_WEAT(
 #'   demodata,
 #'   T1="^[kK]ing$",
 #'   T2="^[qQ]ueen$",
@@ -1303,7 +1311,7 @@ tab_similarity = function(data, words=NULL, pattern=NULL,
 #'   labels=list(T1="King", T2="Queen", A1="Male", A2="Female"))
 #' weat
 #'
-#' sc_weat = tab_WEAT(
+#' sc_weat = test_WEAT(
 #'   demodata,
 #'   T1=cc("
 #'     architect, boss, leader, engineer, CEO, officer, manager,
@@ -1316,8 +1324,8 @@ tab_similarity = function(data, words=NULL, pattern=NULL,
 #' sc_weat
 #'
 #' @export
-tab_WEAT = function(data, T1, T2, A1, A2,
-                    use.pattern=FALSE, labels) {
+test_WEAT = function(data, T1, T2, A1, A2,
+                     use.pattern=FALSE, labels) {
   if(missing(A1)) stop("Please specify `A1`.", call.=FALSE)
   if(missing(A2)) stop("Please specify `A2`.", call.=FALSE)
   if(missing(T1)) stop("Please specify `T1`.", call.=FALSE)
@@ -1432,13 +1440,13 @@ tab_WEAT = function(data, T1, T2, A1, A2,
 }
 
 
-#' Tabulate data for Relative Norm Distance (RND) analysis.
+#' Relative Norm Distance (RND) analysis.
 #'
 #' Tabulate data for \emph{Relative Norm Distance} (RND;
 #' also known as \emph{Relative Euclidean Distance}) analysis.
-#' This is an alternative method to \link[PsychWordVec:tab_WEAT]{Single-Category WEAT}.
+#' This is an alternative method to \link[PsychWordVec:test_WEAT]{Single-Category WEAT}.
 #'
-#' @inheritParams tab_WEAT
+#' @inheritParams test_WEAT
 #' @param T1 Target words of a single category (a vector of words or a pattern of regular expression).
 #' @param labels Labels for target and attribute concepts (a named \code{list}),
 #' such as (the default)
@@ -1481,10 +1489,10 @@ tab_WEAT = function(data, T1, T2, A1, A2,
 #' @seealso
 #' \code{\link{tab_similarity}}
 #'
-#' \code{\link{tab_WEAT}}
+#' \code{\link{test_WEAT}}
 #'
 #' @examples
-#' rnd = tab_RND(
+#' rnd = test_RND(
 #'   demodata,
 #'   T1=cc("
 #'     architect, boss, leader, engineer, CEO, officer, manager,
@@ -1497,9 +1505,9 @@ tab_WEAT = function(data, T1, T2, A1, A2,
 #' rnd
 #'
 #' @export
-tab_RND = function(data, T1, A1, A2,
-                   use.pattern=FALSE, labels,
-                   rev=FALSE) {
+test_RND = function(data, T1, A1, A2,
+                    use.pattern=FALSE, labels,
+                    rev=FALSE) {
   if(missing(A1)) stop("Please specify `A1`.", call.=FALSE)
   if(missing(A2)) stop("Please specify `A2`.", call.=FALSE)
   if(missing(T1)) stop("Please specify `T1`.", call.=FALSE)
@@ -1567,18 +1575,17 @@ tab_RND = function(data, T1, A1, A2,
 #### Train Static Word Vectors ####
 
 
-#' Default UTF-8 separators used to split words and sentences.
-#'
-#' Used only in \code{\link{train_wordvec}}.
-#'
-#' @return
-#' A character vector of length 2:
-#' (1) the first element indicates how to split words and
-#' (2) the second element indicates how to split sentences.
-#'
-#' @examples
-#' utf8_split_default()
-#' @export
+## Default UTF-8 separators used to split words and sentences.
+##
+## Used only in \code{\link{train_wordvec}}.
+##
+## @return
+## A character vector of length 2:
+## (1) the first element indicates how to split words and
+## (2) the second element indicates how to split sentences.
+##
+## @examples
+## utf8_split_default()
 utf8_split_default = function() {
   c(paste0(" \n,.-?!:;/\"#$%&'()*+<=>@[]\\^_`{|}~\t\v\f\r",
            "\u3001\u3002\uff01\uff02\uff03\uff04\uff05\uff06\uff07\uff08\uff09\uff0a\uff0b\uff0c\uff0d\uff0e\uff0f",
@@ -1587,9 +1594,58 @@ utf8_split_default = function() {
 }
 
 
-pre_tokenize = function(text, tokenizer, collapse="\t") {
+#' Tokenize raw texts for training word vectors.
+#'
+#' @param text Character vector (strings).
+#' @param tokenizer Function used to tokenize the text.
+#' Defaults to \code{\link[text2vec:tokenizers]{text2vec::word_tokenizer}}.
+#' @param split Separator between tokens, only used when \code{simplify=TRUE}.
+#' Defaults to \code{" "}.
+#' @param remove Strings (in regular expression) to be removed from the text.
+#' Defaults to \code{"_|'\\\\w+|<br/>|<br />|e\\\\.g\\\\.|i\\\\.e\\\\."}.
+#' You may turn off this by specifying \code{remove=NULL}.
+#' @param simplify Return a character vector (\code{TRUE}) or a list of character vectors (\code{FALSE}).
+#' Defaults to \code{TRUE}.
+#'
+#' @return
+#' \itemize{
+#'   \item{\code{simplify=TRUE}: A tokenized character vector,
+#'   with each element as a sentence.}
+#'   \item{\code{simplify=FALSE}: A list of tokenized character vectors,
+#'   with each element as a vector of tokens in a sentence.}
+#' }
+#'
+#' @examples
+#' txt1 = c(
+#'   "I love natural language processing (NLP)!",
+#'   "I've been in this city for 10 years. I really like here!",
+#'   "However, my computer is not among the \"Top 10\" list."
+#' )
+#' tokenize(txt1, simplify=FALSE)
+#' tokenize(txt1) %>% cat(sep="\n----\n")
+#'
+#' txt2 = text2vec::movie_review$review[1:5]
+#' tokens = tokenize(txt2)
+#'
+#' @export
+tokenize = function(text,
+                    tokenizer=text2vec::word_tokenizer,
+                    split=" ",
+                    remove="_|'\\w+|<br/>|<br />|e\\.g\\.|i\\.e\\.",
+                    simplify=TRUE) {
+  t0 = Sys.time()
+  split.sentence = "\\n|\\.|:|;|\\?|\\!|\u3002|\uff1f|\uff01|\u2026"
+  if(!is.null(remove)) text = str_remove_all(text, remove)
+  text = str_trim(unlist(strsplit(text, split.sentence)))
   tokens = tokenizer(text)
-  vapply(tokens, paste, collapse=collapse, FUN.VALUE=character(1))
+  texts = vapply(tokens, paste, collapse=split, FUN.VALUE=character(1))
+  texts = texts[texts!=""]
+  gc()
+  Print("<<green \u221a>> Tokenized: {length(texts)} sentences (time cost = {dtime(t0, 'auto')})")
+  if(simplify)
+    return(texts)
+  else
+    return(tokens)
 }
 
 
@@ -1602,9 +1658,9 @@ pre_tokenize = function(text, tokenizer, collapse="\t") {
 #'
 #' @inheritParams data_transform
 #' @inheritParams data_wordvec_load
-#' @param x A character vector of text or a file path on disk containing the text.
-#' @param tokenizer Function used to tokenize the text.
-#' Defaults to \code{\link[text2vec:space_tokenizer]{text2vec::space_tokenizer()}}.
+#' @inheritParams tokenize
+#' @param x A file path on disk containing the text
+#' or a character vector of the text.
 #' @param method Training algorithm:
 #' \itemize{
 #'   \item{\code{"word2vec"} (default): using the \code{\link[word2vec:word2vec]{word2vec}} package}
@@ -1657,19 +1713,17 @@ pre_tokenize = function(text, tokenizer, collapse="\t") {
 #'
 #' Subsampling of frequent words (threshold for occurrence of words).
 #' Those that appear with higher frequency in the training data will be randomly down-sampled.
-#' Defaults to \code{0.001}.
+#' Defaults to \code{0.001} for Word2Vec and \code{0.0001} for FastText.
 #'
-#' @param alpha \strong{<Only for Word2Vec / FastText>}
+#' @param learning \strong{<Only for Word2Vec / FastText>}
 #'
 #' Initial (starting) learning rate, also known as alpha.
 #' Defaults to \code{0.05}.
 #'
-#' @param split \strong{<Only for Word2Vec>}
+#' @param ngrams \strong{<Only for FastText>}
 #'
-#' A character vector of length 2:
-#' (1) the first element indicates how to split words and
-#' (2) the second element indicates how to split sentences.
-#' Defaults to a pre-defined \code{\link{utf8_split_default}}.
+#' Minimal and maximal ngram length.
+#' Defaults to \code{c(3, 6)}.
 #'
 #' @param stopwords \strong{<Only for Word2Vec / GloVe>}
 #'
@@ -1688,6 +1742,9 @@ pre_tokenize = function(text, tokenizer, collapse="\t") {
 #' @section Download:
 #' Download pre-trained word vectors data (\code{.RData}):
 #' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#'
+#' @seealso
+#' \code{\link{tokenize}}
 #'
 #' @references
 #' All-in-one package:
@@ -1719,12 +1776,23 @@ pre_tokenize = function(text, tokenizer, collapse="\t") {
 #'   method="word2vec",
 #'   model="skip-gram", loss="ns",
 #'   dims=50, window=5)  # 50 dims for faster code check
-#' most_similar(dt1, ~ father - he + she)
+#' most_similar(dt1, ~ man - he + she)
+#' most_similar(dt1, ~ boy - he + she)
+#'
+#' ## FastText
+#' dt3 = train_wordvec(
+#'   text$review,
+#'   method="fasttext",
+#'   model="skip-gram", loss="ns",
+#'   dims=50, window=5)  # 50 dims for faster code check
+#' most_similar(dt3, ~ man - he + she)
+#' most_similar(dt3, ~ boy - he + she)
 #'
 #' @export
 train_wordvec = function(
     x,
-    tokenizer=text2vec::space_tokenizer,
+    tokenizer,
+    remove,
     method=c("word2vec", "glove", "fasttext"),
     dims=300,
     window=5,
@@ -1734,16 +1802,26 @@ train_wordvec = function(
     model=c("skip-gram", "cbow"),
     loss=c("ns", "hs"),
     negative=5,
-    subsample=0.001,
-    alpha=0.05,
-    split=utf8_split_default(),
+    subsample,
+    learning=0.05,
+    ngrams=c(3, 6),
     stopwords=character(),
     encoding="UTF-8",
     normalize=FALSE,
     file.save=NULL) {
+
   ## Initialize
   if(dims < 0)
     stop("`dims` must be a positive integer.", call.=FALSE)
+  if(missing(tokenizer))
+    tokenizer = text2vec::word_tokenizer
+  if(missing(remove))
+    remove = "_|'\\w+|<br/>|<br />|e\\.g\\.|i\\.e\\."  # see tokenize()
+  if(missing(subsample)) {
+    if(method=="word2vec") subsample = 0.001
+    if(method=="fasttext") subsample = 0.0001
+    if(method=="glove") subsample = NA
+  }
   method = match.arg(method)
   model = match.arg(model)
   loss = match.arg(loss)
@@ -1753,29 +1831,32 @@ train_wordvec = function(
     if(file.exists(x)) {
       t0 = Sys.time()
       Print("Reading text from file...")
-      x = readLines(x, encoding=encoding)
+      x = readLines(x, encoding=encoding, warn=FALSE)
       Print("<<green \u221a>> Raw text corpus has been loaded (time cost = {dtime(t0, 'auto')})")
     }
   }
-  text = pre_tokenize(x, tokenizer, "\t")
-  tokens = pre_tokenize(x, text2vec::word_tokenizer, "\t") %>%
-    paste(collapse="\t") %>%
-    str_split("\t", simplify=TRUE) %>%
-    as.character()
+
+  ## Tokenize text and count token/word frequency
+  split = ifelse(model=="word2vec", "\t", " ")
+  text = tokenize(x, tokenizer, split, remove)  # Print()
+  tokens = unlist(strsplit(text, split))
   freq = as.data.table(table(tokens))
   names(freq) = c("token", "freq")
-  Print("<<blue *>> Text corpus: {length(text)} rows, {length(tokens)} tokens (roughly words)")
+  Print("<<blue *>> Text corpus: {sum(nchar(tokens))} characters, {length(tokens)} tokens (roughly words)")
 
   ## Train word vectors
+  t1 = Sys.time()
   Print("<<blue *>> Training model info:
         - Method:      {method}
         - Dimensions:  {dims}
         - Window size: {window}
         - Subsampling: {subsample}
         - Min. freq.:  {min.count}
+        Training...
         ")
-  t1 = Sys.time()
   gc()
+
+  ##---- Word2Vec ----##
   if(method == "word2vec") {
     model = word2vec::word2vec(
       x = text,
@@ -1783,28 +1864,57 @@ train_wordvec = function(
       dim = dims,
       window = window,
       iter = iteration,
-      lr = alpha,
+      lr = learning,
       hs = ifelse(loss == "hs", TRUE, FALSE),
       negative = negative,
       sample = subsample,
       min_count = min.count,
-      split = split,
       stopwords = stopwords,
       threads = threads,
       encoding = encoding
     )
-    wv = data_wordvec_reshape(as.matrix(model), to="dense", normalize=normalize)
+    wv = as.matrix(model) %>%
+      data_wordvec_reshape(to="dense", normalize=normalize)
   }
+
+  ##---- GloVe ----##
   if(method == "glove") {
     model = rsparse::GloVe
   }
+
+  ##---- FastText ----##
   if(method == "fasttext") {
-    model = fastTextR::fasttext()
+    tmp_file_text = tempfile()
+    on.exit({
+      if(file.exists(tmp_file_text)) file.remove(tmp_file_text)
+    })
+    writeLines(text, tmp_file_text)
+    control = fastTextR::ft_control(
+      loss = loss,
+      learning_rate = learning,
+      word_vec_size = dims,
+      window_size = window,
+      epoch = iteration,
+      min_count = min.count,
+      neg = negative,
+      min_ngram = ngrams[1],
+      max_ngram = ngrams[2],
+      nthreads = threads,
+      threshold = subsample)
+    model = fastTextR::ft_train(
+      file = tmp_file_text,
+      method = gsub("-", "", model),
+      control = control)
+    wv = as.matrix(model$word_vectors(model$words())) %>%
+      data_wordvec_reshape(to="dense", normalize=normalize)
   }
+
+  ## Order by word frequency
   wv = left_join(wv, freq, by=c("word"="token"))
-  wv = wv[order(-freq), ]
+  wv = wv[order(-freq), ][freq>=min.count, ]
+
   gc()
-  Print("<<green \u221a>> Word vectors have been trained (time cost = {dtime(t1, 'auto')})")
+  Print("<<green \u221a>> Word vectors trained: {nrow(wv)} valid tokens (time cost = {dtime(t1, 'auto')})")
 
   return(wv)
 }

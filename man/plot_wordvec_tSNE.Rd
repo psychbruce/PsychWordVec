@@ -15,7 +15,8 @@ plot_wordvec_tSNE(
 )
 }
 \arguments{
-\item{dt}{A \code{data.table} returned from \code{\link{get_wordvecs}}.}
+\item{dt}{A \code{data.table} returned from \code{\link{get_wordvecs}}
+or loaded by \code{\link{data_wordvec_load}}.}
 
 \item{dims}{Output dimensionality: \code{2} (default, the most common choice) or \code{3}.}
 

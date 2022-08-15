@@ -6,7 +6,8 @@
 \usage{
 train_wordvec(
   x,
-  tokenizer = text2vec::space_tokenizer,
+  tokenizer,
+  remove,
   method = c("word2vec", "glove", "fasttext"),
   dims = 300,
   window = 5,
@@ -16,9 +17,9 @@ train_wordvec(
   model = c("skip-gram", "cbow"),
   loss = c("ns", "hs"),
   negative = 5,
-  subsample = 0.001,
-  alpha = 0.05,
-  split = utf8_split_default(),
+  subsample,
+  learning = 0.05,
+  ngrams = c(3, 6),
   stopwords = character(),
   encoding = "UTF-8",
   normalize = FALSE,
@@ -26,10 +27,15 @@ train_wordvec(
 )
 }
 \arguments{
-\item{x}{A character vector of text or a file path on disk containing the text.}
+\item{x}{A file path on disk containing the text
+or a character vector of the text.}
 
 \item{tokenizer}{Function used to tokenize the text.
-Defaults to \code{\link[text2vec:space_tokenizer]{text2vec::space_tokenizer()}}.}
+Defaults to \code{\link[text2vec:tokenizers]{text2vec::word_tokenizer}}.}
+
+\item{remove}{Strings (in regular expression) to be removed from the text.
+Defaults to \code{"_|'\\\\w+|<br/>|<br />|e\\\\.g\\\\.|i\\\\.e\\\\."}.
+You may turn off this by specifying \code{remove=NULL}.}
 
 \item{method}{Training algorithm:
 \itemize{
@@ -88,19 +94,17 @@ Defaults to \code{5}.}
 
 Subsampling of frequent words (threshold for occurrence of words).
 Those that appear with higher frequency in the training data will be randomly down-sampled.
-Defaults to \code{0.001}.}
+Defaults to \code{0.001} for Word2Vec and \code{0.0001} for FastText.}
 
-\item{alpha}{\strong{<Only for Word2Vec / FastText>}
+\item{learning}{\strong{<Only for Word2Vec / FastText>}
 
 Initial (starting) learning rate, also known as alpha.
 Defaults to \code{0.05}.}
 
-\item{split}{\strong{<Only for Word2Vec>}
+\item{ngrams}{\strong{<Only for FastText>}
 
-A character vector of length 2:
-(1) the first element indicates how to split words and
-(2) the second element indicates how to split sentences.
-Defaults to a pre-defined \code{\link{utf8_split_default}}.}
+Minimal and maximal ngram length.
+Defaults to \code{c(3, 6)}.}
 
 \item{stopwords}{\strong{<Only for Word2Vec / GloVe>}
 
@@ -143,7 +147,17 @@ dt1 = train_wordvec(
   method="word2vec",
   model="skip-gram", loss="ns",
   dims=50, window=5)  # 50 dims for faster code check
-most_similar(dt1, ~ father - he + she)
+most_similar(dt1, ~ man - he + she)
+most_similar(dt1, ~ boy - he + she)
+
+## FastText
+dt3 = train_wordvec(
+  text$review,
+  method="fasttext",
+  model="skip-gram", loss="ns",
+  dims=50, window=5)  # 50 dims for faster code check
+most_similar(dt3, ~ man - he + she)
+most_similar(dt3, ~ boy - he + she)
 
 }
 \references{
@@ -165,4 +179,7 @@ FastText:
 \itemize{
   \item{\url{https://CRAN.R-project.org/package=fastTextR}}
 }
+}
+\seealso{
+\code{\link{tokenize}}
 }

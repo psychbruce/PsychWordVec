@@ -54,7 +54,7 @@ tab_similarity(demodata, cc("Beijing, China, Tokyo, Japan"),
 
 }
 \seealso{
-\code{\link{tab_WEAT}}
+\code{\link{test_WEAT}}
 
-\code{\link{tab_RND}}
+\code{\link{test_RND}}
 }
