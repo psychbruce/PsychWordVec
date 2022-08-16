@@ -65,25 +65,28 @@ with multi-threading.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">train_wordvec</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
-<span>  <span class="va">tokenizer</span>,</span>
-<span>  <span class="va">remove</span>,</span>
 <span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"word2vec"</span>, <span class="st">"glove"</span>, <span class="st">"fasttext"</span><span class="op">)</span>,</span>
 <span>  dims <span class="op">=</span> <span class="fl">300</span>,</span>
 <span>  window <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  min.count <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  iteration <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  min.freq <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  threads <span class="op">=</span> <span class="fl">8</span>,</span>
-<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"skip-gram"</span>, <span class="st">"cbow"</span><span class="op">)</span>,</span>
 <span>  loss <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ns"</span>, <span class="st">"hs"</span><span class="op">)</span>,</span>
 <span>  negative <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  subsample <span class="op">=</span> <span class="fl">1e-04</span>,</span>
 <span>  learning <span class="op">=</span> <span class="fl">0.05</span>,</span>
 <span>  ngrams <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">6</span><span class="op">)</span>,</span>
-<span>  stopwords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  max.x <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  convergence <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,</span>
+<span>  stopwords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  encoding <span class="op">=</span> <span class="st">"UTF-8"</span>,</span>
+<span>  tolower <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  normalize <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  file.save <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  <span class="va">iteration</span>,</span>
+<span>  <span class="va">tokenizer</span>,</span>
+<span>  <span class="va">remove</span>,</span>
+<span>  <span class="va">file.save</span>,</span>
+<span>  compress <span class="op">=</span> <span class="st">"bzip2"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -94,20 +97,9 @@ with multi-threading.</p>
 or a character vector of the text.</p></dd>
 
 
-<dt>tokenizer</dt>
-<dd><p>Function used to tokenize the text.
-Defaults to <code><a href="https://rdrr.io/pkg/text2vec/man/tokenizers.html" class="external-link">text2vec::word_tokenizer</a></code>.</p></dd>
-
-
-<dt>remove</dt>
-<dd><p>Strings (in regular expression) to be removed from the text.
-Defaults to <code>"_|'|&lt;br/&gt;|&lt;br /&gt;|e\\.g\\.|i\\.e\\."</code>.
-You may turn off this by specifying <code>remove=NULL</code>.</p></dd>
-
-
 <dt>method</dt>
 <dd><p>Training algorithm:</p><ul><li><p><code>"word2vec"</code> (default): using the <code><a href="https://rdrr.io/pkg/word2vec/man/word2vec.html" class="external-link">word2vec</a></code> package</p></li>
-<li><p><code>"glove"</code>: using the <code><a href="https://rdrr.io/pkg/rsparse/man/GloVe.html" class="external-link">rsparse</a></code> package</p></li>
+<li><p><code>"glove"</code>: using the <code><a href="https://rdrr.io/pkg/rsparse/man/GloVe.html" class="external-link">rsparse</a></code> and <code><a href="https://rdrr.io/pkg/text2vec/man/text2vec.html" class="external-link">text2vec</a></code> packages</p></li>
 <li><p><code>"fasttext"</code>: using the <code><a href="https://rdrr.io/pkg/fastTextR/man/ft_train.html" class="external-link">fastTextR</a></code> package</p></li>
 </ul></dd>
 
@@ -125,17 +117,10 @@ It defines how many surrounding words to be included in training:
 Defaults to <code>5</code>.</p></dd>
 
 
-<dt>min.count</dt>
+<dt>min.freq</dt>
 <dd><p>Minimum frequency of words to be included in training.
 Words that appear less than this value of times will be excluded from vocabulary.
-Defaults to <code>5</code>.</p></dd>
-
-
-<dt>iteration</dt>
-<dd><p>Number of training iterations.
-More iterations makes a more precise model,
-but computational cost is linearly proportional to iterations.
-Defaults to <code>5</code>.</p></dd>
+Defaults to <code>5</code> (take words that appear at least five times).</p></dd>
 
 
 <dt>threads</dt>
@@ -143,10 +128,6 @@ Defaults to <code>5</code>.</p></dd>
 A modest value produces the fastest training.
 Too many threads are not always helpful.
 Defaults to <code>8</code>.</p></dd>
-
-
-<dt>seed</dt>
-<dd><p>Random seed to obtain reproducible results. Defaults to <code>NULL</code>.</p></dd>
 
 
 <dt>model</dt>
@@ -190,6 +171,17 @@ Defaults to <code>0.05</code>.</p></dd>
 Defaults to <code>c(3, 6)</code>.</p></dd>
 
 
+<dt>max.x</dt>
+<dd><p><strong>&lt;Only for GloVe&gt;</strong></p>
+<p>Maximum number of co-occurrences to use in the weighting function.
+Defaults to <code>10</code>.</p></dd>
+
+
+<dt>convergence</dt>
+<dd><p><strong>&lt;Only for GloVe&gt;</strong></p>
+<p>Convergence tolerance for SGD iterations. Defaults to <code>-1</code>.</p></dd>
+
+
 <dt>stopwords</dt>
 <dd><p><strong>&lt;Only for Word2Vec / GloVe&gt;</strong></p>
 <p>A character vector of stopwords to be excluded from training.</p></dd>
@@ -200,13 +192,45 @@ Defaults to <code>c(3, 6)</code>.</p></dd>
 Defaults to <code>"UTF-8"</code>.</p></dd>
 
 
+<dt>tolower</dt>
+<dd><p>Convert all upper-case characters to lower-case?
+Defaults to <code>FALSE</code>.</p></dd>
+
+
 <dt>normalize</dt>
 <dd><p>Normalize all word vectors to unit length?
 Defaults to <code>FALSE</code>. See <code><a href="data_wordvec_normalize.html">data_wordvec_normalize</a></code>.</p></dd>
 
 
+<dt>iteration</dt>
+<dd><p>Number of training iterations.
+More iterations makes a more precise model,
+but computational cost is linearly proportional to iterations.
+Defaults to <code>5</code> for Word2Vec and FastText and
+<code>10</code> for GloVe.</p></dd>
+
+
+<dt>tokenizer</dt>
+<dd><p>Function used to tokenize the text.
+Defaults to <code><a href="https://rdrr.io/pkg/text2vec/man/tokenizers.html" class="external-link">text2vec::word_tokenizer</a></code>.</p></dd>
+
+
+<dt>remove</dt>
+<dd><p>Strings (in regular expression) to be removed from the text.
+Defaults to <code>"_|'|&lt;br/&gt;|&lt;br /&gt;|e\\.g\\.|i\\.e\\."</code>.
+You may turn off this by specifying <code>remove=NULL</code>.</p></dd>
+
+
 <dt>file.save</dt>
 <dd><p>File name of to-be-saved R data (must be .RData).</p></dd>
+
+
+<dt>compress</dt>
+<dd><p>Compression method for the saved file. Defaults to <code>"bzip2"</code>.</p>
+<p>Options can be:</p><ul><li><p><code>1</code> or <code>"gzip"</code>: modest file size (fastest)</p></li>
+<li><p><code>2</code> or <code>"bzip2"</code>: small file size (fast)</p></li>
+<li><p><code>3</code> or <code>"xz"</code>: minimized file size (slow)</p></li>
+</ul></dd>
 
 </dl></div>
     <div class="section level2">
@@ -214,7 +238,7 @@ Defaults to <code>FALSE</code>. See <code><a href="data_wordvec_normalize.html">
     
 
 <p>A <code>data.table</code> (of new class <code>wordvec</code>) with two variables:</p><dl><dt><code>word</code></dt>
-<dd><p>words</p></dd>
+<dd><p>words (tokens)</p></dd>
 
   <dt><code>vec</code></dt>
 <dd><p><strong>raw</strong> <em>or</em> <strong>normalized</strong> word vectors</p></dd>
@@ -231,11 +255,15 @@ Defaults to <code>FALSE</code>. See <code><a href="data_wordvec_normalize.html">
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>All-in-one package:</p><ul><li><p><a href="https://CRAN.R-project.org/package=wordsalad" class="external-link">https://CRAN.R-project.org/package=wordsalad</a></p></li>
-</ul><p>Word2Vec:</p><ul><li><p><a href="https://CRAN.R-project.org/package=word2vec" class="external-link">https://CRAN.R-project.org/package=word2vec</a></p></li>
+</ul><p>Word2Vec:</p><ul><li><p><a href="https://code.google.com/archive/p/word2vec/" class="external-link">https://code.google.com/archive/p/word2vec/</a></p></li>
+<li><p><a href="https://CRAN.R-project.org/package=word2vec" class="external-link">https://CRAN.R-project.org/package=word2vec</a></p></li>
 <li><p><a href="https://github.com/maxoodf/word2vec" class="external-link">https://github.com/maxoodf/word2vec</a></p></li>
-</ul><p>GloVe:</p><ul><li><p><a href="https://CRAN.R-project.org/package=text2vec" class="external-link">https://CRAN.R-project.org/package=text2vec</a></p></li>
+</ul><p>GloVe:</p><ul><li><p><a href="https://nlp.stanford.edu/projects/glove/" class="external-link">https://nlp.stanford.edu/projects/glove/</a></p></li>
+<li><p><a href="https://text2vec.org/glove.html" class="external-link">https://text2vec.org/glove.html</a></p></li>
+<li><p><a href="https://CRAN.R-project.org/package=text2vec" class="external-link">https://CRAN.R-project.org/package=text2vec</a></p></li>
 <li><p><a href="https://CRAN.R-project.org/package=rsparse" class="external-link">https://CRAN.R-project.org/package=rsparse</a></p></li>
-</ul><p>FastText:</p><ul><li><p><a href="https://CRAN.R-project.org/package=fastTextR" class="external-link">https://CRAN.R-project.org/package=fastTextR</a></p></li>
+</ul><p>FastText:</p><ul><li><p><a href="https://fasttext.cc/" class="external-link">https://fasttext.cc/</a></p></li>
+<li><p><a href="https://CRAN.R-project.org/package=fastTextR" class="external-link">https://CRAN.R-project.org/package=fastTextR</a></p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -244,16 +272,18 @@ Defaults to <code>FALSE</code>. See <code><a href="data_wordvec_normalize.html">
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">text</span> <span class="op">=</span> <span class="fu">text2vec</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/text2vec/man/movie_review.html" class="external-link">movie_review</a></span></span></span>
-<span class="r-in"><span><span class="co"># View(text)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">review</span> <span class="op">=</span> <span class="fu">text2vec</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/text2vec/man/movie_review.html" class="external-link">movie_review</a></span>  <span class="co"># a data.frame'</span></span></span>
+<span class="r-in"><span><span class="va">text</span> <span class="op">=</span> <span class="va">review</span><span class="op">$</span><span class="va">review</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Note: All the examples train 50 dims for faster code check.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Word2Vec (SGNS)</span></span></span>
 <span class="r-in"><span><span class="va">dt1</span> <span class="op">=</span> <span class="fu">train_wordvec</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">text</span><span class="op">$</span><span class="va">review</span>,</span></span>
+<span class="r-in"><span>  <span class="va">text</span>,</span></span>
 <span class="r-in"><span>  method<span class="op">=</span><span class="st">"word2vec"</span>,</span></span>
-<span class="r-in"><span>  model<span class="op">=</span><span class="st">"skip-gram"</span>, loss<span class="op">=</span><span class="st">"ns"</span>,</span></span>
-<span class="r-in"><span>  dims<span class="op">=</span><span class="fl">50</span>, window<span class="op">=</span><span class="fl">5</span>,  <span class="co"># 50 dims for faster code check</span></span></span>
-<span class="r-in"><span>  seed<span class="op">=</span><span class="fl">1</span>, normalize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  model<span class="op">=</span><span class="st">"skip-gram"</span>,</span></span>
+<span class="r-in"><span>  dims<span class="op">=</span><span class="fl">50</span>, window<span class="op">=</span><span class="fl">5</span>,</span></span>
+<span class="r-in"><span>  normalize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> Tokenized: 70105 sentences (time cost = 3 secs)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> Text corpus: 5242249 characters, 1185427 tokens (roughly words)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">• Training model info:</span></span>
@@ -268,49 +298,132 @@ Defaults to <code>FALSE</code>. See <code><a href="data_wordvec_normalize.html">
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> Word vectors trained: 14205 unique tokens (time cost = 12 secs)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> All word vectors have now been normalized.</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt1</span>, <span class="st">"Ive"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">as_tibble</span><span class="op">(</span><span class="va">dt1</span><span class="op">)</span>  <span class="co"># just check</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 14,205 × 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    word  vec         freq</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> the   <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">58</span>797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> and   <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">32</span>193</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> a     <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">31</span>783</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> of    <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">29</span>142</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> to    <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">27</span>218</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> is    <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">21</span>447</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> in    <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">17</span>861</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> I     <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">14</span>703</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> that  <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">13</span>618</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> it    <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">13</span>453</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 14,195 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
+<span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt1</span>, <span class="st">"Ive"</span><span class="op">)</span>  <span class="co"># evaluate performance</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ Ive</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          word   cos_sim row_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:       ive 0.8456735   3487</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:      seen 0.8446567    110</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:    animes 0.8088114  12938</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:    havent 0.8013180    766</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:  scariest 0.7853359   8510</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:  funniest 0.7815938   1542</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: overrated 0.7800306   4731</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:      weve 0.7796336   2573</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:      EVER 0.7792260   4275</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:    lately 0.7789561   5137</span>
-<span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt1</span>, <span class="op">~</span> <span class="va">man</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span>, topn<span class="op">=</span><span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       word   cos_sim row_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:    ive 0.8635328   3487</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:   seen 0.8405747    110</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: havent 0.7992097    766</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:  WORST 0.7850554   6904</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   Weve 0.7818409   6928</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:  heard 0.7800051    515</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: dozens 0.7758868   4778</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:  Youve 0.7747916   5989</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:  youve 0.7744704    943</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   ever 0.7736680    124</span>
+<span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt1</span>, <span class="op">~</span> <span class="va">man</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span>, topn<span class="op">=</span><span class="fl">5</span><span class="op">)</span>  <span class="co"># evaluate performance</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ man - he + she</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       word   cos_sim row_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:   woman 0.8772002    260</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    lady 0.7669190   1140</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    girl 0.7632540    299</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: herself 0.7486808    750</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: soldier 0.7343632   2150</span>
-<span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt1</span>, <span class="op">~</span> <span class="va">boy</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span>, topn<span class="op">=</span><span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:   woman 0.8230529    260</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    girl 0.7895806    299</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:     boy 0.7706662    478</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:   lover 0.7617026   1399</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: married 0.7448217   1213</span>
+<span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt1</span>, <span class="op">~</span> <span class="va">boy</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span>, topn<span class="op">=</span><span class="fl">5</span><span class="op">)</span>  <span class="co"># evaluate performance</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ boy - he + she</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       word   cos_sim row_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    girl 0.8077188    299</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:   woman 0.7424977    260</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: teenage 0.7032161   1855</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:     kid 0.7028569    674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:     old 0.6943371    150</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## GloVe</span></span></span>
+<span class="r-in"><span><span class="va">dt2</span> <span class="op">=</span> <span class="fu">train_wordvec</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">text</span>,</span></span>
+<span class="r-in"><span>  method<span class="op">=</span><span class="st">"glove"</span>,</span></span>
+<span class="r-in"><span>  dims<span class="op">=</span><span class="fl">50</span>, window<span class="op">=</span><span class="fl">5</span>,</span></span>
+<span class="r-in"><span>  normalize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> Tokenized: 70105 sentences (time cost = 2 secs)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> Text corpus: 5242249 characters, 1185427 tokens (roughly words)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">• Training model info:</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">- Method:      GloVe</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">- Dimensions:  50</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">- Window size: 5 (5 words behind and 5 words ahead the current word)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">- Subsampling: N/A</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">- Min. freq.:  5 occurrences in text</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">- Iterations:  10 training iterations</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">- CPU threads: 8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Training...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> Word vectors trained: 14207 unique tokens (time cost = 14 secs)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> All word vectors have now been normalized.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">as_tibble</span><span class="op">(</span><span class="va">dt2</span><span class="op">)</span>  <span class="co"># just check</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 14,207 × 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    word  vec         freq</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> the   <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">58</span>797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> and   <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">32</span>193</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> a     <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">31</span>783</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> of    <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">29</span>142</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> to    <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">27</span>218</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> is    <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">21</span>447</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> in    <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">17</span>861</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> I     <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">14</span>703</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> that  <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">13</span>618</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> it    <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">13</span>453</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 14,197 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
+<span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt2</span>, <span class="st">"Ive"</span><span class="op">)</span>  <span class="co"># evaluate performance</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ Ive</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        word   cos_sim row_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:    seen 0.9255945    110</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:    ever 0.8638863    124</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:   heard 0.8066849    515</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   worst 0.7740048    261</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   never 0.7028952    115</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:     had 0.6999854     60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:    been 0.6966094     74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: watched 0.6960053    305</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: already 0.6851796    468</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   since 0.6733927    262</span>
+<span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt2</span>, <span class="op">~</span> <span class="va">man</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span>, topn<span class="op">=</span><span class="fl">5</span><span class="op">)</span>  <span class="co"># evaluate performance</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ man - he + she</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     word   cos_sim row_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: woman 0.8958376    260</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  girl 0.8648234    299</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: young 0.7892187    198</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:   boy 0.7482518    478</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:   guy 0.7329974    244</span>
+<span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt2</span>, <span class="op">~</span> <span class="va">boy</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span>, topn<span class="op">=</span><span class="fl">5</span><span class="op">)</span>  <span class="co"># evaluate performance</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ boy - he + she</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     word   cos_sim row_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  girl 0.7869541    299</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: woman 0.7785529    260</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: young 0.7257655    197</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:  lady 0.7155206   1140</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:   kid 0.6945045    674</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## GloVe</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  girl 0.8053672    299</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: young 0.7495391    198</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: woman 0.6916399    260</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:   guy 0.6881648    244</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:   old 0.6653440    150</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## FastText</span></span></span>
 <span class="r-in"><span><span class="va">dt3</span> <span class="op">=</span> <span class="fu">train_wordvec</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">text</span><span class="op">$</span><span class="va">review</span>,</span></span>
+<span class="r-in"><span>  <span class="va">text</span>,</span></span>
 <span class="r-in"><span>  method<span class="op">=</span><span class="st">"fasttext"</span>,</span></span>
-<span class="r-in"><span>  model<span class="op">=</span><span class="st">"skip-gram"</span>, loss<span class="op">=</span><span class="st">"ns"</span>,</span></span>
-<span class="r-in"><span>  dims<span class="op">=</span><span class="fl">50</span>, window<span class="op">=</span><span class="fl">5</span>,  <span class="co"># 50 dims for faster code check</span></span></span>
-<span class="r-in"><span>  seed<span class="op">=</span><span class="fl">1</span>, normalize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> Tokenized: 70105 sentences (time cost = 3 secs)</span>
+<span class="r-in"><span>  model<span class="op">=</span><span class="st">"skip-gram"</span>,</span></span>
+<span class="r-in"><span>  dims<span class="op">=</span><span class="fl">50</span>, window<span class="op">=</span><span class="fl">5</span>,</span></span>
+<span class="r-in"><span>  normalize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> Tokenized: 70105 sentences (time cost = 2 secs)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> Text corpus: 5242249 characters, 1185427 tokens (roughly words)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">• Training model info:</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">- Method:      FastText (Skip-Gram with Negative Sampling)</span></span>
@@ -321,41 +434,57 @@ Defaults to <code>FALSE</code>. See <code><a href="data_wordvec_normalize.html">
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">- Iterations:  5 training iterations</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">- CPU threads: 8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Training...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> Word vectors trained: 14207 unique tokens (time cost = 25 secs)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> Word vectors trained: 14207 unique tokens (time cost = 23 secs)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> All word vectors have now been normalized.</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt3</span>, <span class="st">"Ive"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">as_tibble</span><span class="op">(</span><span class="va">dt3</span><span class="op">)</span>  <span class="co"># just check</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 14,207 × 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    word  vec         freq</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> the   <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">58</span>797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> and   <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">32</span>193</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> a     <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">31</span>783</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> of    <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">29</span>142</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> to    <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">27</span>218</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> is    <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">21</span>447</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> in    <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">17</span>861</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> I     <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">14</span>703</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> that  <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">13</span>618</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> it    <span style="color: #949494;">&lt;dbl [50]&gt;</span> <span style="text-decoration: underline;">13</span>453</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 14,197 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span>
+<span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt3</span>, <span class="st">"Ive"</span><span class="op">)</span>  <span class="co"># evaluate performance</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ Ive</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           word   cos_sim row_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:       seen 0.8538339    110</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:      Youve 0.8148446   5898</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:       Weve 0.8132390   6913</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:         ve 0.7762679  12894</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:      youve 0.7722750    945</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:      WORST 0.7721693   7108</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: beforehand 0.7581244   9171</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:        ive 0.7534871   3494</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:    Columbo 0.7439021   3250</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   Vonnegut 0.7314502   6816</span>
-<span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt3</span>, <span class="op">~</span> <span class="va">man</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span>, topn<span class="op">=</span><span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:      Youve 0.8326567   5898</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:       seen 0.8324782    110</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:       Weve 0.8224490   6913</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:      youve 0.7833193    945</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:      WORST 0.7800432   7108</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:         ve 0.7760066  12894</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: beforehand 0.7505060   9171</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:    funnier 0.7478976   3105</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:        ive 0.7385996   3494</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:    Columbo 0.7382617   3250</span>
+<span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt3</span>, <span class="op">~</span> <span class="va">man</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span>, topn<span class="op">=</span><span class="fl">5</span><span class="op">)</span>  <span class="co"># evaluate performance</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ man - he + she</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        word   cos_sim row_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    woman 0.8762140    261</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:     girl 0.7816305    299</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: salesman 0.7592363   5594</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: henchman 0.7483370  12263</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:   madman 0.7431983   6553</span>
-<span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt3</span>, <span class="op">~</span> <span class="va">boy</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span>, topn<span class="op">=</span><span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    woman 0.8846911    261</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: henchman 0.7657151  12263</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: salesman 0.7656195   5594</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:  caveman 0.7566824  12884</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:     girl 0.7541266    299</span>
+<span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt3</span>, <span class="op">~</span> <span class="va">boy</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span>, topn<span class="op">=</span><span class="fl">5</span><span class="op">)</span>  <span class="co"># evaluate performance</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB; font-weight: bold;">[Word Vector]</span> =~ boy - he + she</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(normalized to unit length)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     word   cos_sim row_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  girl 0.7965761    299</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: woman 0.7476886    261</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  boys 0.6991843   1045</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:   kid 0.6968321    676</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: child 0.6801343    523</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        word   cos_sim row_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:     girl 0.7589386    299</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:      kid 0.7165421    676</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    woman 0.7108567    261</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:     boys 0.6998319   1045</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: teenager 0.6713878   2364</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
