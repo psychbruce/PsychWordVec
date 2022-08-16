@@ -4,6 +4,7 @@
 
 ## New Features
 
+-   Added `wordvec` as the primary class of word vectors data: Now the data classes are `wordvec`, `data.table`, and `data.frame`, which actually perform as a `data.table`.
 -   New `train_wordvec()` function (still in development).
 -   New `tokenize()` function.
 -   New `data_wordvec_reshape()` function.

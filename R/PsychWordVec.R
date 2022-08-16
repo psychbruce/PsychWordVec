@@ -135,7 +135,7 @@ bruceR::cc
 
 
 check_data_validity = function(data) {
-  if(!is.data.table(data) | is.null(attr(data, "normalized")))
+  if(!inherits(data, "wordvec"))
     stop("Data must be loaded using `data_wordvec_load()`.", call.=FALSE)
 }
 
@@ -307,7 +307,7 @@ data_transform = function(file.load, file.save=NULL,
 #' Defaults to \code{FALSE}. See \code{\link{data_wordvec_normalize}}.
 #'
 #' @return
-#' A \code{data.table} with two variables:
+#' A \code{data.table} (of new class \code{wordvec}) with two variables:
 #' \describe{
 #'   \item{\code{word}}{words}
 #'   \item{\code{vec}}{\strong{raw} \emph{or} \strong{normalized} word vectors}
@@ -341,13 +341,12 @@ data_wordvec_load = function(file.load, normalize=FALSE) {
     stop("Data file must be preprocessed using `data_transform()`!", call.=FALSE)
   ndim = length(data[[1, "vec"]])
   attr(data, "dims") = ndim
-  attr(data, "normalized") = normalize
-  if(normalize) data = normalize(data)
-  gc()  # Garbage Collection: Free the Memory
+  attr(data, "normalized") = FALSE
+  class(data) = c("wordvec", class(data))
   cat("\015")
   Print("<<green \u221a>> Word vector data: {nrow(data)} words, {ndim} dims (loading time: {dtime(t0)})")
-  if(normalize)
-    Print("<<green \u221a>> All word vectors have now been normalized.")
+  if(normalize) data = data_wordvec_normalize(data)
+  gc()  # Garbage Collection: Free the Memory
   return(data)
 }
 
@@ -474,6 +473,7 @@ data_wordvec_reshape = function(data, to=c("plain", "dense"),
     )
     attr(data.new, "dims") = length(data.new[[1, "vec"]])
     attr(data.new, "normalized") = FALSE
+    class(data.new) = c("wordvec", class(data.new))
     if(normalize) data.new = data_wordvec_normalize(data.new)
   }
   gc()  # Garbage Collection: Free the Memory
@@ -587,6 +587,7 @@ if(FALSE) {
   # bruceR::export(demodata[, .(word)], "data-raw/demodata_1.xlsx")
   filter = bruceR::import("data-raw/demodata_filter.xlsx", as="data.table")
   demodata = d1[word %in% filter[use==1]$word]
+  class(demodata) = c("wordvec", class(demodata))
   usethis::use_data(demodata, overwrite=TRUE, compress="xz")
 
   # d2 = data_wordvec_load("data-raw/GoogleNews/word2vec_googlenews_eng_2words.RData",
@@ -614,6 +615,11 @@ if(FALSE) {
 #'
 #' @usage
 #' data(demodata)
+#'
+#' @examples
+#' class(demodata)
+#' head(demodata, 10)
+#' data_wordvec_normalize(demodata)
 #'
 #' @name demodata
 NULL
@@ -1743,7 +1749,7 @@ tokenize = function(text,
 #' Defaults to \code{"UTF-8"}.
 #'
 #' @return
-#' A \code{data.table} with two variables:
+#' A \code{data.table} (of new class \code{wordvec}) with two variables:
 #' \describe{
 #'   \item{\code{word}}{words}
 #'   \item{\code{vec}}{\strong{raw} \emph{or} \strong{normalized} word vectors}
@@ -1935,7 +1941,6 @@ train_wordvec = function(
 
   ## Normalize
   if(normalize) wv = data_wordvec_normalize(wv)
-  class(wv) = c("wordvec", class(wv))
   gc()
 
   return(wv)

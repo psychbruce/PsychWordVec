@@ -119,7 +119,7 @@ Defaults to \code{FALSE}. See \code{\link{data_wordvec_normalize}}.}
 \item{file.save}{File name of to-be-saved R data (must be .RData).}
 }
 \value{
-A \code{data.table} with two variables:
+A \code{data.table} (of new class \code{wordvec}) with two variables:
 \describe{
   \item{\code{word}}{words}
   \item{\code{vec}}{\strong{raw} \emph{or} \strong{normalized} word vectors}

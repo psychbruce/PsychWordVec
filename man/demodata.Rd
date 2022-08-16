@@ -21,3 +21,9 @@ using the "word2vec" algorithm based on the Google News corpus.
 Most of these words are from the Top 8000 frequent wordlist,
 whereas a few are selected from less frequent words and appended.
 }
+\examples{
+class(demodata)
+head(demodata, 10)
+data_wordvec_normalize(demodata)
+
+}

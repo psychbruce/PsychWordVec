@@ -14,7 +14,7 @@ data_wordvec_load(file.load, normalize = FALSE)
 Defaults to \code{FALSE}. See \code{\link{data_wordvec_normalize}}.}
 }
 \value{
-A \code{data.table} with two variables:
+A \code{data.table} (of new class \code{wordvec}) with two variables:
 \describe{
   \item{\code{word}}{words}
   \item{\code{vec}}{\strong{raw} \emph{or} \strong{normalized} word vectors}
