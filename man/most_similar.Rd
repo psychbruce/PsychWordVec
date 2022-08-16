@@ -4,7 +4,7 @@
 \alias{most_similar}
 \title{Find the Top-N most similar words.}
 \usage{
-most_similar(data, x, keep = FALSE, topn = 10, above = NULL)
+most_similar(data, x, topn = 10, keep = FALSE, above = NULL)
 }
 \arguments{
 \item{data}{A \code{data.table} with variables \code{word} and \code{vec}
@@ -33,10 +33,10 @@ loaded by \code{\link{data_wordvec_load}}.}
   \code{~ Beijing - China + Japan}}
 }}
 
+\item{topn}{Top-N most similar words. Defaults to \code{10}.}
+
 \item{keep}{Keep words specified in \code{x} in results?
 Defaults to \code{FALSE}.}
-
-\item{topn}{Top-N most similar words. Defaults to \code{10}.}
 
 \item{above}{Defaults to \code{NULL}. Can be one of the following:
 \itemize{

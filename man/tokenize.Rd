@@ -8,7 +8,7 @@ tokenize(
   text,
   tokenizer = text2vec::word_tokenizer,
   split = " ",
-  remove = "_|'\\\\w+|<br/>|<br />|e\\\\.g\\\\.|i\\\\.e\\\\.",
+  remove = "_|'|<br/>|<br />|e\\\\.g\\\\.|i\\\\.e\\\\.",
   simplify = TRUE
 )
 }
@@ -22,7 +22,7 @@ Defaults to \code{\link[text2vec:tokenizers]{text2vec::word_tokenizer}}.}
 Defaults to \code{" "}.}
 
 \item{remove}{Strings (in regular expression) to be removed from the text.
-Defaults to \code{"_|'\\\\w+|<br/>|<br />|e\\\\.g\\\\.|i\\\\.e\\\\."}.
+Defaults to \code{"_|'|<br/>|<br />|e\\\\.g\\\\.|i\\\\.e\\\\."}.
 You may turn off this by specifying \code{remove=NULL}.}
 
 \item{simplify}{Return a character vector (\code{TRUE}) or a list of character vectors (\code{FALSE}).
@@ -49,6 +49,12 @@ tokenize(txt1, simplify=FALSE)
 tokenize(txt1) \%>\% cat(sep="\n----\n")
 
 txt2 = text2vec::movie_review$review[1:5]
-tokens = tokenize(txt2)
+texts = tokenize(txt2)
 
+txt2[1]
+texts[1:20]  # all sentences in txt2[1]
+
+}
+\seealso{
+\code{\link{train_wordvec}}
 }

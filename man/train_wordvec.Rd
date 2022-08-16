@@ -34,7 +34,7 @@ or a character vector of the text.}
 Defaults to \code{\link[text2vec:tokenizers]{text2vec::word_tokenizer}}.}
 
 \item{remove}{Strings (in regular expression) to be removed from the text.
-Defaults to \code{"_|'\\\\w+|<br/>|<br />|e\\\\.g\\\\.|i\\\\.e\\\\."}.
+Defaults to \code{"_|'|<br/>|<br />|e\\\\.g\\\\.|i\\\\.e\\\\."}.
 You may turn off this by specifying \code{remove=NULL}.}
 
 \item{method}{Training algorithm:
@@ -146,18 +146,26 @@ dt1 = train_wordvec(
   text$review,
   method="word2vec",
   model="skip-gram", loss="ns",
-  dims=50, window=5)  # 50 dims for faster code check
-most_similar(dt1, ~ man - he + she)
-most_similar(dt1, ~ boy - he + she)
+  dims=50, window=5,  # 50 dims for faster code check
+  normalize=TRUE)
+
+most_similar(dt1, "Ive")
+most_similar(dt1, ~ man - he + she, topn=5)
+most_similar(dt1, ~ boy - he + she, topn=5)
+
+## GloVe
 
 ## FastText
 dt3 = train_wordvec(
   text$review,
   method="fasttext",
   model="skip-gram", loss="ns",
-  dims=50, window=5)  # 50 dims for faster code check
-most_similar(dt3, ~ man - he + she)
-most_similar(dt3, ~ boy - he + she)
+  dims=50, window=5,  # 50 dims for faster code check
+  normalize=TRUE)
+
+most_similar(dt3, "Ive")
+most_similar(dt3, ~ man - he + she, topn=5)
+most_similar(dt3, ~ boy - he + she, topn=5)
 
 }
 \references{

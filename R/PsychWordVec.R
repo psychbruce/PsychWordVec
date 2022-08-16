@@ -457,7 +457,7 @@ data_wordvec_reshape = function(data, to=c("plain", "dense"),
   to = match.arg(to)
   if(to == "plain") {
     check_data_validity(data)
-    if(normalize) data = normalize(data)
+    if(normalize) data = data_wordvec_normalize(data)
     data.new = do.call(rbind, lapply(data$vec, function(x) {
       as.matrix(t(x))  # matrix is much faster
     }))
@@ -474,7 +474,7 @@ data_wordvec_reshape = function(data, to=c("plain", "dense"),
     )
     attr(data.new, "dims") = length(data.new[[1, "vec"]])
     attr(data.new, "normalized") = FALSE
-    if(normalize) data.new = normalize(data.new)
+    if(normalize) data.new = data_wordvec_normalize(data.new)
   }
   gc()  # Garbage Collection: Free the Memory
   return(data.new)
@@ -876,6 +876,7 @@ plot_wordvec = function(dt, dims=NULL, step=0.05, border="white") {
 #' or (2) the exact colors of words (for 2-D and 3-D plot). See examples for its usage.
 #' @param seed Random seed for obtaining reproducible results. Defaults to \code{NULL}.
 #' @param perplexity Perplexity parameter, should not be larger than (number of words - 1) / 3.
+#' Defaults to \code{floor((length(dt)-1)/3)} (where columns of \code{dt} are words).
 #' See the \code{\link[Rtsne:Rtsne]{Rtsne}} package for details.
 #' @param theta Speed/accuracy trade-off (increase for less accuracy), set to 0 for exact t-SNE. Defaults to 0.5.
 #' @param custom.Rtsne User-defined \code{\link[Rtsne:Rtsne]{Rtsne}} object using the same \code{dt}.
@@ -936,11 +937,13 @@ plot_wordvec = function(dt, dims=NULL, step=0.05, border="white") {
 #' }
 #' @export
 plot_wordvec_tSNE = function(dt, dims=2, colors=NULL, seed=NULL,
-                             perplexity=floor((length(dt)-1)/3),
+                             perplexity,
                              theta=0.5,
                              custom.Rtsne=NULL) {
   if(!is.null(attr(dt, "normalized")))
     dt = as.data.table(t(data_wordvec_reshape(dt)))
+  if(missing(perplexity))
+    perplexity = floor((length(dt)-1)/3)
   if(is.null(custom.Rtsne)) {
     if(length(dt) < 4)
       stop("`dt` must contain at least 4 words (columns).", call.=FALSE)
@@ -1027,9 +1030,9 @@ plot_wordvec_tSNE = function(dt, dims=2, colors=NULL, seed=NULL,
 #'
 #'   \code{~ Beijing - China + Japan}}
 #' }
+#' @param topn Top-N most similar words. Defaults to \code{10}.
 #' @param keep Keep words specified in \code{x} in results?
 #' Defaults to \code{FALSE}.
-#' @param topn Top-N most similar words. Defaults to \code{10}.
 #' @param above Defaults to \code{NULL}. Can be one of the following:
 #' \itemize{
 #'   \item{a threshold value to find all words with cosine similarities
@@ -1093,7 +1096,7 @@ plot_wordvec_tSNE = function(dt, dims=2, colors=NULL, seed=NULL,
 #' # final word vector computed according to the formula
 #'
 #' @export
-most_similar = function(data, x, keep=FALSE, topn=10, above=NULL) {
+most_similar = function(data, x, topn=10, keep=FALSE, above=NULL) {
   if(attr(data, "normalized")==FALSE) {
     Print("<<red *>> Results may be inaccurate if word vectors are not normalized.")
     data = data_wordvec_normalize(data)  # pre-normalized
@@ -1602,7 +1605,7 @@ utf8_split_default = function() {
 #' @param split Separator between tokens, only used when \code{simplify=TRUE}.
 #' Defaults to \code{" "}.
 #' @param remove Strings (in regular expression) to be removed from the text.
-#' Defaults to \code{"_|'\\\\w+|<br/>|<br />|e\\\\.g\\\\.|i\\\\.e\\\\."}.
+#' Defaults to \code{"_|'|<br/>|<br />|e\\\\.g\\\\.|i\\\\.e\\\\."}.
 #' You may turn off this by specifying \code{remove=NULL}.
 #' @param simplify Return a character vector (\code{TRUE}) or a list of character vectors (\code{FALSE}).
 #' Defaults to \code{TRUE}.
@@ -1615,6 +1618,9 @@ utf8_split_default = function() {
 #'   with each element as a vector of tokens in a sentence.}
 #' }
 #'
+#' @seealso
+#' \code{\link{train_wordvec}}
+#'
 #' @examples
 #' txt1 = c(
 #'   "I love natural language processing (NLP)!",
@@ -1625,13 +1631,17 @@ utf8_split_default = function() {
 #' tokenize(txt1) %>% cat(sep="\n----\n")
 #'
 #' txt2 = text2vec::movie_review$review[1:5]
-#' tokens = tokenize(txt2)
+#' texts = tokenize(txt2)
+#'
+#' txt2[1]
+#' texts[1:20]  # all sentences in txt2[1]
 #'
 #' @export
 tokenize = function(text,
                     tokenizer=text2vec::word_tokenizer,
                     split=" ",
-                    remove="_|'\\w+|<br/>|<br />|e\\.g\\.|i\\.e\\.",
+                    remove="_|'|<br/>|<br />|e\\.g\\.|i\\.e\\.",
+                    # '\\w+
                     simplify=TRUE) {
   t0 = Sys.time()
   split.sentence = "\\n|\\.|:|;|\\?|\\!|\u3002|\uff1f|\uff01|\u2026"
@@ -1775,18 +1785,26 @@ tokenize = function(text,
 #'   text$review,
 #'   method="word2vec",
 #'   model="skip-gram", loss="ns",
-#'   dims=50, window=5)  # 50 dims for faster code check
-#' most_similar(dt1, ~ man - he + she)
-#' most_similar(dt1, ~ boy - he + she)
+#'   dims=50, window=5,  # 50 dims for faster code check
+#'   normalize=TRUE)
+#'
+#' most_similar(dt1, "Ive")
+#' most_similar(dt1, ~ man - he + she, topn=5)
+#' most_similar(dt1, ~ boy - he + she, topn=5)
+#'
+#' ## GloVe
 #'
 #' ## FastText
 #' dt3 = train_wordvec(
 #'   text$review,
 #'   method="fasttext",
 #'   model="skip-gram", loss="ns",
-#'   dims=50, window=5)  # 50 dims for faster code check
-#' most_similar(dt3, ~ man - he + she)
-#' most_similar(dt3, ~ boy - he + she)
+#'   dims=50, window=5,  # 50 dims for faster code check
+#'   normalize=TRUE)
+#'
+#' most_similar(dt3, "Ive")
+#' most_similar(dt3, ~ man - he + she, topn=5)
+#' most_similar(dt3, ~ boy - he + she, topn=5)
 #'
 #' @export
 train_wordvec = function(
@@ -1816,7 +1834,7 @@ train_wordvec = function(
   if(missing(tokenizer))
     tokenizer = text2vec::word_tokenizer
   if(missing(remove))
-    remove = "_|'\\w+|<br/>|<br />|e\\.g\\.|i\\.e\\."  # see tokenize()
+    remove = "_|'|<br/>|<br />|e\\.g\\.|i\\.e\\."  # see tokenize()
   if(missing(subsample)) {
     if(method=="word2vec") subsample = 0.001
     if(method=="fasttext") subsample = 0.0001
@@ -1842,11 +1860,11 @@ train_wordvec = function(
   tokens = unlist(strsplit(text, split))
   freq = as.data.table(table(tokens))
   names(freq) = c("token", "freq")
-  Print("<<blue *>> Text corpus: {sum(nchar(tokens))} characters, {length(tokens)} tokens (roughly words)")
+  Print("<<cyan \u2022>> Text corpus: {sum(nchar(tokens))} characters, {length(tokens)} tokens (roughly words)")
 
   ## Train word vectors
   t1 = Sys.time()
-  Print("<<blue *>> Training model info:
+  Print("<<cyan \u2022>> Training model info:
         - Method:      {method}
         - Dimensions:  {dims}
         - Window size: {window}
@@ -1874,7 +1892,7 @@ train_wordvec = function(
       encoding = encoding
     )
     wv = as.matrix(model) %>%
-      data_wordvec_reshape(to="dense", normalize=normalize)
+      data_wordvec_reshape(to="dense")
   }
 
   ##---- GloVe ----##
@@ -1906,15 +1924,19 @@ train_wordvec = function(
       method = gsub("-", "", model),
       control = control)
     wv = as.matrix(model$word_vectors(model$words())) %>%
-      data_wordvec_reshape(to="dense", normalize=normalize)
+      data_wordvec_reshape(to="dense")
   }
 
   ## Order by word frequency
   wv = left_join(wv, freq, by=c("word"="token"))
   wv = wv[order(-freq), ][freq>=min.count, ]
 
-  gc()
   Print("<<green \u221a>> Word vectors trained: {nrow(wv)} valid tokens (time cost = {dtime(t1, 'auto')})")
+
+  ## Normalize
+  if(normalize) wv = data_wordvec_normalize(wv)
+  class(wv) = c("wordvec", class(wv))
+  gc()
 
   return(wv)
 }

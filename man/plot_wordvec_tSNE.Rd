@@ -9,7 +9,7 @@ plot_wordvec_tSNE(
   dims = 2,
   colors = NULL,
   seed = NULL,
-  perplexity = floor((length(dt) - 1)/3),
+  perplexity,
   theta = 0.5,
   custom.Rtsne = NULL
 )
@@ -26,6 +26,7 @@ or (2) the exact colors of words (for 2-D and 3-D plot). See examples for its us
 \item{seed}{Random seed for obtaining reproducible results. Defaults to \code{NULL}.}
 
 \item{perplexity}{Perplexity parameter, should not be larger than (number of words - 1) / 3.
+Defaults to \code{floor((length(dt)-1)/3)} (where columns of \code{dt} are words).
 See the \code{\link[Rtsne:Rtsne]{Rtsne}} package for details.}
 
 \item{theta}{Speed/accuracy trade-off (increase for less accuracy), set to 0 for exact t-SNE. Defaults to 0.5.}
