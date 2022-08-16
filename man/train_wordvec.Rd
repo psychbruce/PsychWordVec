@@ -14,10 +14,11 @@ train_wordvec(
   min.count = 5,
   iteration = 5,
   threads = 8,
+  seed = NULL,
   model = c("skip-gram", "cbow"),
   loss = c("ns", "hs"),
   negative = 5,
-  subsample,
+  subsample = 1e-04,
   learning = 0.05,
   ngrams = c(3, 6),
   stopwords = character(),
@@ -48,9 +49,9 @@ You may turn off this by specifying \code{remove=NULL}.}
 Common choices include 50, 100, 200, 300, and 500.
 Defaults to \code{300}.}
 
-\item{window}{Window size (number of nearby words before/after the current word).
+\item{window}{Window size (number of nearby words behind/ahead the current word).
 It defines how many surrounding words to be included in training:
-[window] words behind and [window] words ahead (thus [window]*2 in total).
+[window] words behind and [window] words ahead ([window]*2 in total).
 Defaults to \code{5}.}
 
 \item{min.count}{Minimum frequency of words to be included in training.
@@ -66,6 +67,8 @@ Defaults to \code{5}.}
 A modest value produces the fastest training.
 Too many threads are not always helpful.
 Defaults to \code{8}.}
+
+\item{seed}{Random seed to obtain reproducible results. Defaults to \code{NULL}.}
 
 \item{model}{\strong{<Only for Word2Vec / FastText>}
 
@@ -94,7 +97,7 @@ Defaults to \code{5}.}
 
 Subsampling of frequent words (threshold for occurrence of words).
 Those that appear with higher frequency in the training data will be randomly down-sampled.
-Defaults to \code{0.001} for Word2Vec and \code{0.0001} for FastText.}
+Defaults to \code{0.0001} (\code{1e-04}).}
 
 \item{learning}{\strong{<Only for Word2Vec / FastText>}
 
@@ -129,7 +132,8 @@ A \code{data.table} (of new class \code{wordvec}) with two variables:
 Train static word vectors using the
 \code{\link[word2vec:word2vec]{Word2Vec}},
 \code{\link[rsparse:GloVe]{GloVe}}, or
-\code{\link[fastTextR:ft_train]{FastText}} algorithm.
+\code{\link[fastTextR:ft_train]{FastText}} algorithm
+with multi-threading.
 }
 \section{Download}{
 
@@ -147,7 +151,7 @@ dt1 = train_wordvec(
   method="word2vec",
   model="skip-gram", loss="ns",
   dims=50, window=5,  # 50 dims for faster code check
-  normalize=TRUE)
+  seed=1, normalize=TRUE)
 
 most_similar(dt1, "Ive")
 most_similar(dt1, ~ man - he + she, topn=5)
@@ -161,7 +165,7 @@ dt3 = train_wordvec(
   method="fasttext",
   model="skip-gram", loss="ns",
   dims=50, window=5,  # 50 dims for faster code check
-  normalize=TRUE)
+  seed=1, normalize=TRUE)
 
 most_similar(dt3, "Ive")
 most_similar(dt3, ~ man - he + she, topn=5)

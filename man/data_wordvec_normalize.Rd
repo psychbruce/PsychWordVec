@@ -7,7 +7,7 @@
 data_wordvec_normalize(data)
 }
 \arguments{
-\item{data}{A \code{data.table} with variables \code{word} and \code{vec}
+\item{data}{A \code{data.table} (of new class \code{wordvec})
 loaded by \code{\link{data_wordvec_load}}.}
 }
 \value{

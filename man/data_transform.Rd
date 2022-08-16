@@ -50,7 +50,7 @@ Options can be:
 (maximal compression for minimal file size). Defaults to \code{9}.}
 }
 \value{
-A \code{data.table} with two variables: \code{word} and \code{vec}.
+A \code{data.table} (of new class \code{wordvec}) with two variables: \code{word} and \code{vec}.
 }
 \description{
 Transform plain text data of word vectors into a compressed ".RData" file.

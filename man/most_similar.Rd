@@ -7,7 +7,7 @@
 most_similar(data, x, topn = 10, keep = FALSE, above = NULL)
 }
 \arguments{
-\item{data}{A \code{data.table} with variables \code{word} and \code{vec}
+\item{data}{A \code{data.table} (of new class \code{wordvec})
 loaded by \code{\link{data_wordvec_load}}.}
 
 \item{x}{Can be one of the following:

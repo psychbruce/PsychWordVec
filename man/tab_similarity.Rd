@@ -13,7 +13,7 @@ tab_similarity(
 )
 }
 \arguments{
-\item{data}{A \code{data.table} with variables \code{word} and \code{vec}
+\item{data}{A \code{data.table} (of new class \code{wordvec})
 loaded by \code{\link{data_wordvec_load}}.}
 
 \item{words}{[Option 1] Word string (\code{NULL}; a single word; a vector of words).}

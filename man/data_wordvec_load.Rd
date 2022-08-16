@@ -8,7 +8,7 @@ data_wordvec_load(file.load, normalize = FALSE)
 }
 \arguments{
 \item{file.load}{File name (must be .RData transformed by
-\code{\link{data_transform}}, with only two variables \code{word} and \code{vec}).}
+\code{\link{data_transform}}, with two variables \code{word} and \code{vec}).}
 
 \item{normalize}{Normalize all word vectors to unit length?
 Defaults to \code{FALSE}. See \code{\link{data_wordvec_normalize}}.}

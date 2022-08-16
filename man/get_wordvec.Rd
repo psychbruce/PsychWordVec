@@ -7,7 +7,7 @@
 get_wordvec(data, word)
 }
 \arguments{
-\item{data}{A \code{data.table} with variables \code{word} and \code{vec}
+\item{data}{A \code{data.table} (of new class \code{wordvec})
 loaded by \code{\link{data_wordvec_load}}.}
 
 \item{word}{Word string (a single word).}

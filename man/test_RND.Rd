@@ -7,7 +7,7 @@
 test_RND(data, T1, A1, A2, use.pattern = FALSE, labels, rev = FALSE)
 }
 \arguments{
-\item{data}{A \code{data.table} with variables \code{word} and \code{vec}
+\item{data}{A \code{data.table} (of new class \code{wordvec})
 loaded by \code{\link{data_wordvec_load}}.}
 
 \item{T1}{Target words of a single category (a vector of words or a pattern of regular expression).}

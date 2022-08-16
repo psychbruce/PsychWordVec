@@ -15,7 +15,8 @@ plot_wordvec_tSNE(
 )
 }
 \arguments{
-\item{dt}{A \code{data.table} returned from \code{\link{get_wordvecs}}
+\item{dt}{A \code{data.table} (of new class \code{wordvec})
+returned by \code{\link{get_wordvecs}}
 or loaded by \code{\link{data_wordvec_load}}.}
 
 \item{dims}{Output dimensionality: \code{2} (default, the most common choice) or \code{3}.}
@@ -23,7 +24,7 @@ or loaded by \code{\link{data_wordvec_load}}.}
 \item{colors}{A character vector specifying (1) the categories of words (for 2-D plot only)
 or (2) the exact colors of words (for 2-D and 3-D plot). See examples for its usage.}
 
-\item{seed}{Random seed for obtaining reproducible results. Defaults to \code{NULL}.}
+\item{seed}{Random seed to obtain reproducible results. Defaults to \code{NULL}.}
 
 \item{perplexity}{Perplexity parameter, should not be larger than (number of words - 1) / 3.
 Defaults to \code{floor((length(dt)-1)/3)} (where columns of \code{dt} are words).

@@ -16,7 +16,7 @@ data_wordvec_subset(
 \arguments{
 \item{x}{Can be one of the following:
 \itemize{
-  \item{a \code{data.table} loaded by \code{\link{data_wordvec_load}}}
+  \item{a \code{data.table} (of new class \code{wordvec}) loaded by \code{\link{data_wordvec_load}}}
   \item{an .RData file transformed by \code{\link{data_transform}}}
 }}
 

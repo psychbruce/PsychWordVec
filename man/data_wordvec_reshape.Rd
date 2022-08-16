@@ -12,7 +12,7 @@ data_wordvec_reshape(data, to = c("plain", "dense"), normalize = FALSE)
 \item{to}{Two options:
 \itemize{
   \item{\code{"plain"} (default) reshapes the data
-  from \code{data.table} (with only two variables \code{word} and \code{vec},
+  from \code{data.table} (with two variables \code{word} and \code{vec},
   loaded by \code{\link{data_wordvec_load}})
   to \code{matrix} (with dimensions as columns and words as row names).}
   \item{\code{"dense"} just does the reverse.}

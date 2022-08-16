@@ -217,7 +217,7 @@ extract_valid_words = function(data, words=NULL, pattern=NULL) {
 #' (maximal compression for minimal file size). Defaults to \code{9}.
 #'
 #' @return
-#' A \code{data.table} with two variables: \code{word} and \code{vec}.
+#' A \code{data.table} (of new class \code{wordvec}) with two variables: \code{word} and \code{vec}.
 #'
 #' @section Download:
 #' Download pre-trained word vectors data (\code{.RData}):
@@ -275,6 +275,7 @@ data_transform = function(file.load, file.save=NULL,
     ndim = length(dt[[1, "vec"]])
     Print("Word vectors data: {nrow(dt)} words, {ndim} dimensions (time cost = {dtime(t0, 'auto')})")
   }
+  class(dt) = c("wordvec", "data.table", "data.frame")
   if(!is.null(file.save)) {
     t1 = Sys.time()
     cat("\n")
@@ -302,7 +303,7 @@ data_transform = function(file.load, file.save=NULL,
 #' Load word vectors data from an ".RData" file.
 #'
 #' @param file.load File name (must be .RData transformed by
-#' \code{\link{data_transform}}, with only two variables \code{word} and \code{vec}).
+#' \code{\link{data_transform}}, with two variables \code{word} and \code{vec}).
 #' @param normalize Normalize all word vectors to unit length?
 #' Defaults to \code{FALSE}. See \code{\link{data_wordvec_normalize}}.
 #'
@@ -342,7 +343,7 @@ data_wordvec_load = function(file.load, normalize=FALSE) {
   ndim = length(data[[1, "vec"]])
   attr(data, "dims") = ndim
   attr(data, "normalized") = FALSE
-  class(data) = c("wordvec", class(data))
+  class(data) = c("wordvec", "data.table", "data.frame")
   cat("\015")
   Print("<<green \u221a>> Word vector data: {nrow(data)} words, {ndim} dims (loading time: {dtime(t0)})")
   if(normalize) data = data_wordvec_normalize(data)
@@ -362,7 +363,7 @@ data_wordvec_load = function(file.load, normalize=FALSE) {
 #' \emph{Note}: Normalization does not change the results of cosine similarity and
 #' can make the computation faster.
 #'
-#' @param data A \code{data.table} with variables \code{word} and \code{vec}
+#' @param data A \code{data.table} (of new class \code{wordvec})
 #' loaded by \code{\link{data_wordvec_load}}.
 #'
 #' @return
@@ -418,7 +419,7 @@ normalize = function(data) {
 #' @param to Two options:
 #' \itemize{
 #'   \item{\code{"plain"} (default) reshapes the data
-#'   from \code{data.table} (with only two variables \code{word} and \code{vec},
+#'   from \code{data.table} (with two variables \code{word} and \code{vec},
 #'   loaded by \code{\link{data_wordvec_load}})
 #'   to \code{matrix} (with dimensions as columns and words as row names).}
 #'   \item{\code{"dense"} just does the reverse.}
@@ -473,7 +474,7 @@ data_wordvec_reshape = function(data, to=c("plain", "dense"),
     )
     attr(data.new, "dims") = length(data.new[[1, "vec"]])
     attr(data.new, "normalized") = FALSE
-    class(data.new) = c("wordvec", class(data.new))
+    class(data.new) = c("wordvec", "data.table", "data.frame")
     if(normalize) data.new = data_wordvec_normalize(data.new)
   }
   gc()  # Garbage Collection: Free the Memory
@@ -491,7 +492,7 @@ data_wordvec_reshape = function(data, to=c("plain", "dense"),
 #' @inheritParams data_transform
 #' @param x Can be one of the following:
 #' \itemize{
-#'   \item{a \code{data.table} loaded by \code{\link{data_wordvec_load}}}
+#'   \item{a \code{data.table} (of new class \code{wordvec}) loaded by \code{\link{data_wordvec_load}}}
 #'   \item{an .RData file transformed by \code{\link{data_transform}}}
 #' }
 #' @param words [Option 1] Word string (\code{NULL}; a single word; a vector of words).
@@ -587,7 +588,7 @@ if(FALSE) {
   # bruceR::export(demodata[, .(word)], "data-raw/demodata_1.xlsx")
   filter = bruceR::import("data-raw/demodata_filter.xlsx", as="data.table")
   demodata = d1[word %in% filter[use==1]$word]
-  class(demodata) = c("wordvec", class(demodata))
+  class(demodata) = c("wordvec", "data.table", "data.frame")
   usethis::use_data(demodata, overwrite=TRUE, compress="xz")
 
   # d2 = data_wordvec_load("data-raw/GoogleNews/word2vec_googlenews_eng_2words.RData",
@@ -606,7 +607,7 @@ if(FALSE) {
 #' whereas a few are selected from less frequent words and appended.
 #'
 #' @format
-#' A \code{data.table} with two variables \code{word} and \code{vec},
+#' A \code{data.table} (of new class \code{wordvec}) with two variables \code{word} and \code{vec},
 #' transformed from the raw data (see the URL in Source) into \code{.RData}
 #' using the \code{\link{data_transform}} function.
 #'
@@ -779,7 +780,8 @@ get_wordvecs = function(data, words=NULL, pattern=NULL,
 
 #' Visualize word vectors.
 #'
-#' @param dt A \code{data.table} returned from \code{\link{get_wordvecs}}
+#' @param dt A \code{data.table} (of new class \code{wordvec})
+#' returned by \code{\link{get_wordvecs}}
 #' or loaded by \code{\link{data_wordvec_load}}.
 #' @param dims Dimensions to be plotted (e.g., \code{1:100}).
 #' Defaults to \code{NULL} (plot all dimensions).
@@ -880,7 +882,7 @@ plot_wordvec = function(dt, dims=NULL, step=0.05, border="white") {
 #' @param dims Output dimensionality: \code{2} (default, the most common choice) or \code{3}.
 #' @param colors A character vector specifying (1) the categories of words (for 2-D plot only)
 #' or (2) the exact colors of words (for 2-D and 3-D plot). See examples for its usage.
-#' @param seed Random seed for obtaining reproducible results. Defaults to \code{NULL}.
+#' @param seed Random seed to obtain reproducible results. Defaults to \code{NULL}.
 #' @param perplexity Perplexity parameter, should not be larger than (number of words - 1) / 3.
 #' Defaults to \code{floor((length(dt)-1)/3)} (where columns of \code{dt} are words).
 #' See the \code{\link[Rtsne:Rtsne]{Rtsne}} package for details.
@@ -1670,7 +1672,8 @@ tokenize = function(text,
 #' Train static word vectors using the
 #' \code{\link[word2vec:word2vec]{Word2Vec}},
 #' \code{\link[rsparse:GloVe]{GloVe}}, or
-#' \code{\link[fastTextR:ft_train]{FastText}} algorithm.
+#' \code{\link[fastTextR:ft_train]{FastText}} algorithm
+#' with multi-threading.
 #'
 #' @inheritParams data_transform
 #' @inheritParams data_wordvec_load
@@ -1686,9 +1689,9 @@ tokenize = function(text,
 #' @param dims Number of dimensions of word vectors to be trained.
 #' Common choices include 50, 100, 200, 300, and 500.
 #' Defaults to \code{300}.
-#' @param window Window size (number of nearby words before/after the current word).
+#' @param window Window size (number of nearby words behind/ahead the current word).
 #' It defines how many surrounding words to be included in training:
-#' [window] words behind and [window] words ahead (thus [window]*2 in total).
+#' [window] words behind and [window] words ahead ([window]*2 in total).
 #' Defaults to \code{5}.
 #' @param min.count Minimum frequency of words to be included in training.
 #' Words that appear less than this value of times will be excluded from vocabulary.
@@ -1701,6 +1704,7 @@ tokenize = function(text,
 #' A modest value produces the fastest training.
 #' Too many threads are not always helpful.
 #' Defaults to \code{8}.
+#' @param seed Random seed to obtain reproducible results. Defaults to \code{NULL}.
 #'
 #' @param model \strong{<Only for Word2Vec / FastText>}
 #'
@@ -1729,7 +1733,7 @@ tokenize = function(text,
 #'
 #' Subsampling of frequent words (threshold for occurrence of words).
 #' Those that appear with higher frequency in the training data will be randomly down-sampled.
-#' Defaults to \code{0.001} for Word2Vec and \code{0.0001} for FastText.
+#' Defaults to \code{0.0001} (\code{1e-04}).
 #'
 #' @param learning \strong{<Only for Word2Vec / FastText>}
 #'
@@ -1792,7 +1796,7 @@ tokenize = function(text,
 #'   method="word2vec",
 #'   model="skip-gram", loss="ns",
 #'   dims=50, window=5,  # 50 dims for faster code check
-#'   normalize=TRUE)
+#'   seed=1, normalize=TRUE)
 #'
 #' most_similar(dt1, "Ive")
 #' most_similar(dt1, ~ man - he + she, topn=5)
@@ -1806,7 +1810,7 @@ tokenize = function(text,
 #'   method="fasttext",
 #'   model="skip-gram", loss="ns",
 #'   dims=50, window=5,  # 50 dims for faster code check
-#'   normalize=TRUE)
+#'   seed=1, normalize=TRUE)
 #'
 #' most_similar(dt3, "Ive")
 #' most_similar(dt3, ~ man - he + she, topn=5)
@@ -1823,10 +1827,11 @@ train_wordvec = function(
     min.count=5,
     iteration=5,
     threads=8,
+    seed=NULL,
     model=c("skip-gram", "cbow"),
     loss=c("ns", "hs"),
     negative=5,
-    subsample,
+    subsample=0.0001,
     learning=0.05,
     ngrams=c(3, 6),
     stopwords=character(),
@@ -1841,14 +1846,23 @@ train_wordvec = function(
     tokenizer = text2vec::word_tokenizer
   if(missing(remove))
     remove = "_|'|<br/>|<br />|e\\.g\\.|i\\.e\\."  # see tokenize()
-  if(missing(subsample)) {
-    if(method=="word2vec") subsample = 0.001
-    if(method=="fasttext") subsample = 0.0001
-    if(method=="glove") subsample = NA
-  }
   method = match.arg(method)
   model = match.arg(model)
   loss = match.arg(loss)
+  if(method=="glove") {
+    method.text = "GloVe"
+  } else {
+    method.text = paste0(
+      ifelse(method=="word2vec", "Word2Vec (", "FastText ("),
+      ifelse(model=="skip-gram",
+             ifelse(loss=="ns",
+                    "Skip-Gram with Negative Sampling",
+                    "Skip-Gram with Hierarchical Softmax"),
+             ifelse(loss=="ns",
+                    "Continuous Bag-of-Words with Negative Sampling",
+                    "Continuous Bag-of-Words with Hierarchical Softmax")),
+      ")")
+  }
 
   ## Import text if necesssary
   if(length(x) == 1) {
@@ -1866,18 +1880,22 @@ train_wordvec = function(
   tokens = unlist(strsplit(text, split))
   freq = as.data.table(table(tokens))
   names(freq) = c("token", "freq")
-  Print("<<cyan \u2022>> Text corpus: {sum(nchar(tokens))} characters, {length(tokens)} tokens (roughly words)")
+  Print("<<green \u221a>> Text corpus: {sum(nchar(tokens))} characters, {length(tokens)} tokens (roughly words)")
 
   ## Train word vectors
   t1 = Sys.time()
-  Print("<<cyan \u2022>> Training model info:
-        - Method:      {method}
-        - Dimensions:  {dims}
-        - Window size: {window}
-        - Subsampling: {subsample}
-        - Min. freq.:  {min.count}
-        Training...
-        ")
+  Print("
+  <<cyan \u2022 Training model info:
+  - Method:      {method.text}
+  - Dimensions:  {dims}
+  - Window size: {window} ({window} words behind and {window} words ahead the current word)
+  - Subsampling: {ifelse(method=='glove', 'N/A', subsample)}
+  - Min. freq.:  {min.count} occurrences in text
+  - Iterations:  {iteration} training iterations
+  - CPU threads: {threads}
+  >>
+  Training...
+  ")
   gc()
 
   ##---- Word2Vec ----##
@@ -1937,7 +1955,7 @@ train_wordvec = function(
   wv = left_join(wv, freq, by=c("word"="token"))
   wv = wv[order(-freq), ][freq>=min.count, ]
 
-  Print("<<green \u221a>> Word vectors trained: {nrow(wv)} valid tokens (time cost = {dtime(t1, 'auto')})")
+  Print("<<green \u221a>> Word vectors trained: {nrow(wv)} unique tokens (time cost = {dtime(t1, 'auto')})")
 
   ## Normalize
   if(normalize) wv = data_wordvec_normalize(wv)

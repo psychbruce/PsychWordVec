@@ -7,7 +7,8 @@
 plot_wordvec(dt, dims = NULL, step = 0.05, border = "white")
 }
 \arguments{
-\item{dt}{A \code{data.table} returned from \code{\link{get_wordvecs}}
+\item{dt}{A \code{data.table} (of new class \code{wordvec})
+returned by \code{\link{get_wordvecs}}
 or loaded by \code{\link{data_wordvec_load}}.}
 
 \item{dims}{Dimensions to be plotted (e.g., \code{1:100}).

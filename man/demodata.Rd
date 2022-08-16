@@ -4,7 +4,7 @@
 \alias{demodata}
 \title{Demo data (corpus: Google News; algorithm: word2vec; vocabulary: 8000; dimensions: 300).}
 \format{
-A \code{data.table} with two variables \code{word} and \code{vec},
+A \code{data.table} (of new class \code{wordvec}) with two variables \code{word} and \code{vec},
 transformed from the raw data (see the URL in Source) into \code{.RData}
 using the \code{\link{data_transform}} function.
 }
