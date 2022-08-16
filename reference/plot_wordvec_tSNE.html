@@ -68,7 +68,7 @@ You should specify a random seed if you expect reproducible results.</p>
 <span>  dims <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  colors <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  perplexity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">floor</a></span><span class="op">(</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">dt</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span>,</span>
+<span>  <span class="va">perplexity</span>,</span>
 <span>  theta <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>  custom.Rtsne <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -96,6 +96,7 @@ or (2) the exact colors of words (for 2-D and 3-D plot). See examples for its us
 
 <dt>perplexity</dt>
 <dd><p>Perplexity parameter, should not be larger than (number of words - 1) / 3.
+Defaults to <code>floor((length(dt)-1)/3)</code> (where columns of <code>dt</code> are words).
 See the <code><a href="https://rdrr.io/pkg/Rtsne/man/Rtsne.html" class="external-link">Rtsne</a></code> package for details.</p></dd>
 
 
