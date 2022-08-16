@@ -236,12 +236,11 @@ extract_valid_words = function(data, words=NULL, pattern=NULL) {
 data_transform = function(file.load, file.save=NULL,
                           encoding="auto", sep=" ", header="auto",
                           compress="bzip2", compress.level=9) {
-  t00 = Sys.time()
+  t0 = Sys.time()
   check_save_validity(file.save)
-  if(is.data.table(file.load)) {
+  if(inherits(file.load, "wordvec")) {
     dt = file.load  # 2 variables: word, vec
   } else {
-    t0 = Sys.time()
     cat("\n")
     Print("****** Data Transformation (~ 30000 words/min in total) ******")
     cat("\n")
@@ -295,7 +294,7 @@ data_transform = function(file.load, file.save=NULL,
   }
   gc()  # Garbage Collection: Free the Memory
   cat("\n")
-  Print("****** Total time cost: {dtime(t00, 'mins')} ******")
+  Print("****** Total time cost: {dtime(t0, 'mins')} ******")
   invisible(dt)
 }
 
@@ -310,7 +309,7 @@ data_transform = function(file.load, file.save=NULL,
 #' @return
 #' A \code{data.table} (of new class \code{wordvec}) with two variables:
 #' \describe{
-#'   \item{\code{word}}{words}
+#'   \item{\code{word}}{words (tokens)}
 #'   \item{\code{vec}}{\strong{raw} \emph{or} \strong{normalized} word vectors}
 #' }
 #'
@@ -1683,7 +1682,7 @@ tokenize = function(text,
 #' @param method Training algorithm:
 #' \itemize{
 #'   \item{\code{"word2vec"} (default): using the \code{\link[word2vec:word2vec]{word2vec}} package}
-#'   \item{\code{"glove"}: using the \code{\link[rsparse:GloVe]{rsparse}} package}
+#'   \item{\code{"glove"}: using the \code{\link[rsparse:GloVe]{rsparse}} and \code{\link[text2vec:text2vec]{text2vec}} packages}
 #'   \item{\code{"fasttext"}: using the \code{\link[fastTextR:ft_train]{fastTextR}} package}
 #' }
 #' @param dims Number of dimensions of word vectors to be trained.
@@ -1693,18 +1692,13 @@ tokenize = function(text,
 #' It defines how many surrounding words to be included in training:
 #' [window] words behind and [window] words ahead ([window]*2 in total).
 #' Defaults to \code{5}.
-#' @param min.count Minimum frequency of words to be included in training.
+#' @param min.freq Minimum frequency of words to be included in training.
 #' Words that appear less than this value of times will be excluded from vocabulary.
-#' Defaults to \code{5}.
-#' @param iteration Number of training iterations.
-#' More iterations makes a more precise model,
-#' but computational cost is linearly proportional to iterations.
-#' Defaults to \code{5}.
+#' Defaults to \code{5} (take words that appear at least five times).
 #' @param threads Number of CPU threads used for training.
 #' A modest value produces the fastest training.
 #' Too many threads are not always helpful.
 #' Defaults to \code{8}.
-#' @param seed Random seed to obtain reproducible results. Defaults to \code{NULL}.
 #'
 #' @param model \strong{<Only for Word2Vec / FastText>}
 #'
@@ -1745,17 +1739,33 @@ tokenize = function(text,
 #' Minimal and maximal ngram length.
 #' Defaults to \code{c(3, 6)}.
 #'
+#' @param max.x \strong{<Only for GloVe>}
+#'
+#' Maximum number of co-occurrences to use in the weighting function.
+#' Defaults to \code{10}.
+#'
+#' @param convergence \strong{<Only for GloVe>}
+#'
+#' Convergence tolerance for SGD iterations. Defaults to \code{-1}.
+#'
 #' @param stopwords \strong{<Only for Word2Vec / GloVe>}
 #'
 #' A character vector of stopwords to be excluded from training.
 #'
 #' @param encoding Text encoding of \code{x} and \code{stop_words}.
 #' Defaults to \code{"UTF-8"}.
+#' @param tolower Convert all upper-case characters to lower-case?
+#' Defaults to \code{FALSE}.
+#' @param iteration Number of training iterations.
+#' More iterations makes a more precise model,
+#' but computational cost is linearly proportional to iterations.
+#' Defaults to \code{5} for Word2Vec and FastText and
+#' \code{10} for GloVe.
 #'
 #' @return
 #' A \code{data.table} (of new class \code{wordvec}) with two variables:
 #' \describe{
-#'   \item{\code{word}}{words}
+#'   \item{\code{word}}{words (tokens)}
 #'   \item{\code{vec}}{\strong{raw} \emph{or} \strong{normalized} word vectors}
 #' }
 #'
@@ -1773,82 +1783,105 @@ tokenize = function(text,
 #' }
 #' Word2Vec:
 #' \itemize{
+#'   \item{\url{https://code.google.com/archive/p/word2vec/}}
 #'   \item{\url{https://CRAN.R-project.org/package=word2vec}}
 #'   \item{\url{https://github.com/maxoodf/word2vec}}
 #' }
 #' GloVe:
 #' \itemize{
+#'   \item{\url{https://nlp.stanford.edu/projects/glove/}}
+#'   \item{\url{https://text2vec.org/glove.html}}
 #'   \item{\url{https://CRAN.R-project.org/package=text2vec}}
 #'   \item{\url{https://CRAN.R-project.org/package=rsparse}}
 #' }
 #' FastText:
 #' \itemize{
+#'   \item{\url{https://fasttext.cc/}}
 #'   \item{\url{https://CRAN.R-project.org/package=fastTextR}}
 #' }
 #'
 #' @examples
-#' text = text2vec::movie_review
-#' # View(text)
+#' review = text2vec::movie_review  # a data.frame'
+#' text = review$review
+#'
+#' ## Note: All the examples train 50 dims for faster code check.
 #'
 #' ## Word2Vec (SGNS)
 #' dt1 = train_wordvec(
-#'   text$review,
+#'   text,
 #'   method="word2vec",
-#'   model="skip-gram", loss="ns",
-#'   dims=50, window=5,  # 50 dims for faster code check
-#'   seed=1, normalize=TRUE)
+#'   model="skip-gram",
+#'   dims=50, window=5,
+#'   normalize=TRUE)
 #'
-#' most_similar(dt1, "Ive")
-#' most_similar(dt1, ~ man - he + she, topn=5)
-#' most_similar(dt1, ~ boy - he + she, topn=5)
+#' as_tibble(dt1)  # just check
+#' most_similar(dt1, "Ive")  # evaluate performance
+#' most_similar(dt1, ~ man - he + she, topn=5)  # evaluate performance
+#' most_similar(dt1, ~ boy - he + she, topn=5)  # evaluate performance
 #'
 #' ## GloVe
+#' dt2 = train_wordvec(
+#'   text,
+#'   method="glove",
+#'   dims=50, window=5,
+#'   normalize=TRUE)
+#'
+#' as_tibble(dt2)  # just check
+#' most_similar(dt2, "Ive")  # evaluate performance
+#' most_similar(dt2, ~ man - he + she, topn=5)  # evaluate performance
+#' most_similar(dt2, ~ boy - he + she, topn=5)  # evaluate performance
 #'
 #' ## FastText
 #' dt3 = train_wordvec(
-#'   text$review,
+#'   text,
 #'   method="fasttext",
-#'   model="skip-gram", loss="ns",
-#'   dims=50, window=5,  # 50 dims for faster code check
-#'   seed=1, normalize=TRUE)
+#'   model="skip-gram",
+#'   dims=50, window=5,
+#'   normalize=TRUE)
 #'
-#' most_similar(dt3, "Ive")
-#' most_similar(dt3, ~ man - he + she, topn=5)
-#' most_similar(dt3, ~ boy - he + she, topn=5)
+#' as_tibble(dt3)  # just check
+#' most_similar(dt3, "Ive")  # evaluate performance
+#' most_similar(dt3, ~ man - he + she, topn=5)  # evaluate performance
+#' most_similar(dt3, ~ boy - he + she, topn=5)  # evaluate performance
 #'
 #' @export
 train_wordvec = function(
     x,
-    tokenizer,
-    remove,
     method=c("word2vec", "glove", "fasttext"),
     dims=300,
     window=5,
-    min.count=5,
-    iteration=5,
+    min.freq=5,
     threads=8,
-    seed=NULL,
     model=c("skip-gram", "cbow"),
     loss=c("ns", "hs"),
     negative=5,
     subsample=0.0001,
     learning=0.05,
     ngrams=c(3, 6),
-    stopwords=character(),
+    max.x=10,
+    convergence=-1,
+    stopwords=character(0),
     encoding="UTF-8",
+    tolower=FALSE,
     normalize=FALSE,
-    file.save=NULL) {
+    iteration,
+    tokenizer,
+    remove,
+    file.save,
+    compress="bzip2") {
 
   ## Initialize
+  method = match.arg(method)
+  model = match.arg(model)
+  loss = match.arg(loss)
   if(dims < 0)
     stop("`dims` must be a positive integer.", call.=FALSE)
   if(missing(tokenizer))
     tokenizer = text2vec::word_tokenizer
   if(missing(remove))
     remove = "_|'|<br/>|<br />|e\\.g\\.|i\\.e\\."  # see tokenize()
-  method = match.arg(method)
-  model = match.arg(model)
-  loss = match.arg(loss)
+  if(missing(iteration))
+    iteration = ifelse(method=="glove", 10, 5)
   if(method=="glove") {
     method.text = "GloVe"
   } else {
@@ -1877,6 +1910,7 @@ train_wordvec = function(
   ## Tokenize text and count token/word frequency
   split = ifelse(model=="word2vec", "\t", " ")
   text = tokenize(x, tokenizer, split, remove)  # Print()
+  if(tolower) text = tolower(text)
   tokens = unlist(strsplit(text, split))
   freq = as.data.table(table(tokens))
   names(freq) = c("token", "freq")
@@ -1890,7 +1924,7 @@ train_wordvec = function(
   - Dimensions:  {dims}
   - Window size: {window} ({window} words behind and {window} words ahead the current word)
   - Subsampling: {ifelse(method=='glove', 'N/A', subsample)}
-  - Min. freq.:  {min.count} occurrences in text
+  - Min. freq.:  {min.freq} occurrences in text
   - Iterations:  {iteration} training iterations
   - CPU threads: {threads}
   >>
@@ -1910,7 +1944,7 @@ train_wordvec = function(
       hs = ifelse(loss == "hs", TRUE, FALSE),
       negative = negative,
       sample = subsample,
-      min_count = min.count,
+      min_count = min.freq,
       stopwords = stopwords,
       threads = threads,
       encoding = encoding
@@ -1921,7 +1955,27 @@ train_wordvec = function(
 
   ##---- GloVe ----##
   if(method == "glove") {
-    model = rsparse::GloVe
+    itoken = text2vec::itoken(text2vec::space_tokenizer(text))
+    vocab = text2vec::prune_vocabulary(
+      text2vec::create_vocabulary(
+        itoken, stopwords = stopwords),
+      term_count_min = min.freq)
+    tcm = text2vec::create_tcm(
+      # Term Co-occurence Matrix
+      itoken,
+      text2vec::vocab_vectorizer(vocab),
+      skip_grams_window = window)
+    model = rsparse::GloVe$new(rank = dims, x_max = max.x)
+    temp = utils::capture.output({
+      wv.main = model$fit_transform(
+        tcm,  # input: term co-occurence matrix
+        n_iter = iteration,  # number of SGD iterations
+        convergence_tol = convergence,  # convergence tolerance
+        n_threads = threads)
+    })
+    wv.context = model$components
+    wv = wv.main + t(wv.context)
+    wv = data_wordvec_reshape(wv, to="dense")
   }
 
   ##---- FastText ----##
@@ -1937,7 +1991,7 @@ train_wordvec = function(
       word_vec_size = dims,
       window_size = window,
       epoch = iteration,
-      min_count = min.count,
+      min_count = min.freq,
       neg = negative,
       min_ngram = ngrams[1],
       max_ngram = ngrams[2],
@@ -1953,14 +2007,29 @@ train_wordvec = function(
 
   ## Order by word frequency
   wv = left_join(wv, freq, by=c("word"="token"))
-  wv = wv[order(-freq), ][freq>=min.count, ]
-
+  wv = wv[order(-freq), ][freq>=min.freq, ]
   Print("<<green \u221a>> Word vectors trained: {nrow(wv)} unique tokens (time cost = {dtime(t1, 'auto')})")
 
   ## Normalize
   if(normalize) wv = data_wordvec_normalize(wv)
-  gc()
 
+  ## Save
+  if(!missing(file.save)) {
+    t2 = Sys.time()
+    cat("\n")
+    Print("Compressing and saving...")
+    compress = switch(compress,
+                      `1`="gzip",
+                      `2`="bzip2",
+                      `3`="xz",
+                      compress)
+    save(wv, file=file.save,
+         compress=compress,
+         compression_level=9)
+    Print("<<green \u221a>> Saved to \"{file.save}\" (time cost = {dtime(t2, 'auto')})")
+  }
+
+  gc()
   return(wv)
 }
 

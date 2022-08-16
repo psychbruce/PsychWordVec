@@ -6,42 +6,38 @@
 \usage{
 train_wordvec(
   x,
-  tokenizer,
-  remove,
   method = c("word2vec", "glove", "fasttext"),
   dims = 300,
   window = 5,
-  min.count = 5,
-  iteration = 5,
+  min.freq = 5,
   threads = 8,
-  seed = NULL,
   model = c("skip-gram", "cbow"),
   loss = c("ns", "hs"),
   negative = 5,
   subsample = 1e-04,
   learning = 0.05,
   ngrams = c(3, 6),
-  stopwords = character(),
+  max.x = 10,
+  convergence = -1,
+  stopwords = character(0),
   encoding = "UTF-8",
+  tolower = FALSE,
   normalize = FALSE,
-  file.save = NULL
+  iteration,
+  tokenizer,
+  remove,
+  file.save,
+  compress = "bzip2"
 )
 }
 \arguments{
 \item{x}{A file path on disk containing the text
 or a character vector of the text.}
 
-\item{tokenizer}{Function used to tokenize the text.
-Defaults to \code{\link[text2vec:tokenizers]{text2vec::word_tokenizer}}.}
-
-\item{remove}{Strings (in regular expression) to be removed from the text.
-Defaults to \code{"_|'|<br/>|<br />|e\\\\.g\\\\.|i\\\\.e\\\\."}.
-You may turn off this by specifying \code{remove=NULL}.}
-
 \item{method}{Training algorithm:
 \itemize{
   \item{\code{"word2vec"} (default): using the \code{\link[word2vec:word2vec]{word2vec}} package}
-  \item{\code{"glove"}: using the \code{\link[rsparse:GloVe]{rsparse}} package}
+  \item{\code{"glove"}: using the \code{\link[rsparse:GloVe]{rsparse}} and \code{\link[text2vec:text2vec]{text2vec}} packages}
   \item{\code{"fasttext"}: using the \code{\link[fastTextR:ft_train]{fastTextR}} package}
 }}
 
@@ -54,21 +50,14 @@ It defines how many surrounding words to be included in training:
 [window] words behind and [window] words ahead ([window]*2 in total).
 Defaults to \code{5}.}
 
-\item{min.count}{Minimum frequency of words to be included in training.
+\item{min.freq}{Minimum frequency of words to be included in training.
 Words that appear less than this value of times will be excluded from vocabulary.
-Defaults to \code{5}.}
-
-\item{iteration}{Number of training iterations.
-More iterations makes a more precise model,
-but computational cost is linearly proportional to iterations.
-Defaults to \code{5}.}
+Defaults to \code{5} (take words that appear at least five times).}
 
 \item{threads}{Number of CPU threads used for training.
 A modest value produces the fastest training.
 Too many threads are not always helpful.
 Defaults to \code{8}.}
-
-\item{seed}{Random seed to obtain reproducible results. Defaults to \code{NULL}.}
 
 \item{model}{\strong{<Only for Word2Vec / FastText>}
 
@@ -109,6 +98,15 @@ Defaults to \code{0.05}.}
 Minimal and maximal ngram length.
 Defaults to \code{c(3, 6)}.}
 
+\item{max.x}{\strong{<Only for GloVe>}
+
+Maximum number of co-occurrences to use in the weighting function.
+Defaults to \code{10}.}
+
+\item{convergence}{\strong{<Only for GloVe>}
+
+Convergence tolerance for SGD iterations. Defaults to \code{-1}.}
+
 \item{stopwords}{\strong{<Only for Word2Vec / GloVe>}
 
 A character vector of stopwords to be excluded from training.}
@@ -116,15 +114,40 @@ A character vector of stopwords to be excluded from training.}
 \item{encoding}{Text encoding of \code{x} and \code{stop_words}.
 Defaults to \code{"UTF-8"}.}
 
+\item{tolower}{Convert all upper-case characters to lower-case?
+Defaults to \code{FALSE}.}
+
 \item{normalize}{Normalize all word vectors to unit length?
 Defaults to \code{FALSE}. See \code{\link{data_wordvec_normalize}}.}
 
+\item{iteration}{Number of training iterations.
+More iterations makes a more precise model,
+but computational cost is linearly proportional to iterations.
+Defaults to \code{5} for Word2Vec and FastText and
+\code{10} for GloVe.}
+
+\item{tokenizer}{Function used to tokenize the text.
+Defaults to \code{\link[text2vec:tokenizers]{text2vec::word_tokenizer}}.}
+
+\item{remove}{Strings (in regular expression) to be removed from the text.
+Defaults to \code{"_|'|<br/>|<br />|e\\\\.g\\\\.|i\\\\.e\\\\."}.
+You may turn off this by specifying \code{remove=NULL}.}
+
 \item{file.save}{File name of to-be-saved R data (must be .RData).}
+
+\item{compress}{Compression method for the saved file. Defaults to \code{"bzip2"}.
+
+Options can be:
+\itemize{
+  \item \code{1} or \code{"gzip"}: modest file size (fastest)
+  \item \code{2} or \code{"bzip2"}: small file size (fast)
+  \item \code{3} or \code{"xz"}: minimized file size (slow)
+}}
 }
 \value{
 A \code{data.table} (of new class \code{wordvec}) with two variables:
 \describe{
-  \item{\code{word}}{words}
+  \item{\code{word}}{words (tokens)}
   \item{\code{vec}}{\strong{raw} \emph{or} \strong{normalized} word vectors}
 }
 }
@@ -142,34 +165,48 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-text = text2vec::movie_review
-# View(text)
+review = text2vec::movie_review  # a data.frame'
+text = review$review
+
+## Note: All the examples train 50 dims for faster code check.
 
 ## Word2Vec (SGNS)
 dt1 = train_wordvec(
-  text$review,
+  text,
   method="word2vec",
-  model="skip-gram", loss="ns",
-  dims=50, window=5,  # 50 dims for faster code check
-  seed=1, normalize=TRUE)
+  model="skip-gram",
+  dims=50, window=5,
+  normalize=TRUE)
 
-most_similar(dt1, "Ive")
-most_similar(dt1, ~ man - he + she, topn=5)
-most_similar(dt1, ~ boy - he + she, topn=5)
+as_tibble(dt1)  # just check
+most_similar(dt1, "Ive")  # evaluate performance
+most_similar(dt1, ~ man - he + she, topn=5)  # evaluate performance
+most_similar(dt1, ~ boy - he + she, topn=5)  # evaluate performance
 
 ## GloVe
+dt2 = train_wordvec(
+  text,
+  method="glove",
+  dims=50, window=5,
+  normalize=TRUE)
+
+as_tibble(dt2)  # just check
+most_similar(dt2, "Ive")  # evaluate performance
+most_similar(dt2, ~ man - he + she, topn=5)  # evaluate performance
+most_similar(dt2, ~ boy - he + she, topn=5)  # evaluate performance
 
 ## FastText
 dt3 = train_wordvec(
-  text$review,
+  text,
   method="fasttext",
-  model="skip-gram", loss="ns",
-  dims=50, window=5,  # 50 dims for faster code check
-  seed=1, normalize=TRUE)
+  model="skip-gram",
+  dims=50, window=5,
+  normalize=TRUE)
 
-most_similar(dt3, "Ive")
-most_similar(dt3, ~ man - he + she, topn=5)
-most_similar(dt3, ~ boy - he + she, topn=5)
+as_tibble(dt3)  # just check
+most_similar(dt3, "Ive")  # evaluate performance
+most_similar(dt3, ~ man - he + she, topn=5)  # evaluate performance
+most_similar(dt3, ~ boy - he + she, topn=5)  # evaluate performance
 
 }
 \references{
@@ -179,16 +216,20 @@ All-in-one package:
 }
 Word2Vec:
 \itemize{
+  \item{\url{https://code.google.com/archive/p/word2vec/}}
   \item{\url{https://CRAN.R-project.org/package=word2vec}}
   \item{\url{https://github.com/maxoodf/word2vec}}
 }
 GloVe:
 \itemize{
+  \item{\url{https://nlp.stanford.edu/projects/glove/}}
+  \item{\url{https://text2vec.org/glove.html}}
   \item{\url{https://CRAN.R-project.org/package=text2vec}}
   \item{\url{https://CRAN.R-project.org/package=rsparse}}
 }
 FastText:
 \itemize{
+  \item{\url{https://fasttext.cc/}}
   \item{\url{https://CRAN.R-project.org/package=fastTextR}}
 }
 }

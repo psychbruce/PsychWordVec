@@ -16,7 +16,7 @@ Defaults to \code{FALSE}. See \code{\link{data_wordvec_normalize}}.}
 \value{
 A \code{data.table} (of new class \code{wordvec}) with two variables:
 \describe{
-  \item{\code{word}}{words}
+  \item{\code{word}}{words (tokens)}
   \item{\code{vec}}{\strong{raw} \emph{or} \strong{normalized} word vectors}
 }
 }
