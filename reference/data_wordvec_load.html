@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,7 +58,7 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>file.load</dt>
 <dd><p>File name (must be .RData transformed by
-<code><a href="data_transform.html">data_transform</a></code>, with two variables <code>word</code> and <code>vec</code>).</p></dd>
+<code><a href="data_transform.html">data_transform</a></code>).</p></dd>
 
 
 <dt>normalize</dt>
@@ -93,6 +93,18 @@ Defaults to <code>FALSE</code>. See <code><a href="data_wordvec_normalize.html">
 <p><code><a href="data_wordvec_subset.html">data_wordvec_subset</a></code></p></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># download from https://psychbruce.github.io/WordVector_RData.pdf</span></span></span>
+<span class="r-in"><span><span class="co"># the RData file must be on your disk</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://psychbruce.github.io/bruceR/" class="external-link">bruceR</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/set.wd.html" class="external-link">set.wd</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">d</span> <span class="op">=</span> <span class="fu">data_wordvec_load</span><span class="op">(</span><span class="st">"GloVe/glove_wiki_50d.RData"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

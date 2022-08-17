@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,14 +45,17 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.0" id="psychwordvec-010-aug-2022">PsychWordVec 0.1.0 (Aug 2022)<a class="anchor" aria-label="anchor" href="#psychwordvec-010-aug-2022"></a></h2>
+<ul><li>CRAN initial release.</li></ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.8" id="psychwordvec-008-aug-2022">PsychWordVec 0.0.8 (Aug 2022)<a class="anchor" aria-label="anchor" href="#psychwordvec-008-aug-2022"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-0-8">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-8"></a></h3>
-<ul><li>Added <code>wordvec</code> as the primary class of word vectors data: Now the data classes are <code>wordvec</code>, <code>data.table</code>, and <code>data.frame</code>, which actually perform as a <code>data.table</code>.</li>
-<li>New <code><a href="../reference/train_wordvec.html">train_wordvec()</a></code> function (still in development).</li>
-<li>New <code><a href="../reference/tokenize.html">tokenize()</a></code> function.</li>
-<li>New <code><a href="../reference/data_wordvec_reshape.html">data_wordvec_reshape()</a></code> function.</li>
-<li>New <code><a href="../reference/test_RND.html">test_RND()</a></code> function (and <code>tab_WEAT()</code> is renamed to <code><a href="../reference/test_WEAT.html">test_WEAT()</a></code>).</li>
+<ul><li>Added <code>wordvec</code> as the primary class of word vectors data: Now the data classes contain <code>wordvec</code>, <code>data.table</code>, and <code>data.frame</code>, which actually perform as a <code>data.table</code>.</li>
+<li>New <code><a href="../reference/train_wordvec.html">train_wordvec()</a></code> function: Train word vectors using the <em>Word2Vec</em>, <em>GloVe</em>, or <em>FastText</em> algorithm with multi-threading.</li>
+<li>New <code><a href="../reference/tokenize.html">tokenize()</a></code> function: Tokenize raw texts for training word vectors.</li>
+<li>New <code><a href="../reference/data_wordvec_reshape.html">data_wordvec_reshape()</a></code> function: Reshape word vectors data from dense (a <code>data.table</code> of new classs <code>wordvec</code> with two variables <code>word</code> and <code>vec</code>) to plain (a <code>matrix</code> of word vectors) or vice versa.</li>
+<li>New <code><a href="../reference/test_RND.html">test_RND()</a></code> function, and <code>tab_WEAT()</code> is renamed to <code><a href="../reference/test_WEAT.html">test_WEAT()</a></code>: These two functions serve as convenient tools of word semantic similarity analysis and conceptual association test.</li>
 <li>New <code><a href="../reference/plot_wordvec_tSNE.html">plot_wordvec_tSNE()</a></code> function: Visualize 2-D or 3-D word vectors with dimensionality reduced using the t-Distributed Stochastic Neighbor Embedding (t-SNE) method.</li>
 </ul></div>
 </div>
@@ -63,12 +66,15 @@
 <ul><li>Enhanced all functions.</li>
 <li>New <code><a href="../reference/data_wordvec_subset.html">data_wordvec_subset()</a></code> function.</li>
 <li>Added the <code>unique</code> argument for <code><a href="../reference/tab_similarity.html">tab_similarity()</a></code>.</li>
-<li>Added support for using regular expression pattern in <code><a href="../reference/test_WEAT.html">test_WEAT()</a></code>.</li>
+<li>Added support to use regular expression pattern in <code><a href="../reference/test_WEAT.html">test_WEAT()</a></code>.</li>
 </ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.4" id="psychwordvec-004-apr-2022">PsychWordVec 0.0.4 (Apr 2022)<a class="anchor" aria-label="anchor" href="#psychwordvec-004-apr-2022"></a></h2>
-<ul><li>Initial public release on <a href="https://github.com/psychbruce/PsychWordVec" class="external-link">GitHub</a>.</li></ul></div>
+<ul><li>Initial public release on <a href="https://github.com/psychbruce/PsychWordVec" class="external-link">GitHub</a> with more functions.</li></ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.0.1" id="psychwordvec-001-mar-2022">PsychWordVec 0.0.1 (Mar 2022)<a class="anchor" aria-label="anchor" href="#psychwordvec-001-mar-2022"></a></h2>
+<ul><li>Basic functions and the <a href="https://psychbruce.github.io/WordVector_RData.pdf" class="external-link">WordVector_RData.pdf</a> file.</li></ul></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
