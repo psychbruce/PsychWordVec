@@ -8,7 +8,7 @@ data_wordvec_load(file.load, normalize = FALSE)
 }
 \arguments{
 \item{file.load}{File name (must be .RData transformed by
-\code{\link{data_transform}}, with two variables \code{word} and \code{vec}).}
+\code{\link{data_transform}}).}
 
 \item{normalize}{Normalize all word vectors to unit length?
 Defaults to \code{FALSE}. See \code{\link{data_wordvec_normalize}}.}
@@ -29,6 +29,16 @@ Download pre-trained word vectors data (\code{.RData}):
 \url{https://psychbruce.github.io/WordVector_RData.pdf}
 }
 
+\examples{
+\dontrun{
+# download from https://psychbruce.github.io/WordVector_RData.pdf
+# the RData file must be on your disk
+library(bruceR)
+set.wd()
+d = data_wordvec_load("GloVe/glove_wiki_50d.RData")
+}
+
+}
 \seealso{
 \code{\link{data_transform}}
 

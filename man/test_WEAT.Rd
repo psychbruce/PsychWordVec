@@ -49,7 +49,7 @@ A \code{list} of objects:
 }
 }
 \description{
-Tabulate data (cosine similarity and standardized effect size) for
+Tabulate data (cosine similarity and standardized effect size) for the
 \emph{Word Embedding Association Test} (WEAT) and
 \emph{Single-Category Word Embedding Association Test} (SC-WEAT) analyses.
 }

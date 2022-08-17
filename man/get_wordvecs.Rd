@@ -2,7 +2,7 @@
 % Please edit documentation in R/PsychWordVec.R
 \name{get_wordvecs}
 \alias{get_wordvecs}
-\title{Extract word vectors of multiple words.}
+\title{Extract the word vectors of multiple words.}
 \usage{
 get_wordvecs(
   data,
@@ -18,7 +18,7 @@ get_wordvecs(
 \item{data}{A \code{data.table} (of new class \code{wordvec})
 loaded by \code{\link{data_wordvec_load}}.}
 
-\item{words}{[Option 1] Word string (\code{NULL}; a single word; a vector of words).}
+\item{words}{[Option 1] Word strings (\code{NULL}; a single word; a vector of words).}
 
 \item{pattern}{[Option 2] Pattern of regular expression (see \code{\link[stringr:str_subset]{str_subset}}).}
 
@@ -36,10 +36,10 @@ To remove the border color, set \code{plot.border=NA}.}
 A \code{data.table} with words as columns and dimensions as rows.
 }
 \description{
-Extract word vectors of multiple words,
+Extract the word vectors of multiple words,
 using either wordlist (a vector of words; using \code{words})
 or regular expression (a pattern of words; using \code{pattern}).
-If both (\code{words} and \code{pattern}) are specified, \code{words} wins.
+If both the \code{words} and \code{pattern} arguments are specified, \code{words} wins.
 }
 \section{Download}{
 
@@ -109,5 +109,5 @@ ggsave(attr(dt, "ggplot"),
 
 \code{\link{plot_wordvec}}
 
-\code{\link{data_wordvec_subset}}
+\code{\link{plot_wordvec_tSNE}}
 }

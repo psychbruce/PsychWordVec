@@ -9,7 +9,7 @@ data_wordvec_reshape(data, to = c("plain", "dense"), normalize = FALSE)
 \arguments{
 \item{data}{Data to be reshaped. See examples.}
 
-\item{to}{Two options:
+\item{to}{Options include:
 \itemize{
   \item{\code{"plain"} (default) reshapes the data
   from \code{data.table} (with two variables \code{word} and \code{vec},
@@ -25,7 +25,8 @@ Defaults to \code{FALSE}. See \code{\link{data_wordvec_normalize}}.}
 A \code{data.table} (dense) or \code{matrix} (plain) of word vectors.
 }
 \description{
-Reshape word vectors data (1) from dense to plain or (2) from plain to dense.
+Reshape word vectors data from dense (\code{data.table})
+to plain (\code{matrix}) or vice versa.
 }
 \section{Download}{
 

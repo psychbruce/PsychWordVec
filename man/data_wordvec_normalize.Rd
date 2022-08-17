@@ -11,7 +11,7 @@ data_wordvec_normalize(data)
 loaded by \code{\link{data_wordvec_load}}.}
 }
 \value{
-A \code{data.table} with \strong{normalized} word vectors.
+A \code{data.table} (of new class \code{wordvec}) with \strong{normalized} word vectors.
 }
 \description{
 L2-normalization (scaling to unit euclidean length):

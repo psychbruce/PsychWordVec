@@ -2,7 +2,7 @@
 % Please edit documentation in R/PsychWordVec.R
 \name{train_wordvec}
 \alias{train_wordvec}
-\title{Train static word vectors using the Word2Vec, GloVe, or FastText algorithm.}
+\title{Train word vectors using the Word2Vec, GloVe, or FastText algorithm.}
 \usage{
 train_wordvec(
   x,
@@ -17,7 +17,7 @@ train_wordvec(
   subsample = 1e-04,
   learning = 0.05,
   ngrams = c(3, 6),
-  max.x = 10,
+  x.max = 10,
   convergence = -1,
   stopwords = character(0),
   encoding = "UTF-8",
@@ -98,7 +98,7 @@ Defaults to \code{0.05}.}
 Minimal and maximal ngram length.
 Defaults to \code{c(3, 6)}.}
 
-\item{max.x}{\strong{<Only for GloVe>}
+\item{x.max}{\strong{<Only for GloVe>}
 
 Maximum number of co-occurrences to use in the weighting function.
 Defaults to \code{10}.}
@@ -123,8 +123,8 @@ Defaults to \code{FALSE}. See \code{\link{data_wordvec_normalize}}.}
 \item{iteration}{Number of training iterations.
 More iterations makes a more precise model,
 but computational cost is linearly proportional to iterations.
-Defaults to \code{5} for Word2Vec and FastText and
-\code{10} for GloVe.}
+Defaults to \code{5} for Word2Vec and FastText
+while \code{10} for GloVe.}
 
 \item{tokenizer}{Function used to tokenize the text.
 Defaults to \code{\link[text2vec:tokenizers]{text2vec::word_tokenizer}}.}
@@ -137,7 +137,7 @@ You may turn off this by specifying \code{remove=NULL}.}
 
 \item{compress}{Compression method for the saved file. Defaults to \code{"bzip2"}.
 
-Options can be:
+Options include:
 \itemize{
   \item \code{1} or \code{"gzip"}: modest file size (fastest)
   \item \code{2} or \code{"bzip2"}: small file size (fast)
@@ -152,7 +152,7 @@ A \code{data.table} (of new class \code{wordvec}) with two variables:
 }
 }
 \description{
-Train static word vectors using the
+Train word vectors using the
 \code{\link[word2vec:word2vec]{Word2Vec}},
 \code{\link[rsparse:GloVe]{GloVe}}, or
 \code{\link[fastTextR:ft_train]{FastText}} algorithm
@@ -168,7 +168,7 @@ Download pre-trained word vectors data (\code{.RData}):
 review = text2vec::movie_review  # a data.frame'
 text = review$review
 
-## Note: All the examples train 50 dims for faster code check.
+\donttest{## Note: All the examples train 50 dims for faster code check.
 
 ## Word2Vec (SGNS)
 dt1 = train_wordvec(
@@ -207,7 +207,7 @@ as_tibble(dt3)  # just check
 most_similar(dt3, "Ive")  # evaluate performance
 most_similar(dt3, ~ man - he + she, topn=5)  # evaluate performance
 most_similar(dt3, ~ boy - he + she, topn=5)  # evaluate performance
-
+}
 }
 \references{
 All-in-one package:

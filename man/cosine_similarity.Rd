@@ -38,7 +38,9 @@ cosine_similarity(v1=c(1,1,0), v2=c(0,0,1), distance=TRUE)  # 1
 
 }
 \seealso{
-\code{\link{most_similar}}
-
 \code{\link{pair_similarity}}
+
+\code{\link{tab_similarity}}
+
+\code{\link{most_similar}}
 }

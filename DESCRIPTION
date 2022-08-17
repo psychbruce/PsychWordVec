@@ -1,7 +1,7 @@
 Package: PsychWordVec
 Title: Toolkit for Word Embedding Research in Psychological Science
-Version: 0.0.8
-Date: 2022-08-16
+Version: 0.1.0
+Date: 2022-08-17
 Authors@R:
     c(person(given = "Han-Wu-Shuang",
              family = "Bao",
@@ -10,15 +10,15 @@ Authors@R:
 Author: Han-Wu-Shuang Bao [aut, cre]
 Maintainer: Han-Wu-Shuang Bao <baohws@foxmail.com>
 Description:
-  An integrated word vector toolkit that provides:
-  (1) a collection of 'pre-trained' word vectors in the '.RData' format
-  <https://psychbruce.github.io/WordVector_RData.pdf>;
+  An integrated toolkit of word embedding that provides:
+  (1) a collection of 'pre-trained' word vectors in the '.RData'
+  compressed format <https://psychbruce.github.io/WordVector_RData.pdf>;
   (2) a variety of functions to process, analyze, and visualize
   word vectors (e.g., find the most similar words to a given word);
-  (3) a range of tests (e.g., Word Embedding Association Test) to
-  examine psychological effects (e.g., implicit attitude/bias); and
+  (3) a range of tests (Word Embedding Association Test,
+  Relative Norm Distance) to examine conceptual associations; and
   (4) a set of training methods ('Word2Vec', 'GloVe', 'FastText') to
-  learn word vectors from text corpora.
+  locally train word vectors from text corpora.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

@@ -8,6 +8,7 @@
 #' @importFrom bruceR %notin% cc dtime import export Glue Print
 .onAttach = function(libname, pkgname) {
   ## Version Check
+  new = FALSE
   inst.ver = as.character(utils::packageVersion("PsychWordVec"))
   xml = suppressWarnings({
     try({
@@ -24,13 +25,7 @@
         cran.ver = substr(cran.ver, 5, nchar(cran.ver) - 5)
         cran.ymd = substr(cran.ymd, 5, nchar(cran.ymd) - 5)
         if(numeric_version(inst.ver) < numeric_version(cran.ver))
-          packageStartupMessage(Glue("
-          \n
-          NEWS: A new version of PsychWordVec (version {cran.ver}) is available on {cran.ymd}!
-          Please update:
-          install.packages(\"PsychWordVec\")
-          update.packages(ask=FALSE)
-          "))
+          new = TRUE
       }
     }, silent=TRUE)
   }
@@ -63,15 +58,24 @@
     \n
     ")
   } else {
-    packageStartupMessage(Glue("
+    Print("
     \n
     These R packages are not installed:
     {paste(pkgs[loaded==FALSE], collapse=', ')}
 
     Please install them.
     \n
-    "))
+    ")
   }
+
+  ## Update Info
+  if(new)
+    Print("
+    NEWS: A new version of PsychWordVec ({cran.ver}) is available on {cran.ymd}!
+    ***** Please Update *****
+    install.packages(\"PsychWordVec\")
+    \n
+    ")
 }
 
 
@@ -96,9 +100,11 @@
 #' @return A value of cosine similarity/distance.
 #'
 #' @seealso
-#' \code{\link{most_similar}}
-#'
 #' \code{\link{pair_similarity}}
+#'
+#' \code{\link{tab_similarity}}
+#'
+#' \code{\link{most_similar}}
 #'
 #' @examples
 #' cosine_similarity(v1=c(1,1,1), v2=c(2,2,2))  # 1
@@ -184,9 +190,9 @@ extract_valid_words = function(data, words=NULL, pattern=NULL) {
 #' Transform plain text data of word vectors into a compressed ".RData" file.
 #'
 #' \emph{Speed}: In total (preprocess + compress + save),
-#' it can process about 30000 words per minute
+#' it can process about 30000 words/min
 #' with the slowest settings (\code{compress="xz"}, \code{compress.level=9})
-#' on a modern computer (HP ProBook 450, Windows 11, Intel i7-1165G7 CPU, 32GB RAM, power supply mode).
+#' on a modern computer (HP ProBook 450, Windows 11, Intel i7-1165G7 CPU, 32GB RAM).
 #'
 #' @param file.load File name of raw data (must be plain text).
 #'
@@ -196,18 +202,18 @@ extract_valid_words = function(data, words=NULL, pattern=NULL) {
 #'
 #' dog 0.301 0.302 0.303 0.304 0.305 ... 0.600
 #' @param file.save File name of to-be-saved R data (must be .RData).
+#' @param sep Column separator. Defaults to \code{" "}.
+#' @param header Is the 1st row a header (e.g., meta-information such as "2000000 300")?
+#' Defaults to \code{"auto"}, which automatically determines whether there is a header.
+#' If \code{TRUE}, then the 1st row will be dropped.
 #' @param encoding File encoding. Defaults to \code{"auto"}
 #' (using \code{\link[vroom:vroom_lines]{vroom::vroom_lines()}} to fast read the file).
 #' If specified to any other value (e.g., \code{"UTF-8"}),
 #' then it uses \code{\link[base:readLines]{readLines()}} to read the file,
 #' which is much slower than \code{vroom}.
-#' @param sep Column separator. Defaults to \code{" "}.
-#' @param header Is the 1st row a header (e.g., meta-information such as "2000000 300")?
-#' Defaults to \code{"auto"}, which automatically determines whether there is a header.
-#' If \code{TRUE}, then the 1st row will be dropped.
 #' @param compress Compression method for the saved file. Defaults to \code{"bzip2"}.
 #'
-#' Options can be:
+#' Options include:
 #' \itemize{
 #'   \item \code{1} or \code{"gzip"}: modest file size (fastest)
 #'   \item \code{2} or \code{"bzip2"}: small file size (fast)
@@ -232,12 +238,23 @@ extract_valid_words = function(data, words=NULL, pattern=NULL) {
 #'
 #' \code{\link{data_wordvec_subset}}
 #'
+#' @examples
+#' \dontrun{
+#' # download from https://fasttext.cc/docs/en/crawl-vectors.html
+#' # the text file must be on your disk
+#' library(bruceR)
+#' set.wd()
+#' data_transform(file.load="cc.zh.300.vec",   # plain text file
+#'                file.save="cc.zh.300.vec.RData",  # RData file
+#'                header=TRUE, compress="xz")  # of minimal size
+#' }
+#'
 #' @export
-data_transform = function(file.load, file.save=NULL,
-                          encoding="auto", sep=" ", header="auto",
+data_transform = function(file.load, file.save,
+                          sep=" ", header="auto", encoding="auto",
                           compress="bzip2", compress.level=9) {
   t0 = Sys.time()
-  check_save_validity(file.save)
+  if(!missing(file.save)) check_save_validity(file.save)
   if(inherits(file.load, "wordvec")) {
     dt = file.load  # 2 variables: word, vec
   } else {
@@ -275,7 +292,7 @@ data_transform = function(file.load, file.save=NULL,
     Print("Word vectors data: {nrow(dt)} words, {ndim} dimensions (time cost = {dtime(t0, 'auto')})")
   }
   class(dt) = c("wordvec", "data.table", "data.frame")
-  if(!is.null(file.save)) {
+  if(!missing(file.save)) {
     t1 = Sys.time()
     cat("\n")
     k = 9  # coefficient for time estimate (based on preprocessing time cost)
@@ -302,7 +319,7 @@ data_transform = function(file.load, file.save=NULL,
 #' Load word vectors data from an ".RData" file.
 #'
 #' @param file.load File name (must be .RData transformed by
-#' \code{\link{data_transform}}, with two variables \code{word} and \code{vec}).
+#' \code{\link{data_transform}}).
 #' @param normalize Normalize all word vectors to unit length?
 #' Defaults to \code{FALSE}. See \code{\link{data_wordvec_normalize}}.
 #'
@@ -325,6 +342,15 @@ data_transform = function(file.load, file.save=NULL,
 #' \code{\link{data_wordvec_reshape}}
 #'
 #' \code{\link{data_wordvec_subset}}
+#'
+#' @examples
+#' \dontrun{
+#' # download from https://psychbruce.github.io/WordVector_RData.pdf
+#' # the RData file must be on your disk
+#' library(bruceR)
+#' set.wd()
+#' d = data_wordvec_load("GloVe/glove_wiki_50d.RData")
+#' }
 #'
 #' @export
 data_wordvec_load = function(file.load, normalize=FALSE) {
@@ -366,7 +392,7 @@ data_wordvec_load = function(file.load, normalize=FALSE) {
 #' loaded by \code{\link{data_wordvec_load}}.
 #'
 #' @return
-#' A \code{data.table} with \strong{normalized} word vectors.
+#' A \code{data.table} (of new class \code{wordvec}) with \strong{normalized} word vectors.
 #'
 #' @section Download:
 #' Download pre-trained word vectors data (\code{.RData}):
@@ -411,11 +437,12 @@ normalize = function(data) {
 
 #' Reshape word vectors data.
 #'
-#' Reshape word vectors data (1) from dense to plain or (2) from plain to dense.
+#' Reshape word vectors data from dense (\code{data.table})
+#' to plain (\code{matrix}) or vice versa.
 #'
 #' @inheritParams data_wordvec_load
 #' @param data Data to be reshaped. See examples.
-#' @param to Two options:
+#' @param to Options include:
 #' \itemize{
 #'   \item{\code{"plain"} (default) reshapes the data
 #'   from \code{data.table} (with two variables \code{word} and \code{vec},
@@ -494,7 +521,7 @@ data_wordvec_reshape = function(data, to=c("plain", "dense"),
 #'   \item{a \code{data.table} (of new class \code{wordvec}) loaded by \code{\link{data_wordvec_load}}}
 #'   \item{an .RData file transformed by \code{\link{data_transform}}}
 #' }
-#' @param words [Option 1] Word string (\code{NULL}; a single word; a vector of words).
+#' @param words [Option 1] Word strings (\code{NULL}; a single word; a vector of words).
 #' @param pattern [Option 2] Pattern of regular expression (see \code{\link[stringr:str_subset]{str_subset}}).
 #'
 #' @return
@@ -538,9 +565,10 @@ data_wordvec_reshape = function(data, to=c("plain", "dense"),
 #'
 #' @export
 data_wordvec_subset = function(x, words=NULL, pattern=NULL,
-                               file.save=NULL,
-                               compress="bzip2", compress.level=9) {
-  check_save_validity(file.save)
+                               file.save,
+                               compress="bzip2",
+                               compress.level=9) {
+  if(!missing(file.save)) check_save_validity(file.save)
   if(is.data.table(x)) {
     data = x
     check_data_validity(data)
@@ -556,7 +584,7 @@ data_wordvec_subset = function(x, words=NULL, pattern=NULL,
   }
   words.valid = extract_valid_words(data, words, pattern)
   dt = data[word %in% words.valid]  # much faster
-  if(!is.null(file.save)) {
+  if(!missing(file.save)) {
     t1 = Sys.time()
     cat("\n")
     Print("Compressing and saving...")
@@ -628,13 +656,14 @@ NULL
 #### Get Word Vectors ####
 
 
-#' Extract word vector of a single word.
+#' Extract the word vector of a single word.
 #'
 #' @inheritParams data_wordvec_normalize
 #' @param word Word string (a single word).
 #'
 #' @return
-#' A numeric vector of the word (or \code{NA} if the word is not in the data).
+#' A numeric vector of the word
+#' (or \code{NA} if the word does not appear in the data).
 #'
 #' @section Download:
 #' Download pre-trained word vectors data (\code{.RData}):
@@ -645,7 +674,7 @@ NULL
 #'
 #' \code{\link{plot_wordvec}}
 #'
-#' \code{\link{data_wordvec_subset}}
+#' \code{\link{plot_wordvec_tSNE}}
 #'
 #' @examples
 #' d = data_wordvec_normalize(demodata)
@@ -667,12 +696,12 @@ get_wordvec = function(data, word) {
 }
 
 
-#' Extract word vectors of multiple words.
+#' Extract the word vectors of multiple words.
 #'
-#' Extract word vectors of multiple words,
+#' Extract the word vectors of multiple words,
 #' using either wordlist (a vector of words; using \code{words})
 #' or regular expression (a pattern of words; using \code{pattern}).
-#' If both (\code{words} and \code{pattern}) are specified, \code{words} wins.
+#' If both the \code{words} and \code{pattern} arguments are specified, \code{words} wins.
 #'
 #' @inheritParams data_wordvec_normalize
 #' @inheritParams data_wordvec_subset
@@ -695,7 +724,7 @@ get_wordvec = function(data, word) {
 #'
 #' \code{\link{plot_wordvec}}
 #'
-#' \code{\link{data_wordvec_subset}}
+#' \code{\link{plot_wordvec_tSNE}}
 #'
 #' @examples
 #' d = data_wordvec_normalize(demodata)
@@ -779,8 +808,7 @@ get_wordvecs = function(data, words=NULL, pattern=NULL,
 
 #' Visualize word vectors.
 #'
-#' @param dt A \code{data.table} (of new class \code{wordvec})
-#' returned by \code{\link{get_wordvecs}}
+#' @param dt A \code{data.table} returned by \code{\link{get_wordvecs}}
 #' or loaded by \code{\link{data_wordvec_load}}.
 #' @param dims Dimensions to be plotted (e.g., \code{1:100}).
 #' Defaults to \code{NULL} (plot all dimensions).
@@ -796,7 +824,7 @@ get_wordvecs = function(data, words=NULL, pattern=NULL,
 #' \url{https://psychbruce.github.io/WordVector_RData.pdf}
 #'
 #' @seealso
-#' \code{\link{get_wordvecs}}
+#' \code{\link{plot_wordvec_tSNE}}
 #'
 #' @examples
 #' d = data_wordvec_normalize(demodata)
@@ -873,19 +901,19 @@ plot_wordvec = function(dt, dims=NULL, step=0.05, border="white") {
 #'
 #' Visualize word vectors with dimensionality reduced
 #' using the t-Distributed Stochastic Neighbor Embedding (t-SNE) method
-#' (i.e., project high-dimensional vectors into a low-dimensional vector space),
+#' (i.e., projecting high-dimensional vectors into a low-dimensional vector space),
 #' implemented by \code{\link[Rtsne:Rtsne]{Rtsne::Rtsne()}}.
 #' You should specify a random seed if you expect reproducible results.
 #'
 #' @inheritParams plot_wordvec
 #' @param dims Output dimensionality: \code{2} (default, the most common choice) or \code{3}.
-#' @param colors A character vector specifying (1) the categories of words (for 2-D plot only)
-#' or (2) the exact colors of words (for 2-D and 3-D plot). See examples for its usage.
-#' @param seed Random seed to obtain reproducible results. Defaults to \code{NULL}.
 #' @param perplexity Perplexity parameter, should not be larger than (number of words - 1) / 3.
 #' Defaults to \code{floor((length(dt)-1)/3)} (where columns of \code{dt} are words).
 #' See the \code{\link[Rtsne:Rtsne]{Rtsne}} package for details.
 #' @param theta Speed/accuracy trade-off (increase for less accuracy), set to 0 for exact t-SNE. Defaults to 0.5.
+#' @param colors A character vector specifying (1) the categories of words (for 2-D plot only)
+#' or (2) the exact colors of words (for 2-D and 3-D plot). See examples for its usage.
+#' @param seed Random seed to obtain reproducible results. Defaults to \code{NULL}.
 #' @param custom.Rtsne User-defined \code{\link[Rtsne:Rtsne]{Rtsne}} object using the same \code{dt}.
 #'
 #' @return
@@ -938,14 +966,17 @@ plot_wordvec = function(dt, dims=NULL, step=0.05, border="white") {
 #'                      labels=function(x) x/100) +
 #'   scale_color_manual(values=c("#B7472A", "#2B579A"))
 #'
-#' \donttest{## 3-D:
+#' \dontrun{
+#'
+#' ## 3-D:
 #' colors = c(rep("#2B579A", 4), rep("#B7472A", 4))
 #' plot_wordvec_tSNE(dt, dims=3, colors=colors, seed=1)
 #' }
+#'
 #' @export
-plot_wordvec_tSNE = function(dt, dims=2, colors=NULL, seed=NULL,
-                             perplexity,
-                             theta=0.5,
+plot_wordvec_tSNE = function(dt, dims=2,
+                             perplexity, theta=0.5,
+                             colors=NULL, seed=NULL,
                              custom.Rtsne=NULL) {
   if(!is.null(attr(dt, "normalized")))
     dt = as.data.table(t(data_wordvec_reshape(dt)))
@@ -1004,7 +1035,7 @@ plot_wordvec_tSNE = function(dt, dims=2, colors=NULL, seed=NULL,
 }
 
 
-#### Word Analysis ####
+#### Word Similarity Analysis ####
 
 
 #' Find the Top-N most similar words.
@@ -1166,6 +1197,13 @@ most_similar = function(data, x, topn=10, keep=FALSE, above=NULL) {
 #' Download pre-trained word vectors data (\code{.RData}):
 #' \url{https://psychbruce.github.io/WordVector_RData.pdf}
 #'
+#' @seealso
+#' \code{\link{cosine_similarity}}
+#'
+#' \code{\link{tab_similarity}}
+#'
+#' \code{\link{most_similar}}
+#'
 #' @examples
 #' pair_similarity(demodata, "China", "Chinese")
 #'
@@ -1175,9 +1213,6 @@ pair_similarity = function(data, word1, word2, distance=FALSE) {
   dt = get_wordvecs(data, c(word1, word2))
   cosine_similarity(dt[[1]], dt[[2]], distance=distance)
 }
-
-
-#### Tabulate Data ####
 
 
 #' Tabulate data for cosine similarity/distance of all word pairs.
@@ -1198,6 +1233,12 @@ pair_similarity = function(data, word1, word2, distance=FALSE) {
 #' \url{https://psychbruce.github.io/WordVector_RData.pdf}
 #'
 #' @seealso
+#' \code{\link{cosine_similarity}}
+#'
+#' \code{\link{pair_similarity}}
+#'
+#' \code{\link{most_similar}}
+#'
 #' \code{\link{test_WEAT}}
 #'
 #' \code{\link{test_RND}}
@@ -1243,9 +1284,12 @@ tab_similarity = function(data, words=NULL, pattern=NULL,
 }
 
 
+#### Word Association Test ####
+
+
 #' Word Embedding Association Test (WEAT) and Single-Category WEAT.
 #'
-#' Tabulate data (cosine similarity and standardized effect size) for
+#' Tabulate data (cosine similarity and standardized effect size) for the
 #' \emph{Word Embedding Association Test} (WEAT) and
 #' \emph{Single-Category Word Embedding Association Test} (SC-WEAT) analyses.
 #'
@@ -1452,7 +1496,7 @@ test_WEAT = function(data, T1, T2, A1, A2,
 
 #' Relative Norm Distance (RND) analysis.
 #'
-#' Tabulate data for \emph{Relative Norm Distance} (RND;
+#' Tabulate data for the \emph{Relative Norm Distance} (RND;
 #' also known as \emph{Relative Euclidean Distance}) analysis.
 #' This is an alternative method to \link[PsychWordVec:test_WEAT]{Single-Category WEAT}.
 #'
@@ -1666,9 +1710,9 @@ tokenize = function(text,
 }
 
 
-#' Train static word vectors using the Word2Vec, GloVe, or FastText algorithm.
+#' Train word vectors using the Word2Vec, GloVe, or FastText algorithm.
 #'
-#' Train static word vectors using the
+#' Train word vectors using the
 #' \code{\link[word2vec:word2vec]{Word2Vec}},
 #' \code{\link[rsparse:GloVe]{GloVe}}, or
 #' \code{\link[fastTextR:ft_train]{FastText}} algorithm
@@ -1739,7 +1783,7 @@ tokenize = function(text,
 #' Minimal and maximal ngram length.
 #' Defaults to \code{c(3, 6)}.
 #'
-#' @param max.x \strong{<Only for GloVe>}
+#' @param x.max \strong{<Only for GloVe>}
 #'
 #' Maximum number of co-occurrences to use in the weighting function.
 #' Defaults to \code{10}.
@@ -1759,8 +1803,8 @@ tokenize = function(text,
 #' @param iteration Number of training iterations.
 #' More iterations makes a more precise model,
 #' but computational cost is linearly proportional to iterations.
-#' Defaults to \code{5} for Word2Vec and FastText and
-#' \code{10} for GloVe.
+#' Defaults to \code{5} for Word2Vec and FastText
+#' while \code{10} for GloVe.
 #'
 #' @return
 #' A \code{data.table} (of new class \code{wordvec}) with two variables:
@@ -1804,7 +1848,7 @@ tokenize = function(text,
 #' review = text2vec::movie_review  # a data.frame'
 #' text = review$review
 #'
-#' ## Note: All the examples train 50 dims for faster code check.
+#' \donttest{## Note: All the examples train 50 dims for faster code check.
 #'
 #' ## Word2Vec (SGNS)
 #' dt1 = train_wordvec(
@@ -1843,7 +1887,7 @@ tokenize = function(text,
 #' most_similar(dt3, "Ive")  # evaluate performance
 #' most_similar(dt3, ~ man - he + she, topn=5)  # evaluate performance
 #' most_similar(dt3, ~ boy - he + she, topn=5)  # evaluate performance
-#'
+#' }
 #' @export
 train_wordvec = function(
     x,
@@ -1858,7 +1902,7 @@ train_wordvec = function(
     subsample=0.0001,
     learning=0.05,
     ngrams=c(3, 6),
-    max.x=10,
+    x.max=10,
     convergence=-1,
     stopwords=character(0),
     encoding="UTF-8",
@@ -1965,7 +2009,7 @@ train_wordvec = function(
       itoken,
       text2vec::vocab_vectorizer(vocab),
       skip_grams_window = window)
-    model = rsparse::GloVe$new(rank = dims, x_max = max.x)
+    model = rsparse::GloVe$new(rank = dims, x_max = x.max)
     temp = utils::capture.output({
       wv.main = model$fit_transform(
         tcm,  # input: term co-occurence matrix

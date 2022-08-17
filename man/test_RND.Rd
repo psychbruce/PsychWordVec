@@ -46,7 +46,7 @@ A \code{list} of objects:
 }
 }
 \description{
-Tabulate data for \emph{Relative Norm Distance} (RND;
+Tabulate data for the \emph{Relative Norm Distance} (RND;
 also known as \emph{Relative Euclidean Distance}) analysis.
 This is an alternative method to \link[PsychWordVec:test_WEAT]{Single-Category WEAT}.
 }

@@ -31,3 +31,10 @@ Download pre-trained word vectors data (\code{.RData}):
 pair_similarity(demodata, "China", "Chinese")
 
 }
+\seealso{
+\code{\link{cosine_similarity}}
+
+\code{\link{tab_similarity}}
+
+\code{\link{most_similar}}
+}

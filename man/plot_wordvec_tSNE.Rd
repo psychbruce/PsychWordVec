@@ -7,30 +7,29 @@
 plot_wordvec_tSNE(
   dt,
   dims = 2,
-  colors = NULL,
-  seed = NULL,
   perplexity,
   theta = 0.5,
+  colors = NULL,
+  seed = NULL,
   custom.Rtsne = NULL
 )
 }
 \arguments{
-\item{dt}{A \code{data.table} (of new class \code{wordvec})
-returned by \code{\link{get_wordvecs}}
+\item{dt}{A \code{data.table} returned by \code{\link{get_wordvecs}}
 or loaded by \code{\link{data_wordvec_load}}.}
 
 \item{dims}{Output dimensionality: \code{2} (default, the most common choice) or \code{3}.}
-
-\item{colors}{A character vector specifying (1) the categories of words (for 2-D plot only)
-or (2) the exact colors of words (for 2-D and 3-D plot). See examples for its usage.}
-
-\item{seed}{Random seed to obtain reproducible results. Defaults to \code{NULL}.}
 
 \item{perplexity}{Perplexity parameter, should not be larger than (number of words - 1) / 3.
 Defaults to \code{floor((length(dt)-1)/3)} (where columns of \code{dt} are words).
 See the \code{\link[Rtsne:Rtsne]{Rtsne}} package for details.}
 
 \item{theta}{Speed/accuracy trade-off (increase for less accuracy), set to 0 for exact t-SNE. Defaults to 0.5.}
+
+\item{colors}{A character vector specifying (1) the categories of words (for 2-D plot only)
+or (2) the exact colors of words (for 2-D and 3-D plot). See examples for its usage.}
+
+\item{seed}{Random seed to obtain reproducible results. Defaults to \code{NULL}.}
 
 \item{custom.Rtsne}{User-defined \code{\link[Rtsne:Rtsne]{Rtsne}} object using the same \code{dt}.}
 }
@@ -46,7 +45,7 @@ and thus cannot return any 3-D plot object.
 \description{
 Visualize word vectors with dimensionality reduced
 using the t-Distributed Stochastic Neighbor Embedding (t-SNE) method
-(i.e., project high-dimensional vectors into a low-dimensional vector space),
+(i.e., projecting high-dimensional vectors into a low-dimensional vector space),
 implemented by \code{\link[Rtsne:Rtsne]{Rtsne::Rtsne()}}.
 You should specify a random seed if you expect reproducible results.
 }
@@ -81,10 +80,13 @@ plot_wordvec_tSNE(dt, colors=category, seed=1234) +
                      labels=function(x) x/100) +
   scale_color_manual(values=c("#B7472A", "#2B579A"))
 
-\donttest{## 3-D:
+\dontrun{
+
+## 3-D:
 colors = c(rep("#2B579A", 4), rep("#B7472A", 4))
 plot_wordvec_tSNE(dt, dims=3, colors=colors, seed=1)
 }
+
 }
 \references{
 Hinton, G. E., & Salakhutdinov, R. R. (2006).

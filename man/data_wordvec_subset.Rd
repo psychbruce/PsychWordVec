@@ -8,7 +8,7 @@ data_wordvec_subset(
   x,
   words = NULL,
   pattern = NULL,
-  file.save = NULL,
+  file.save,
   compress = "bzip2",
   compress.level = 9
 )
@@ -20,7 +20,7 @@ data_wordvec_subset(
   \item{an .RData file transformed by \code{\link{data_transform}}}
 }}
 
-\item{words}{[Option 1] Word string (\code{NULL}; a single word; a vector of words).}
+\item{words}{[Option 1] Word strings (\code{NULL}; a single word; a vector of words).}
 
 \item{pattern}{[Option 2] Pattern of regular expression (see \code{\link[stringr:str_subset]{str_subset}}).}
 
@@ -28,7 +28,7 @@ data_wordvec_subset(
 
 \item{compress}{Compression method for the saved file. Defaults to \code{"bzip2"}.
 
-Options can be:
+Options include:
 \itemize{
   \item \code{1} or \code{"gzip"}: modest file size (fastest)
   \item \code{2} or \code{"bzip2"}: small file size (fast)

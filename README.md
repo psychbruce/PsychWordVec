@@ -2,7 +2,12 @@
 
 Toolkit for Word Embedding Research in Psychological Science.
 
-An integrated word vector toolkit that provides: (1) a collection of pre-trained [word vectors](https://en.wikipedia.org/wiki/Word_embedding) in the `.RData` format ([WordVector_RData.pdf](https://psychbruce.github.io/WordVector_RData.pdf)); (2) a variety of functions to process, analyze, and visualize word vectors (e.g., find the most similar words to a given word); (3) a range of tests (e.g., Word Embedding Association Test) to examine psychological effects (e.g., implicit attitude/bias); and (4) a set of training methods ([Word2Vec](https://en.wikipedia.org/wiki/Word2vec), [GloVe](https://en.wikipedia.org/wiki/GloVe), [FastText](https://en.wikipedia.org/wiki/FastText)) to learn word vectors from text corpora.
+An integrated toolkit of word embedding that provides:
+
+1.  A collection of pre-trained [word vectors](https://en.wikipedia.org/wiki/Word_embedding) in the `.RData` compressed format ([WordVector_RData.pdf](https://psychbruce.github.io/WordVector_RData.pdf));
+2.  A variety of functions to process, analyze, and visualize word vectors (e.g., find the most similar words to a given word);
+3.  A range of tests (Word Embedding Association Test, Relative Norm Distance) to examine conceptual associations;
+4.  A set of training methods ([Word2Vec](https://en.wikipedia.org/wiki/Word2vec), [GloVe](https://en.wikipedia.org/wiki/GloVe), [FastText](https://en.wikipedia.org/wiki/FastText)) to locally train word vectors from text corpora.
 
 <!-- badges: start -->
 
@@ -22,4 +27,41 @@ Homepage: [psychbruce.github.io](https://psychbruce.github.io)
 
 ## Citation
 
--   Bao, H.-W.-S. (2022). PsychWordVec: Toolkit for word embedding research in psychological science. R package version 0.0.x. <https://CRAN.R-project.org/package=PsychWordVec>
+-   Bao, H.-W.-S. (2022). PsychWordVec: Toolkit for word embedding research in psychological science. R package version 0.1.x. <https://CRAN.R-project.org/package=PsychWordVec>
+
+## Installation
+
+``` r
+## Method 1: Install from CRAN
+install.packages("PsychWordVec")
+
+## Method 2: Install from GitHub
+install.packages("devtools")
+devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
+```
+
+## Functions
+
+-   Word Embeddings Data Management
+    -   `data_transform()`
+    -   `data_wordvec_load()`
+    -   `data_wordvec_normalize()`
+    -   `data_wordvec_reshape()`
+    -   `data_wordvec_subset()`
+-   Word Vectors Extraction, Dimensionality Reduction, and Visualization
+    -   `get_wordvec()`
+    -   `get_wordvecs()`
+    -   `plot_wordvec()`
+    -   `plot_wordvec_tSNE()`
+-   Word Semantic Similarity Analysis and Conceptual Association Test
+    -   `cosine_similarity()`
+    -   `pair_similarity()`
+    -   `tab_similarity()`
+    -   `most_similar()`
+    -   `test_WEAT()`
+    -   `test_RND()`
+-   Word Vectors Local Training (Word2Vec, GloVe, and FastText)
+    -   `tokenize()`
+    -   `train_wordvec()`
+
+See the documentation (help pages) for their usage and details.

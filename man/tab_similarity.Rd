@@ -16,7 +16,7 @@ tab_similarity(
 \item{data}{A \code{data.table} (of new class \code{wordvec})
 loaded by \code{\link{data_wordvec_load}}.}
 
-\item{words}{[Option 1] Word string (\code{NULL}; a single word; a vector of words).}
+\item{words}{[Option 1] Word strings (\code{NULL}; a single word; a vector of words).}
 
 \item{pattern}{[Option 2] Pattern of regular expression (see \code{\link[stringr:str_subset]{str_subset}}).}
 
@@ -54,6 +54,12 @@ tab_similarity(demodata, cc("Beijing, China, Tokyo, Japan"),
 
 }
 \seealso{
+\code{\link{cosine_similarity}}
+
+\code{\link{pair_similarity}}
+
+\code{\link{most_similar}}
+
 \code{\link{test_WEAT}}
 
 \code{\link{test_RND}}

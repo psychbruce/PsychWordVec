@@ -2,7 +2,7 @@
 % Please edit documentation in R/PsychWordVec.R
 \name{get_wordvec}
 \alias{get_wordvec}
-\title{Extract word vector of a single word.}
+\title{Extract the word vector of a single word.}
 \usage{
 get_wordvec(data, word)
 }
@@ -13,10 +13,11 @@ loaded by \code{\link{data_wordvec_load}}.}
 \item{word}{Word string (a single word).}
 }
 \value{
-A numeric vector of the word (or \code{NA} if the word is not in the data).
+A numeric vector of the word
+(or \code{NA} if the word does not appear in the data).
 }
 \description{
-Extract word vector of a single word.
+Extract the word vector of a single word.
 }
 \section{Download}{
 
@@ -38,5 +39,5 @@ cosine_similarity(v1, v2)
 
 \code{\link{plot_wordvec}}
 
-\code{\link{data_wordvec_subset}}
+\code{\link{plot_wordvec_tSNE}}
 }
