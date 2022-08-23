@@ -56,14 +56,17 @@
 <span>  tokenizer <span class="op">=</span> <span class="fu">text2vec</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/text2vec/man/tokenizers.html" class="external-link">word_tokenizer</a></span>,</span>
 <span>  split <span class="op">=</span> <span class="st">" "</span>,</span>
 <span>  remove <span class="op">=</span> <span class="st">"_|'|&lt;br/&gt;|&lt;br /&gt;|e\\.g\\.|i\\.e\\."</span>,</span>
-<span>  simplify <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  encoding <span class="op">=</span> <span class="st">"UTF-8"</span>,</span>
+<span>  simplify <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>text</dt>
-<dd><p>Character vector (strings).</p></dd>
+<dd><p>A character vector of the text,
+or a file path on disk containing the text.</p></dd>
 
 
 <dt>tokenizer</dt>
@@ -82,9 +85,17 @@ Defaults to <code>"_|'|&lt;br/&gt;|&lt;br /&gt;|e\\.g\\.|i\\.e\\."</code>.
 You may turn off this by specifying <code>remove=NULL</code>.</p></dd>
 
 
+<dt>encoding</dt>
+<dd><p>Text encoding. Defaults to <code>"UTF-8"</code>.</p></dd>
+
+
 <dt>simplify</dt>
 <dd><p>Return a character vector (<code>TRUE</code>) or a list of character vectors (<code>FALSE</code>).
 Defaults to <code>TRUE</code>.</p></dd>
+
+
+<dt>verbose</dt>
+<dd><p>Print information to the console? Defaults to <code>TRUE</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -109,7 +120,7 @@ Defaults to <code>TRUE</code>.</p></dd>
 <span class="r-in"><span>  <span class="st">"However, my computer is not among the \"Top 10\" list."</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">tokenize</span><span class="op">(</span><span class="va">txt1</span>, simplify<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> Tokenized: 4 sentences (time cost = 0.2 secs)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">√</span> Tokenized: 4 sentences (time cost = 0.3 secs)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "I"          "love"       "natural"    "language"   "processing"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6] "NLP"       </span>

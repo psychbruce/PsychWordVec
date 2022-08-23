@@ -70,7 +70,8 @@ on a modern computer (HP ProBook 450, Windows 11, Intel i7-1165G7 CPU, 32GB RAM)
 <span>  header <span class="op">=</span> <span class="st">"auto"</span>,</span>
 <span>  encoding <span class="op">=</span> <span class="st">"auto"</span>,</span>
 <span>  compress <span class="op">=</span> <span class="st">"bzip2"</span>,</span>
-<span>  compress.level <span class="op">=</span> <span class="fl">9</span></span>
+<span>  compress.level <span class="op">=</span> <span class="fl">9</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -117,6 +118,10 @@ which is much slower than <code>vroom</code>.</p></dd>
 <dd><p>Compression level from <code>0</code> (none) to <code>9</code>
 (maximal compression for minimal file size). Defaults to <code>9</code>.</p></dd>
 
+
+<dt>verbose</dt>
+<dd><p>Print information to the console? Defaults to <code>TRUE</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -142,8 +147,11 @@ which is much slower than <code>vroom</code>.</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="co"># download from https://fasttext.cc/docs/en/crawl-vectors.html</span></span></span>
+<span class="r-in"><span><span class="co"># please first manually download plain text data of word vectors</span></span></span>
+<span class="r-in"><span><span class="co"># e.g., from: https://fasttext.cc/docs/en/crawl-vectors.html</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># the text file must be on your disk</span></span></span>
+<span class="r-in"><span><span class="co"># the following code cannot run unless you have the file</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://psychbruce.github.io/bruceR/" class="external-link">bruceR</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/set.wd.html" class="external-link">set.wd</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">data_transform</span><span class="op">(</span>file.load<span class="op">=</span><span class="st">"cc.zh.300.vec"</span>,   <span class="co"># plain text file</span></span></span>
