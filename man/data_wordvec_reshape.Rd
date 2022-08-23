@@ -4,7 +4,12 @@
 \alias{data_wordvec_reshape}
 \title{Reshape word vectors data.}
 \usage{
-data_wordvec_reshape(data, to = c("plain", "dense"), normalize = FALSE)
+data_wordvec_reshape(
+  data,
+  to = c("plain", "dense"),
+  normalize = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{data}{Data to be reshaped. See examples.}
@@ -20,6 +25,8 @@ data_wordvec_reshape(data, to = c("plain", "dense"), normalize = FALSE)
 
 \item{normalize}{Normalize all word vectors to unit length?
 Defaults to \code{FALSE}. See \code{\link{data_wordvec_normalize}}.}
+
+\item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
 }
 \value{
 A \code{data.table} (dense) or \code{matrix} (plain) of word vectors.

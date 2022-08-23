@@ -45,9 +45,7 @@ dt[, GIRL := GIRL / sqrt(sum(GIRL^2))]  # normalize
 names(dt)[5] = "boy - he + she"
 plot_wordvec(dt[, c(1,3,4,5,2)], dims=1:50)
 
-\dontrun{
-
-dt = get_wordvecs(d, cc("
+\donttest{dt = get_wordvecs(d, cc("
   male, man, boy, he, his,
   female, woman, girl, she, her"))
 
@@ -59,8 +57,8 @@ p + theme(legend.key.height=unit(0.1, "npc"))
 # or to save the plot:
 ggsave(p, filename="wordvecs.png",
        width=8, height=5, dpi=500)
+unlink("wordvecs.png")  # delete file for code check
 }
-
 }
 \seealso{
 \code{\link{plot_wordvec_tSNE}}

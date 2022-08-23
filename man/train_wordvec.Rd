@@ -5,7 +5,7 @@
 \title{Train word vectors using the Word2Vec, GloVe, or FastText algorithm.}
 \usage{
 train_wordvec(
-  x,
+  text,
   method = c("word2vec", "glove", "fasttext"),
   dims = 300,
   window = 5,
@@ -27,12 +27,13 @@ train_wordvec(
   tokenizer,
   remove,
   file.save,
-  compress = "bzip2"
+  compress = "bzip2",
+  verbose = TRUE
 )
 }
 \arguments{
-\item{x}{A file path on disk containing the text
-or a character vector of the text.}
+\item{text}{A character vector of the text,
+or a file path on disk containing the text.}
 
 \item{method}{Training algorithm:
 \itemize{
@@ -111,8 +112,7 @@ Convergence tolerance for SGD iterations. Defaults to \code{-1}.}
 
 A character vector of stopwords to be excluded from training.}
 
-\item{encoding}{Text encoding of \code{x} and \code{stop_words}.
-Defaults to \code{"UTF-8"}.}
+\item{encoding}{Text encoding. Defaults to \code{"UTF-8"}.}
 
 \item{tolower}{Convert all upper-case characters to lower-case?
 Defaults to \code{FALSE}.}
@@ -143,6 +143,8 @@ Options include:
   \item \code{2} or \code{"bzip2"}: small file size (fast)
   \item \code{3} or \code{"xz"}: minimized file size (slow)
 }}
+
+\item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
 }
 \value{
 A \code{data.table} (of new class \code{wordvec}) with two variables:
@@ -165,10 +167,10 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-review = text2vec::movie_review  # a data.frame'
+\donttest{review = text2vec::movie_review  # a data.frame'
 text = review$review
 
-\donttest{## Note: All the examples train 50 dims for faster code check.
+## Note: All the examples train 50 dims for faster code check.
 
 ## Word2Vec (SGNS)
 dt1 = train_wordvec(

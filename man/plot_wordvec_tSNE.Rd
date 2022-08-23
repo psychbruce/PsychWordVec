@@ -72,7 +72,7 @@ plot_wordvec_tSNE(dt, seed=1234)$data
 colors = c(rep("#2B579A", 4), rep("#B7472A", 4))
 plot_wordvec_tSNE(dt, colors=colors, seed=1234)
 
-category = c(rep("gender", 4), rep("country", 4))
+\donttest{category = c(rep("gender", 4), rep("country", 4))
 plot_wordvec_tSNE(dt, colors=category, seed=1234) +
   scale_x_continuous(limits=c(-200, 200),
                      labels=function(x) x/100) +
@@ -80,13 +80,10 @@ plot_wordvec_tSNE(dt, colors=category, seed=1234) +
                      labels=function(x) x/100) +
   scale_color_manual(values=c("#B7472A", "#2B579A"))
 
-\dontrun{
-
 ## 3-D:
 colors = c(rep("#2B579A", 4), rep("#B7472A", 4))
 plot_wordvec_tSNE(dt, dims=3, colors=colors, seed=1)
 }
-
 }
 \references{
 Hinton, G. E., & Salakhutdinov, R. R. (2006).

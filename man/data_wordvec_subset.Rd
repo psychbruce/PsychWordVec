@@ -10,7 +10,8 @@ data_wordvec_subset(
   pattern = NULL,
   file.save,
   compress = "bzip2",
-  compress.level = 9
+  compress.level = 9,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ Options include:
 
 \item{compress.level}{Compression level from \code{0} (none) to \code{9}
 (maximal compression for minimal file size). Defaults to \code{9}.}
+
+\item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
 }
 \value{
 A subset of word vectors data of valid (available) words.

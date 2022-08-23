@@ -4,11 +4,13 @@
 \alias{data_wordvec_normalize}
 \title{Normalize all word vectors to unit length.}
 \usage{
-data_wordvec_normalize(data)
+data_wordvec_normalize(data, verbose = TRUE)
 }
 \arguments{
 \item{data}{A \code{data.table} (of new class \code{wordvec})
 loaded by \code{\link{data_wordvec_load}}.}
+
+\item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
 }
 \value{
 A \code{data.table} (of new class \code{wordvec}) with \strong{normalized} word vectors.

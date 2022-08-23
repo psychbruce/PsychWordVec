@@ -61,7 +61,7 @@ get_wordvecs(d, cc("China, Japan, Korea,
                     Mac, Linux, Windows"),
              plot=TRUE, plot.dims=1:100)
 
-## a more complex example:
+\donttest{## a more complex example:
 
 words = cc("
 China
@@ -90,8 +90,6 @@ dt = get_wordvecs(
   plot.dims=1:100,
   plot.step=0.06)
 
-\dontrun{
-
 # if you want to change something:
 attr(dt, "ggplot") +
   scale_fill_viridis_b(n.breaks=10, show.limits=TRUE) +
@@ -101,8 +99,8 @@ attr(dt, "ggplot") +
 ggsave(attr(dt, "ggplot"),
        filename="wordvecs.png",
        width=8, height=5, dpi=500)
+unlink("wordvecs.png")  # delete file for code check
 }
-
 }
 \seealso{
 \code{\link{get_wordvec}}

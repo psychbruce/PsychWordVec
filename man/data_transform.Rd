@@ -11,7 +11,8 @@ data_transform(
   header = "auto",
   encoding = "auto",
   compress = "bzip2",
-  compress.level = 9
+  compress.level = 9,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -48,6 +49,8 @@ Options include:
 
 \item{compress.level}{Compression level from \code{0} (none) to \code{9}
 (maximal compression for minimal file size). Defaults to \code{9}.}
+
+\item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
 }
 \value{
 A \code{data.table} (of new class \code{wordvec}) with two variables: \code{word} and \code{vec}.
@@ -68,8 +71,11 @@ Download pre-trained word vectors data (\code{.RData}):
 
 \examples{
 \dontrun{
-# download from https://fasttext.cc/docs/en/crawl-vectors.html
+# please first manually download plain text data of word vectors
+# e.g., from: https://fasttext.cc/docs/en/crawl-vectors.html
+
 # the text file must be on your disk
+# the following code cannot run unless you have the file
 library(bruceR)
 set.wd()
 data_transform(file.load="cc.zh.300.vec",   # plain text file

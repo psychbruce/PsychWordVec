@@ -3,6 +3,7 @@
 # PsychWordVec 0.1.0 (Aug 2022)
 
 -   CRAN initial release.
+-   Fixed all issues in the CRAN manual inspection.
 
 # PsychWordVec 0.0.8 (Aug 2022)
 

@@ -9,11 +9,14 @@ tokenize(
   tokenizer = text2vec::word_tokenizer,
   split = " ",
   remove = "_|'|<br/>|<br />|e\\\\.g\\\\.|i\\\\.e\\\\.",
-  simplify = TRUE
+  encoding = "UTF-8",
+  simplify = TRUE,
+  verbose = TRUE
 )
 }
 \arguments{
-\item{text}{Character vector (strings).}
+\item{text}{A character vector of the text,
+or a file path on disk containing the text.}
 
 \item{tokenizer}{Function used to tokenize the text.
 Defaults to \code{\link[text2vec:tokenizers]{text2vec::word_tokenizer}}.}
@@ -25,8 +28,12 @@ Defaults to \code{" "}.}
 Defaults to \code{"_|'|<br/>|<br />|e\\\\.g\\\\.|i\\\\.e\\\\."}.
 You may turn off this by specifying \code{remove=NULL}.}
 
+\item{encoding}{Text encoding. Defaults to \code{"UTF-8"}.}
+
 \item{simplify}{Return a character vector (\code{TRUE}) or a list of character vectors (\code{FALSE}).
 Defaults to \code{TRUE}.}
+
+\item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
 }
 \value{
 \itemize{

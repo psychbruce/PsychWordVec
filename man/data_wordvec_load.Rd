@@ -4,7 +4,7 @@
 \alias{data_wordvec_load}
 \title{Load word vectors data from an ".RData" file.}
 \usage{
-data_wordvec_load(file.load, normalize = FALSE)
+data_wordvec_load(file.load, normalize = FALSE, verbose = TRUE)
 }
 \arguments{
 \item{file.load}{File name (must be .RData transformed by
@@ -12,6 +12,8 @@ data_wordvec_load(file.load, normalize = FALSE)
 
 \item{normalize}{Normalize all word vectors to unit length?
 Defaults to \code{FALSE}. See \code{\link{data_wordvec_normalize}}.}
+
+\item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
 }
 \value{
 A \code{data.table} (of new class \code{wordvec}) with two variables:
@@ -31,8 +33,12 @@ Download pre-trained word vectors data (\code{.RData}):
 
 \examples{
 \dontrun{
-# download from https://psychbruce.github.io/WordVector_RData.pdf
+# please first manually download the .RData file
+# (see https://psychbruce.github.io/WordVector_RData.pdf)
+# or transform plain text data by using `data_transform()`
+
 # the RData file must be on your disk
+# the following code cannot run unless you have the file
 library(bruceR)
 set.wd()
 d = data_wordvec_load("GloVe/glove_wiki_50d.RData")

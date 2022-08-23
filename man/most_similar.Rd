@@ -4,7 +4,7 @@
 \alias{most_similar}
 \title{Find the Top-N most similar words.}
 \usage{
-most_similar(data, x, topn = 10, keep = FALSE, above = NULL)
+most_similar(data, x, topn = 10, keep = FALSE, above = NULL, verbose = TRUE)
 }
 \arguments{
 \item{data}{A \code{data.table} (of new class \code{wordvec})
@@ -46,6 +46,8 @@ Defaults to \code{FALSE}.}
   higher than that with this critical word}
 }
 If both \code{topn} and \code{above} are specified, \code{above} wins.}
+
+\item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
 }
 \value{
 A \code{data.table} with the most similar words and their cosine similarities.
@@ -75,7 +77,7 @@ most_similar(d, "China")
 most_similar(d, c("king", "queen"))
 most_similar(d, cc(" king , queen ; man | woman "))
 
-# the same as above:
+\donttest{# the same as above:
 most_similar(d, ~ China)
 most_similar(d, ~ king + queen)
 most_similar(d, ~ king + queen + man + woman)
@@ -100,7 +102,7 @@ attr(ms, "normalized")
 attr(ms, "wordvec.formula")
 attr(ms, "wordvec")
 # final word vector computed according to the formula
-
+}
 }
 \seealso{
 \code{\link{cosine_similarity}}

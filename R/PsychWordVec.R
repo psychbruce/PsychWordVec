@@ -166,7 +166,7 @@ extract_valid_words = function(data, words=NULL, pattern=NULL) {
       stop("Please specify either `words` or `pattern`!", call.=FALSE)
     } else {
       words.valid = str_subset(data$word, pattern)
-      Print("{length(words.valid)} words are matched...")
+      message(Glue("{length(words.valid)} words are matched..."))
     }
   } else {
     words.contain = data[word %in% words]$word
@@ -174,7 +174,7 @@ extract_valid_words = function(data, words=NULL, pattern=NULL) {
   }
   if(length(words.valid) < length(words)) {
     for(word in setdiff(words, words.valid))
-      Print("<<red X>> \"{word}\" not found...")
+      message(Glue("<<red X>> \"{word}\" not found..."))
     message("Warning: Some words are not found!")
   }
   return(words.valid)
@@ -221,6 +221,7 @@ extract_valid_words = function(data, words=NULL, pattern=NULL) {
 #' }
 #' @param compress.level Compression level from \code{0} (none) to \code{9}
 #' (maximal compression for minimal file size). Defaults to \code{9}.
+#' @param verbose Print information to the console? Defaults to \code{TRUE}.
 #'
 #' @return
 #' A \code{data.table} (of new class \code{wordvec}) with two variables: \code{word} and \code{vec}.
@@ -240,8 +241,11 @@ extract_valid_words = function(data, words=NULL, pattern=NULL) {
 #'
 #' @examples
 #' \dontrun{
-#' # download from https://fasttext.cc/docs/en/crawl-vectors.html
+#' # please first manually download plain text data of word vectors
+#' # e.g., from: https://fasttext.cc/docs/en/crawl-vectors.html
+#'
 #' # the text file must be on your disk
+#' # the following code cannot run unless you have the file
 #' library(bruceR)
 #' set.wd()
 #' data_transform(file.load="cc.zh.300.vec",   # plain text file
@@ -252,16 +256,19 @@ extract_valid_words = function(data, words=NULL, pattern=NULL) {
 #' @export
 data_transform = function(file.load, file.save,
                           sep=" ", header="auto", encoding="auto",
-                          compress="bzip2", compress.level=9) {
+                          compress="bzip2", compress.level=9,
+                          verbose=TRUE) {
   t0 = Sys.time()
   if(!missing(file.save)) check_save_validity(file.save)
   if(inherits(file.load, "wordvec")) {
     dt = file.load  # 2 variables: word, vec
   } else {
-    cat("\n")
-    Print("****** Data Transformation (~ 30000 words/min in total) ******")
-    cat("\n")
-    Print("Loading file... \"{file.load}\"")
+    if(verbose) {
+      cat("\n")
+      Print("****** Data Transformation (~ 30000 words/min in total) ******")
+      cat("\n")
+      Print("Loading file... \"{file.load}\"")
+    }
     gc()  # Garbage Collection: Free the Memory
     suppressWarnings({
       if(encoding=="auto")
@@ -276,7 +283,8 @@ data_transform = function(file.load, file.save,
         dt = data.table(x=d)
       rm(d)
     })
-    Print("Preprocessing... ({nrow(dt)} words)")
+    if(verbose)
+      Print("Preprocessing... ({nrow(dt)} words)")
     dt[, `:=`(
       word = str_split(dt$x, sep, n=2, simplify=TRUE)[,1],
       vec = do.call("list", lapply(
@@ -289,15 +297,16 @@ data_transform = function(file.load, file.save,
     if(length(dims) > 1)
       warning("The number of dimensions is not consistent between words!", call.=FALSE)
     ndim = length(dt[[1, "vec"]])
-    Print("Word vectors data: {nrow(dt)} words, {ndim} dimensions (time cost = {dtime(t0, 'auto')})")
+    if(verbose)
+      Print("Word vectors data: {nrow(dt)} words, {ndim} dimensions (time cost = {dtime(t0, 'auto')})")
   }
   class(dt) = c("wordvec", "data.table", "data.frame")
   if(!missing(file.save)) {
     t1 = Sys.time()
-    cat("\n")
     k = 9  # coefficient for time estimate (based on preprocessing time cost)
     est.time = format(difftime(Sys.time(), t0, units='mins') * k, digits=1, nsmall=0)
-    Print("Compressing and saving... (estimated time cost ~= {est.time})")
+    if(verbose)
+      Print("\n\n\nCompressing and saving... (estimated time cost ~= {est.time})")
     gc()  # Garbage Collection: Free the Memory
     compress = switch(compress,
                       `1`="gzip",
@@ -307,17 +316,19 @@ data_transform = function(file.load, file.save,
     save(dt, file=file.save,
          compress=compress,
          compression_level=compress.level)
-    Print("<<green \u221a>> Saved to \"{file.save}\" (time cost = {dtime(t1, 'mins')})")
+    if(verbose)
+      Print("<<green \u221a>> Saved to \"{file.save}\" (time cost = {dtime(t1, 'mins')})")
   }
   gc()  # Garbage Collection: Free the Memory
-  cat("\n")
-  Print("****** Total time cost: {dtime(t0, 'mins')} ******")
+  if(verbose)
+    Print("\n\n\n****** Total time cost: {dtime(t0, 'mins')} ******")
   invisible(dt)
 }
 
 
 #' Load word vectors data from an ".RData" file.
 #'
+#' @inheritParams data_transform
 #' @param file.load File name (must be .RData transformed by
 #' \code{\link{data_transform}}).
 #' @param normalize Normalize all word vectors to unit length?
@@ -345,18 +356,23 @@ data_transform = function(file.load, file.save,
 #'
 #' @examples
 #' \dontrun{
-#' # download from https://psychbruce.github.io/WordVector_RData.pdf
+#' # please first manually download the .RData file
+#' # (see https://psychbruce.github.io/WordVector_RData.pdf)
+#' # or transform plain text data by using `data_transform()`
+#'
 #' # the RData file must be on your disk
+#' # the following code cannot run unless you have the file
 #' library(bruceR)
 #' set.wd()
 #' d = data_wordvec_load("GloVe/glove_wiki_50d.RData")
 #' }
 #'
 #' @export
-data_wordvec_load = function(file.load, normalize=FALSE) {
+data_wordvec_load = function(file.load, normalize=FALSE,
+                             verbose=TRUE) {
   t0 = Sys.time()
   check_load_validity(file.load)
-  cat("Loading...")
+  if(verbose) cat("Loading...")
   envir = new.env()
   load(file=file.load, envir=envir)
   if(length(ls(envir)) > 1)
@@ -369,9 +385,11 @@ data_wordvec_load = function(file.load, normalize=FALSE) {
   attr(data, "dims") = ndim
   attr(data, "normalized") = FALSE
   class(data) = c("wordvec", "data.table", "data.frame")
-  cat("\015")
-  Print("<<green \u221a>> Word vector data: {nrow(data)} words, {ndim} dims (loading time: {dtime(t0)})")
-  if(normalize) data = data_wordvec_normalize(data)
+  if(verbose) {
+    cat("\015")
+    Print("<<green \u221a>> Word vector data: {nrow(data)} words, {ndim} dims (loading time: {dtime(t0)})")
+  }
+  if(normalize) data = data_wordvec_normalize(data, verbose)
   gc()  # Garbage Collection: Free the Memory
   return(data)
 }
@@ -388,6 +406,7 @@ data_wordvec_load = function(file.load, normalize=FALSE) {
 #' \emph{Note}: Normalization does not change the results of cosine similarity and
 #' can make the computation faster.
 #'
+#' @inheritParams data_transform
 #' @param data A \code{data.table} (of new class \code{wordvec})
 #' loaded by \code{\link{data_wordvec_load}}.
 #'
@@ -413,13 +432,13 @@ data_wordvec_load = function(file.load, normalize=FALSE) {
 #' data_wordvec_normalize(d)  # already normalized
 #'
 #' @export
-data_wordvec_normalize = function(data) {
+data_wordvec_normalize = function(data, verbose=TRUE) {
   check_data_validity(data)
   if(attr(data, "normalized")) {
-    Print("<<red \u221a>> Word vectors have already been normalized.")
+    if(verbose) Print("<<red \u221a>> Word vectors have already been normalized.")
   } else {
     data = normalize(data)
-    Print("<<green \u221a>> All word vectors have now been normalized.")
+    if(verbose) Print("<<green \u221a>> All word vectors have now been normalized.")
   }
   gc()  # Garbage Collection: Free the Memory
   invisible(data)
@@ -479,11 +498,12 @@ normalize = function(data) {
 #'
 #' @export
 data_wordvec_reshape = function(data, to=c("plain", "dense"),
-                                normalize=FALSE) {
+                                normalize=FALSE,
+                                verbose=TRUE) {
   to = match.arg(to)
   if(to == "plain") {
     check_data_validity(data)
-    if(normalize) data = data_wordvec_normalize(data)
+    if(normalize) data = data_wordvec_normalize(data, verbose)
     data.new = do.call(rbind, lapply(data$vec, function(x) {
       as.matrix(t(x))  # matrix is much faster
     }))
@@ -501,7 +521,7 @@ data_wordvec_reshape = function(data, to=c("plain", "dense"),
     attr(data.new, "dims") = length(data.new[[1, "vec"]])
     attr(data.new, "normalized") = FALSE
     class(data.new) = c("wordvec", "data.table", "data.frame")
-    if(normalize) data.new = data_wordvec_normalize(data.new)
+    if(normalize) data.new = data_wordvec_normalize(data.new, verbose)
   }
   gc()  # Garbage Collection: Free the Memory
   return(data.new)
@@ -567,7 +587,8 @@ data_wordvec_reshape = function(data, to=c("plain", "dense"),
 data_wordvec_subset = function(x, words=NULL, pattern=NULL,
                                file.save,
                                compress="bzip2",
-                               compress.level=9) {
+                               compress.level=9,
+                               verbose=TRUE) {
   if(!missing(file.save)) check_save_validity(file.save)
   if(is.data.table(x)) {
     data = x
@@ -586,8 +607,7 @@ data_wordvec_subset = function(x, words=NULL, pattern=NULL,
   dt = data[word %in% words.valid]  # much faster
   if(!missing(file.save)) {
     t1 = Sys.time()
-    cat("\n")
-    Print("Compressing and saving...")
+    if(verbose) Print("\n\n\nCompressing and saving...")
     compress = switch(compress,
                       `1`="gzip",
                       `2`="bzip2",
@@ -596,7 +616,7 @@ data_wordvec_subset = function(x, words=NULL, pattern=NULL,
     save(dt, file=file.save,
          compress=compress,
          compression_level=compress.level)
-    Print("<<green \u221a>> Saved to \"{file.save}\" (time cost = {dtime(t1, 'auto')})")
+    if(verbose) Print("<<green \u221a>> Saved to \"{file.save}\" (time cost = {dtime(t1, 'auto')})")
   }
   gc()  # Garbage Collection: Free the Memory
   invisible(dt)
@@ -740,7 +760,7 @@ get_wordvec = function(data, word) {
 #'                     Mac, Linux, Windows"),
 #'              plot=TRUE, plot.dims=1:100)
 #'
-#' ## a more complex example:
+#' \donttest{## a more complex example:
 #'
 #' words = cc("
 #' China
@@ -769,8 +789,6 @@ get_wordvec = function(data, word) {
 #'   plot.dims=1:100,
 #'   plot.step=0.06)
 #'
-#' \dontrun{
-#'
 #' # if you want to change something:
 #' attr(dt, "ggplot") +
 #'   scale_fill_viridis_b(n.breaks=10, show.limits=TRUE) +
@@ -780,8 +798,8 @@ get_wordvec = function(data, word) {
 #' ggsave(attr(dt, "ggplot"),
 #'        filename="wordvecs.png",
 #'        width=8, height=5, dpi=500)
+#' unlink("wordvecs.png")  # delete file for code check
 #' }
-#'
 #' @export
 get_wordvecs = function(data, words=NULL, pattern=NULL,
                         plot=FALSE,
@@ -841,9 +859,7 @@ get_wordvecs = function(data, words=NULL, pattern=NULL,
 #' names(dt)[5] = "boy - he + she"
 #' plot_wordvec(dt[, c(1,3,4,5,2)], dims=1:50)
 #'
-#' \dontrun{
-#'
-#' dt = get_wordvecs(d, cc("
+#' \donttest{dt = get_wordvecs(d, cc("
 #'   male, man, boy, he, his,
 #'   female, woman, girl, she, her"))
 #'
@@ -855,8 +871,8 @@ get_wordvecs = function(data, words=NULL, pattern=NULL,
 #' # or to save the plot:
 #' ggsave(p, filename="wordvecs.png",
 #'        width=8, height=5, dpi=500)
+#' unlink("wordvecs.png")  # delete file for code check
 #' }
-#'
 #' @export
 plot_wordvec = function(dt, dims=NULL, step=0.05, border="white") {
   if(!is.null(attr(dt, "normalized")))
@@ -958,7 +974,7 @@ plot_wordvec = function(dt, dims=NULL, step=0.05, border="white") {
 #' colors = c(rep("#2B579A", 4), rep("#B7472A", 4))
 #' plot_wordvec_tSNE(dt, colors=colors, seed=1234)
 #'
-#' category = c(rep("gender", 4), rep("country", 4))
+#' \donttest{category = c(rep("gender", 4), rep("country", 4))
 #' plot_wordvec_tSNE(dt, colors=category, seed=1234) +
 #'   scale_x_continuous(limits=c(-200, 200),
 #'                      labels=function(x) x/100) +
@@ -966,13 +982,10 @@ plot_wordvec = function(dt, dims=NULL, step=0.05, border="white") {
 #'                      labels=function(x) x/100) +
 #'   scale_color_manual(values=c("#B7472A", "#2B579A"))
 #'
-#' \dontrun{
-#'
 #' ## 3-D:
 #' colors = c(rep("#2B579A", 4), rep("#B7472A", 4))
 #' plot_wordvec_tSNE(dt, dims=3, colors=colors, seed=1)
 #' }
-#'
 #' @export
 plot_wordvec_tSNE = function(dt, dims=2,
                              perplexity, theta=0.5,
@@ -1046,6 +1059,7 @@ plot_wordvec_tSNE = function(dt, dims=2,
 #' not the \code{demodata} used here in examples.)
 #'
 #' @inheritParams get_wordvec
+#' @inheritParams data_transform
 #' @param x Can be one of the following:
 #' \itemize{
 #'   \item{a single word:
@@ -1107,7 +1121,7 @@ plot_wordvec_tSNE = function(dt, dims=2,
 #' most_similar(d, c("king", "queen"))
 #' most_similar(d, cc(" king , queen ; man | woman "))
 #'
-#' # the same as above:
+#' \donttest{# the same as above:
 #' most_similar(d, ~ China)
 #' most_similar(d, ~ king + queen)
 #' most_similar(d, ~ king + queen + man + woman)
@@ -1132,12 +1146,14 @@ plot_wordvec_tSNE = function(dt, dims=2,
 #' attr(ms, "wordvec.formula")
 #' attr(ms, "wordvec")
 #' # final word vector computed according to the formula
-#'
+#' }
 #' @export
-most_similar = function(data, x, topn=10, keep=FALSE, above=NULL) {
+most_similar = function(data, x, topn=10,
+                        keep=FALSE, above=NULL,
+                        verbose=TRUE) {
   if(attr(data, "normalized")==FALSE) {
-    Print("<<red *>> Results may be inaccurate if word vectors are not normalized.")
-    data = data_wordvec_normalize(data)  # pre-normalized
+    message(Glue("<<red *>> Results may be inaccurate if word vectors are not normalized."))
+    data = data_wordvec_normalize(data, verbose)  # pre-normalized
   }
   ms = data.table()
   if(inherits(x, "character"))
@@ -1179,8 +1195,10 @@ most_similar = function(data, x, topn=10, keep=FALSE, above=NULL) {
   gc()  # Garbage Collection: Free the Memory
   attr(ms, "wordvec") = wordvec
   attr(ms, "wordvec.formula") = f
-  Print("<<bold <<cyan [Word Vector]>>>> =~ {as.character(f[2])}")
-  Print("<<blue (normalized to unit length)>>")
+  if(verbose) {
+    Print("<<cyan [Word Vector]>> =~ {as.character(f[2])}")
+    message("(normalized to unit length)")
+  }
   return(ms)
 }
 
@@ -1393,19 +1411,19 @@ test_WEAT = function(data, T1, T2, A1, A2,
   check_data_validity(data)
   if(use.pattern) {
     if(!is.null(T1)) {
-      Print("T1 ({labels$T1}):")
+      message(Glue("T1 ({labels$T1}):"))
       T1 = names(get_wordvecs(data, pattern=T1))
     }
     if(!is.null(T2)) {
-      Print("T2 ({labels$T2}):")
+      message(Glue("T2 ({labels$T2}):"))
       T2 = names(get_wordvecs(data, pattern=T2))
     }
     if(!is.null(A1)) {
-      Print("A1 ({labels$A1}):")
+      message(Glue("A1 ({labels$A1}):"))
       A1 = names(get_wordvecs(data, pattern=A1))
     }
     if(!is.null(A2)) {
-      Print("A2 ({labels$A2}):")
+      message(Glue("A2 ({labels$A2}):"))
       A2 = names(get_wordvecs(data, pattern=A2))
     }
   }
@@ -1570,15 +1588,15 @@ test_RND = function(data, T1, A1, A2,
   check_data_validity(data)
   if(use.pattern) {
     if(!is.null(T1)) {
-      Print("T1 ({labels$T1}):")
+      message(Glue("T1 ({labels$T1}):"))
       T1 = names(get_wordvecs(data, pattern=T1))
     }
     if(!is.null(A1)) {
-      Print("A1 ({labels$A1}):")
+      message(Glue("A1 ({labels$A1}):"))
       A1 = names(get_wordvecs(data, pattern=A1))
     }
     if(!is.null(A2)) {
-      Print("A2 ({labels$A2}):")
+      message(Glue("A2 ({labels$A2}):"))
       A2 = names(get_wordvecs(data, pattern=A2))
     }
   }
@@ -1650,7 +1668,9 @@ utf8_split_default = function() {
 
 #' Tokenize raw texts for training word vectors.
 #'
-#' @param text Character vector (strings).
+#' @inheritParams data_transform
+#' @param text A character vector of the text,
+#' or a file path on disk containing the text.
 #' @param tokenizer Function used to tokenize the text.
 #' Defaults to \code{\link[text2vec:tokenizers]{text2vec::word_tokenizer}}.
 #' @param split Separator between tokens, only used when \code{simplify=TRUE}.
@@ -1658,6 +1678,7 @@ utf8_split_default = function() {
 #' @param remove Strings (in regular expression) to be removed from the text.
 #' Defaults to \code{"_|'|<br/>|<br />|e\\\\.g\\\\.|i\\\\.e\\\\."}.
 #' You may turn off this by specifying \code{remove=NULL}.
+#' @param encoding Text encoding. Defaults to \code{"UTF-8"}.
 #' @param simplify Return a character vector (\code{TRUE}) or a list of character vectors (\code{FALSE}).
 #' Defaults to \code{TRUE}.
 #'
@@ -1693,7 +1714,19 @@ tokenize = function(text,
                     split=" ",
                     remove="_|'|<br/>|<br />|e\\.g\\.|i\\.e\\.",
                     # '\\w+
-                    simplify=TRUE) {
+                    encoding="UTF-8",
+                    simplify=TRUE,
+                    verbose=TRUE) {
+  ## Import text if necesssary
+  t0 = Sys.time()
+  if(length(text) == 1) {
+    if(file.exists(text)) {
+      if(verbose) Print("Reading text from file...")
+      text = readLines(text, encoding=encoding, warn=FALSE)
+      if(verbose) Print("<<green \u221a>> Raw text corpus has been loaded (time cost = {dtime(t0, 'auto')})")
+    }
+  }
+
   t0 = Sys.time()
   split.sentence = "\\n|\\.|:|;|\\?|\\!|\u3002|\uff1f|\uff01|\u2026"
   if(!is.null(remove)) text = str_remove_all(text, remove)
@@ -1702,7 +1735,7 @@ tokenize = function(text,
   texts = vapply(tokens, paste, collapse=split, FUN.VALUE=character(1))
   texts = texts[texts!=""]
   gc()
-  Print("<<green \u221a>> Tokenized: {length(texts)} sentences (time cost = {dtime(t0, 'auto')})")
+  if(verbose) Print("<<green \u221a>> Tokenized: {length(texts)} sentences (time cost = {dtime(t0, 'auto')})")
   if(simplify)
     return(texts)
   else
@@ -1721,8 +1754,6 @@ tokenize = function(text,
 #' @inheritParams data_transform
 #' @inheritParams data_wordvec_load
 #' @inheritParams tokenize
-#' @param x A file path on disk containing the text
-#' or a character vector of the text.
 #' @param method Training algorithm:
 #' \itemize{
 #'   \item{\code{"word2vec"} (default): using the \code{\link[word2vec:word2vec]{word2vec}} package}
@@ -1796,8 +1827,7 @@ tokenize = function(text,
 #'
 #' A character vector of stopwords to be excluded from training.
 #'
-#' @param encoding Text encoding of \code{x} and \code{stop_words}.
-#' Defaults to \code{"UTF-8"}.
+#' @param encoding Text encoding. Defaults to \code{"UTF-8"}.
 #' @param tolower Convert all upper-case characters to lower-case?
 #' Defaults to \code{FALSE}.
 #' @param iteration Number of training iterations.
@@ -1845,10 +1875,10 @@ tokenize = function(text,
 #' }
 #'
 #' @examples
-#' review = text2vec::movie_review  # a data.frame'
+#' \donttest{review = text2vec::movie_review  # a data.frame'
 #' text = review$review
 #'
-#' \donttest{## Note: All the examples train 50 dims for faster code check.
+#' ## Note: All the examples train 50 dims for faster code check.
 #'
 #' ## Word2Vec (SGNS)
 #' dt1 = train_wordvec(
@@ -1890,7 +1920,7 @@ tokenize = function(text,
 #' }
 #' @export
 train_wordvec = function(
-    x,
+    text,
     method=c("word2vec", "glove", "fasttext"),
     dims=300,
     window=5,
@@ -1912,7 +1942,8 @@ train_wordvec = function(
     tokenizer,
     remove,
     file.save,
-    compress="bzip2") {
+    compress="bzip2",
+    verbose=TRUE) {
 
   ## Initialize
   method = match.arg(method)
@@ -1942,38 +1973,39 @@ train_wordvec = function(
   }
 
   ## Import text if necesssary
-  if(length(x) == 1) {
-    if(file.exists(x)) {
+  if(length(text) == 1) {
+    if(file.exists(text)) {
       t0 = Sys.time()
-      Print("Reading text from file...")
-      x = readLines(x, encoding=encoding, warn=FALSE)
-      Print("<<green \u221a>> Raw text corpus has been loaded (time cost = {dtime(t0, 'auto')})")
+      if(verbose) Print("Reading text from file...")
+      text = readLines(text, encoding=encoding, warn=FALSE)
+      if(verbose) Print("<<green \u221a>> Raw text corpus has been loaded (time cost = {dtime(t0, 'auto')})")
     }
   }
 
   ## Tokenize text and count token/word frequency
   split = ifelse(model=="word2vec", "\t", " ")
-  text = tokenize(x, tokenizer, split, remove)  # Print()
+  text = tokenize(text, tokenizer, split, remove, TRUE, verbose)  # Print()
   if(tolower) text = tolower(text)
   tokens = unlist(strsplit(text, split))
   freq = as.data.table(table(tokens))
   names(freq) = c("token", "freq")
-  Print("<<green \u221a>> Text corpus: {sum(nchar(tokens))} characters, {length(tokens)} tokens (roughly words)")
+  if(verbose) Print("<<green \u221a>> Text corpus: {sum(nchar(tokens))} characters, {length(tokens)} tokens (roughly words)")
 
   ## Train word vectors
   t1 = Sys.time()
-  Print("
-  <<cyan \u2022 Training model info:
-  - Method:      {method.text}
-  - Dimensions:  {dims}
-  - Window size: {window} ({window} words behind and {window} words ahead the current word)
-  - Subsampling: {ifelse(method=='glove', 'N/A', subsample)}
-  - Min. freq.:  {min.freq} occurrences in text
-  - Iterations:  {iteration} training iterations
-  - CPU threads: {threads}
-  >>
-  Training...
-  ")
+  if(verbose)
+    Print("
+    <<cyan \u2022 Training model info:
+    - Method:      {method.text}
+    - Dimensions:  {dims}
+    - Window size: {window} ({window} words behind and {window} words ahead the current word)
+    - Subsampling: {ifelse(method=='glove', 'N/A', subsample)}
+    - Min. freq.:  {min.freq} occurrences in text
+    - Iterations:  {iteration} training iterations
+    - CPU threads: {threads}
+    >>
+    Training...
+    ")
   gc()
 
   ##---- Word2Vec ----##
@@ -2052,16 +2084,15 @@ train_wordvec = function(
   ## Order by word frequency
   wv = left_join(wv, freq, by=c("word"="token"))
   wv = wv[order(-freq), ][freq>=min.freq, ]
-  Print("<<green \u221a>> Word vectors trained: {nrow(wv)} unique tokens (time cost = {dtime(t1, 'auto')})")
+  if(verbose) Print("<<green \u221a>> Word vectors trained: {nrow(wv)} unique tokens (time cost = {dtime(t1, 'auto')})")
 
   ## Normalize
-  if(normalize) wv = data_wordvec_normalize(wv)
+  if(normalize) wv = data_wordvec_normalize(wv, verbose)
 
   ## Save
   if(!missing(file.save)) {
     t2 = Sys.time()
-    cat("\n")
-    Print("Compressing and saving...")
+    if(verbose) Print("\n\n\nCompressing and saving...")
     compress = switch(compress,
                       `1`="gzip",
                       `2`="bzip2",
@@ -2070,7 +2101,7 @@ train_wordvec = function(
     save(wv, file=file.save,
          compress=compress,
          compression_level=9)
-    Print("<<green \u221a>> Saved to \"{file.save}\" (time cost = {dtime(t2, 'auto')})")
+    if(verbose) Print("<<green \u221a>> Saved to \"{file.save}\" (time cost = {dtime(t2, 'auto')})")
   }
 
   gc()

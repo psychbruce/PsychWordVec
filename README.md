@@ -1,13 +1,13 @@
 # PsychWordVec
 
-Toolkit for Word Embedding Research in Psychological Science.
+Word Embedding Research Framework for Psychological Science.
 
-An integrated toolkit of word embedding that provides:
+An integrated toolkit of word embedding research that provides:
 
-1.  A collection of pre-trained [word vectors](https://en.wikipedia.org/wiki/Word_embedding) in the `.RData` compressed format ([WordVector_RData.pdf](https://psychbruce.github.io/WordVector_RData.pdf));
-2.  A variety of functions to process, analyze, and visualize word vectors (e.g., find the most similar words to a given word);
-3.  A range of tests (Word Embedding Association Test, Relative Norm Distance) to examine conceptual associations;
-4.  A set of training methods ([Word2Vec](https://en.wikipedia.org/wiki/Word2vec), [GloVe](https://en.wikipedia.org/wiki/GloVe), [FastText](https://en.wikipedia.org/wiki/FastText)) to locally train word vectors from text corpora.
+1.  A collection of [pre-trained word vectors](https://psychbruce.github.io/WordVector_RData.pdf) in the `.RData` compressed format;
+2.  A variety of functions to process, analyze, and visualize word vectors;
+3.  A range of tests to examine conceptual associations, including the *Word Embedding Association Test* (Caliskan et al., 2017) and the *Relative Norm Distance* (Garg et al., 2018);
+4.  A set of training methods to locally train word vectors from text corpora, including *Word2Vec* (Mikolov et al., 2013), *GloVe* (Pennington et al., 2014), and *FastText* (Bojanowski et al., 2017).
 
 <!-- badges: start -->
 
@@ -27,7 +27,7 @@ Homepage: [psychbruce.github.io](https://psychbruce.github.io)
 
 ## Citation
 
--   Bao, H.-W.-S. (2022). PsychWordVec: Toolkit for word embedding research in psychological science. R package version 0.1.x. <https://CRAN.R-project.org/package=PsychWordVec>
+-   Bao, H.-W.-S. (2022). PsychWordVec: Word embedding research framework for psychological science. R package version 0.1.x. <https://CRAN.R-project.org/package=PsychWordVec>
 
 ## Installation
 
