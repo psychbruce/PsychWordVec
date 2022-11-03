@@ -48,9 +48,7 @@
 <h2 class="pkg-version" data-toc-text="0.1.2" id="psychwordvec-012-nov-2022">PsychWordVec 0.1.2 (Nov 2022)<a class="anchor" aria-label="anchor" href="#psychwordvec-012-nov-2022"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-1-2">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-2"></a></h3>
-<ul><li>Added permutation test of significance for both <code><a href="../reference/test_WEAT.html">test_WEAT()</a></code> and <code><a href="../reference/test_RND.html">test_RND()</a></code>: Users can specify the number of permutation samples and choose to calculate either one-sided or two-sided <em>p</em> value. It can well reproduce the results in Caliskan et al.’s (2017) article.</li>
-<li>General improvements.</li>
-</ul></div>
+<ul><li>Added permutation test of significance for both <code><a href="../reference/test_WEAT.html">test_WEAT()</a></code> and <code><a href="../reference/test_RND.html">test_RND()</a></code>: Users can specify the number of permutation samples and choose to calculate either one-sided or two-sided <em>p</em> value. It can well reproduce the results in Caliskan et al.’s (2017) article.</li></ul></div>
 <div class="section level3">
 <h3 id="major-changes-0-1-2">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-0-1-2"></a></h3>
 <ul><li>Both <code><a href="../reference/test_WEAT.html">test_WEAT()</a></code> and <code><a href="../reference/test_RND.html">test_RND()</a></code> now have changed the element names and S3 print method of their returned objects (of new class <code>weat</code> and <code>rnd</code>, respectively): The elements <code>$eff.raw</code>, <code>$eff.size</code>, and <code>$eff.sum</code> are now deprecated and replaced by <code>$eff</code>, which is a <code>data.table</code> containing the overall raw/standardized effects and permutation <em>p</em> value. The new S3 print methods <code>print.weat()</code> and <code>print.rnd()</code> can make a tidy report of the test results when you directly type and print the returned object (see code examples).</li></ul></div>
