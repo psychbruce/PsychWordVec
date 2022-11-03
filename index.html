@@ -6,13 +6,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="
-  An integrated toolkit of word embedding research that provides:
+  An integrated toolbox of word embedding research that provides:
   (1) a collection of pre-trained word vectors in the .RData
   compressed format &lt;https://psychbruce.github.io/WordVector_RData.pdf&gt;;
   (2) a variety of functions to process, analyze, and visualize word vectors;
   (3) a range of tests to examine conceptual associations, including
   the Word Embedding Association Test &lt;doi:10.1126/science.aal4230&gt;
-  and the Relative Norm Distance &lt;doi:10.1073/pnas.1720347115&gt;;
+  and the Relative Norm Distance &lt;doi:10.1073/pnas.1720347115&gt;,
+  with permutation test of significance;
   (4) a set of training methods to locally train word vectors from
   text corpora, including Word2Vec &lt;arXiv:1301.3781&gt;,
   GloVe &lt;doi:10.3115/v1/D14-1162&gt;, and FastText &lt;arXiv:1607.04606&gt;.">
@@ -25,13 +26,14 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Word Embedding Research Framework for Psychological Science">
 <meta property="og:description" content="
-  An integrated toolkit of word embedding research that provides:
+  An integrated toolbox of word embedding research that provides:
   (1) a collection of pre-trained word vectors in the .RData
   compressed format &lt;https://psychbruce.github.io/WordVector_RData.pdf&gt;;
   (2) a variety of functions to process, analyze, and visualize word vectors;
   (3) a range of tests to examine conceptual associations, including
   the Word Embedding Association Test &lt;doi:10.1126/science.aal4230&gt;
-  and the Relative Norm Distance &lt;doi:10.1073/pnas.1720347115&gt;;
+  and the Relative Norm Distance &lt;doi:10.1073/pnas.1720347115&gt;,
+  with permutation test of significance;
   (4) a set of training methods to locally train word vectors from
   text corpora, including Word2Vec &lt;arXiv:1301.3781&gt;,
   GloVe &lt;doi:10.3115/v1/D14-1162&gt;, and FastText &lt;arXiv:1607.04606&gt;.">
@@ -86,11 +88,11 @@
 <div class="page-header"><h1 id="psychwordvec">PsychWordVec<a class="anchor" aria-label="anchor" href="#psychwordvec"></a>
 </h1></div>
 <p>Word Embedding Research Framework for Psychological Science.</p>
-<p>An integrated toolkit of word embedding research that provides:</p>
+<p>An integrated toolbox of word embedding research that provides:</p>
 <ol style="list-style-type: decimal">
 <li>A collection of <a href="https://psychbruce.github.io/WordVector_RData.pdf" class="external-link">pre-trained word vectors</a> in the <code>.RData</code> compressed format;</li>
 <li>A variety of functions to process, analyze, and visualize word vectors;</li>
-<li>A range of tests to examine conceptual associations, including the <em>Word Embedding Association Test</em> (Caliskan et al., 2017) and the <em>Relative Norm Distance</em> (Garg et al., 2018);</li>
+<li>A range of tests to examine conceptual associations, including the <em>Word Embedding Association Test</em> (Caliskan et al., 2017) and the <em>Relative Norm Distance</em> (Garg et al., 2018), with permutation test of significance;</li>
 <li>A set of training methods to locally train word vectors from text corpora, including <em>Word2Vec</em> (Mikolov et al., 2013), <em>GloVe</em> (Pennington et al., 2014), and <em>FastText</em> (Bojanowski et al., 2017).</li>
 </ol>
 <!-- badges: start -->
@@ -127,7 +129,16 @@
 <li><code><a href="reference/data_transform.html">data_transform()</a></code></li>
 <li><code><a href="reference/data_wordvec_load.html">data_wordvec_load()</a></code></li>
 <li><code><a href="reference/data_wordvec_normalize.html">data_wordvec_normalize()</a></code></li>
-<li><code><a href="reference/data_wordvec_reshape.html">data_wordvec_reshape()</a></code></li>
+<li>
+<code><a href="reference/data_wordvec_reshape.html">data_wordvec_reshape()</a></code><ul>
+<li>
+<code><a href="reference/data_wordvec_reshape.html">as_matrix()</a></code>: from <code>wordvec</code> to <code>matrix</code>
+</li>
+<li>
+<code><a href="reference/data_wordvec_reshape.html">as_wordvec()</a></code>: from <code>matrix</code> to <code>wordvec</code>
+</li>
+</ul>
+</li>
 <li><code><a href="reference/data_wordvec_subset.html">data_wordvec_subset()</a></code></li>
 </ul>
 </li>

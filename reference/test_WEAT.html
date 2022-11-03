@@ -80,7 +80,8 @@ conduct the permutation test of significance for the
 <span>  p.perm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  p.nsim <span class="op">=</span> <span class="fl">10000</span>,</span>
 <span>  p.side <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  seed <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pooled.sd <span class="op">=</span> <span class="st">"Caliskan"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -140,7 +141,16 @@ The users take the full responsibility for the choice.</p><ul><li><p>The one-sid
 
 
 <dt>seed</dt>
-<dd><p>Random seed to obtain reproducible results of permutation test. Defaults to <code>NULL</code>.</p></dd>
+<dd><p>Random seed for reproducible results of permutation test. Defaults to <code>NULL</code>.</p></dd>
+
+
+<dt>pooled.sd</dt>
+<dd><p>Method used to calculate the pooled <em>SD</em> for effect size estimate in WEAT.</p><ul><li><p>Defaults to <code>"Caliskan"</code>: <code>sd(data.diff$cos_sim_diff)</code>, which is highly suggested
+        and identical to Caliskan et al.'s (2017) original approach.</p></li>
+<li><p>Otherwise specified, it will calculate the pooled <em>SD</em> as:
+        \(\sqrt{[(n_1 - 1) * \sigma_1^2 + (n_2 - 1) * \sigma_2^2] / (n_1 + n_2 - 2)}\).        This is <strong>NOT suggested</strong> because it may <em>overestimate</em> the effect size,
+        especially when there are only a few T1 and T2 words that have small variances.</p></li>
+</ul></dd>
 
 </dl></div>
     <div class="section level2">
@@ -204,8 +214,8 @@ Semantics derived automatically from language corpora contain human-like biases.
 <span class="r-in"><span>  A2<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"female, woman, girl, sister, she, her, hers, daughter"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  seed<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">weat</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">WEAT (Word Embedding Association Test)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">WEAT (Word Embedding Association Test)</span> <span style="color: #00BBBB;">──────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative semantic similarities (differences):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ───────────────────────────────────────────────</span>
@@ -238,8 +248,8 @@ Semantics derived automatically from language corpora contain human-like biases.
 <span class="r-in"><span>  A2<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"female, woman, girl, sister, she, her, hers, daughter"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  seed<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">sc_weat</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">SC-WEAT (Single-Category Word Embedding Association Test)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">SC-WEAT (Single-Category Word Embedding Association Test)</span> <span style="color: #00BBBB;">───────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative semantic similarities (differences):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ──────────────────────────────────────────────────</span>
@@ -295,7 +305,7 @@ Semantics derived automatically from language corpora contain human-like biases.
 <span class="r-in"><span><span class="co">## WEAT7 (Table 1): d = 1.06, p = .018</span></span></span>
 <span class="r-in"><span><span class="co">## (requiring installation of the `sweater` package)</span></span></span>
 <span class="r-in"><span><span class="va">Caliskan.WEAT7</span> <span class="op">=</span> <span class="fu">test_WEAT</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="data_wordvec_reshape.html">data_wordvec_reshape</a></span><span class="op">(</span><span class="fu">sweater</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sweater/man/glove_math.html" class="external-link">glove_math</a></span>, <span class="st">"dense"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu"><a href="data_wordvec_reshape.html">as_wordvec</a></span><span class="op">(</span><span class="fu">sweater</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sweater/man/glove_math.html" class="external-link">glove_math</a></span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>T1<span class="op">=</span><span class="st">"Math"</span>, T2<span class="op">=</span><span class="st">"Arts"</span>, A1<span class="op">=</span><span class="st">"Male"</span>, A2<span class="op">=</span><span class="st">"Female"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  T1<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"math, algebra, geometry, calculus, equations, computation, numbers, addition"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  T2<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"poetry, art, dance, literature, novel, symphony, drama, sculpture"</span><span class="op">)</span>,</span></span>
