@@ -1,5 +1,16 @@
 **Please check the [latest news (change log)](https://psychbruce.github.io/PsychWordVec/news/index.html) and keep this package updated.**
 
+# PsychWordVec 0.1.2 (Nov 2022)
+
+## New Features
+
+-   Added permutation test of significance for both `test_WEAT()` and `test_RND()`: Users can specify the number of permutation samples and choose to calculate either one-sided or two-sided *p* value. It can well reproduce the results in Caliskan et al.'s (2017) article.
+-   General improvements.
+
+## Major Changes
+
+-   Both `test_WEAT()` and `test_RND()` now have changed the element names and S3 print method of their returned objects (of new class `weat` and `rnd`, respectively): The elements `$eff.raw`, `$eff.size`, and `$eff.sum` are now deprecated and replaced by `$eff`, which is a `data.table` containing the overall raw/standardized effects and permutation *p* value. The new S3 print methods `print.weat()` and `print.rnd()` can make a tidy report of the test results when you directly type and print the returned object (see code examples).
+
 # PsychWordVec 0.1.0 (Aug 2022)
 
 -   CRAN initial release.

@@ -4,7 +4,18 @@
 \alias{test_RND}
 \title{Relative Norm Distance (RND) analysis.}
 \usage{
-test_RND(data, T1, A1, A2, use.pattern = FALSE, labels, rev = FALSE)
+test_RND(
+  data,
+  T1,
+  A1,
+  A2,
+  use.pattern = FALSE,
+  labels,
+  p.perm = TRUE,
+  p.nsim = 10000,
+  p.side = 2,
+  seed = NULL
+)
 }
 \arguments{
 \item{data}{A \code{data.table} (of new class \code{wordvec})
@@ -23,31 +34,51 @@ please specify this argument as \code{TRUE}.}
 such as (the default)
 \code{list(T1="Target", A1="Attrib1", A2="Attrib2")}.}
 
-\item{rev}{Reverse the results? Defaults to \code{FALSE},
-which means that a positive (vs. negative) value of RND indicates
-the target words are more associated with A2 than A1.
-If reversed (\code{TRUE}), then the interpretation of RND will also be reversed.}
+\item{p.perm}{Permutation test to get exact or approximate \emph{p} value of the overall effect.
+Defaults to \code{TRUE}. See also the \code{\link[sweater:weat_exact]{sweater}} package.}
+
+\item{p.nsim}{Number of samples for resampling in permutation test. Defaults to \code{10000}.
+
+If \code{p.nsim} is larger than the number of all possible permutations (rearrangements of data),
+then it will be ignored and an exact permutation test will be conducted.
+Otherwise (in most cases for real data and always for SC-WEAT), a resampling test is performed,
+which takes much less computation time and produces the approximate \emph{p} value (comparable to the exact one).}
+
+\item{p.side}{One-sided (\code{1}) or two-sided (\code{2}) \emph{p} value.
+Defaults to \code{2}.
+
+In Caliskan et al.'s (2017) article, they reported one-sided \emph{p} value for WEAT.
+Here, I suggest reporting two-sided \emph{p} value as a more conservative estimate.
+The users take the full responsibility for the choice.
+\itemize{
+  \item{The one-sided \emph{p} value is calculated as the proportion of sampled permutations
+        where the difference in means is greater than the test statistic.}
+  \item{The two-sided \emph{p} value is calculated as the proportion of sampled permutations
+        where the absolute difference is greater than the test statistic.}
+}}
+
+\item{seed}{Random seed to obtain reproducible results of permutation test. Defaults to \code{NULL}.}
 }
 \value{
-A \code{list} of objects:
+A \code{list} of objects (of new class \code{rnd}):
 \describe{
   \item{\code{words.valid}}{
     valid (actually matched) words}
   \item{\code{data.rnd}}{
     \code{data.table} of (raw and relative) norm distances}
-  \item{\code{code.diff}}{
+  \item{\code{eff.title}}{
     description for the difference between the two attribute concepts}
   \item{\code{eff.type}}{
     effect type: RND}
-  \item{\code{eff.sum}}{
-    sum of RND (a single value)}
+  \item{\code{eff}}{
+    raw effect and p value (if \code{p.perm=TRUE})}
   \item{\code{eff.interpretation}}{
     interpretation of the RND score}
 }
 }
 \description{
-Tabulate data for the \emph{Relative Norm Distance} (RND;
-also known as \emph{Relative Euclidean Distance}) analysis.
+Tabulate data and conduct the permutation test of significance
+for the \emph{Relative Norm Distance} (RND; also known as \emph{Relative Euclidean Distance}).
 This is an alternative method to \link[PsychWordVec:test_WEAT]{Single-Category WEAT}.
 }
 \section{Download}{
@@ -59,6 +90,7 @@ Download pre-trained word vectors data (\code{.RData}):
 \examples{
 rnd = test_RND(
   demodata,
+  labels=list(T1="Occupation", A1="Male", A2="Female"),
   T1=cc("
     architect, boss, leader, engineer, CEO, officer, manager,
     lawyer, scientist, doctor, psychologist, investigator,
@@ -66,7 +98,7 @@ rnd = test_RND(
     salesperson, therapist, psychotherapist, nurse"),
   A1=cc("male, man, boy, brother, he, him, his, son"),
   A2=cc("female, woman, girl, sister, she, her, hers, daughter"),
-  labels=list(T1="Occupation", A1="Male", A2="Female"))
+  seed=1)
 rnd
 
 }

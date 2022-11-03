@@ -4,7 +4,19 @@
 \alias{test_WEAT}
 \title{Word Embedding Association Test (WEAT) and Single-Category WEAT.}
 \usage{
-test_WEAT(data, T1, T2, A1, A2, use.pattern = FALSE, labels)
+test_WEAT(
+  data,
+  T1,
+  T2,
+  A1,
+  A2,
+  use.pattern = FALSE,
+  labels = list(),
+  p.perm = TRUE,
+  p.nsim = 10000,
+  p.side = 2,
+  seed = NULL
+)
 }
 \arguments{
 \item{data}{A \code{data.table} (of new class \code{wordvec})
@@ -24,9 +36,34 @@ please specify this argument as \code{TRUE}.}
 \item{labels}{Labels for target and attribute concepts (a named \code{list}),
 such as (the default)
 \code{list(T1="Target1", T2="Target2", A1="Attrib1", A2="Attrib2")}.}
+
+\item{p.perm}{Permutation test to get exact or approximate \emph{p} value of the overall effect.
+Defaults to \code{TRUE}. See also the \code{\link[sweater:weat_exact]{sweater}} package.}
+
+\item{p.nsim}{Number of samples for resampling in permutation test. Defaults to \code{10000}.
+
+If \code{p.nsim} is larger than the number of all possible permutations (rearrangements of data),
+then it will be ignored and an exact permutation test will be conducted.
+Otherwise (in most cases for real data and always for SC-WEAT), a resampling test is performed,
+which takes much less computation time and produces the approximate \emph{p} value (comparable to the exact one).}
+
+\item{p.side}{One-sided (\code{1}) or two-sided (\code{2}) \emph{p} value.
+Defaults to \code{2}.
+
+In Caliskan et al.'s (2017) article, they reported one-sided \emph{p} value for WEAT.
+Here, I suggest reporting two-sided \emph{p} value as a more conservative estimate.
+The users take the full responsibility for the choice.
+\itemize{
+  \item{The one-sided \emph{p} value is calculated as the proportion of sampled permutations
+        where the difference in means is greater than the test statistic.}
+  \item{The two-sided \emph{p} value is calculated as the proportion of sampled permutations
+        where the absolute difference is greater than the test statistic.}
+}}
+
+\item{seed}{Random seed to obtain reproducible results of permutation test. Defaults to \code{NULL}.}
 }
 \value{
-A \code{list} of objects:
+A \code{list} of objects (of new class \code{weat}):
 \describe{
   \item{\code{words.valid}}{
     valid (actually matched) words}
@@ -38,20 +75,23 @@ A \code{list} of objects:
   \item{\code{data.diff}}{
     \code{data.table} of \emph{differential} mean cosine similarities
     \emph{between} the two attribute concepts}
-  \item{\code{code.diff}}{
+  \item{\code{eff.title}}{
     description for the difference between the two attribute concepts}
   \item{\code{eff.type}}{
     effect type: WEAT or SC-WEAT}
-  \item{\code{eff.raw}}{
-    raw effect for WEAT (a single value) or SC-WEAT (a data table)}
-  \item{\code{eff.size}}{
-    standardized effect size for WEAT (a single value) or SC-WEAT (a data table)}
+  \item{\code{eff}}{
+    raw effect, standardized effect size, and p value (if \code{p.perm=TRUE})}
 }
 }
 \description{
-Tabulate data (cosine similarity and standardized effect size) for the
+Tabulate data (cosine similarity and standardized effect size) and
+conduct the permutation test of significance for the
 \emph{Word Embedding Association Test} (WEAT) and
-\emph{Single-Category Word Embedding Association Test} (SC-WEAT) analyses.
+\emph{Single-Category Word Embedding Association Test} (SC-WEAT).
+\itemize{
+  \item{For WEAT, two-samples permutation test is conducted (i.e., rearrangements of data).}
+  \item{For SC-WEAT, one-sample permutation test is conducted (i.e., rearrangements of +/- signs to data).}
+}
 }
 \section{Download}{
 
@@ -64,25 +104,17 @@ Download pre-trained word vectors data (\code{.RData}):
 
 weat = test_WEAT(
   demodata,
+  labels=list(T1="King", T2="Queen", A1="Male", A2="Female"),
   T1=cc("king, King"),
   T2=cc("queen, Queen"),
   A1=cc("male, man, boy, brother, he, him, his, son"),
   A2=cc("female, woman, girl, sister, she, her, hers, daughter"),
-  labels=list(T1="King", T2="Queen", A1="Male", A2="Female"))
-weat
-
-weat = test_WEAT(
-  demodata,
-  T1="^[kK]ing$",
-  T2="^[qQ]ueen$",
-  A1="^male$|^man$|^boy$|^brother$|^he$|^him$|^his$|^son$",
-  A2="^female$|^woman$|^girl$|^sister$|^she$|^her$|^hers$|^daughter$",
-  use.pattern=TRUE,
-  labels=list(T1="King", T2="Queen", A1="Male", A2="Female"))
+  seed=1)
 weat
 
 sc_weat = test_WEAT(
   demodata,
+  labels=list(T1="Occupation", A1="Male", A2="Female"),
   T1=cc("
     architect, boss, leader, engineer, CEO, officer, manager,
     lawyer, scientist, doctor, psychologist, investigator,
@@ -90,8 +122,50 @@ sc_weat = test_WEAT(
     salesperson, therapist, psychotherapist, nurse"),
   A1=cc("male, man, boy, brother, he, him, his, son"),
   A2=cc("female, woman, girl, sister, she, her, hers, daughter"),
-  labels=list(T1="Occupation", A1="Male", A2="Female"))
+  seed=1)
 sc_weat
+
+\dontrun{
+
+## the same as the first example, but using regular expression
+weat = test_WEAT(
+  demodata,
+  labels=list(T1="King", T2="Queen", A1="Male", A2="Female"),
+  use.pattern=TRUE,  # use regular expression below
+  T1="^[kK]ing$",
+  T2="^[qQ]ueen$",
+  A1="^male$|^man$|^boy$|^brother$|^he$|^him$|^his$|^son$",
+  A2="^female$|^woman$|^girl$|^sister$|^she$|^her$|^hers$|^daughter$",
+  seed=1)
+weat
+
+## replicating Caliskan et al.'s (2017) results
+## WEAT7 (Table 1): d = 1.06, p = .018
+## (requiring installation of the `sweater` package)
+Caliskan.WEAT7 = test_WEAT(
+  data_wordvec_reshape(sweater::glove_math, "dense"),
+  labels=list(T1="Math", T2="Arts", A1="Male", A2="Female"),
+  T1=cc("math, algebra, geometry, calculus, equations, computation, numbers, addition"),
+  T2=cc("poetry, art, dance, literature, novel, symphony, drama, sculpture"),
+  A1=cc("male, man, boy, brother, he, him, his, son"),
+  A2=cc("female, woman, girl, sister, she, her, hers, daughter"),
+  p.side=1, seed=1234)
+Caliskan.WEAT7
+# d = 1.055, p = .0173 (= 173 counts / 10000 permutation samples)
+
+## replicating Caliskan et al.'s (2017) supplemental results
+## WEAT7 (Table S1): d = 0.97, p = .027
+Caliskan.WEAT7.supp = test_WEAT(
+  demodata,
+  labels=list(T1="Math", T2="Arts", A1="Male", A2="Female"),
+  T1=cc("math, algebra, geometry, calculus, equations, computation, numbers, addition"),
+  T2=cc("poetry, art, dance, literature, novel, symphony, drama, sculpture"),
+  A1=cc("male, man, boy, brother, he, him, his, son"),
+  A2=cc("female, woman, girl, sister, she, her, hers, daughter"),
+  p.side=1, seed=1234)
+Caliskan.WEAT7.supp
+# d = 0.966, p = .0221 (= 221 counts / 10000 permutation samples)
+}
 
 }
 \references{

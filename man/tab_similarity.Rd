@@ -43,14 +43,19 @@ Download pre-trained word vectors data (\code{.RData}):
 
 \examples{
 tab_similarity(demodata, cc("king, queen, man, woman"))
-
 tab_similarity(demodata, cc("king, queen, man, woman"),
                unique=TRUE)
 
 tab_similarity(demodata, cc("Beijing, China, Tokyo, Japan"))
-
 tab_similarity(demodata, cc("Beijing, China, Tokyo, Japan"),
                unique=TRUE)
+
+## select n1 * n2 word pairs crossing two word lists w1 & w2
+## using data.table syntax
+w1 = cc("king, queen")
+w2 = cc("man, woman")
+tab_similarity(demodata, c(w1, w2)) \%>\%
+  .[word1 \%in\% w1 & word2 \%in\% w2]
 
 }
 \seealso{

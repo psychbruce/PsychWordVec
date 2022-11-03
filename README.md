@@ -58,8 +58,8 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
     -   `pair_similarity()`
     -   `tab_similarity()`
     -   `most_similar()`
-    -   `test_WEAT()`
-    -   `test_RND()`
+    -   `test_WEAT()` (with permutation test of significance)
+    -   `test_RND()` (with permutation test of significance)
 -   Word Vectors Local Training (Word2Vec, GloVe, and FastText)
     -   `tokenize()`
     -   `train_wordvec()`
