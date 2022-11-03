@@ -41,22 +41,16 @@
 
   ## Welcome Message
   if(all(loaded)) {
-    Print("
-    \n
-    <<bold PsychWordVec (v{inst.ver})>>
-
-    <<bold Packages also loaded:>>
-    <<green
-    \u221a dplyr
-    \u221a stringr
-    \u221a ggplot2
-    \u221a data.table
-    >>
-
-    Download pre-trained word vectors data (.RData):
-    https://psychbruce.github.io/WordVector_RData.pdf
-    \n
+    cli::cli_h1("PsychWordVec (v{inst.ver})")
+    cn()
+    cli::cli_alert_success("Packages also loaded: dplyr, stringr, ggplot2, data.table")
+    cn()
+    cli::cli_text("
+    {.href [Documentation](https://psychbruce.github.io/PsychWordVec)}
+    | Download pre-trained word vectors:
+    {.url https://psychbruce.github.io/WordVector_RData.pdf}
     ")
+    cn()
   } else {
     Print("
     \n
@@ -174,7 +168,7 @@ extract_valid_words = function(data, words=NULL, pattern=NULL) {
   }
   if(length(words.valid) < length(words)) {
     for(word in setdiff(words, words.valid))
-      message(Glue("<<red X>> \"{word}\" not found..."))
+      cli::cli_alert_danger("\"{word}\" not found...")
     message("Warning: Some words are not found!")
   }
   return(words.valid)
@@ -264,9 +258,9 @@ data_transform = function(file.load, file.save,
     dt = file.load  # 2 variables: word, vec
   } else {
     if(verbose) {
-      cat("\n")
+      cn()
       Print("****** Data Transformation (~ 30000 words/min in total) ******")
-      cat("\n")
+      cn()
       Print("Loading file... \"{file.load}\"")
     }
     gc()  # Garbage Collection: Free the Memory
@@ -317,7 +311,7 @@ data_transform = function(file.load, file.save,
          compress=compress,
          compression_level=compress.level)
     if(verbose)
-      Print("<<green \u221a>> Saved to \"{file.save}\" (time cost = {dtime(t1, 'mins')})")
+      cli::cli_alert_success("Saved to \"{file.save}\" (time cost = {dtime(t1, 'mins')})")
   }
   gc()  # Garbage Collection: Free the Memory
   if(verbose)
@@ -387,7 +381,7 @@ data_wordvec_load = function(file.load, normalize=FALSE,
   class(data) = c("wordvec", "data.table", "data.frame")
   if(verbose) {
     cat("\015")
-    Print("<<green \u221a>> Word vector data: {nrow(data)} words, {ndim} dims (loading time: {dtime(t0)})")
+    cli::cli_alert_success("Word vector data: {nrow(data)} words, {ndim} dims (loading time: {dtime(t0)})")
   }
   if(normalize) data = data_wordvec_normalize(data, verbose)
   gc()  # Garbage Collection: Free the Memory
@@ -435,10 +429,10 @@ data_wordvec_load = function(file.load, normalize=FALSE,
 data_wordvec_normalize = function(data, verbose=TRUE) {
   check_data_validity(data)
   if(attr(data, "normalized")) {
-    if(verbose) Print("<<red \u221a>> Word vectors have already been normalized.")
+    if(verbose) cli::cli_alert_warning("Word vectors have already been normalized.")
   } else {
     data = normalize(data)
-    if(verbose) Print("<<green \u221a>> All word vectors have now been normalized.")
+    if(verbose) cli::cli_alert_success("All word vectors have now been normalized.")
   }
   gc()  # Garbage Collection: Free the Memory
   invisible(data)
@@ -458,9 +452,12 @@ normalize = function(data) {
 #'
 #' Reshape word vectors data from dense (\code{data.table})
 #' to plain (\code{matrix}) or vice versa.
+#' For easier use, two wrappers
+#' \code{as_matrix()} and \code{as_wordvec()}
+#' are also provided.
 #'
 #' @inheritParams data_wordvec_load
-#' @param data Data to be reshaped. See examples.
+#' @param x Data to be reshaped, could be a \code{matrix}, \code{data.frame}, or \code{data.table}. See examples.
 #' @param to Options include:
 #' \itemize{
 #'   \item{\code{"plain"} (default) reshapes the data
@@ -490,17 +487,19 @@ normalize = function(data) {
 #' d = head(demodata, 10)
 #' d
 #'
-#' d.plain = data_wordvec_reshape(d, to="plain")
+#' d.plain = as_matrix(d)
 #' d.plain
 #'
-#' d.dense = data_wordvec_reshape(d.plain, to="dense")
+#' d.dense = as_wordvec(d.plain)
 #' d.dense  # identical to `d`
 #'
 #' @export
-data_wordvec_reshape = function(data, to=c("plain", "dense"),
+data_wordvec_reshape = function(x, to=c("plain", "dense"),
                                 normalize=FALSE,
                                 verbose=TRUE) {
   to = match.arg(to)
+  data = x
+  rm(x)
   if(to == "plain") {
     check_data_validity(data)
     if(normalize) data = data_wordvec_normalize(data, verbose)
@@ -525,6 +524,20 @@ data_wordvec_reshape = function(data, to=c("plain", "dense"),
   }
   gc()  # Garbage Collection: Free the Memory
   return(data.new)
+}
+
+
+#' @rdname data_wordvec_reshape
+#' @export
+as_wordvec = function(x, normalize=FALSE) {
+  data_wordvec_reshape(x, to="dense", normalize=normalize)
+}
+
+
+#' @rdname data_wordvec_reshape
+#' @export
+as_matrix = function(x, normalize=FALSE) {
+  data_wordvec_reshape(x, to="plain", normalize=normalize)
 }
 
 
@@ -607,7 +620,8 @@ data_wordvec_subset = function(x, words=NULL, pattern=NULL,
   dt = data[word %in% words.valid]  # much faster
   if(!missing(file.save)) {
     t1 = Sys.time()
-    if(verbose) Print("\n\n\nCompressing and saving...")
+    if(verbose)
+      Print("\n\n\nCompressing and saving...")
     compress = switch(compress,
                       `1`="gzip",
                       `2`="bzip2",
@@ -616,7 +630,8 @@ data_wordvec_subset = function(x, words=NULL, pattern=NULL,
     save(dt, file=file.save,
          compress=compress,
          compression_level=compress.level)
-    if(verbose) Print("<<green \u221a>> Saved to \"{file.save}\" (time cost = {dtime(t1, 'auto')})")
+    if(verbose)
+      cli::cli_alert_success("Saved to \"{file.save}\" (time cost = {dtime(t1, 'auto')})")
   }
   gc()  # Garbage Collection: Free the Memory
   invisible(dt)
@@ -929,7 +944,7 @@ plot_wordvec = function(dt, dims=NULL, step=0.05, border="white") {
 #' @param theta Speed/accuracy trade-off (increase for less accuracy), set to 0 for exact t-SNE. Defaults to 0.5.
 #' @param colors A character vector specifying (1) the categories of words (for 2-D plot only)
 #' or (2) the exact colors of words (for 2-D and 3-D plot). See examples for its usage.
-#' @param seed Random seed to obtain reproducible results. Defaults to \code{NULL}.
+#' @param seed Random seed for reproducible results. Defaults to \code{NULL}.
 #' @param custom.Rtsne User-defined \code{\link[Rtsne:Rtsne]{Rtsne}} object using the same \code{dt}.
 #'
 #' @return
@@ -1152,7 +1167,7 @@ most_similar = function(data, x, topn=10,
                         keep=FALSE, above=NULL,
                         verbose=TRUE) {
   if(attr(data, "normalized")==FALSE) {
-    message(Glue("<<red *>> Results may be inaccurate if word vectors are not normalized."))
+    cli::cli_alert_warning("Results may be inaccurate if word vectors are not normalized.")
     data = data_wordvec_normalize(data, verbose)  # pre-normalized
   }
   ms = data.table()
@@ -1353,7 +1368,17 @@ tab_similarity = function(data, words=NULL, pattern=NULL,
 #'   \item{The two-sided \emph{p} value is calculated as the proportion of sampled permutations
 #'         where the absolute difference is greater than the test statistic.}
 #' }
-#' @param seed Random seed to obtain reproducible results of permutation test. Defaults to \code{NULL}.
+#' @param seed Random seed for reproducible results of permutation test. Defaults to \code{NULL}.
+#' @param pooled.sd Method used to calculate the pooled \emph{SD} for effect size estimate in WEAT.
+#' \itemize{
+#'   \item{Defaults to \code{"Caliskan"}: \code{sd(data.diff$cos_sim_diff)}, which is highly suggested
+#'         and identical to Caliskan et al.'s (2017) original approach.}
+#'   \item{Otherwise specified, it will calculate the pooled \emph{SD} as:
+#'         \eqn{\sqrt{[(n_1 - 1) * \sigma_1^2 + (n_2 - 1) * \sigma_2^2] / (n_1 + n_2 - 2)}}.
+#'
+#'         This is \strong{NOT suggested} because it may \emph{overestimate} the effect size,
+#'         especially when there are only a few T1 and T2 words that have small variances.}
+#' }
 #'
 #' @return
 #' A \code{list} of objects (of new class \code{weat}):
@@ -1434,7 +1459,7 @@ tab_similarity = function(data, words=NULL, pattern=NULL,
 #' ## WEAT7 (Table 1): d = 1.06, p = .018
 #' ## (requiring installation of the `sweater` package)
 #' Caliskan.WEAT7 = test_WEAT(
-#'   data_wordvec_reshape(sweater::glove_math, "dense"),
+#'   as_wordvec(sweater::glove_math),
 #'   labels=list(T1="Math", T2="Arts", A1="Male", A2="Female"),
 #'   T1=cc("math, algebra, geometry, calculus, equations, computation, numbers, addition"),
 #'   T2=cc("poetry, art, dance, literature, novel, symphony, drama, sculpture"),
@@ -1465,7 +1490,8 @@ test_WEAT = function(data, T1, T2, A1, A2,
                      p.perm=TRUE,
                      p.nsim=10000,
                      p.side=2,
-                     seed=NULL) {
+                     seed=NULL,
+                     pooled.sd="Caliskan") {
   if(!p.side %in% 1:2) stop("`p.side` should be 1 or 2.", call.=FALSE)
   if(missing(A1)) stop("Please specify `A1`.", call.=FALSE)
   if(missing(A2)) stop("Please specify `A2`.", call.=FALSE)
@@ -1548,11 +1574,14 @@ test_WEAT = function(data, T1, T2, A1, A2,
     # WEAT
     title = paste(labels$T1, "vs.", labels$T2, "::", labels$A1, "vs.", labels$A2)
     eff_type = "WEAT (Word Embedding Association Test)"
-    std_dev = stats::sd(dweat.diff$cos_sim_diff)
     mean_diffs = dweat.diff[, .(
       mean_diff = mean(cos_sim_diff)
     ), by=Target]$mean_diff
     eff_raw = mean_diffs[1] - mean_diffs[2]
+    if(pooled.sd=="Caliskan")
+      std_dev = stats::sd(dweat.diff$cos_sim_diff)
+    else
+      std_dev = pooled_sd(dweat.diff$cos_sim_diff, T1, T2)
     eff_size = eff_raw / std_dev
 
     if(p.perm) {
@@ -1613,10 +1642,8 @@ test_WEAT = function(data, T1, T2, A1, A2,
 
 #' @export
 print.weat = function(x, digits=3, ...) {
-  cat("\n")
-  Print("<<cyan {x$eff.type}>>")
-
-  cat("\n")
+  cli::cli_h1("{x$eff.type}")
+  cn()
   data.diff = copy(x$data.diff)
   if(!is.null(x$words.valid$T2)) {
     data.diff = data.diff[, c(2, 1, 3, 4, 5)]
@@ -1627,8 +1654,7 @@ print.weat = function(x, digits=3, ...) {
   names(data.diff)[1] = " "
   print_table(data.diff, row.names=FALSE, digits=digits,
               title="Relative semantic similarities (differences):")
-
-  cat("\n")
+  cn()
   x$eff$Attrib = paste0(" ", x$eff$Attrib)
   if(length(x$eff)>=5) {
     p.type = names(x$eff)[5]
@@ -1646,7 +1672,7 @@ print.weat = function(x, digits=3, ...) {
   print_table(x$eff, row.names=FALSE, digits=digits,
               title="Overall effect (raw and standardized mean differences):",
               note=note)
-  cat("\n")
+  cn()
 }
 
 
@@ -1796,10 +1822,8 @@ test_RND = function(data, T1, A1, A2,
 
 #' @export
 print.rnd = function(x, digits=3, ...) {
-  cat("\n")
-  Print("<<cyan {x$eff.type}>>")
-
-  cat("\n")
+  cli::cli_h1("{x$eff.type}")
+  cn()
   data.rnd = copy(x$data.rnd)
   data.rnd$T_word = paste0("\"", data.rnd$T_word, "\"")
   data.rnd$closer_to = fixed_string(data.rnd$closer_to)
@@ -1808,8 +1832,7 @@ print.rnd = function(x, digits=3, ...) {
               row.names=FALSE, digits=digits,
               title="Relative norm distances (differences):",
               note=paste(x$eff.interpretation, collapse="\n"))
-
-  cat("\n")
+  cn()
   x$eff$Attrib = paste0(" ", x$eff$Attrib)
   if(length(x$eff)>=4) {
     p.type = names(x$eff)[4]
@@ -1824,7 +1847,7 @@ print.rnd = function(x, digits=3, ...) {
   print_table(x$eff, row.names=FALSE, digits=digits,
               title="Overall effect (raw):",
               note=note)
-  cat("\n")
+  cn()
 }
 
 
@@ -1907,7 +1930,7 @@ tokenize = function(text,
     if(file.exists(text)) {
       if(verbose) Print("Reading text from file...")
       text = readLines(text, encoding=encoding, warn=FALSE)
-      if(verbose) Print("<<green \u221a>> Raw text corpus has been loaded (time cost = {dtime(t0, 'auto')})")
+      if(verbose) cli::cli_alert_success("Raw text corpus has been loaded (time cost = {dtime(t0, 'auto')})")
     }
   }
 
@@ -1919,7 +1942,7 @@ tokenize = function(text,
   texts = vapply(tokens, paste, collapse=split, FUN.VALUE=character(1))
   texts = texts[texts!=""]
   gc()
-  if(verbose) Print("<<green \u221a>> Tokenized: {length(texts)} sentences (time cost = {dtime(t0, 'auto')})")
+  if(verbose) cli::cli_alert_success("Tokenized: {length(texts)} sentences (time cost = {dtime(t0, 'auto')})")
   if(simplify)
     return(texts)
   else
@@ -2162,7 +2185,7 @@ train_wordvec = function(
       t0 = Sys.time()
       if(verbose) Print("Reading text from file...")
       text = readLines(text, encoding=encoding, warn=FALSE)
-      if(verbose) Print("<<green \u221a>> Raw text corpus has been loaded (time cost = {dtime(t0, 'auto')})")
+      if(verbose) cli::cli_alert_success("Raw text corpus has been loaded (time cost = {dtime(t0, 'auto')})")
     }
   }
 
@@ -2173,13 +2196,14 @@ train_wordvec = function(
   tokens = unlist(strsplit(text, split))
   freq = as.data.table(table(tokens))
   names(freq) = c("token", "freq")
-  if(verbose) Print("<<green \u221a>> Text corpus: {sum(nchar(tokens))} characters, {length(tokens)} tokens (roughly words)")
+  if(verbose) cli::cli_alert_success("Text corpus: {sum(nchar(tokens))} characters, {length(tokens)} tokens (roughly words)")
 
   ## Train word vectors
   t1 = Sys.time()
-  if(verbose)
+  if(verbose) {
+    cli::cli_h1("Training model information")
     Print("
-    <<cyan # Training model info:
+    <<cyan
     - Method:      {method.text}
     - Dimensions:  {dims}
     - Window size: {window} ({window} words behind and {window} words ahead the current word)
@@ -2188,8 +2212,9 @@ train_wordvec = function(
     - Iterations:  {iteration} training iterations
     - CPU threads: {threads}
     >>
-    Training...
     ")
+    cli::cli_h3("Training...")
+  }
   gc()
 
   ##---- Word2Vec ----##
@@ -2209,8 +2234,7 @@ train_wordvec = function(
       threads = threads,
       encoding = encoding
     )
-    wv = as.matrix(model) %>%
-      data_wordvec_reshape(to="dense")
+    wv = as.matrix(model) %>% as_wordvec()
   }
 
   ##---- GloVe ----##
@@ -2235,7 +2259,7 @@ train_wordvec = function(
     })
     wv.context = model$components
     wv = wv.main + t(wv.context)
-    wv = data_wordvec_reshape(wv, to="dense")
+    wv = as_wordvec(wv)
   }
 
   ##---- FastText ----##
@@ -2262,13 +2286,13 @@ train_wordvec = function(
       method = gsub("-", "", model),
       control = control)
     wv = as.matrix(model$word_vectors(model$words())) %>%
-      data_wordvec_reshape(to="dense")
+      as_wordvec()
   }
 
   ## Order by word frequency
   wv = left_join(wv, freq, by=c("word"="token"))
   wv = wv[order(-freq), ][freq>=min.freq, ]
-  if(verbose) Print("<<green \u221a>> Word vectors trained: {nrow(wv)} unique tokens (time cost = {dtime(t1, 'auto')})")
+  if(verbose) cli::cli_alert_success("Word vectors trained: {nrow(wv)} unique tokens (time cost = {dtime(t1, 'auto')})")
 
   ## Normalize
   if(normalize) wv = data_wordvec_normalize(wv, verbose)
@@ -2285,7 +2309,7 @@ train_wordvec = function(
     save(wv, file=file.save,
          compress=compress,
          compression_level=9)
-    if(verbose) Print("<<green \u221a>> Saved to \"{file.save}\" (time cost = {dtime(t2, 'auto')})")
+    if(verbose) cli::cli_alert_success("Saved to \"{file.save}\" (time cost = {dtime(t2, 'auto')})")
   }
 
   gc()

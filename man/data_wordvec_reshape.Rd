@@ -2,17 +2,23 @@
 % Please edit documentation in R/PsychWordVec.R
 \name{data_wordvec_reshape}
 \alias{data_wordvec_reshape}
+\alias{as_wordvec}
+\alias{as_matrix}
 \title{Reshape word vectors data.}
 \usage{
 data_wordvec_reshape(
-  data,
+  x,
   to = c("plain", "dense"),
   normalize = FALSE,
   verbose = TRUE
 )
+
+as_wordvec(x, normalize = FALSE)
+
+as_matrix(x, normalize = FALSE)
 }
 \arguments{
-\item{data}{Data to be reshaped. See examples.}
+\item{x}{Data to be reshaped, could be a \code{matrix}, \code{data.frame}, or \code{data.table}. See examples.}
 
 \item{to}{Options include:
 \itemize{
@@ -34,6 +40,9 @@ A \code{data.table} (dense) or \code{matrix} (plain) of word vectors.
 \description{
 Reshape word vectors data from dense (\code{data.table})
 to plain (\code{matrix}) or vice versa.
+For easier use, two wrappers
+\code{as_matrix()} and \code{as_wordvec()}
+are also provided.
 }
 \section{Download}{
 
@@ -45,10 +54,10 @@ Download pre-trained word vectors data (\code{.RData}):
 d = head(demodata, 10)
 d
 
-d.plain = data_wordvec_reshape(d, to="plain")
+d.plain = as_matrix(d)
 d.plain
 
-d.dense = data_wordvec_reshape(d.plain, to="dense")
+d.dense = as_wordvec(d.plain)
 d.dense  # identical to `d`
 
 }

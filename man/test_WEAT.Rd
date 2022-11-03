@@ -15,7 +15,8 @@ test_WEAT(
   p.perm = TRUE,
   p.nsim = 10000,
   p.side = 2,
-  seed = NULL
+  seed = NULL,
+  pooled.sd = "Caliskan"
 )
 }
 \arguments{
@@ -60,7 +61,18 @@ The users take the full responsibility for the choice.
         where the absolute difference is greater than the test statistic.}
 }}
 
-\item{seed}{Random seed to obtain reproducible results of permutation test. Defaults to \code{NULL}.}
+\item{seed}{Random seed for reproducible results of permutation test. Defaults to \code{NULL}.}
+
+\item{pooled.sd}{Method used to calculate the pooled \emph{SD} for effect size estimate in WEAT.
+\itemize{
+  \item{Defaults to \code{"Caliskan"}: \code{sd(data.diff$cos_sim_diff)}, which is highly suggested
+        and identical to Caliskan et al.'s (2017) original approach.}
+  \item{Otherwise specified, it will calculate the pooled \emph{SD} as:
+        \eqn{\sqrt{[(n_1 - 1) * \sigma_1^2 + (n_2 - 1) * \sigma_2^2] / (n_1 + n_2 - 2)}}.
+
+        This is \strong{NOT suggested} because it may \emph{overestimate} the effect size,
+        especially when there are only a few T1 and T2 words that have small variances.}
+}}
 }
 \value{
 A \code{list} of objects (of new class \code{weat}):
@@ -143,7 +155,7 @@ weat
 ## WEAT7 (Table 1): d = 1.06, p = .018
 ## (requiring installation of the `sweater` package)
 Caliskan.WEAT7 = test_WEAT(
-  data_wordvec_reshape(sweater::glove_math, "dense"),
+  as_wordvec(sweater::glove_math),
   labels=list(T1="Math", T2="Arts", A1="Male", A2="Female"),
   T1=cc("math, algebra, geometry, calculus, equations, computation, numbers, addition"),
   T2=cc("poetry, art, dance, literature, novel, symphony, drama, sculpture"),

@@ -57,7 +57,7 @@ The users take the full responsibility for the choice.
         where the absolute difference is greater than the test statistic.}
 }}
 
-\item{seed}{Random seed to obtain reproducible results of permutation test. Defaults to \code{NULL}.}
+\item{seed}{Random seed for reproducible results of permutation test. Defaults to \code{NULL}.}
 }
 \value{
 A \code{list} of objects (of new class \code{rnd}):

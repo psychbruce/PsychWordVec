@@ -29,7 +29,7 @@ See the \code{\link[Rtsne:Rtsne]{Rtsne}} package for details.}
 \item{colors}{A character vector specifying (1) the categories of words (for 2-D plot only)
 or (2) the exact colors of words (for 2-D and 3-D plot). See examples for its usage.}
 
-\item{seed}{Random seed to obtain reproducible results. Defaults to \code{NULL}.}
+\item{seed}{Random seed for reproducible results. Defaults to \code{NULL}.}
 
 \item{custom.Rtsne}{User-defined \code{\link[Rtsne:Rtsne]{Rtsne}} object using the same \code{dt}.}
 }

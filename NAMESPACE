@@ -2,6 +2,8 @@
 
 S3method(print,rnd)
 S3method(print,weat)
+export(as_matrix)
+export(as_wordvec)
 export(cc)
 export(cosine_similarity)
 export(data_transform)

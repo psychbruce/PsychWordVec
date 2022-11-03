@@ -1,7 +1,7 @@
 Package: PsychWordVec
 Title: Word Embedding Research Framework for Psychological Science
 Version: 0.1.2
-Date: 2022-11-02
+Date: 2022-11-03
 Authors@R:
     c(person(given = "Han-Wu-Shuang",
              family = "Bao",
@@ -10,13 +10,14 @@ Authors@R:
 Author: Han-Wu-Shuang Bao [aut, cre]
 Maintainer: Han-Wu-Shuang Bao <baohws@foxmail.com>
 Description:
-  An integrated toolkit of word embedding research that provides:
+  An integrated toolbox of word embedding research that provides:
   (1) a collection of 'pre-trained' word vectors in the '.RData'
   compressed format <https://psychbruce.github.io/WordVector_RData.pdf>;
   (2) a variety of functions to process, analyze, and visualize word vectors;
   (3) a range of tests to examine conceptual associations, including
   the Word Embedding Association Test <doi:10.1126/science.aal4230>
-  and the Relative Norm Distance <doi:10.1073/pnas.1720347115>;
+  and the Relative Norm Distance <doi:10.1073/pnas.1720347115>,
+  with permutation test of significance;
   (4) a set of training methods to locally train word vectors from
   text corpora, including 'Word2Vec' <arXiv:1301.3781>,
   'GloVe' <doi:10.3115/v1/D14-1162>, and 'FastText' <arXiv:1607.04606>.
@@ -28,7 +29,7 @@ URL: https://psychbruce.github.io/PsychWordVec/
 BugReports: https://github.com/psychbruce/PsychWordVec/issues
 Depends: R (>= 4.0.0)
 Imports: bruceR, dplyr, stringr, data.table, vroom,
-         purrr, ggplot2, ggrepel, Rtsne, rgl,
+         cli, purrr, ggplot2, ggrepel, Rtsne, rgl,
          rsparse, text2vec, word2vec, fastTextR
 Suggests: wordsalad, sweater
 RoxygenNote: 7.2.1

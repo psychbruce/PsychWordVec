@@ -1,16 +1,12 @@
+cn = function() cat("\n")
+
 ## sweater - not as Caliskan's approach
-pooled_sd = function(v, A1, A2) {
-  n1 = length(A1)
-  n2 = length(A2)
-  if(n1==n2) {
-    pooled.sd = stats::sd(v)
-  } else {
-    v1 = v[1:n1]
-    v2 = v[n1+(1:n2)]
-    var1 = stats::var(v1)
-    var2 = stats::var(v2)
-    pooled.sd = sqrt(((n1 - 1) * var1 + (n2 - 1) * var2) / (n1 + n2 - 2))
-  }
+pooled_sd = function(v, g1, g2) {
+  n1 = length(g1)
+  n2 = length(g2)
+  var1 = stats::var(v[1:n1])
+  var2 = stats::var(v[n1+(1:n2)])
+  pooled.sd = sqrt(((n1 - 1) * var1 + (n2 - 1) * var2) / (n1 + n2 - 2))
   return(pooled.sd)
 }
 
