@@ -1594,7 +1594,7 @@ test_WEAT = function(data, T1, T2, A1, A2,
   dweat.diff$closer_to = ifelse(dweat.diff$cos_sim_diff > 0, labels$A1, labels$A2)
 
   names(eff) = c("Target", "Attrib",
-                 "eff_raw", "eff_size",
+                 "mean_diff_raw", "eff_size",
                  names(p))
 
   weat = list(
@@ -1644,7 +1644,7 @@ print.weat = function(x, digits=3, ...) {
     note = "Note: To get p value with permutation test, specify `p.perm=TRUE`"
   }
   print_table(x$eff, row.names=FALSE, digits=digits,
-              title="Overall effect (raw and standardized):",
+              title="Overall effect (raw and standardized mean differences):",
               note=note)
   cat("\n")
 }
@@ -1778,7 +1778,7 @@ test_RND = function(data, T1, A1, A2,
     eff_raw=sum(drnd$rnd),
     pval=p)
   names(eff) = c("Target", "Attrib",
-                 "eff_raw",
+                 "rnd_sum",
                  names(p))
 
   rnd = list(

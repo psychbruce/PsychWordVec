@@ -5,7 +5,6 @@
 ## New Features
 
 -   Added permutation test of significance for both `test_WEAT()` and `test_RND()`: Users can specify the number of permutation samples and choose to calculate either one-sided or two-sided *p* value. It can well reproduce the results in Caliskan et al.'s (2017) article.
--   General improvements.
 
 ## Major Changes
 
