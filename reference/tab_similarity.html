@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -130,7 +130,6 @@ or cosine distance (<code>cos_dist</code>).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 14: woman queen woman-queen 0.3161813</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 15: woman   man   woman-man 0.7664012</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 16: woman woman woman-woman 1.0000000</span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">tab_similarity</span><span class="op">(</span><span class="va">demodata</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"king, queen, man, woman"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>               unique<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    word1 word2    wordpair   cos_sim</span>
@@ -159,7 +158,6 @@ or cosine distance (<code>cos_dist</code>).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 14:   Japan   China     Japan-China 0.5967756</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 15:   Japan   Tokyo     Japan-Tokyo 0.7002254</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 16:   Japan   Japan     Japan-Japan 1.0000000</span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">tab_similarity</span><span class="op">(</span><span class="va">demodata</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"Beijing, China, Tokyo, Japan"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>               unique<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      word1 word2      wordpair   cos_sim</span>
@@ -169,6 +167,18 @@ or cosine distance (<code>cos_dist</code>).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4:   China Tokyo   China-Tokyo 0.3814305</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5:   China Japan   China-Japan 0.5967756</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6:   Tokyo Japan   Tokyo-Japan 0.7002254</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## select n1 * n2 word pairs crossing two word lists w1 &amp; w2</span></span></span>
+<span class="r-in"><span><span class="co">## using data.table syntax</span></span></span>
+<span class="r-in"><span><span class="va">w1</span> <span class="op">=</span> <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"king, queen"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">w2</span> <span class="op">=</span> <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"man, woman"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tab_similarity</span><span class="op">(</span><span class="va">demodata</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">w1</span>, <span class="va">w2</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
+<span class="r-in"><span>  <span class="va">.</span><span class="op">[</span><span class="va">word1</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">w1</span> <span class="op">&amp;</span> <span class="va">word2</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">w2</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    word1 word2    wordpair   cos_sim</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  king   man    king-man 0.2294268</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  king woman  king-woman 0.1284797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: queen   man   queen-man 0.1665822</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: queen woman queen-woman 0.3161813</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
