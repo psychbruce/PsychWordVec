@@ -24,7 +24,7 @@ For SC-WEAT, one-sample permutation test is conducted (i.e., rearrangements of +
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -160,6 +160,9 @@ The users take the full responsibility for the choice.</p><ul><li><p>The one-sid
 <p>A <code>list</code> of objects (of new class <code>weat</code>):</p><dl><dt><code>words.valid</code></dt>
 <dd><p>valid (actually matched) words</p></dd>
 
+  <dt><code>words.not.found</code></dt>
+<dd><p>words not found</p></dd>
+
   <dt><code>data.raw</code></dt>
 <dd><p><code>data.table</code> of cosine similarities between all word pairs</p></dd>
 
@@ -171,7 +174,7 @@ The users take the full responsibility for the choice.</p><ul><li><p>The one-sid
 <dd><p><code>data.table</code> of <em>differential</em> mean cosine similarities
     <em>between</em> the two attribute concepts</p></dd>
 
-  <dt><code>eff.title</code></dt>
+  <dt><code>eff.label</code></dt>
 <dd><p>description for the difference between the two attribute concepts</p></dd>
 
   <dt><code>eff.type</code></dt>
@@ -217,6 +220,11 @@ Semantics derived automatically from language corpora contain human-like biases.
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">WEAT (Word Embedding Association Test)</span> <span style="color: #00BBBB;">──────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 King (T1) words</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Queen (T2) words</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 Male (A1) words</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 Female (A2) words</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative semantic similarities (differences):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ───────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Target cos_sim_diff std_diff closer_to</span>
@@ -226,6 +234,15 @@ Semantics derived automatically from language corpora contain human-like biases.
 <span class="r-out co"><span class="r-pr">#&gt;</span>  "queen"  Queen       -0.176   -1.751    Female</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  "Queen"  Queen       -0.129   -1.781    Female</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ───────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mean differences for single target category:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ─────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Target mean_raw_diff mean_std_diff     p    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ─────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    King         0.097         1.592 &lt;.001 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Queen        -0.152        -1.766 &lt;.001 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ─────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Permutation test: approximate p values (forced to two-sided)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Overall effect (raw and standardized mean differences):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ─────────────────────────────────────────────────────────</span>
@@ -251,6 +268,10 @@ Semantics derived automatically from language corpora contain human-like biases.
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">SC-WEAT (Single-Category Word Embedding Association Test)</span> <span style="color: #00BBBB;">───────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 Occupation (T1) words</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 Male (A1) words</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 Female (A2) words</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative semantic similarities (differences):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ──────────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                    cos_sim_diff std_diff closer_to</span>

@@ -14,7 +14,7 @@ This is an alternative method to Single-Category WEAT."><meta property="og:image
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -135,10 +135,13 @@ The users take the full responsibility for the choice.</p><ul><li><p>The one-sid
 <p>A <code>list</code> of objects (of new class <code>rnd</code>):</p><dl><dt><code>words.valid</code></dt>
 <dd><p>valid (actually matched) words</p></dd>
 
-  <dt><code>data.rnd</code></dt>
-<dd><p><code>data.table</code> of (raw and relative) norm distances</p></dd>
+  <dt><code>words.not.found</code></dt>
+<dd><p>words not found</p></dd>
 
-  <dt><code>eff.title</code></dt>
+  <dt><code>data.raw</code></dt>
+<dd><p><code>data.table</code> of (absolute and relative) norm distances</p></dd>
+
+  <dt><code>eff.label</code></dt>
 <dd><p>description for the difference between the two attribute concepts</p></dd>
 
   <dt><code>eff.type</code></dt>
@@ -191,6 +194,10 @@ Changes in gender stereotypes over time: A computational analysis.
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Relative Norm Distance (RND)</span> <span style="color: #00BBBB;">────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 Occupation (T1) words</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 Male (A1) words</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 Female (A2) words</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Relative norm distances (differences):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ─────────────────────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                       rnd closer_to norm_dist_A1 norm_dist_A2</span>
