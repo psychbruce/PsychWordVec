@@ -160,16 +160,15 @@ extract_valid_words = function(data, words=NULL, pattern=NULL) {
       stop("Please specify either `words` or `pattern`!", call.=FALSE)
     } else {
       words.valid = str_subset(data$word, pattern)
-      message(Glue("{length(words.valid)} words are matched..."))
+      message(Glue("{length(words.valid)} words matched..."))
     }
   } else {
     words.contain = data[word %in% words]$word
     words.valid = words[which(words %in% words.contain)]
   }
   if(length(words.valid) < length(words)) {
-    for(word in setdiff(words, words.valid))
-      cli::cli_alert_danger("\"{word}\" not found...")
-    message("Warning: Some words are not found!")
+    not.found = setdiff(words, words.valid)
+    cli::cli_alert_danger("{length(not.found)} words not found: {.val {not.found}}")
   }
   return(words.valid)
 }
@@ -1385,6 +1384,8 @@ tab_similarity = function(data, words=NULL, pattern=NULL,
 #' \describe{
 #'   \item{\code{words.valid}}{
 #'     valid (actually matched) words}
+#'   \item{\code{words.not.found}}{
+#'     words not found}
 #'   \item{\code{data.raw}}{
 #'     \code{data.table} of cosine similarities between all word pairs}
 #'   \item{\code{data.mean}}{
@@ -1393,7 +1394,7 @@ tab_similarity = function(data, words=NULL, pattern=NULL,
 #'   \item{\code{data.diff}}{
 #'     \code{data.table} of \emph{differential} mean cosine similarities
 #'     \emph{between} the two attribute concepts}
-#'   \item{\code{eff.title}}{
+#'   \item{\code{eff.label}}{
 #'     description for the difference between the two attribute concepts}
 #'   \item{\code{eff.type}}{
 #'     effect type: WEAT or SC-WEAT}
@@ -1527,6 +1528,8 @@ test_WEAT = function(data, T1, T2, A1, A2,
     data = normalize(data[word %in% words])
 
   dt = get_wordvecs(data, words)
+  # words not found:
+  not.found = setdiff(words, names(dt))
   # valid words:
   T1 = T1[T1 %in% names(dt)]
   T2 = T2[T2 %in% names(dt)]
@@ -1572,12 +1575,17 @@ test_WEAT = function(data, T1, T2, A1, A2,
   if(!is.null(T2)) {
 
     # WEAT
-    title = paste(labels$T1, "vs.", labels$T2, "::", labels$A1, "vs.", labels$A2)
+    eff_label = list(
+      contrast=paste(labels$T1, "vs.", labels$T2, "::", labels$A1, "vs.", labels$A2),
+      labels=labels[c("T1", "T2", "A1", "A2")],
+      words=sapply(list(T1, T2, A1, A2), length)
+    )
     eff_type = "WEAT (Word Embedding Association Test)"
     mean_diffs = dweat.diff[, .(
-      mean_diff = mean(cos_sim_diff)
-    ), by=Target]$mean_diff
-    eff_raw = mean_diffs[1] - mean_diffs[2]
+      mean_diff = mean(cos_sim_diff),
+      std_diff = mean(std_diff)
+    ), by=Target]
+    eff_raw = mean_diffs$mean_diff[1] - mean_diffs$mean_diff[2]
     if(pooled.sd=="Caliskan")
       std_dev = stats::sd(dweat.diff$cos_sim_diff)
     else
@@ -1589,17 +1597,32 @@ test_WEAT = function(data, T1, T2, A1, A2,
       set.seed(seed)
       p = p_perm(dweat.diff$cos_sim_diff,
                  ids, eff_raw, p.nsim, p.side)
+      set.seed(seed)
+      p.T1 = p_perm(dweat.diff[Target==labels$T1]$cos_sim_diff,
+                    nsim=p.nsim, side=2)
+      set.seed(seed)
+      p.T2 = p_perm(dweat.diff[Target==labels$T2]$cos_sim_diff,
+                    nsim=p.nsim, side=2)
     } else {
-      p = NULL
+      p = p.T1 = p.T2 = NULL
     }
     eff = data.table(Target=paste0(labels$T1, "/", labels$T2),
                      Attrib=paste0(labels$A1, "/", labels$A2),
                      eff_raw, eff_size, p)
 
+    # Single-Target Tests
+    eff.ST = cbind(mean_diffs, data.table(pval=c(p.T1, p.T2)))
+    names(eff.ST) = c("Target", "mean_raw_diff",
+                      "mean_std_diff", names(p.T1))
+
   } else {
 
     # SC-WEAT
-    title = paste(labels$T1, "::", labels$A1, "vs.", labels$A2)
+    eff_label = list(
+      contrast=paste(labels$T1, "::", labels$A1, "vs.", labels$A2),
+      labels=labels[c("T1", "A1", "A2")],
+      words=sapply(list(T1, A1, A2), length)
+    )
     eff_type = "SC-WEAT (Single-Category Word Embedding Association Test)"
     dweat.mean$Target = NULL
     dweat.diff$Target = NULL
@@ -1628,13 +1651,15 @@ test_WEAT = function(data, T1, T2, A1, A2,
 
   weat = list(
     words.valid=list(T1=T1, T2=T2, A1=A1, A2=A2),
+    words.not.found=not.found,
     data.raw=dweat,
     data.mean=dweat.mean,
     data.diff=dweat.diff,
-    eff.title=title,
+    eff.label=eff_label,
     eff.type=eff_type,
     eff=eff
   )
+  if(!is.null(T2)) weat = c(weat, list(eff.ST=eff.ST))
   class(weat) = "weat"
   return(weat)
 }
@@ -1644,6 +1669,8 @@ test_WEAT = function(data, T1, T2, A1, A2,
 print.weat = function(x, digits=3, ...) {
   cli::cli_h1("{x$eff.type}")
   cn()
+  cat(valid_words_info(x))
+  cn(2)
   data.diff = copy(x$data.diff)
   if(!is.null(x$words.valid$T2)) {
     data.diff = data.diff[, c(2, 1, 3, 4, 5)]
@@ -1654,6 +1681,15 @@ print.weat = function(x, digits=3, ...) {
   names(data.diff)[1] = " "
   print_table(data.diff, row.names=FALSE, digits=digits,
               title="Relative semantic similarities (differences):")
+  if(!is.null(x$words.valid$T2)) {
+    cn()
+    x$eff.ST$Target = fixed_string(x$eff.ST$Target)
+    note.ST = ifelse(length(x$eff.ST)<4, "",
+                     "Permutation test: approximate p values (forced to two-sided)")
+    print_table(x$eff.ST, row.names=FALSE, digits=digits,
+                title="Mean differences for single target category:",
+                note=note.ST)
+  }
   cn()
   x$eff$Attrib = paste0(" ", x$eff$Attrib)
   if(length(x$eff)>=5) {
@@ -1693,9 +1729,11 @@ print.weat = function(x, digits=3, ...) {
 #' \describe{
 #'   \item{\code{words.valid}}{
 #'     valid (actually matched) words}
-#'   \item{\code{data.rnd}}{
-#'     \code{data.table} of (raw and relative) norm distances}
-#'   \item{\code{eff.title}}{
+#'   \item{\code{words.not.found}}{
+#'     words not found}
+#'   \item{\code{data.raw}}{
+#'     \code{data.table} of (absolute and relative) norm distances}
+#'   \item{\code{eff.label}}{
 #'     description for the difference between the two attribute concepts}
 #'   \item{\code{eff.type}}{
 #'     effect type: RND}
@@ -1770,6 +1808,8 @@ test_RND = function(data, T1, A1, A2,
     data = normalize(data[word %in% words])
 
   dt = get_wordvecs(data, words)
+  # words not found:
+  not.found = setdiff(words, names(dt))
   # valid words:
   T1 = T1[T1 %in% names(dt)]
   A1 = A1[A1 %in% names(dt)]
@@ -1789,6 +1829,11 @@ test_RND = function(data, T1, A1, A2,
   drnd$rnd = drnd$norm_dist_A1 - drnd$norm_dist_A2
   drnd$closer_to = ifelse(drnd$rnd < 0, labels$A1, labels$A2)
 
+  eff_label = list(
+    contrast=paste(labels$T1, "::", labels$A1, "vs.", labels$A2),
+    labels=labels[c("T1", "A1", "A2")],
+    words=sapply(list(T1, A1, A2), length)
+  )
   interp = c(Glue("If RND < 0: {labels$T1} is more associated with {labels$A1} than {labels$A2}"),
              Glue("If RND > 0: {labels$T1} is more associated with {labels$A2} than {labels$A1}"))
 
@@ -1809,8 +1854,9 @@ test_RND = function(data, T1, A1, A2,
 
   rnd = list(
     words.valid=list(T1=T1, A1=A1, A2=A2),
-    data.rnd=drnd,
-    eff.title=paste(labels$T1, "::", labels$A1, "vs.", labels$A2),
+    words.not.found=not.found,
+    data.raw=drnd,
+    eff.label=eff_label,
     eff.type="Relative Norm Distance (RND)",
     eff=eff,
     eff.interpretation=interp
@@ -1824,7 +1870,9 @@ test_RND = function(data, T1, A1, A2,
 print.rnd = function(x, digits=3, ...) {
   cli::cli_h1("{x$eff.type}")
   cn()
-  data.rnd = copy(x$data.rnd)
+  cat(valid_words_info(x))
+  cn(2)
+  data.rnd = copy(x$data.raw)
   data.rnd$T_word = paste0("\"", data.rnd$T_word, "\"")
   data.rnd$closer_to = fixed_string(data.rnd$closer_to)
   names(data.rnd)[1] = " "

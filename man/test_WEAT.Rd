@@ -79,6 +79,8 @@ A \code{list} of objects (of new class \code{weat}):
 \describe{
   \item{\code{words.valid}}{
     valid (actually matched) words}
+  \item{\code{words.not.found}}{
+    words not found}
   \item{\code{data.raw}}{
     \code{data.table} of cosine similarities between all word pairs}
   \item{\code{data.mean}}{
@@ -87,7 +89,7 @@ A \code{list} of objects (of new class \code{weat}):
   \item{\code{data.diff}}{
     \code{data.table} of \emph{differential} mean cosine similarities
     \emph{between} the two attribute concepts}
-  \item{\code{eff.title}}{
+  \item{\code{eff.label}}{
     description for the difference between the two attribute concepts}
   \item{\code{eff.type}}{
     effect type: WEAT or SC-WEAT}

@@ -1,4 +1,4 @@
-# PsychWordVec <a href="https://psychbruce.github.io/PsychWordVec"><img src="man/figures/logo.png" align="right" height="138" /></a>
+# PsychWordVec <a href="https://psychbruce.github.io/PsychWordVec"><img src="man/figures/logo.png" align="right" height="138"/></a>
 
 Word Embedding Research Framework for Psychological Science.
 

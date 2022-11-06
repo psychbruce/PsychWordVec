@@ -64,9 +64,11 @@ A \code{list} of objects (of new class \code{rnd}):
 \describe{
   \item{\code{words.valid}}{
     valid (actually matched) words}
-  \item{\code{data.rnd}}{
-    \code{data.table} of (raw and relative) norm distances}
-  \item{\code{eff.title}}{
+  \item{\code{words.not.found}}{
+    words not found}
+  \item{\code{data.raw}}{
+    \code{data.table} of (absolute and relative) norm distances}
+  \item{\code{eff.label}}{
     description for the difference between the two attribute concepts}
   \item{\code{eff.type}}{
     effect type: RND}

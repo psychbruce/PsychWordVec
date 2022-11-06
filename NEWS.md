@@ -1,5 +1,11 @@
 **Please check the [latest news (change log)](https://psychbruce.github.io/PsychWordVec/news/index.html) and keep this package updated.**
 
+# PsychWordVec 0.1.3 (ongoing...)
+
+## Minor Changes
+
+-   Improved `print.weat()` and `print.rnd()`.
+
 # PsychWordVec 0.1.2 (Nov 2022)
 
 ## New Features

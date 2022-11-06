@@ -1,4 +1,4 @@
-cn = function() cat("\n")
+cn = function(n=1) cat(rep("\n", times=n))
 
 ## sweater - not as Caliskan's approach
 pooled_sd = function(v, g1, g2) {
@@ -85,5 +85,16 @@ p_perm = function(v, ids=NULL, test.value=NULL, nsim, side) {
 fixed_string = function(v) {
   v = as.character(v)
   sprintf(paste0("% ", max(nchar(v)), "s"), v)
+}
+
+
+valid_words_info = function(x) {
+  ns = x$eff.label$words
+  ls = paste0(unlist(x$eff.label$labels), " (",
+              names(x$eff.label$labels), ")")
+  nf = length(x$words.not.found)
+  nf = ifelse(nf==0, "", paste0("\n(", nf, " words not found)"))
+  info = paste0(paste(paste(ns, ls, "words"), collapse="\n"), nf)
+  return(info)
 }
 
