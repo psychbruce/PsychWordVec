@@ -1,6 +1,17 @@
 **Please check the [latest news (change log)](https://psychbruce.github.io/PsychWordVec/news/index.html) and keep this package updated.**
 
-# PsychWordVec 0.1.3 (ongoing...)
+# To-Do List
+
+-   [ ] Function to expand a dictionary based on cosine similarity
+-   [ ] Function to evaluate the internal consistency reliability of a dictionary
+-   [x] Function to perform the orthogonal Procrustes matrix alignment
+-   [ ] Function to extract contextualized word vectors from language models
+
+# PsychWordVec 0.1.4 (ongoing...)
+
+## New Features
+
+-   New `orth_procrustes()` function: Orthogonal Procrustes matrix alignment. Users can input either two matrices of word embeddings or two `wordvec` objects as loaded by `data_wordvec_load()` or transformed from matrices.
 
 ## Minor Changes
 

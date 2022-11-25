@@ -388,6 +388,9 @@ data_wordvec_load = function(file.load, normalize=FALSE,
 }
 
 
+#### Preprocessing ####
+
+
 #' Normalize all word vectors to unit length.
 #'
 #' @description
@@ -634,6 +637,129 @@ data_wordvec_subset = function(x, words=NULL, pattern=NULL,
   }
   gc()  # Garbage Collection: Free the Memory
   invisible(dt)
+}
+
+
+# Orthogonal Procrustes
+# adapted from cds::orthprocr()
+# same as psych::Procrustes() and pracma::procrustes()
+
+#' Orthogonal Procrustes matrix alignment.
+#'
+#' In order to compare word embeddings from different time periods,
+#' we must ensure that the vectors are aligned to the same coordinate axes.
+#' The Orthogonal Procrustes solution (Schönemann, 1966) is
+#' commonly used to align the historical embeddings
+#' (Hamilton et al., 2016; Li et al., 2020).
+#' This function produces the same results as by
+#' \code{\link[cds:orthprocr]{cds::orthprocr()}},
+#' \code{\link[psych:Promax]{psych::Procrustes()}}, and
+#' \code{\link[pracma:procrustes]{pracma::procrustes()}}.
+#'
+#' @param M,X Two word embedding matrices of the same size (rows and columns),
+#' or two \code{\link[PsychWordVec:as_wordvec]{wordvec}} objects
+#' as loaded by \code{\link{data_wordvec_load}} or transformed from matrices.
+#' \itemize{
+#'   \item{\code{M} is the reference (anchor/baseline/target) matrix,
+#'         e.g., the matrix of word embeddings learned at
+#'         the later year (\eqn{t + 1}).}
+#'   \item{\code{X} is the matrix to be transformed/rotated.}
+#' }
+#' \emph{Note}: The function automatically extracts only
+#' the intersection (overlapped part) of words in \code{M} and \code{X}
+#' and sorts them in the same order (according to \code{M}).
+#'
+#' @return
+#' A \code{matrix} or \code{wordvec} object of
+#' \code{X} after rotation, depending on the class of
+#' \code{M} and \code{X}.
+#'
+#' @references
+#' Hamilton, W. L., Leskovec, J., & Jurafsky, D. (2016).
+#' Diachronic word embeddings reveal statistical laws of semantic change.
+#' In \emph{Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics}
+#' (Vol. 1, pp. 1489--1501). Association for Computational Linguistics.
+#'
+#' Li, Y., Hills, T., & Hertwig, R. (2020).
+#' A brief history of risk. \emph{Cognition, 203}, 104344.
+#'
+#' Schönemann, P. H. (1966).
+#' A generalized solution of the orthogonal Procrustes problem.
+#' \emph{Psychometrika, 31}(1), 1--10.
+#'
+#' @seealso
+#' \code{\link{data_wordvec_reshape}}:
+#' \code{as_matrix()} and \code{as_wordvec()}
+#'
+#' @examples
+#' M = matrix(c(0,0,  1,2,  2,0,  3,2,  4,0), ncol=2, byrow=TRUE)
+#' X = matrix(c(0,0, -2,1,  0,2, -2,3,  0,4), ncol=2, byrow=TRUE)
+#' rownames(M) = rownames(X) = cc("A, B, C, D, E")  # words
+#' colnames(M) = colnames(X) = cc("dim1, dim2")  # dimensions
+#'
+#' ggplot() +
+#'   geom_path(data=as.data.frame(M), aes(x=dim1, y=dim2),
+#'             color="red") +
+#'   geom_path(data=as.data.frame(X), aes(x=dim1, y=dim2),
+#'             color="blue") +
+#'   coord_equal()
+#'
+#' # Usage 1: input two matrices
+#' XR = orth_procrustes(M, X)
+#' XR  # aligned with M
+#'
+#' ggplot() +
+#'   geom_path(data=as.data.frame(XR), aes(x=dim1, y=dim2)) +
+#'   coord_equal()
+#'
+#' # Usage 2: input two `wordvec` objects
+#' M.wv = as_wordvec(M)
+#' X.wv = as_wordvec(X)
+#' XR.wv = orth_procrustes(M.wv, X.wv)
+#' XR.wv  # aligned with M.wv
+#'
+#' # M and X must have the same set and order of words
+#' # and the same number of word vector dimensions.
+#' # The function extracts only the intersection of words
+#' # and sorts them in the same order according to M.
+#'
+#' Y = rbind(X, X[rev(rownames(X)),])
+#' rownames(Y)[1:5] = cc("F, G, H, I, J")
+#' M.wv = as_wordvec(M)
+#' Y.wv = as_wordvec(Y)
+#' M.wv  # words: A, B, C, D, E
+#' Y.wv  # words: F, G, H, I, J, E, D, C, B, A
+#' YR.wv = orth_procrustes(M.wv, Y.wv)
+#' YR.wv  # aligned with M.wv, with the same order of words
+#'
+#' @export
+orth_procrustes = function(M, X) {
+  stopifnot(all.equal(class(M), class(X)))
+  class = "matrix"
+  if(inherits(M, "wordvec")) {
+    class = "wordvec"
+    M = as_matrix(M)
+    X = as_matrix(X)
+  }
+  if(inherits(M, "matrix")==FALSE)
+    stop("M and X should be of class matrix or wordvec.", call.=FALSE)
+  ints = intersect(rownames(M), rownames(X))
+  XR = orthogonal_procrustes(M[ints,], X[ints,])
+  if(class=="wordvec")
+    XR = as_wordvec(XR)
+  return(XR)
+}
+
+
+orthogonal_procrustes = function(M, X) {
+  stopifnot(all.equal(dim(M), dim(X)))
+  MX = crossprod(M, X)  # = t(M) %*% X
+  svdMX = svd(MX)
+  R = tcrossprod(svdMX$v, svdMX$u)  # = svdMX$v %*% t(svdMX$u)
+  XR = X %*% R
+  colnames(XR) = colnames(X)
+  # attr(XR, "Rotation") = R
+  return(XR)
 }
 
 
