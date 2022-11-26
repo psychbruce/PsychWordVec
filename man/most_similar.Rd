@@ -97,17 +97,16 @@ most_similar(d, "China", above="Shanghai")
 ms = most_similar(demodata, ~ king - man + woman)
 ms
 str(ms)
-attr(ms, "dims")
-attr(ms, "normalized")
-attr(ms, "wordvec.formula")
-attr(ms, "wordvec")
-# final word vector computed according to the formula
 }
 }
 \seealso{
+\code{\link{sum_wordvec}}
+
 \code{\link{cosine_similarity}}
 
 \code{\link{pair_similarity}}
 
 \code{\link{tab_similarity}}
+
+\code{\link{most_similar_expand}}
 }

@@ -154,6 +154,16 @@ check_save_validity = function(file.save) {
 }
 
 
+force_normalize = function(data, verbose=TRUE) {
+  check_data_validity(data)
+  if(attr(data, "normalized")==FALSE) {
+    if(verbose) cli::cli_alert_warning("Results may be inaccurate if word vectors are not normalized.")
+    data = data_wordvec_normalize(data, verbose)
+  }
+  return(data)
+}
+
+
 extract_valid_words = function(data, words=NULL, pattern=NULL) {
   if(is.null(words)) {
     if(is.null(pattern)) {
@@ -1188,7 +1198,57 @@ plot_wordvec_tSNE = function(dt, dims=2,
 }
 
 
-#### Word Similarity Analysis ####
+#### Word Similarity ####
+
+
+#' Calculate the sum vector of multiple words.
+#'
+#' @inheritParams most_similar
+#'
+#' @return
+#' Normalized sum vector.
+#'
+#' @section Download:
+#' Download pre-trained word vectors data (\code{.RData}):
+#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#'
+#' @seealso
+#' \code{\link{most_similar}}
+#'
+#' \code{\link{most_similar_expand}}
+#'
+#' @examples
+#' sum_wordvec(demodata, ~ king - man + woman)
+#'
+#' @export
+sum_wordvec = function(data, x, verbose=TRUE) {
+  data = force_normalize(data, verbose)  # pre-normalized
+  if(inherits(x, "character")) {
+    ft = paste(x, collapse=" + ")
+    positive = x
+    negative = character()
+  } else if(inherits(x, "formula")) {
+    ft = as.character(x[2])
+    xt = str_replace_all(ft, "`", "")
+    xts = str_split(xt, " (?=[+-])", simplify=TRUE)[1,]
+    positive = str_remove(str_subset(xts, "^\\-", negate=TRUE), "\\+ *")
+    negative = str_remove(str_subset(xts, "^\\-"), "\\- *")
+    x = c(positive, negative)
+  } else {
+    stop("`x` must be a character vector or an R formula!", call.=FALSE)
+  }
+
+  wordvecs.pos = get_wordvecs(data, words=positive)
+  wordvecs.neg = get_wordvecs(data, words=negative)
+  if(length(wordvecs.neg) == 0)
+    sum.vec = rowSums(wordvecs.pos)
+  else
+    sum.vec = rowSums(wordvecs.pos) - rowSums(wordvecs.neg)
+  sum.vec = sum.vec / sqrt(sum(sum.vec^2))  # post-normalized
+  attr(sum.vec, "formula") = ft
+  attr(sum.vec, "x.words") = x
+  return(sum.vec)
+}
 
 
 #' Find the Top-N most similar words.
@@ -1248,11 +1308,15 @@ plot_wordvec_tSNE = function(dt, dims=2,
 #' \url{https://psychbruce.github.io/WordVector_RData.pdf}
 #'
 #' @seealso
+#' \code{\link{sum_wordvec}}
+#'
 #' \code{\link{cosine_similarity}}
 #'
 #' \code{\link{pair_similarity}}
 #'
 #' \code{\link{tab_similarity}}
+#'
+#' \code{\link{most_similar_expand}}
 #'
 #' @examples
 #' d = data_wordvec_normalize(demodata)
@@ -1281,42 +1345,21 @@ plot_wordvec_tSNE = function(dt, dims=2,
 #' ms = most_similar(demodata, ~ king - man + woman)
 #' ms
 #' str(ms)
-#' attr(ms, "dims")
-#' attr(ms, "normalized")
-#' attr(ms, "wordvec.formula")
-#' attr(ms, "wordvec")
-#' # final word vector computed according to the formula
 #' }
 #' @export
 most_similar = function(data, x, topn=10,
                         keep=FALSE, above=NULL,
                         verbose=TRUE) {
-  if(attr(data, "normalized")==FALSE) {
-    cli::cli_alert_warning("Results may be inaccurate if word vectors are not normalized.")
-    data = data_wordvec_normalize(data, verbose)  # pre-normalized
-  }
+  data = force_normalize(data, verbose)
   ms = data.table()
-  if(inherits(x, "character"))
-    f = stats::as.formula(paste("~", paste(x, collapse="+")))
-  else if(inherits(x, "formula"))
-    f = x
-  else
-    stop("`x` must be a character vector or an R formula!", call.=FALSE)
-  xt = str_replace_all(as.character(f[2]), "`", "")
-  xts = str_split(xt, " (?=[+-])", simplify=TRUE)[1,]
-  positive = str_remove(str_subset(xts, "^\\-", negate=TRUE), "\\+ *")
-  negative = str_remove(str_subset(xts, "^\\-"), "\\- *")
-  x = c(positive, negative)
-  wordvecs.pos = get_wordvecs(data, words=positive)
-  wordvecs.neg = get_wordvecs(data, words=negative)
-  if(length(wordvecs.neg) == 0)
-    wordvec = rowSums(wordvecs.pos)
-  else
-    wordvec = rowSums(wordvecs.pos) - rowSums(wordvecs.neg)
-  wordvec = wordvec / sqrt(sum(wordvec^2))  # post-normalized
+
+  sum.vec = sum_wordvec(data, x)
+  f = attr(sum.vec, "formula")
+  x = attr(sum.vec, "x.words")
+
   cos_sim = NULL
   data$cos_sim = sapply(data$vec, function(vec_i) {
-    sum(wordvec * vec_i)  # faster for normalized vectors
+    sum(sum.vec * vec_i)  # faster for normalized vectors
   })
   data$row_id = 1:nrow(data)
   if(keep==FALSE)
@@ -1327,19 +1370,86 @@ most_similar = function(data, x, topn=10,
     ms = data[order(-cos_sim), c("word", "cos_sim", "row_id")][cos_sim >= above]
   } else if(is.character(above)) {
     ms = data[order(-cos_sim), c("word", "cos_sim", "row_id")][
-      cos_sim >= sum(wordvec * get_wordvec(data, above))
+      cos_sim >= sum(sum.vec * get_wordvec(data, above))
     ]
   } else {
     stop("`above` must be a numeric value or a character string.", call.=FALSE)
   }
   gc()  # Garbage Collection: Free the Memory
-  attr(ms, "wordvec") = wordvec
-  attr(ms, "wordvec.formula") = f
+  attr(ms, "sum.vec") = sum.vec
+  attr(ms, "sum.vec.formula") = f
   if(verbose) {
-    Print("<<cyan [Word Vector]>> =~ {as.character(f[2])}")
+    Print("<<cyan [Word Vector]>> =~ {f}")
     message("(normalized to unit length)")
   }
   return(ms)
+}
+
+
+#' Expand a wordlist from the most similar words.
+#'
+#' @inheritParams most_similar
+#' @param words A vector of words.
+#' @param threshold Threshold of cosine similarity,
+#' used to find all words with similarities higher than this value.
+#' Defaults to \code{0.5}. A low threshold may lead to failure of convergence.
+#' @param iteration Number of maximum iterations. Defaults to \code{5}.
+#'
+#' @return
+#' An expanded list (character vector) of words.
+#'
+#' @section Download:
+#' Download pre-trained word vectors data (\code{.RData}):
+#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#'
+#' @seealso
+#' \code{\link{sum_wordvec}}
+#'
+#' \code{\link{most_similar}}
+#'
+#' @examples
+#' dict = most_similar_expand(demodata, "king")
+#' dict
+#'
+#' dict = most_similar_expand(demodata, cc("king, queen"))
+#' dict
+#'
+#' most_similar(demodata, dict)
+#'
+#' \donttest{dict.cn = most_similar_expand(demodata, "China")
+#' dict.cn  # too inclusive if setting threshold = 0.5
+#'
+#' dict.cn = most_similar_expand(demodata,
+#'                               cc("China, Chinese"),
+#'                               threshold=0.6)
+#' dict.cn  # adequate to represent "China"
+#' }
+#' @export
+most_similar_expand = function(data, words,
+                               threshold=0.5,
+                               iteration=5,
+                               verbose=TRUE) {
+  data = force_normalize(data, verbose)
+  cos_sim = NULL
+  i = 1
+  while(TRUE) {
+    ms = most_similar(data=data, x=words, keep=FALSE,
+                      above=threshold, verbose=FALSE)
+    new.words = ms[cos_sim>=threshold]$word
+    n.new = length(new.words)
+    words = unique(c(words, new.words))
+    if(verbose) {
+      cli::cli_h1("Iteration {i} (threshold of cosine similarity = {threshold})")
+      if(n.new>0)
+        cli::cli_alert_success("{n.new} more words appended: {.val {new.words}}")
+      else
+        cli::cli_alert_success("No more words appended. Successfully convergent.")
+    }
+    if(n.new==0 | i>=iteration) break
+    i = i + 1
+  }
+  if(verbose) cli::cli_h2("Finish ({ifelse(n.new==0, 'convergent', 'NOT convergent')})")
+  return(words)
 }
 
 

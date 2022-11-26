@@ -42,7 +42,7 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
 
 ## Functions
 
--   Word Embeddings Data Management
+-   Word Embeddings Data Management and Transformation
     -   `data_transform()`
     -   `data_wordvec_load()`
     -   `data_wordvec_normalize()`
@@ -50,16 +50,19 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
         -   `as_matrix()`: from `wordvec` to `matrix`
         -   `as_wordvec()`: from `matrix` to `wordvec`
     -   `data_wordvec_subset()`
--   Word Vectors Extraction, Dimensionality Reduction, and Visualization
+    -   `orth_procrustes()` (Orthogonal Procrustes matrix alignment)
+-   Word Vectors Extraction, Linear Operation, and Visualization
     -   `get_wordvec()`
     -   `get_wordvecs()`
+    -   `sum_wordvec()`
     -   `plot_wordvec()`
     -   `plot_wordvec_tSNE()`
 -   Word Semantic Similarity Analysis and Conceptual Association Test
     -   `cosine_similarity()`
     -   `pair_similarity()`
     -   `tab_similarity()`
-    -   `most_similar()`
+    -   `most_similar()` (find the Top-N most similar words)
+    -   `most_similar_expand()` (useful for dictionary expansion)
     -   `test_WEAT()` (with permutation test of significance)
     -   `test_RND()` (with permutation test of significance)
 -   Word Vectors Local Training (Word2Vec, GloVe, and FastText)

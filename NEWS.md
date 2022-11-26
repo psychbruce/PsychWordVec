@@ -2,7 +2,7 @@
 
 # To-Do List
 
--   [ ] Function to expand a dictionary based on cosine similarity
+-   [x] Function to expand a dictionary based on cosine similarity
 -   [ ] Function to evaluate the internal consistency reliability of a dictionary
 -   [x] Function to perform the orthogonal Procrustes matrix alignment
 -   [ ] Function to extract contextualized word vectors from language models
@@ -11,6 +11,8 @@
 
 ## New Features
 
+-   New `sum_wordvec()` function: Calculate the sum vector of multiple words.
+-   New `most_similar_expand()` function: Expand a wordlist from the most similar words, based on `most_similar()`.
 -   New `orth_procrustes()` function: Orthogonal Procrustes matrix alignment. Users can input either two matrices of word embeddings or two `wordvec` objects as loaded by `data_wordvec_load()` or transformed from matrices.
 
 ## Minor Changes
