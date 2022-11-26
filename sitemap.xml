@@ -49,6 +49,9 @@
     <loc>https://psychbruce.github.io/PsychWordVec/reference/most_similar.html</loc>
   </url>
   <url>
+    <loc>https://psychbruce.github.io/PsychWordVec/reference/most_similar_expand.html</loc>
+  </url>
+  <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/orth_procrustes.html</loc>
   </url>
   <url>
@@ -62,6 +65,9 @@
   </url>
   <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/reexports.html</loc>
+  </url>
+  <url>
+    <loc>https://psychbruce.github.io/PsychWordVec/reference/sum_wordvec.html</loc>
   </url>
   <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/tab_similarity.html</loc>
