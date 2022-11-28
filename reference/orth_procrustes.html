@@ -86,7 +86,8 @@ This function produces the same results as by
     <dl><dt>M, X</dt>
 <dd><p>Two embedding matrices of the same size (rows and columns),
 or two <code><a href="data_wordvec_reshape.html">wordvec</a></code> objects
-as loaded by <code><a href="data_wordvec_load.html">data_wordvec_load</a></code> or transformed from matrices.</p><ul><li><p><code>M</code> is the reference (anchor/baseline/target) matrix,
+as loaded by <code><a href="data_wordvec_load.html">data_wordvec_load</a></code> or
+transformed from matrices by <code><a href="data_wordvec_reshape.html">as_wordvec</a></code>.</p><ul><li><p><code>M</code> is the reference (anchor/baseline/target) matrix,
         e.g., the embedding matrix learned at
         the later year (\(t + 1\)).</p></li>
 <li><p><code>X</code> is the matrix to be transformed/rotated.</p></li>
