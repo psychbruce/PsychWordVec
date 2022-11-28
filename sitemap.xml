@@ -37,6 +37,12 @@
     <loc>https://psychbruce.github.io/PsychWordVec/reference/demodata.html</loc>
   </url>
   <url>
+    <loc>https://psychbruce.github.io/PsychWordVec/reference/dict_expand.html</loc>
+  </url>
+  <url>
+    <loc>https://psychbruce.github.io/PsychWordVec/reference/dict_reliability.html</loc>
+  </url>
+  <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/get_wordvec.html</loc>
   </url>
   <url>
@@ -49,13 +55,13 @@
     <loc>https://psychbruce.github.io/PsychWordVec/reference/most_similar.html</loc>
   </url>
   <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/most_similar_expand.html</loc>
-  </url>
-  <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/orth_procrustes.html</loc>
   </url>
   <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/pair_similarity.html</loc>
+  </url>
+  <url>
+    <loc>https://psychbruce.github.io/PsychWordVec/reference/plot_similarity.html</loc>
   </url>
   <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/plot_wordvec.html</loc>

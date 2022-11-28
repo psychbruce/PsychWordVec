@@ -49,7 +49,10 @@
 <div class="section level3">
 <h3 id="new-features-0-1-4">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-4"></a></h3>
 <ul><li>New <code><a href="../reference/sum_wordvec.html">sum_wordvec()</a></code> function: Calculate the sum vector of multiple words.</li>
-<li>New <code><a href="../reference/most_similar_expand.html">most_similar_expand()</a></code> function: Expand a wordlist from the most similar words, based on <code><a href="../reference/most_similar.html">most_similar()</a></code>.</li>
+<li>New <code><a href="../reference/dict_expand.html">dict_expand()</a></code> function: Expand a dictionary from the most similar words, based on <code><a href="../reference/most_similar.html">most_similar()</a></code>.</li>
+<li>New <code><a href="../reference/dict_reliability.html">dict_reliability()</a></code> function: Reliability analysis (Cronbach’s α) and Principal Component Analysis (PCA) of a dictionary. Note that Cronbach’s α may be misleading when the number of items/words is large.</li>
+<li>New <code><a href="../reference/plot_similarity.html">plot_similarity()</a></code> function: Visualize cosine similarities between word pairs in a style of correlation matrix plot.</li>
+<li>New <code><a href="../reference/tab_similarity.html">tab_similarity_cross()</a></code> function: A wrapper of <code><a href="../reference/tab_similarity.html">tab_similarity()</a></code> to tabulate cosine similarities for only n1 * n2 word pairs from two sets of words (arguments: <code>words1</code>, <code>words2</code>).</li>
 <li>New <code><a href="../reference/orth_procrustes.html">orth_procrustes()</a></code> function: Orthogonal Procrustes matrix alignment. Users can input either two matrices of word embeddings or two <code>wordvec</code> objects as loaded by <code><a href="../reference/data_wordvec_load.html">data_wordvec_load()</a></code> or transformed from matrices.</li>
 </ul></div>
 <div class="section level3">
