@@ -54,5 +54,7 @@ sum_wordvec(demodata, ~ king - man + woman)
 \seealso{
 \code{\link{most_similar}}
 
-\code{\link{most_similar_expand}}
+\code{\link{dict_expand}}
+
+\code{\link{dict_reliability}}
 }

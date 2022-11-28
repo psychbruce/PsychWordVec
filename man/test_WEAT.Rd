@@ -75,26 +75,26 @@ The users take the full responsibility for the choice.
 }}
 }
 \value{
-A \code{list} of objects (of new class \code{weat}):
+A \code{list} object of new class \code{weat}:
 \describe{
   \item{\code{words.valid}}{
-    valid (actually matched) words}
+    Valid (actually matched) words}
   \item{\code{words.not.found}}{
-    words not found}
+    Words not found}
   \item{\code{data.raw}}{
-    \code{data.table} of cosine similarities between all word pairs}
+    A \code{data.table} of cosine similarities between all word pairs}
   \item{\code{data.mean}}{
-    \code{data.table} of \emph{mean} cosine similarities
+    A \code{data.table} of \emph{mean} cosine similarities
     \emph{across} all attribute words}
   \item{\code{data.diff}}{
-    \code{data.table} of \emph{differential} mean cosine similarities
+    A \code{data.table} of \emph{differential} mean cosine similarities
     \emph{between} the two attribute concepts}
   \item{\code{eff.label}}{
-    description for the difference between the two attribute concepts}
+    Description for the difference between the two attribute concepts}
   \item{\code{eff.type}}{
-    effect type: WEAT or SC-WEAT}
+    Effect type: WEAT or SC-WEAT}
   \item{\code{eff}}{
-    raw effect, standardized effect size, and p value (if \code{p.perm=TRUE})}
+    Raw effect, standardized effect size, and p value (if \code{p.perm=TRUE})}
 }
 }
 \description{
@@ -189,6 +189,10 @@ Semantics derived automatically from language corpora contain human-like biases.
 }
 \seealso{
 \code{\link{tab_similarity}}
+
+\code{\link{dict_expand}}
+
+\code{\link{dict_reliability}}
 
 \code{\link{test_RND}}
 }

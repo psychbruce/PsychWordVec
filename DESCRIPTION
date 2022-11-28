@@ -1,7 +1,7 @@
 Package: PsychWordVec
 Title: Word Embedding Research Framework for Psychological Science
 Version: 0.1.4
-Date: 2022-11-25
+Date: 2022-11-28
 Authors@R:
     c(person(given = "Han-Wu-Shuang",
              family = "Bao",
@@ -28,8 +28,8 @@ LazyDataCompression: xz
 URL: https://psychbruce.github.io/PsychWordVec/
 BugReports: https://github.com/psychbruce/PsychWordVec/issues
 Depends: R (>= 4.0.0)
-Imports: bruceR, dplyr, stringr, data.table, vroom,
-         cli, purrr, ggplot2, ggrepel, Rtsne, rgl,
-         rsparse, text2vec, word2vec, fastTextR
+Imports: bruceR, dplyr, stringr, data.table, purrr, vroom,
+         cli, ggplot2, ggrepel, corrplot, psych, Rtsne, rgl,
+         rsparse, text2vec, word2vec, fastTextR, text
 Suggests: wordsalad, sweater
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2

@@ -60,22 +60,22 @@ The users take the full responsibility for the choice.
 \item{seed}{Random seed for reproducible results of permutation test. Defaults to \code{NULL}.}
 }
 \value{
-A \code{list} of objects (of new class \code{rnd}):
+A \code{list} object of new class \code{rnd}:
 \describe{
   \item{\code{words.valid}}{
-    valid (actually matched) words}
+    Valid (actually matched) words}
   \item{\code{words.not.found}}{
-    words not found}
+    Words not found}
   \item{\code{data.raw}}{
-    \code{data.table} of (absolute and relative) norm distances}
+    A \code{data.table} of (absolute and relative) norm distances}
   \item{\code{eff.label}}{
-    description for the difference between the two attribute concepts}
+    Description for the difference between the two attribute concepts}
   \item{\code{eff.type}}{
-    effect type: RND}
+    Effect type: RND}
   \item{\code{eff}}{
-    raw effect and p value (if \code{p.perm=TRUE})}
+    Raw effect and p value (if \code{p.perm=TRUE})}
   \item{\code{eff.interpretation}}{
-    interpretation of the RND score}
+    Interpretation of the RND score}
 }
 }
 \description{
@@ -115,6 +115,10 @@ Changes in gender stereotypes over time: A computational analysis.
 }
 \seealso{
 \code{\link{tab_similarity}}
+
+\code{\link{dict_expand}}
+
+\code{\link{dict_reliability}}
 
 \code{\link{test_WEAT}}
 }

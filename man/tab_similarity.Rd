@@ -2,7 +2,8 @@
 % Please edit documentation in R/PsychWordVec.R
 \name{tab_similarity}
 \alias{tab_similarity}
-\title{Tabulate data for cosine similarity/distance of all word pairs.}
+\alias{tab_similarity_cross}
+\title{Tabulate cosine similarity/distance of word pairs.}
 \usage{
 tab_similarity(
   data,
@@ -11,6 +12,8 @@ tab_similarity(
   unique = FALSE,
   distance = FALSE
 )
+
+tab_similarity_cross(data, words1, words2, distance = FALSE)
 }
 \arguments{
 \item{data}{A \code{data.table} (of new class \code{wordvec})
@@ -25,16 +28,25 @@ or full pairs with duplicates (\code{FALSE}; default).}
 
 \item{distance}{Compute cosine distance instead?
 Defaults to \code{FALSE} (cosine similarity).}
+
+\item{words1, words2}{[Used in \code{tab_similarity_cross}]
+Two sets of words for computing similarities of n1 * n2 word pairs.}
 }
 \value{
-A \code{data.table} of all words and
-their unique or full pairs,
-with their cosine similarity (\code{cos_sim})
+A \code{data.table} of words, word pairs,
+and their cosine similarity (\code{cos_sim})
 or cosine distance (\code{cos_dist}).
 }
 \description{
-Tabulate data for cosine similarity/distance of all word pairs.
+Tabulate cosine similarity/distance of word pairs.
 }
+\section{Functions}{
+\itemize{
+\item \code{tab_similarity()}: Tabulate data for all word pairs.
+
+\item \code{tab_similarity_cross()}: Tabulate data for only n1 * n2 word pairs.
+
+}}
 \section{Download}{
 
 Download pre-trained word vectors data (\code{.RData}):
@@ -50,18 +62,18 @@ tab_similarity(demodata, cc("Beijing, China, Tokyo, Japan"))
 tab_similarity(demodata, cc("Beijing, China, Tokyo, Japan"),
                unique=TRUE)
 
-## select n1 * n2 word pairs crossing two word lists w1 & w2
-## using data.table syntax
+## only n1 * n2 word pairs crossing two sets of words w1 & w2
 w1 = cc("king, queen")
 w2 = cc("man, woman")
-tab_similarity(demodata, c(w1, w2)) \%>\%
-  .[word1 \%in\% w1 & word2 \%in\% w2]
+tab_similarity_cross(demodata, w1, w2)
 
 }
 \seealso{
 \code{\link{cosine_similarity}}
 
 \code{\link{pair_similarity}}
+
+\code{\link{plot_similarity}}
 
 \code{\link{most_similar}}
 

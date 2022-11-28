@@ -102,11 +102,13 @@ str(ms)
 \seealso{
 \code{\link{sum_wordvec}}
 
+\code{\link{dict_expand}}
+
 \code{\link{cosine_similarity}}
 
 \code{\link{pair_similarity}}
 
-\code{\link{tab_similarity}}
+\code{\link{plot_similarity}}
 
-\code{\link{most_similar_expand}}
+\code{\link{tab_similarity}}
 }

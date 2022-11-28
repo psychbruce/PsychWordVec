@@ -34,6 +34,8 @@ pair_similarity(demodata, "China", "Chinese")
 \seealso{
 \code{\link{cosine_similarity}}
 
+\code{\link{plot_similarity}}
+
 \code{\link{tab_similarity}}
 
 \code{\link{most_similar}}

@@ -2,17 +2,17 @@
 % Please edit documentation in R/PsychWordVec.R
 \name{orth_procrustes}
 \alias{orth_procrustes}
-\title{Orthogonal Procrustes matrix alignment.}
+\title{Orthogonal Procrustes solution for matrix alignment.}
 \usage{
 orth_procrustes(M, X)
 }
 \arguments{
-\item{M, X}{Two word embedding matrices of the same size (rows and columns),
+\item{M, X}{Two embedding matrices of the same size (rows and columns),
 or two \code{\link[PsychWordVec:as_wordvec]{wordvec}} objects
 as loaded by \code{\link{data_wordvec_load}} or transformed from matrices.
 \itemize{
   \item{\code{M} is the reference (anchor/baseline/target) matrix,
-        e.g., the matrix of word embeddings learned at
+        e.g., the embedding matrix learned at
         the later year (\eqn{t + 1}).}
   \item{\code{X} is the matrix to be transformed/rotated.}
 }
@@ -27,9 +27,10 @@ A \code{matrix} or \code{wordvec} object of
 }
 \description{
 In order to compare word embeddings from different time periods,
-we must ensure that the vectors are aligned to the same coordinate axes.
+we must ensure that the embedding matrices are aligned to
+the same semantic space (coordinate axes).
 The Orthogonal Procrustes solution (Schönemann, 1966) is
-commonly used to align the historical embeddings
+commonly used to align historical embeddings over time
 (Hamilton et al., 2016; Li et al., 2020).
 This function produces the same results as by
 \code{\link[cds:orthprocr]{cds::orthprocr()}},

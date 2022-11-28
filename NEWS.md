@@ -3,7 +3,7 @@
 # To-Do List
 
 -   [x] Function to expand a dictionary based on cosine similarity
--   [ ] Function to evaluate the internal consistency reliability of a dictionary
+-   [x] Function to evaluate the internal consistency reliability of a dictionary
 -   [x] Function to perform the orthogonal Procrustes matrix alignment
 -   [ ] Function to extract contextualized word vectors from language models
 
@@ -12,7 +12,10 @@
 ## New Features
 
 -   New `sum_wordvec()` function: Calculate the sum vector of multiple words.
--   New `most_similar_expand()` function: Expand a wordlist from the most similar words, based on `most_similar()`.
+-   New `dict_expand()` function: Expand a dictionary from the most similar words, based on `most_similar()`.
+-   New `dict_reliability()` function: Reliability analysis (Cronbach's α) and Principal Component Analysis (PCA) of a dictionary. Note that Cronbach's α may be misleading when the number of items/words is large.
+-   New `plot_similarity()` function: Visualize cosine similarities between word pairs in a style of correlation matrix plot.
+-   New `tab_similarity_cross()` function: A wrapper of `tab_similarity()` to tabulate cosine similarities for only n1 \* n2 word pairs from two sets of words (arguments: `words1`, `words2`).
 -   New `orth_procrustes()` function: Orthogonal Procrustes matrix alignment. Users can input either two matrices of word embeddings or two `wordvec` objects as loaded by `data_wordvec_load()` or transformed from matrices.
 
 ## Minor Changes

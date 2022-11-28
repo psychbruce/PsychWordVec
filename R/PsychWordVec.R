@@ -4,8 +4,10 @@
 #' @import stringr
 #' @import ggplot2
 #' @import data.table
+#' @importFrom corrplot corrplot
+#' @importFrom grDevices png pdf dev.off
 #' @importFrom dplyr %>% select left_join
-#' @importFrom bruceR %notin% cc dtime import export Glue Print print_table
+#' @importFrom bruceR cc dtime import export Glue Print print_table
 .onAttach = function(libname, pkgname) {
   ## Version Check
   new = FALSE
@@ -654,24 +656,25 @@ data_wordvec_subset = function(x, words=NULL, pattern=NULL,
 # adapted from cds::orthprocr()
 # same as psych::Procrustes() and pracma::procrustes()
 
-#' Orthogonal Procrustes matrix alignment.
+#' Orthogonal Procrustes solution for matrix alignment.
 #'
 #' In order to compare word embeddings from different time periods,
-#' we must ensure that the vectors are aligned to the same coordinate axes.
+#' we must ensure that the embedding matrices are aligned to
+#' the same semantic space (coordinate axes).
 #' The Orthogonal Procrustes solution (Schönemann, 1966) is
-#' commonly used to align the historical embeddings
+#' commonly used to align historical embeddings over time
 #' (Hamilton et al., 2016; Li et al., 2020).
 #' This function produces the same results as by
 #' \code{\link[cds:orthprocr]{cds::orthprocr()}},
 #' \code{\link[psych:Promax]{psych::Procrustes()}}, and
 #' \code{\link[pracma:procrustes]{pracma::procrustes()}}.
 #'
-#' @param M,X Two word embedding matrices of the same size (rows and columns),
+#' @param M,X Two embedding matrices of the same size (rows and columns),
 #' or two \code{\link[PsychWordVec:as_wordvec]{wordvec}} objects
 #' as loaded by \code{\link{data_wordvec_load}} or transformed from matrices.
 #' \itemize{
 #'   \item{\code{M} is the reference (anchor/baseline/target) matrix,
-#'         e.g., the matrix of word embeddings learned at
+#'         e.g., the embedding matrix learned at
 #'         the later year (\eqn{t + 1}).}
 #'   \item{\code{X} is the matrix to be transformed/rotated.}
 #' }
@@ -1215,7 +1218,9 @@ plot_wordvec_tSNE = function(dt, dims=2,
 #' @seealso
 #' \code{\link{most_similar}}
 #'
-#' \code{\link{most_similar_expand}}
+#' \code{\link{dict_expand}}
+#'
+#' \code{\link{dict_reliability}}
 #'
 #' @examples
 #' sum_wordvec(demodata, ~ king - man + woman)
@@ -1310,13 +1315,15 @@ sum_wordvec = function(data, x, verbose=TRUE) {
 #' @seealso
 #' \code{\link{sum_wordvec}}
 #'
+#' \code{\link{dict_expand}}
+#'
 #' \code{\link{cosine_similarity}}
 #'
 #' \code{\link{pair_similarity}}
 #'
-#' \code{\link{tab_similarity}}
+#' \code{\link{plot_similarity}}
 #'
-#' \code{\link{most_similar_expand}}
+#' \code{\link{tab_similarity}}
 #'
 #' @examples
 #' d = data_wordvec_normalize(demodata)
@@ -1363,7 +1370,7 @@ most_similar = function(data, x, topn=10,
   })
   data$row_id = 1:nrow(data)
   if(keep==FALSE)
-    data = data[word %notin% x]
+    data = data[!word %in% x]
   if(is.null(above)) {
     ms = utils::head(data[order(-cos_sim), c("word", "cos_sim", "row_id")], topn)
   } else if(is.numeric(above)) {
@@ -1386,7 +1393,7 @@ most_similar = function(data, x, topn=10,
 }
 
 
-#' Expand a wordlist from the most similar words.
+#' Expand a dictionary from the most similar words.
 #'
 #' @inheritParams most_similar
 #' @param words A vector of words.
@@ -1408,27 +1415,27 @@ most_similar = function(data, x, topn=10,
 #' \code{\link{most_similar}}
 #'
 #' @examples
-#' dict = most_similar_expand(demodata, "king")
+#' dict = dict_expand(demodata, "king")
 #' dict
 #'
-#' dict = most_similar_expand(demodata, cc("king, queen"))
+#' dict = dict_expand(demodata, cc("king, queen"))
 #' dict
 #'
 #' most_similar(demodata, dict)
 #'
-#' \donttest{dict.cn = most_similar_expand(demodata, "China")
+#' \donttest{dict.cn = dict_expand(demodata, "China")
 #' dict.cn  # too inclusive if setting threshold = 0.5
 #'
-#' dict.cn = most_similar_expand(demodata,
-#'                               cc("China, Chinese"),
-#'                               threshold=0.6)
+#' dict.cn = dict_expand(demodata,
+#'                       cc("China, Chinese"),
+#'                       threshold=0.6)
 #' dict.cn  # adequate to represent "China"
 #' }
 #' @export
-most_similar_expand = function(data, words,
-                               threshold=0.5,
-                               iteration=5,
-                               verbose=TRUE) {
+dict_expand = function(data, words,
+                       threshold=0.5,
+                       iteration=5,
+                       verbose=TRUE) {
   data = force_normalize(data, verbose)
   cos_sim = NULL
   i = 1
@@ -1468,6 +1475,8 @@ most_similar_expand = function(data, words,
 #' @seealso
 #' \code{\link{cosine_similarity}}
 #'
+#' \code{\link{plot_similarity}}
+#'
 #' \code{\link{tab_similarity}}
 #'
 #' \code{\link{most_similar}}
@@ -1483,7 +1492,8 @@ pair_similarity = function(data, word1, word2, distance=FALSE) {
 }
 
 
-#' Tabulate data for cosine similarity/distance of all word pairs.
+#' Tabulate cosine similarity/distance of word pairs.
+#' @describeIn tab_similarity Tabulate data for all word pairs.
 #'
 #' @inheritParams cosine_similarity
 #' @inheritParams get_wordvecs
@@ -1491,9 +1501,8 @@ pair_similarity = function(data, word1, word2, distance=FALSE) {
 #' or full pairs with duplicates (\code{FALSE}; default).
 #'
 #' @return
-#' A \code{data.table} of all words and
-#' their unique or full pairs,
-#' with their cosine similarity (\code{cos_sim})
+#' A \code{data.table} of words, word pairs,
+#' and their cosine similarity (\code{cos_sim})
 #' or cosine distance (\code{cos_dist}).
 #'
 #' @section Download:
@@ -1504,6 +1513,8 @@ pair_similarity = function(data, word1, word2, distance=FALSE) {
 #' \code{\link{cosine_similarity}}
 #'
 #' \code{\link{pair_similarity}}
+#'
+#' \code{\link{plot_similarity}}
 #'
 #' \code{\link{most_similar}}
 #'
@@ -1520,17 +1531,17 @@ pair_similarity = function(data, word1, word2, distance=FALSE) {
 #' tab_similarity(demodata, cc("Beijing, China, Tokyo, Japan"),
 #'                unique=TRUE)
 #'
-#' ## select n1 * n2 word pairs crossing two word lists w1 & w2
-#' ## using data.table syntax
+#' ## only n1 * n2 word pairs crossing two sets of words w1 & w2
 #' w1 = cc("king, queen")
 #' w2 = cc("man, woman")
-#' tab_similarity(demodata, c(w1, w2)) %>%
-#'   .[word1 %in% w1 & word2 %in% w2]
+#' tab_similarity_cross(demodata, w1, w2)
 #'
 #' @export
 tab_similarity = function(data, words=NULL, pattern=NULL,
                           unique=FALSE, distance=FALSE) {
   check_data_validity(data)
+  if(!is.null(words) & !is.null(pattern))
+    stop("You may use `tab_similarity_cross()` instead.", call.=FALSE)
   words.valid = extract_valid_words(data, words, pattern)
   dt = data[word %in% words.valid]
   if(unique) {
@@ -1545,7 +1556,7 @@ tab_similarity = function(data, words=NULL, pattern=NULL,
       word1 = words.valid
     )[c("word1", "word2")])
   }
-  word1 = word2 = wordpair = NULL
+  word1 = word2 = NULL
   dts[, wordpair := paste0(word1, "-", word2)]
   dts$cos_sim = sapply(1:nrow(dts), function(i) {
     cosine_similarity(get_wordvec(dt, dts[[i, 1]]),
@@ -1554,6 +1565,280 @@ tab_similarity = function(data, words=NULL, pattern=NULL,
   })
   if(distance) names(dts)[4] = "cos_dist"
   return(dts)
+}
+
+
+#' @describeIn tab_similarity Tabulate data for only n1 * n2 word pairs.
+#'
+#' @param words1,words2 [Used in \code{tab_similarity_cross}]
+#' Two sets of words for computing similarities of n1 * n2 word pairs.
+#'
+#' @export
+tab_similarity_cross = function(data, words1, words2,
+                                distance=FALSE) {
+  word1 = word2 = NULL
+  tab_similarity(data, c(words1, words2))[word1 %in% words1 & word2 %in% words2]
+}
+
+
+#' Visualize cosine similarity of word pairs.
+#'
+#' @inheritParams tab_similarity
+#' @inheritParams corrplot::corrplot
+#' @param label Position of text labels.
+#' Defaults to \code{"auto"} (add labels if less than 20 words).
+#' Can be \code{TRUE} (left and top), \code{FALSE} (add no labels of words),
+#' or a character string (see the usage of \code{tl.pos} in \code{\link[corrplot:corrplot]{corrplot}}.
+#' @param value.color Color of values added on the plot.
+#' Defaults to \code{NULL} (add no values).
+#' @param value.percent Whether to transform values into percentage style for space saving.
+#' Defaults to \code{FALSE}.
+#' @param hclust.n Number of rectangles to be drawn on the plot according to
+#' the hierarchical clusters, only valid when \code{order="hclust"}.
+#' Defaults to \code{NULL} (add no rectangles).
+#' @param hclust.color Color of rectangle border, only valid when \code{hclust.n} >= 1.
+#' Defaults to \code{"black"}.
+#' @param hclust.line Line width of rectangle border, only valid when \code{hclust.n} >= 1.
+#' Defaults to \code{2}.
+#' @param file File name to be saved, should be of \code{png} or \code{pdf}.
+#' @param width,height Width and height (in inches) for the saved file.
+#' Defaults to \code{8} and \code{6}.
+#' @param dpi Dots per inch. Defaults to \code{500} (i.e., file resolution: 4000 * 3000).
+#' @param ... Other parameters passed to \code{\link[corrplot:corrplot]{corrplot}}.
+#'
+#' @return
+#' Invisibly return a matrix of cosine similarity between each pair of words.
+#'
+#' @section Download:
+#' Download pre-trained word vectors data (\code{.RData}):
+#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#'
+#' @seealso
+#' \code{\link{cosine_similarity}}
+#'
+#' \code{\link{pair_similarity}}
+#'
+#' \code{\link{tab_similarity}}
+#'
+#' \code{\link{most_similar}}
+#'
+#' @examples
+#' w1 = cc("king, queen, man, woman")
+#' plot_similarity(demodata, w1)
+#' plot_similarity(demodata, w1,
+#'                 value.color="grey",
+#'                 value.percent=TRUE)
+#' plot_similarity(demodata, w1,
+#'                 value.color="grey",
+#'                 order="hclust",
+#'                 hclust.n=2)
+#'
+#' w2 = cc("China, Chinese,
+#'          Japan, Japanese,
+#'          Korea, Korean,
+#'          man, woman, boy, girl,
+#'          good, bad, positive, negative")
+#' plot_similarity(demodata, w2,
+#'                 order="hclust",
+#'                 hclust.n=3)
+#' plot_similarity(demodata, w2,
+#'                 order="hclust",
+#'                 hclust.n=7,
+#'                 file="plot.png")
+#'
+#' unlink("plot.png")  # delete file for code check
+#'
+#' @export
+plot_similarity = function(
+    data,
+    words=NULL,
+    pattern=NULL,
+    label="auto",
+    value.color=NULL,
+    value.percent=FALSE,
+    order=c("original", "AOE", "FPC", "hclust", "alphabet"),
+    hclust.method=c("complete", "ward", "ward.D", "ward.D2",
+                    "single", "average", "mcquitty",
+                    "median", "centroid"),
+    hclust.n=NULL,
+    hclust.color="black",
+    hclust.line=2,
+    file=NULL,
+    width=8,
+    height=6,
+    dpi=500,
+    ...) {
+  tab = tab_similarity(data=data,
+                       words=words,
+                       pattern=pattern,
+                       unique=FALSE,
+                       distance=FALSE)
+  words = unique(tab$word1)
+  mat = matrix(tab[[4]], nrow=length(words))
+  rownames(mat) = colnames(mat) = words
+  if(label=="auto") label = ifelse(length(words)<20, TRUE, FALSE)
+
+  if(!is.null(file)) {
+    if(str_detect(file, "\\.png$"))
+      png(file, width=width, height=height, units="in", res=dpi)
+    if(str_detect(file, "\\.pdf$"))
+      pdf(file, width=width, height=height)
+  }
+  corrplot(mat, method="color",
+           tl.pos=label,
+           tl.col="black",
+           order=order,
+           hclust.method=hclust.method,
+           addCoef.col=value.color,
+           addCoefasPercent=value.percent,
+           addrect=hclust.n,
+           rect.col=hclust.color,
+           rect.lwd=hclust.line,
+           ...)
+  if(!is.null(file)) {
+    dev.off()
+    cli::cli_alert_success("Saved to {paste0(getwd(), '/', file)}")
+  }
+
+  invisible(mat)
+}
+
+
+#' Reliability analysis and PCA of a dictionary.
+#'
+#' Reliability analysis (Cronbach's \eqn{\alpha}) and
+#' Principal Component Analysis (PCA) of a dictionary.
+#' Note that Cronbach's \eqn{\alpha} may be misleading
+#' when the number of items/words is large.
+#'
+#' @inheritParams plot_similarity
+#' @param sort Sort items by the first principal component loading (PC1)?
+#' Defaults to \code{TRUE}.
+#' @param plot Visualize cosine similarities with words ordered by PC1?
+#' Defaults to \code{TRUE}.
+#' @param ... Other parameters passed to \code{\link{plot_similarity}}.
+#'
+#' @return
+#' A \code{list} object of new class \code{reliability}:
+#' \describe{
+#'   \item{\code{alpha}}{
+#'     Cronbach's \eqn{\alpha}}
+#'   \item{\code{eigen}}{
+#'     Eigen values from PCA}
+#'   \item{\code{pca}}{
+#'     PCA (only 1 principal component)}
+#'   \item{\code{pca.rotation}}{
+#'     PCA with varimax rotation (if potential principal components > 1)}
+#'   \item{\code{items}}{
+#'     Item statistics}
+#'   \item{\code{cos.sim}}{
+#'     A matrix of cosine similarities of all word pairs}
+#' }
+#'
+#' @section Download:
+#' Download pre-trained word vectors data (\code{.RData}):
+#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#'
+#' @references
+#' Nicolas, G., Bai, X., & Fiske, S. T. (2021).
+#' Comprehensive stereotype content dictionaries using a semi-automated method.
+#' \emph{European Journal of Social Psychology, 51}(1), 178--196.
+#'
+#' @seealso
+#' \code{\link{cosine_similarity}}
+#'
+#' \code{\link{pair_similarity}}
+#'
+#' \code{\link{plot_similarity}}
+#'
+#' \code{\link{tab_similarity}}
+#'
+#' \code{\link{most_similar}}
+#'
+#' \code{\link{dict_expand}}
+#'
+#' @examples
+#' d = data_wordvec_normalize(demodata)
+#'
+#' dict = dict_expand(d, "king")
+#' dict_reliability(d, dict)
+#'
+#' dict.cn = dict_expand(d, "China", threshold=0.65)
+#' dict_reliability(d, dict.cn)
+#'
+#' dict_reliability(d, c(dict, dict.cn))
+#' # low-loading items should be removed
+#'
+#' @export
+dict_reliability = function(data, words=NULL, pattern=NULL,
+                            sort=TRUE, plot=TRUE, ...) {
+  data = force_normalize(data)
+  wordvecs = get_wordvecs(data, words, pattern)
+  sum.vec = sum_wordvec(data, names(wordvecs))
+  suppressMessages({
+    suppressWarnings({
+      alpha = psych::alpha(wordvecs)
+      pca = psych::principal(wordvecs, nfactors=1, scores=FALSE)
+      n.factors = sum(pca$values>1)
+      if(n.factors==1)
+        pca.rotation = NULL
+      else
+        pca.rotation = psych::principal(wordvecs, nfactors=n.factors,
+                                        rotate="varimax", scores=FALSE)
+      sim = sapply(wordvecs, function(vec.i) {
+        cosine_similarity(sum.vec, vec.i)
+      })
+    })
+  })
+  items = cbind(pca$loadings[,1],
+                sim,
+                alpha$item.stats["r.drop"],
+                alpha$alpha.drop["raw_alpha"])
+  names(items) = c("pc.loading",
+                   "sim.sumvec",
+                   "item.rest.cor",
+                   "alpha.if.drop")
+
+  if(sort)
+    items = items[order(items$pc.loading, decreasing=TRUE),]
+
+  if(plot)
+    mat = plot_similarity(data,
+                          names(wordvecs),
+                          order="FPC",
+                          ...)
+
+  reliability = list(alpha=alpha$total$raw_alpha,
+                     eigen=pca$values,
+                     pca=pca,
+                     pca.rotation=pca.rotation,
+                     items=items,
+                     cos.sim=mat)
+  class(reliability) = "reliability"
+  return(reliability)
+}
+
+
+#' @export
+print.reliability = function(x, digits=3) {
+  cli::cli_h1("Reliability Analysis and PCA of Dictionary")
+  cn()
+  Print("
+    Number of items = {nrow(x$items)}
+    Cronbach\u2019s \u03b1 = {x$alpha:.{digits}} (misleading when N of items is large)
+    Variance explained by PC1 = {100*x$eigen[1]/sum(x$eigen):.1}%
+    Potential principal components = {sum(x$eigen>1)} (with eigen value > 1)")
+  cn()
+  names(x$items) = c("PC1 Loading",
+                     "Item-SumVec Sim.",
+                     "Item-Rest Corr.",
+                     "Alpha (if dropped)")
+  print_table(x$items[,1:3], digits=digits,
+              title="Item Statistics:",
+              note=Glue("
+                PC1 Loading = the first principal component loading
+                Item-SumVec Sim. = cosine similarity with the sum vector
+                Item-Rest Corr. = corrected item-total correlation"))
 }
 
 
@@ -1616,26 +1901,26 @@ tab_similarity = function(data, words=NULL, pattern=NULL,
 #' }
 #'
 #' @return
-#' A \code{list} of objects (of new class \code{weat}):
+#' A \code{list} object of new class \code{weat}:
 #' \describe{
 #'   \item{\code{words.valid}}{
-#'     valid (actually matched) words}
+#'     Valid (actually matched) words}
 #'   \item{\code{words.not.found}}{
-#'     words not found}
+#'     Words not found}
 #'   \item{\code{data.raw}}{
-#'     \code{data.table} of cosine similarities between all word pairs}
+#'     A \code{data.table} of cosine similarities between all word pairs}
 #'   \item{\code{data.mean}}{
-#'     \code{data.table} of \emph{mean} cosine similarities
+#'     A \code{data.table} of \emph{mean} cosine similarities
 #'     \emph{across} all attribute words}
 #'   \item{\code{data.diff}}{
-#'     \code{data.table} of \emph{differential} mean cosine similarities
+#'     A \code{data.table} of \emph{differential} mean cosine similarities
 #'     \emph{between} the two attribute concepts}
 #'   \item{\code{eff.label}}{
-#'     description for the difference between the two attribute concepts}
+#'     Description for the difference between the two attribute concepts}
 #'   \item{\code{eff.type}}{
-#'     effect type: WEAT or SC-WEAT}
+#'     Effect type: WEAT or SC-WEAT}
 #'   \item{\code{eff}}{
-#'     raw effect, standardized effect size, and p value (if \code{p.perm=TRUE})}
+#'     Raw effect, standardized effect size, and p value (if \code{p.perm=TRUE})}
 #' }
 #'
 #' @section Download:
@@ -1649,6 +1934,10 @@ tab_similarity = function(data, words=NULL, pattern=NULL,
 #'
 #' @seealso
 #' \code{\link{tab_similarity}}
+#'
+#' \code{\link{dict_expand}}
+#'
+#' \code{\link{dict_reliability}}
 #'
 #' \code{\link{test_RND}}
 #'
@@ -1961,22 +2250,22 @@ print.weat = function(x, digits=3, ...) {
 #' \code{list(T1="Target", A1="Attrib1", A2="Attrib2")}.
 #'
 #' @return
-#' A \code{list} of objects (of new class \code{rnd}):
+#' A \code{list} object of new class \code{rnd}:
 #' \describe{
 #'   \item{\code{words.valid}}{
-#'     valid (actually matched) words}
+#'     Valid (actually matched) words}
 #'   \item{\code{words.not.found}}{
-#'     words not found}
+#'     Words not found}
 #'   \item{\code{data.raw}}{
-#'     \code{data.table} of (absolute and relative) norm distances}
+#'     A \code{data.table} of (absolute and relative) norm distances}
 #'   \item{\code{eff.label}}{
-#'     description for the difference between the two attribute concepts}
+#'     Description for the difference between the two attribute concepts}
 #'   \item{\code{eff.type}}{
-#'     effect type: RND}
+#'     Effect type: RND}
 #'   \item{\code{eff}}{
-#'     raw effect and p value (if \code{p.perm=TRUE})}
+#'     Raw effect and p value (if \code{p.perm=TRUE})}
 #'   \item{\code{eff.interpretation}}{
-#'     interpretation of the RND score}
+#'     Interpretation of the RND score}
 #' }
 #'
 #' @section Download:
@@ -1994,6 +2283,10 @@ print.weat = function(x, digits=3, ...) {
 #'
 #' @seealso
 #' \code{\link{tab_similarity}}
+#'
+#' \code{\link{dict_expand}}
+#'
+#' \code{\link{dict_reliability}}
 #'
 #' \code{\link{test_WEAT}}
 #'

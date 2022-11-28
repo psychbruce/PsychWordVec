@@ -60,9 +60,11 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
 -   Word Semantic Similarity Analysis and Conceptual Association Test
     -   `cosine_similarity()`
     -   `pair_similarity()`
+    -   `plot_similarity()`
     -   `tab_similarity()`
     -   `most_similar()` (find the Top-N most similar words)
-    -   `most_similar_expand()` (useful for dictionary expansion)
+    -   `dict_expand()` (expand a dictionary from the most similar words)
+    -   `dict_reliability()` (reliability analysis and PCA of a dictionary)
     -   `test_WEAT()` (with permutation test of significance)
     -   `test_RND()` (with permutation test of significance)
 -   Word Vectors Local Training (Word2Vec, GloVe, and FastText)
