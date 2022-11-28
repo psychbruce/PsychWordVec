@@ -62,6 +62,7 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
     -   `pair_similarity()`
     -   `plot_similarity()`
     -   `tab_similarity()`
+    -   `tab_similarity_cross()`
     -   `most_similar()` (find the Top-N most similar words)
     -   `dict_expand()` (expand a dictionary from the most similar words)
     -   `dict_reliability()` (reliability analysis and PCA of a dictionary)
@@ -72,3 +73,4 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
     -   `train_wordvec()`
 
 See the documentation (help pages) for their usage and details.
+

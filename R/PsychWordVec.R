@@ -1821,7 +1821,7 @@ dict_reliability = function(data, words=NULL, pattern=NULL,
 
 
 #' @export
-print.reliability = function(x, digits=3) {
+print.reliability = function(x, digits=3, ...) {
   cli::cli_h1("Reliability Analysis and PCA of Dictionary")
   cn()
   Print("
