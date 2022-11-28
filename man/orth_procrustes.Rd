@@ -9,7 +9,8 @@ orth_procrustes(M, X)
 \arguments{
 \item{M, X}{Two embedding matrices of the same size (rows and columns),
 or two \code{\link[PsychWordVec:as_wordvec]{wordvec}} objects
-as loaded by \code{\link{data_wordvec_load}} or transformed from matrices.
+as loaded by \code{\link{data_wordvec_load}} or
+transformed from matrices by \code{\link{as_wordvec}}.
 \itemize{
   \item{\code{M} is the reference (anchor/baseline/target) matrix,
         e.g., the embedding matrix learned at
@@ -33,9 +34,9 @@ The Orthogonal Procrustes solution (Schönemann, 1966) is
 commonly used to align historical embeddings over time
 (Hamilton et al., 2016; Li et al., 2020).
 This function produces the same results as by
-\code{\link[cds:orthprocr]{cds::orthprocr()}},
-\code{\link[psych:Promax]{psych::Procrustes()}}, and
-\code{\link[pracma:procrustes]{pracma::procrustes()}}.
+\code{cds::orthprocr()},
+\code{psych::Procrustes()}, and
+\code{pracma::procrustes()}.
 }
 \examples{
 M = matrix(c(0,0,  1,2,  2,0,  3,2,  4,0), ncol=2, byrow=TRUE)

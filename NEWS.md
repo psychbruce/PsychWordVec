@@ -16,7 +16,7 @@
 -   New `dict_reliability()` function: Reliability analysis (Cronbach's α) and Principal Component Analysis (PCA) of a dictionary. Note that Cronbach's α may be misleading when the number of items/words is large.
 -   New `plot_similarity()` function: Visualize cosine similarities between word pairs in a style of correlation matrix plot.
 -   New `tab_similarity_cross()` function: A wrapper of `tab_similarity()` to tabulate cosine similarities for only n1 \* n2 word pairs from two sets of words (arguments: `words1`, `words2`).
--   New `orth_procrustes()` function: Orthogonal Procrustes matrix alignment. Users can input either two matrices of word embeddings or two `wordvec` objects as loaded by `data_wordvec_load()` or transformed from matrices.
+-   New `orth_procrustes()` function: Orthogonal Procrustes matrix alignment. Users can input either two matrices of word embeddings or two `wordvec` objects as loaded by `data_wordvec_load()` or transformed from matrices by `as_wordvec()`.
 
 ## Minor Changes
 

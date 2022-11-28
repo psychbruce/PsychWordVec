@@ -30,6 +30,6 @@ BugReports: https://github.com/psychbruce/PsychWordVec/issues
 Depends: R (>= 4.0.0)
 Imports: bruceR, dplyr, stringr, data.table, purrr, vroom,
          cli, ggplot2, ggrepel, corrplot, psych, Rtsne, rgl,
-         rsparse, text2vec, word2vec, fastTextR, text
+         rsparse, text2vec, word2vec, fastTextR
 Suggests: wordsalad, sweater
 RoxygenNote: 7.2.2

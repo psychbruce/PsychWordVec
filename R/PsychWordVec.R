@@ -665,13 +665,14 @@ data_wordvec_subset = function(x, words=NULL, pattern=NULL,
 #' commonly used to align historical embeddings over time
 #' (Hamilton et al., 2016; Li et al., 2020).
 #' This function produces the same results as by
-#' \code{\link[cds:orthprocr]{cds::orthprocr()}},
-#' \code{\link[psych:Promax]{psych::Procrustes()}}, and
-#' \code{\link[pracma:procrustes]{pracma::procrustes()}}.
+#' \code{cds::orthprocr()},
+#' \code{psych::Procrustes()}, and
+#' \code{pracma::procrustes()}.
 #'
 #' @param M,X Two embedding matrices of the same size (rows and columns),
 #' or two \code{\link[PsychWordVec:as_wordvec]{wordvec}} objects
-#' as loaded by \code{\link{data_wordvec_load}} or transformed from matrices.
+#' as loaded by \code{\link{data_wordvec_load}} or
+#' transformed from matrices by \code{\link{as_wordvec}}.
 #' \itemize{
 #'   \item{\code{M} is the reference (anchor/baseline/target) matrix,
 #'         e.g., the embedding matrix learned at
@@ -1556,7 +1557,7 @@ tab_similarity = function(data, words=NULL, pattern=NULL,
       word1 = words.valid
     )[c("word1", "word2")])
   }
-  word1 = word2 = NULL
+  word1 = word2 = wordpair = NULL
   dts[, wordpair := paste0(word1, "-", word2)]
   dts$cos_sim = sapply(1:nrow(dts), function(i) {
     cosine_similarity(get_wordvec(dt, dts[[i, 1]]),
