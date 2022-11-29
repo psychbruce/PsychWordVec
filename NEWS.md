@@ -5,18 +5,27 @@
 -   [x] Function to expand a dictionary based on cosine similarity
 -   [x] Function to evaluate the internal consistency reliability of a dictionary
 -   [x] Function to perform the orthogonal Procrustes matrix alignment
--   [ ] Function to extract contextualized word vectors from language models
+-   [x] Function to extract contextualized word vectors from language models
 
-# PsychWordVec 0.1.4 (ongoing...)
+# PsychWordVec 0.1.5 (ongoing...)
+
+## Breaking News
+
+-   New series of `text_*` functions for contextualized word embeddings! Based on the R package [`text`](https://www.r-text.org/), a series of new functions have been developed for researchers to download [HuggingFace](https://huggingface.co/models) Transformers pre-trained language models and get contextualized word (token) embeddings and text embeddings.
+    -   `text_env_setup()`
+    -   `text_model_download()`
+    -   `text_model_remove()`
+    -   `text_to_vec()`
+-   New `orth_procrustes()` function: Orthogonal Procrustes matrix alignment. Users can input either two matrices of word embeddings or two `wordvec` objects as loaded by `data_wordvec_load()` or transformed from matrices by `as_wordvec()`.
+-   New `dict_expand()` function: Expand a dictionary from the most similar words, based on `most_similar()`.
+-   New `dict_reliability()` function: Reliability analysis (Cronbach's α) and Principal Component Analysis (PCA) of a dictionary. Note that Cronbach's α may be misleading when the number of items/words is large.
 
 ## New Features
 
 -   New `sum_wordvec()` function: Calculate the sum vector of multiple words.
--   New `dict_expand()` function: Expand a dictionary from the most similar words, based on `most_similar()`.
--   New `dict_reliability()` function: Reliability analysis (Cronbach's α) and Principal Component Analysis (PCA) of a dictionary. Note that Cronbach's α may be misleading when the number of items/words is large.
 -   New `plot_similarity()` function: Visualize cosine similarities between word pairs in a style of correlation matrix plot.
 -   New `tab_similarity_cross()` function: A wrapper of `tab_similarity()` to tabulate cosine similarities for only n1 \* n2 word pairs from two sets of words (arguments: `words1`, `words2`).
--   New `orth_procrustes()` function: Orthogonal Procrustes matrix alignment. Users can input either two matrices of word embeddings or two `wordvec` objects as loaded by `data_wordvec_load()` or transformed from matrices by `as_wordvec()`.
+-   New S3 print method `print.wordvec()`: Tidy print of `wordvec` object.
 
 ## Minor Changes
 

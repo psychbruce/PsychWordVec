@@ -136,6 +136,18 @@ cosine_similarity = function(v1, v2, distance=FALSE) {
 bruceR::cc
 
 
+#' @export
+print.wordvec = function(x, ...) {
+  # x$vec = NULL
+  # x$vec = paste0("<vector [", attr(x, "dims"), "] dims>")
+  dims = paste0("<", attr(x, "dims"), " dims>")
+  x$vec = sapply(x$vec, function(i) {
+    paste0("[", sprintf("% .4f", i[1]), ", ... ", dims, "]")
+  })
+  print(as.data.table(x))
+}
+
+
 check_data_validity = function(data) {
   if(!inherits(data, "wordvec"))
     stop("Data must be loaded using `data_wordvec_load()`.", call.=FALSE)
@@ -259,10 +271,16 @@ extract_valid_words = function(data, words=NULL, pattern=NULL) {
 #' }
 #'
 #' @export
-data_transform = function(file.load, file.save,
-                          sep=" ", header="auto", encoding="auto",
-                          compress="bzip2", compress.level=9,
-                          verbose=TRUE) {
+data_transform = function(
+    file.load,
+    file.save,
+    sep=" ",
+    header="auto",
+    encoding="auto",
+    compress="bzip2",
+    compress.level=9,
+    verbose=TRUE
+) {
   t0 = Sys.time()
   if(!missing(file.save)) check_save_validity(file.save)
   if(inherits(file.load, "wordvec")) {
@@ -373,8 +391,11 @@ data_transform = function(file.load, file.save,
 #' }
 #'
 #' @export
-data_wordvec_load = function(file.load, normalize=FALSE,
-                             verbose=TRUE) {
+data_wordvec_load = function(
+    file.load,
+    normalize=FALSE,
+    verbose=TRUE
+) {
   t0 = Sys.time()
   check_load_validity(file.load)
   if(verbose) cat("Loading...")
@@ -508,9 +529,12 @@ normalize = function(data) {
 #' d.dense  # identical to `d`
 #'
 #' @export
-data_wordvec_reshape = function(x, to=c("plain", "dense"),
-                                normalize=FALSE,
-                                verbose=TRUE) {
+data_wordvec_reshape = function(
+    x,
+    to=c("plain", "dense"),
+    normalize=FALSE,
+    verbose=TRUE
+) {
   to = match.arg(to)
   data = x
   rm(x)
@@ -523,15 +547,15 @@ data_wordvec_reshape = function(x, to=c("plain", "dense"),
     row.names(data.new) = data$word
   }
   if(to == "dense") {
-    data = as.matrix(data)  # much faster
+    mat = as.matrix(data)  # much faster
     data.new = data.table(
-      word = row.names(data),
+      word = row.names(mat),
       vec = do.call("list", lapply(
-        1:nrow(data), function(i) {
-          as.numeric(data[i,])
+        1:nrow(mat), function(i) {
+          as.numeric(mat[i,])
         }))
     )
-    attr(data.new, "dims") = length(data.new[[1, "vec"]])
+    attr(data.new, "dims") = ncol(mat)
     attr(data.new, "normalized") = FALSE
     class(data.new) = c("wordvec", "data.table", "data.frame")
     if(normalize) data.new = data_wordvec_normalize(data.new, verbose)
@@ -611,11 +635,15 @@ as_matrix = function(x, normalize=FALSE) {
 #' unlink("new.subset.RData")  # delete file for code check
 #'
 #' @export
-data_wordvec_subset = function(x, words=NULL, pattern=NULL,
-                               file.save,
-                               compress="bzip2",
-                               compress.level=9,
-                               verbose=TRUE) {
+data_wordvec_subset = function(
+    x,
+    words=NULL,
+    pattern=NULL,
+    file.save,
+    compress="bzip2",
+    compress.level=9,
+    verbose=TRUE
+) {
   if(!missing(file.save)) check_save_validity(file.save)
   if(is.data.table(x)) {
     data = x
@@ -955,11 +983,15 @@ get_wordvec = function(data, word) {
 #' unlink("wordvecs.png")  # delete file for code check
 #' }
 #' @export
-get_wordvecs = function(data, words=NULL, pattern=NULL,
-                        plot=FALSE,
-                        plot.dims=NULL,
-                        plot.step=0.05,
-                        plot.border="white") {
+get_wordvecs = function(
+    data,
+    words=NULL,
+    pattern=NULL,
+    plot=FALSE,
+    plot.dims=NULL,
+    plot.step=0.05,
+    plot.border="white"
+) {
   check_data_validity(data)
   words.valid = extract_valid_words(data, words, pattern)
   data.subset = data[word %in% words.valid]
@@ -1028,7 +1060,12 @@ get_wordvecs = function(data, words=NULL, pattern=NULL,
 #' unlink("wordvecs.png")  # delete file for code check
 #' }
 #' @export
-plot_wordvec = function(dt, dims=NULL, step=0.05, border="white") {
+plot_wordvec = function(
+    dt,
+    dims=NULL,
+    step=0.05,
+    border="white"
+) {
   if(!is.null(attr(dt, "normalized")))
     dt = as.data.table(t(data_wordvec_reshape(dt)))
   if(!is.null(dims)) dt = dt[dims, ]
@@ -1141,10 +1178,15 @@ plot_wordvec = function(dt, dims=NULL, step=0.05, border="white") {
 #' plot_wordvec_tSNE(dt, dims=3, colors=colors, seed=1)
 #' }
 #' @export
-plot_wordvec_tSNE = function(dt, dims=2,
-                             perplexity, theta=0.5,
-                             colors=NULL, seed=NULL,
-                             custom.Rtsne=NULL) {
+plot_wordvec_tSNE = function(
+    dt,
+    dims=2,
+    perplexity,
+    theta=0.5,
+    colors=NULL,
+    seed=NULL,
+    custom.Rtsne=NULL
+) {
   if(!is.null(attr(dt, "normalized")))
     dt = as.data.table(t(data_wordvec_reshape(dt)))
   if(missing(perplexity))
@@ -1289,8 +1331,6 @@ sum_wordvec = function(data, x, verbose=TRUE) {
 #'   \code{~ Beijing - China + Japan}}
 #' }
 #' @param topn Top-N most similar words. Defaults to \code{10}.
-#' @param keep Keep words specified in \code{x} in results?
-#' Defaults to \code{FALSE}.
 #' @param above Defaults to \code{NULL}. Can be one of the following:
 #' \itemize{
 #'   \item{a threshold value to find all words with cosine similarities
@@ -1299,6 +1339,8 @@ sum_wordvec = function(data, x, verbose=TRUE) {
 #'   higher than that with this critical word}
 #' }
 #' If both \code{topn} and \code{above} are specified, \code{above} wins.
+#' @param keep Keep words specified in \code{x} in results?
+#' Defaults to \code{FALSE}.
 #'
 #' @return
 #' A \code{data.table} with the most similar words and their cosine similarities.
@@ -1355,9 +1397,14 @@ sum_wordvec = function(data, x, verbose=TRUE) {
 #' str(ms)
 #' }
 #' @export
-most_similar = function(data, x, topn=10,
-                        keep=FALSE, above=NULL,
-                        verbose=TRUE) {
+most_similar = function(
+    data,
+    x,
+    topn=10,
+    above=NULL,
+    keep=FALSE,
+    verbose=TRUE
+) {
   data = force_normalize(data, verbose)
   ms = data.table()
 
@@ -1433,10 +1480,13 @@ most_similar = function(data, x, topn=10,
 #' dict.cn  # adequate to represent "China"
 #' }
 #' @export
-dict_expand = function(data, words,
-                       threshold=0.5,
-                       iteration=5,
-                       verbose=TRUE) {
+dict_expand = function(
+    data,
+    words,
+    threshold=0.5,
+    iteration=5,
+    verbose=TRUE
+) {
   data = force_normalize(data, verbose)
   cos_sim = NULL
   i = 1
@@ -1486,7 +1536,12 @@ dict_expand = function(data, words,
 #' pair_similarity(demodata, "China", "Chinese")
 #'
 #' @export
-pair_similarity = function(data, word1, word2, distance=FALSE) {
+pair_similarity = function(
+    data,
+    word1,
+    word2,
+    distance=FALSE
+) {
   check_data_validity(data)
   dt = get_wordvecs(data, c(word1, word2))
   cosine_similarity(dt[[1]], dt[[2]], distance=distance)
@@ -1538,8 +1593,13 @@ pair_similarity = function(data, word1, word2, distance=FALSE) {
 #' tab_similarity_cross(demodata, w1, w2)
 #'
 #' @export
-tab_similarity = function(data, words=NULL, pattern=NULL,
-                          unique=FALSE, distance=FALSE) {
+tab_similarity = function(
+    data,
+    words=NULL,
+    pattern=NULL,
+    unique=FALSE,
+    distance=FALSE
+) {
   check_data_validity(data)
   if(!is.null(words) & !is.null(pattern))
     stop("You may use `tab_similarity_cross()` instead.", call.=FALSE)
@@ -1575,8 +1635,12 @@ tab_similarity = function(data, words=NULL, pattern=NULL,
 #' Two sets of words for computing similarities of n1 * n2 word pairs.
 #'
 #' @export
-tab_similarity_cross = function(data, words1, words2,
-                                distance=FALSE) {
+tab_similarity_cross = function(
+    data,
+    words1,
+    words2,
+    distance=FALSE
+) {
   word1 = word2 = NULL
   tab_similarity(data, c(words1, words2))[word1 %in% words1 & word2 %in% words2]
 }
@@ -1668,7 +1732,8 @@ plot_similarity = function(
     width=8,
     height=6,
     dpi=500,
-    ...) {
+    ...
+) {
   tab = tab_similarity(data=data,
                        words=words,
                        pattern=pattern,
@@ -1771,8 +1836,14 @@ plot_similarity = function(
 #' # low-loading items should be removed
 #'
 #' @export
-dict_reliability = function(data, words=NULL, pattern=NULL,
-                            sort=TRUE, plot=TRUE, ...) {
+dict_reliability = function(
+    data,
+    words=NULL,
+    pattern=NULL,
+    sort=TRUE,
+    plot=TRUE,
+    ...
+) {
   data = force_normalize(data)
   wordvecs = get_wordvecs(data, words, pattern)
   sum.vec = sum_wordvec(data, names(wordvecs))
@@ -2011,14 +2082,16 @@ print.reliability = function(x, digits=3, ...) {
 #' }
 #'
 #' @export
-test_WEAT = function(data, T1, T2, A1, A2,
-                     use.pattern=FALSE,
-                     labels=list(),
-                     p.perm=TRUE,
-                     p.nsim=10000,
-                     p.side=2,
-                     seed=NULL,
-                     pooled.sd="Caliskan") {
+test_WEAT = function(
+    data, T1, T2, A1, A2,
+    use.pattern=FALSE,
+    labels=list(),
+    p.perm=TRUE,
+    p.nsim=10000,
+    p.side=2,
+    seed=NULL,
+    pooled.sd="Caliskan"
+) {
   if(!p.side %in% 1:2) stop("`p.side` should be 1 or 2.", call.=FALSE)
   if(missing(A1)) stop("Please specify `A1`.", call.=FALSE)
   if(missing(A2)) stop("Please specify `A2`.", call.=FALSE)
@@ -2306,17 +2379,20 @@ print.weat = function(x, digits=3, ...) {
 #' rnd
 #'
 #' @export
-test_RND = function(data, T1, A1, A2,
-                    use.pattern=FALSE, labels,
-                    p.perm=TRUE,
-                    p.nsim=10000,
-                    p.side=2,
-                    seed=NULL) {
+test_RND = function(
+    data, T1, A1, A2,
+    use.pattern=FALSE,
+    labels=list(),
+    p.perm=TRUE,
+    p.nsim=10000,
+    p.side=2,
+    seed=NULL
+) {
   if(!p.side %in% 1:2) stop("`p.side` should be 1 or 2.", call.=FALSE)
   if(missing(A1)) stop("Please specify `A1`.", call.=FALSE)
   if(missing(A2)) stop("Please specify `A2`.", call.=FALSE)
   if(missing(T1)) stop("Please specify `T1`.", call.=FALSE)
-  if(missing(labels))
+  if(length(labels)==0)
     labels = list(T1="Target", A1="Attrib1", A2="Attrib2")
   check_data_validity(data)
   if(use.pattern) {
@@ -2451,11 +2527,11 @@ utf8_split_default = function() {
 }
 
 
-#' Tokenize raw texts for training word vectors.
+#' Tokenize raw text for training word embeddings.
 #'
 #' @inheritParams data_transform
-#' @param text A character vector of the text,
-#' or a file path on disk containing the text.
+#' @param text A character vector of text,
+#' or a file path on disk containing text.
 #' @param tokenizer Function used to tokenize the text.
 #' Defaults to \code{\link[text2vec:tokenizers]{text2vec::word_tokenizer}}.
 #' @param split Separator between tokens, only used when \code{simplify=TRUE}.
@@ -2494,14 +2570,16 @@ utf8_split_default = function() {
 #' texts[1:20]  # all sentences in txt2[1]
 #'
 #' @export
-tokenize = function(text,
-                    tokenizer=text2vec::word_tokenizer,
-                    split=" ",
-                    remove="_|'|<br/>|<br />|e\\.g\\.|i\\.e\\.",
-                    # '\\w+
-                    encoding="UTF-8",
-                    simplify=TRUE,
-                    verbose=TRUE) {
+tokenize = function(
+    text,
+    tokenizer=text2vec::word_tokenizer,
+    split=" ",
+    remove="_|'|<br/>|<br />|e\\.g\\.|i\\.e\\.",
+    # '\\w+
+    encoding="UTF-8",
+    simplify=TRUE,
+    verbose=TRUE
+) {
   ## Import text if necesssary
   t0 = Sys.time()
   if(length(text) == 1) {
@@ -2528,9 +2606,9 @@ tokenize = function(text,
 }
 
 
-#' Train word vectors using the Word2Vec, GloVe, or FastText algorithm.
+#' Train static word embeddings using the Word2Vec, GloVe, or FastText algorithm.
 #'
-#' Train word vectors using the
+#' Train static word embeddings using the
 #' \code{\link[word2vec:word2vec]{Word2Vec}},
 #' \code{\link[rsparse:GloVe]{GloVe}}, or
 #' \code{\link[fastTextR:ft_train]{FastText}} algorithm
@@ -2728,8 +2806,8 @@ train_wordvec = function(
     remove,
     file.save,
     compress="bzip2",
-    verbose=TRUE) {
-
+    verbose=TRUE
+) {
   ## Initialize
   method = match.arg(method)
   model = match.arg(model)

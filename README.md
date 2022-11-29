@@ -4,10 +4,11 @@ Word Embedding Research Framework for Psychological Science.
 
 An integrated toolbox of word embedding research that provides:
 
-1.  A collection of [pre-trained word vectors](https://psychbruce.github.io/WordVector_RData.pdf) in the `.RData` compressed format;
+1.  A collection of [pre-trained static word vectors](https://psychbruce.github.io/WordVector_RData.pdf) in the `.RData` compressed format;
 2.  A variety of functions to process, analyze, and visualize word vectors;
 3.  A range of tests to examine conceptual associations, including the *Word Embedding Association Test* (Caliskan et al., 2017) and the *Relative Norm Distance* (Garg et al., 2018), with permutation test of significance;
-4.  A set of training methods to locally train word vectors from text corpora, including *Word2Vec* (Mikolov et al., 2013), *GloVe* (Pennington et al., 2014), and *FastText* (Bojanowski et al., 2017).
+4.  A set of training methods to locally train (*static*) word vectors from text corpora, including *Word2Vec* (Mikolov et al., 2013), *GloVe* (Pennington et al., 2014), and *FastText* (Bojanowski et al., 2017);
+5.  A series of functions to download pre-trained language models (e.g., *GPT*, *BERT*) and extract contextualized (*dynamic*) word embeddings (based on the R package [text](https://www.r-text.org/)).
 
 <!-- badges: start -->
 
@@ -56,7 +57,7 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
     -   `get_wordvecs()`
     -   `sum_wordvec()`
     -   `plot_wordvec()`
-    -   `plot_wordvec_tSNE()`
+    -   `plot_wordvec_tSNE()` (2D or 3D dimensionality reduction with t-Distributed Stochastic Neighbor Embedding)
 -   Word Semantic Similarity Analysis and Conceptual Association Test
     -   `cosine_similarity()`
     -   `pair_similarity()`
@@ -66,11 +67,15 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
     -   `most_similar()` (find the Top-N most similar words)
     -   `dict_expand()` (expand a dictionary from the most similar words)
     -   `dict_reliability()` (reliability analysis and PCA of a dictionary)
-    -   `test_WEAT()` (with permutation test of significance)
-    -   `test_RND()` (with permutation test of significance)
+    -   `test_WEAT()` (WEAT and SC-WEAT with permutation test of significance)
+    -   `test_RND()` (RND with permutation test of significance)
 -   Word Vectors Local Training (Word2Vec, GloVe, and FastText)
     -   `tokenize()`
     -   `train_wordvec()`
+-   Pre-trained Language Models (PLM) and Contextualized Word Embeddings
+    -   `text_env_setup()` (set up a Python environment for PLM)
+    -   `text_model_download()` (download PLMs from [HuggingFace](https://huggingface.co/models))
+    -   `text_model_remove()` (remove PLMs from local ".cache" folder)
+    -   `text_to_vec()` (extract contextualized token embeddings and aggregate them to text embeddings)
 
 See the documentation (help pages) for their usage and details.
-
