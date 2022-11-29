@@ -18,7 +18,7 @@ are also provided."><meta property="og:image" content="https://psychbruce.github
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,7 +49,7 @@ are also provided."><meta property="og:image" content="https://psychbruce.github
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Reshape word vectors data.</h1>
-      <small class="dont-index">Source: <a href="https://github.com/psychbruce/PsychWordVec/blob/HEAD/R/PsychWordVec.R" class="external-link"><code>R/PsychWordVec.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/psychbruce/PsychWordVec/blob/HEAD/R/PWV1_static.R" class="external-link"><code>R/PWV1_static.R</code></a></small>
       <div class="d-none name"><code>data_wordvec_reshape.Rd</code></div>
     </div>
 
@@ -124,28 +124,17 @@ Defaults to <code>FALSE</code>. See <code><a href="data_wordvec_normalize.html">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">demodata</span>, <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">d</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     word</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   in</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:  for</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: that</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   is</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   on</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: with</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: said</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:  was</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:  the</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   at</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                         vec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:              0.05295587, 0.06545975, 0.06619558, 0.04707222, 0.05222079,-0.08200884,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:       -0.008512173,-0.034224283, 0.032284114, 0.045868184,-0.013142564,-0.046220811,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:             -0.01236052,-0.02222963, 0.06553974, 0.03947722,-0.08662021, 0.02491257,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:        0.003746262,-0.038919677, 0.091331742, 0.012000260,-0.070574262, 0.105342762,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:              0.01668099,-0.05667031, 0.01736675, 0.12735656, 0.00388493,-0.05636580,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:             -0.01596967, 0.01409130,-0.02270204, 0.08767797, 0.01048975,-0.01792692,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:       -0.004531971,-0.022021472, 0.049639883,-0.037960116,-0.028226893, 0.030659825,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:  0.0126005706,-0.0009168986, 0.0899195443,-0.0250828942, 0.0024846400,-0.0532416633,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:              0.07468524, 0.09791024, 0.04645094, 0.04986632,-0.06284517,-0.11248299,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:             -0.03536007,-0.02268949, 0.04390528, 0.06571068, 0.04007442, 0.02931927,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     word                       vec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   in [ 0.0530, ... &lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:  for [-0.0085, ... &lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: that [-0.0124, ... &lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   is [ 0.0037, ... &lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   on [ 0.0167, ... &lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: with [-0.0160, ... &lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: said [-0.0045, ... &lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:  was [ 0.0126, ... &lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:  the [ 0.0747, ... &lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   at [-0.0354, ... &lt;300 dims&gt;]</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">d.plain</span> <span class="op">=</span> <span class="fu">as_matrix</span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">d.plain</span></span></span>
@@ -790,28 +779,17 @@ Defaults to <code>FALSE</code>. See <code><a href="data_wordvec_normalize.html">
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">d.dense</span> <span class="op">=</span> <span class="fu">as_wordvec</span><span class="op">(</span><span class="va">d.plain</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">d.dense</span>  <span class="co"># identical to `d`</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     word</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   in</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:  for</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: that</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   is</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   on</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: with</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: said</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:  was</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:  the</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   at</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                         vec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:              0.05295587, 0.06545975, 0.06619558, 0.04707222, 0.05222079,-0.08200884,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:       -0.008512173,-0.034224283, 0.032284114, 0.045868184,-0.013142564,-0.046220811,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:             -0.01236052,-0.02222963, 0.06553974, 0.03947722,-0.08662021, 0.02491257,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:        0.003746262,-0.038919677, 0.091331742, 0.012000260,-0.070574262, 0.105342762,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:              0.01668099,-0.05667031, 0.01736675, 0.12735656, 0.00388493,-0.05636580,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:             -0.01596967, 0.01409130,-0.02270204, 0.08767797, 0.01048975,-0.01792692,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:       -0.004531971,-0.022021472, 0.049639883,-0.037960116,-0.028226893, 0.030659825,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:  0.0126005706,-0.0009168986, 0.0899195443,-0.0250828942, 0.0024846400,-0.0532416633,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:              0.07468524, 0.09791024, 0.04645094, 0.04986632,-0.06284517,-0.11248299,...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:             -0.03536007,-0.02268949, 0.04390528, 0.06571068, 0.04007442, 0.02931927,...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     word                       vec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   in [ 0.0530, ... &lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:  for [-0.0085, ... &lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: that [-0.0124, ... &lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   is [ 0.0037, ... &lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   on [ 0.0167, ... &lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: with [-0.0160, ... &lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: said [-0.0045, ... &lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:  was [ 0.0126, ... &lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:  the [ 0.0747, ... &lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   at [-0.0354, ... &lt;300 dims&gt;]</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

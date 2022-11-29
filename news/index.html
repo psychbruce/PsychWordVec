@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,18 +45,27 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.4" id="psychwordvec-014-ongoing">PsychWordVec 0.1.4 (ongoing…)<a class="anchor" aria-label="anchor" href="#psychwordvec-014-ongoing"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.1.5" id="psychwordvec-015-ongoing">PsychWordVec 0.1.5 (ongoing…)<a class="anchor" aria-label="anchor" href="#psychwordvec-015-ongoing"></a></h2>
 <div class="section level3">
-<h3 id="new-features-0-1-4">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-4"></a></h3>
-<ul><li>New <code><a href="../reference/sum_wordvec.html">sum_wordvec()</a></code> function: Calculate the sum vector of multiple words.</li>
+<h3 id="breaking-news-0-1-5">Breaking News<a class="anchor" aria-label="anchor" href="#breaking-news-0-1-5"></a></h3>
+<ul><li>New series of <code>text_*</code> functions for contextualized word embeddings! Based on the R package <a href="https://www.r-text.org/" class="external-link"><code>text</code></a>, a series of new functions have been developed for researchers to download <a href="https://huggingface.co/models" class="external-link">HuggingFace</a> Transformers pre-trained language models and get contextualized word (token) embeddings and text embeddings.<ul><li><code><a href="../reference/text_env_setup.html">text_env_setup()</a></code></li>
+<li><code><a href="../reference/text_model_download.html">text_model_download()</a></code></li>
+<li><code><a href="../reference/text_model_remove.html">text_model_remove()</a></code></li>
+<li><code><a href="../reference/text_to_vec.html">text_to_vec()</a></code></li>
+</ul></li>
+<li>New <code><a href="../reference/orth_procrustes.html">orth_procrustes()</a></code> function: Orthogonal Procrustes matrix alignment. Users can input either two matrices of word embeddings or two <code>wordvec</code> objects as loaded by <code><a href="../reference/data_wordvec_load.html">data_wordvec_load()</a></code> or transformed from matrices by <code><a href="../reference/data_wordvec_reshape.html">as_wordvec()</a></code>.</li>
 <li>New <code><a href="../reference/dict_expand.html">dict_expand()</a></code> function: Expand a dictionary from the most similar words, based on <code><a href="../reference/most_similar.html">most_similar()</a></code>.</li>
 <li>New <code><a href="../reference/dict_reliability.html">dict_reliability()</a></code> function: Reliability analysis (Cronbach’s α) and Principal Component Analysis (PCA) of a dictionary. Note that Cronbach’s α may be misleading when the number of items/words is large.</li>
-<li>New <code><a href="../reference/plot_similarity.html">plot_similarity()</a></code> function: Visualize cosine similarities between word pairs in a style of correlation matrix plot.</li>
-<li>New <code><a href="../reference/tab_similarity.html">tab_similarity_cross()</a></code> function: A wrapper of <code><a href="../reference/tab_similarity.html">tab_similarity()</a></code> to tabulate cosine similarities for only n1 * n2 word pairs from two sets of words (arguments: <code>words1</code>, <code>words2</code>).</li>
-<li>New <code><a href="../reference/orth_procrustes.html">orth_procrustes()</a></code> function: Orthogonal Procrustes matrix alignment. Users can input either two matrices of word embeddings or two <code>wordvec</code> objects as loaded by <code><a href="../reference/data_wordvec_load.html">data_wordvec_load()</a></code> or transformed from matrices by <code><a href="../reference/data_wordvec_reshape.html">as_wordvec()</a></code>.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="minor-changes-0-1-4">Minor Changes<a class="anchor" aria-label="anchor" href="#minor-changes-0-1-4"></a></h3>
+<h3 id="new-features-0-1-5">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-5"></a></h3>
+<ul><li>New <code><a href="../reference/sum_wordvec.html">sum_wordvec()</a></code> function: Calculate the sum vector of multiple words.</li>
+<li>New <code><a href="../reference/plot_similarity.html">plot_similarity()</a></code> function: Visualize cosine similarities between word pairs in a style of correlation matrix plot.</li>
+<li>New <code><a href="../reference/tab_similarity.html">tab_similarity_cross()</a></code> function: A wrapper of <code><a href="../reference/tab_similarity.html">tab_similarity()</a></code> to tabulate cosine similarities for only n1 * n2 word pairs from two sets of words (arguments: <code>words1</code>, <code>words2</code>).</li>
+<li>New S3 print method <code>print.wordvec()</code>: Tidy print of <code>wordvec</code> object.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="minor-changes-0-1-5">Minor Changes<a class="anchor" aria-label="anchor" href="#minor-changes-0-1-5"></a></h3>
 <ul><li>Improved <code>print.weat()</code> and <code>print.rnd()</code>.</li></ul></div>
 </div>
     <div class="section level2">

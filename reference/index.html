@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -161,14 +161,35 @@
         <dd>Word Embedding Association Test (WEAT) and Single-Category WEAT.</dd>
       </dl><dl><dt>
           
+          <code><a href="text_env_setup.html">text_env_setup()</a></code> 
+        </dt>
+        <dd>Set up a Python environment for contextualized (dynamic) word embeddings,
+necessary for all <code>text_*</code> functions.</dd>
+      </dl><dl><dt>
+          
+          <code><a href="text_model_download.html">text_model_download()</a></code> 
+        </dt>
+        <dd>Download pre-trained language models from HuggingFace.</dd>
+      </dl><dl><dt>
+          
+          <code><a href="text_model_remove.html">text_model_remove()</a></code> 
+        </dt>
+        <dd>Remove downloaded models from .cache folder.</dd>
+      </dl><dl><dt>
+          
+          <code><a href="text_to_vec.html">text_to_vec()</a></code> 
+        </dt>
+        <dd>Extract contextualized word embeddings from transformers (pre-trained language models).</dd>
+      </dl><dl><dt>
+          
           <code><a href="tokenize.html">tokenize()</a></code> 
         </dt>
-        <dd>Tokenize raw texts for training word vectors.</dd>
+        <dd>Tokenize raw text for training word embeddings.</dd>
       </dl><dl><dt>
           
           <code><a href="train_wordvec.html">train_wordvec()</a></code> 
         </dt>
-        <dd>Train word vectors using the Word2Vec, GloVe, or FastText algorithm.</dd>
+        <dd>Train static word embeddings using the Word2Vec, GloVe, or FastText algorithm.</dd>
       </dl></div>
   </main></div>
 

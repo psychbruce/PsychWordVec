@@ -28,7 +28,7 @@ pracma::procrustes()."><meta property="og:image" content="https://psychbruce.git
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,7 +59,7 @@ pracma::procrustes()."><meta property="og:image" content="https://psychbruce.git
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Orthogonal Procrustes solution for matrix alignment.</h1>
-      <small class="dont-index">Source: <a href="https://github.com/psychbruce/PsychWordVec/blob/HEAD/R/PsychWordVec.R" class="external-link"><code>R/PsychWordVec.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/psychbruce/PsychWordVec/blob/HEAD/R/PWV1_static.R" class="external-link"><code>R/PWV1_static.R</code></a></small>
       <div class="d-none name"><code>orth_procrustes.Rd</code></div>
     </div>
 
@@ -157,12 +157,12 @@ A generalized solution of the orthogonal Procrustes problem.
 <span class="r-in"><span><span class="va">X.wv</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_reshape.html">as_wordvec</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">XR.wv</span> <span class="op">=</span> <span class="fu">orth_procrustes</span><span class="op">(</span><span class="va">M.wv</span>, <span class="va">X.wv</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">XR.wv</span>  <span class="co"># aligned with M.wv</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    word                         vec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    A                         0,0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    B                         1,2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    C  2.000000e+00,-6.661338e-16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    D                         3,2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    E  4.000000e+00,-1.332268e-15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    word                     vec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    A [ 0.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    B [ 1.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    C [ 2.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    D [ 3.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    E [ 4.0000, ... &lt;2 dims&gt;]</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># M and X must have the same set and order of words</span></span></span>
 <span class="r-in"><span><span class="co"># and the same number of word vector dimensions.</span></span></span>
@@ -174,32 +174,32 @@ A generalized solution of the orthogonal Procrustes problem.
 <span class="r-in"><span><span class="va">M.wv</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_reshape.html">as_wordvec</a></span><span class="op">(</span><span class="va">M</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">Y.wv</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_reshape.html">as_wordvec</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">M.wv</span>  <span class="co"># words: A, B, C, D, E</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    word vec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    A 0,0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    B 1,2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    C 2,0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    D 3,2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    E 4,0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    word                     vec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    A [ 0.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    B [ 1.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    C [ 2.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    D [ 3.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    E [ 4.0000, ... &lt;2 dims&gt;]</span>
 <span class="r-in"><span><span class="va">Y.wv</span>  <span class="co"># words: F, G, H, I, J, E, D, C, B, A</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     word   vec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:    F   0,0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:    G -2, 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:    H   0,2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:    I -2, 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:    J   0,4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:    E   0,4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:    D -2, 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:    C   0,2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:    B -2, 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:    A   0,0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     word                     vec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:    F [ 0.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:    G [-2.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:    H [ 0.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:    I [-2.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:    J [ 0.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:    E [ 0.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:    D [-2.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:    C [ 0.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:    B [-2.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:    A [ 0.0000, ... &lt;2 dims&gt;]</span>
 <span class="r-in"><span><span class="va">YR.wv</span> <span class="op">=</span> <span class="fu">orth_procrustes</span><span class="op">(</span><span class="va">M.wv</span>, <span class="va">Y.wv</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">YR.wv</span>  <span class="co"># aligned with M.wv, with the same order of words</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    word                         vec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    A                         0,0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    B                         1,2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    C  2.000000e+00,-6.661338e-16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    D                         3,2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    E  4.000000e+00,-1.332268e-15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    word                     vec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    A [ 0.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    B [ 1.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    C [ 2.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    D [ 3.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    E [ 4.0000, ... &lt;2 dims&gt;]</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
