@@ -94,6 +94,5 @@ A generalized solution of the orthogonal Procrustes problem.
 \emph{Psychometrika, 31}(1), 1--10.
 }
 \seealso{
-\code{\link{data_wordvec_reshape}}:
-\code{as_matrix()} and \code{as_wordvec()}
+\code{\link{as_wordvec}} / \code{\link{as_embed}}
 }

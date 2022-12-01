@@ -1,4 +1,61 @@
+#### Demo Data ####
+
+
+if(FALSE) {
+  library(PsychWordVec)
+  d1 = data_wordvec_load("data-raw/GoogleNews/word2vec_googlenews_eng_1word.RData",
+                         normalize=FALSE)
+  # demodata = head(d1[!str_detect(word, "[^A-Za-z]")], 10000)  # Size < 5MB is OK!
+  # demodata = head(d1[!str_detect(word, "[^A-Za-z]")], 50000)
+  # bruceR::export(demodata[, .(word)], "data-raw/demodata_1.xlsx")
+  filter = bruceR::import("data-raw/demodata_filter.xlsx", as="data.table")
+  demodata = d1[word %in% filter[use==1]$word]
+  class(demodata) = c("wordvec", "data.table", "data.frame")
+  usethis::use_data(demodata, overwrite=TRUE, compress="xz")
+
+  # d2 = data_wordvec_load("data-raw/GoogleNews/word2vec_googlenews_eng_2words.RData",
+  #                        normalize=FALSE)
+  # bruceR::export(d2[1:20000, .(word)], "data-raw/demodata_2.xlsx")
+}
+
+
+#' Demo data (corpus: Google News; algorithm: word2vec; vocabulary: 8000; dimensions: 300).
+#'
+#' @description
+#' This demo data contains a sample of 8000 English words
+#' with their 300-d word embeddings (word vectors) trained
+#' using the "word2vec" algorithm based on the Google News corpus.
+#' Most of these words are from the Top 8000 frequent wordlist,
+#' whereas a few are selected from less frequent words and appended.
+#'
+#' @format
+#' A \code{data.table} (of new class \code{wordvec}) with two variables \code{word} and \code{vec},
+#' transformed from the raw data (see the URL in Source) into \code{.RData}
+#' using the \code{\link{data_transform}} function.
+#'
+#' @source
+#' Google Code - word2vec (\url{https://code.google.com/archive/p/word2vec/})
+#'
+#' @usage
+#' data(demodata)
+#'
+#' @examples
+#' class(demodata)
+#' demodata
+#'
+#' embed = as_embed(demodata, normalize=TRUE)
+#' class(embed)
+#' embed
+#'
+#' @name demodata
+NULL
+
+
+#### Utility Functions ####
+
+
 cn = function(n=1) cat(rep("\n", times=n))
+
 
 ## sweater - not as Caliskan's approach
 pooled_sd = function(v, g1, g2) {
@@ -96,5 +153,20 @@ valid_words_info = function(x) {
   nf = ifelse(nf==0, "", paste0("\n(", nf, " words not found)"))
   info = paste0(paste(paste(ns, ls, "words"), collapse="\n"), nf)
   return(info)
+}
+
+
+number_duplicate = function(x, sep="_") {
+  v = z = c()
+  for(xi in x) {
+    if(sum(xi==x) > 1) {
+      vi = paste0(xi, sep, sum(xi==z) + 1)
+    } else {
+      vi = xi
+    }
+    v = c(v, vi)
+    z = c(z, xi)
+  }
+  return(v)
 }
 

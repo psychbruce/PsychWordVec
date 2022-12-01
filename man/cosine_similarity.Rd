@@ -2,9 +2,15 @@
 % Please edit documentation in R/PWV1_static.R
 \name{cosine_similarity}
 \alias{cosine_similarity}
+\alias{cos_sim}
+\alias{cos_dist}
 \title{Cosine similarity/distance between two vectors.}
 \usage{
 cosine_similarity(v1, v2, distance = FALSE)
+
+cos_sim(v1, v2)
+
+cos_dist(v1, v2)
 }
 \arguments{
 \item{v1, v2}{Numeric vector (of the same length).}
@@ -28,13 +34,13 @@ Cosine distance =
 \code{1 - cosine_similarity(v1, v2)}
 }
 \examples{
-cosine_similarity(v1=c(1,1,1), v2=c(2,2,2))  # 1
-cosine_similarity(v1=c(1,4,1), v2=c(4,1,1))  # 0.5
-cosine_similarity(v1=c(1,1,0), v2=c(0,0,1))  # 0
+cos_sim(v1=c(1,1,1), v2=c(2,2,2))  # 1
+cos_sim(v1=c(1,4,1), v2=c(4,1,1))  # 0.5
+cos_sim(v1=c(1,1,0), v2=c(0,0,1))  # 0
 
-cosine_similarity(v1=c(1,1,1), v2=c(2,2,2), distance=TRUE)  # 0
-cosine_similarity(v1=c(1,4,1), v2=c(4,1,1), distance=TRUE)  # 0.5
-cosine_similarity(v1=c(1,1,0), v2=c(0,0,1), distance=TRUE)  # 1
+cos_dist(v1=c(1,1,1), v2=c(2,2,2))  # 0
+cos_dist(v1=c(1,4,1), v2=c(4,1,1))  # 0.5
+cos_dist(v1=c(1,1,0), v2=c(0,0,1))  # 1
 
 }
 \seealso{

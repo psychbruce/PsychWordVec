@@ -20,8 +20,9 @@ test_WEAT(
 )
 }
 \arguments{
-\item{data}{A \code{data.table} (of new class \code{wordvec})
-loaded by \code{\link{data_wordvec_load}}.}
+\item{data}{A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
+\code{\link[PsychWordVec:as_embed]{embed}} (matrix),
+see \code{\link{data_wordvec_load}}.}
 
 \item{T1, T2}{Target words (a vector of words or a pattern of regular expression).
 If only \code{T1} is specified,
@@ -46,7 +47,8 @@ Defaults to \code{TRUE}. See also the \code{\link[sweater:weat_exact]{sweater}} 
 If \code{p.nsim} is larger than the number of all possible permutations (rearrangements of data),
 then it will be ignored and an exact permutation test will be conducted.
 Otherwise (in most cases for real data and always for SC-WEAT), a resampling test is performed,
-which takes much less computation time and produces the approximate \emph{p} value (comparable to the exact one).}
+which takes much less computation time and produces the approximate \emph{p} value
+(comparable to the exact one).}
 
 \item{p.side}{One-sided (\code{1}) or two-sided (\code{2}) \emph{p} value.
 Defaults to \code{2}.

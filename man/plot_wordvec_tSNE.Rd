@@ -5,7 +5,7 @@
 \title{Visualize word vectors with dimensionality reduced using t-SNE.}
 \usage{
 plot_wordvec_tSNE(
-  dt,
+  x,
   dims = 2,
   perplexity,
   theta = 0.5,
@@ -15,8 +15,13 @@ plot_wordvec_tSNE(
 )
 }
 \arguments{
-\item{dt}{A \code{data.table} returned by \code{\link{get_wordvecs}}
-or loaded by \code{\link{data_wordvec_load}}.}
+\item{x}{Can be:
+\itemize{
+  \item{a \code{data.table} returned by \code{\link{get_wordvecs}}}
+  \item{a \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table)
+  or \code{\link[PsychWordVec:as_embed]{embed}} (matrix)
+  loaded by \code{\link{data_wordvec_load}}}
+}}
 
 \item{dims}{Output dimensionality: \code{2} (default, the most common choice) or \code{3}.}
 
@@ -24,7 +29,8 @@ or loaded by \code{\link{data_wordvec_load}}.}
 Defaults to \code{floor((length(dt)-1)/3)} (where columns of \code{dt} are words).
 See the \code{\link[Rtsne:Rtsne]{Rtsne}} package for details.}
 
-\item{theta}{Speed/accuracy trade-off (increase for less accuracy), set to 0 for exact t-SNE. Defaults to 0.5.}
+\item{theta}{Speed/accuracy trade-off (increase for less accuracy), set to 0 for exact t-SNE.
+Defaults to 0.5.}
 
 \item{colors}{A character vector specifying (1) the categories of words (for 2-D plot only)
 or (2) the exact colors of words (for 2-D and 3-D plot). See examples for its usage.}

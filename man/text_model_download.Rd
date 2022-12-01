@@ -4,7 +4,7 @@
 \alias{text_model_download}
 \title{Download pre-trained language models from HuggingFace.}
 \usage{
-text_model_download(model = NULL)
+text_model_download(model = NULL, save.config = TRUE)
 }
 \arguments{
 \item{model}{Character string(s) specifying the
@@ -15,41 +15,48 @@ Defaults to download nothing and check currently downloaded models.
 
 Example choices:
 \itemize{
-  \item{\code{"gpt2"}}
-  \item{\code{"openai-gpt"}}
-  \item{\code{"bert-base-uncased"}}
-  \item{\code{"bert-large-uncased"}}
-  \item{\code{"bert-base-cased"}}
-  \item{\code{"bert-large-cased"}}
-  \item{\code{"bert-base-chinese"}}
-  \item{\code{"bert-base-multilingual-cased"}}
-  \item{\code{"albert-base-v2"}}
-  \item{\code{"albert-large-v2"}}
-  \item{\code{"roberta-base"}}
-  \item{\code{"roberta-large"}}
-  \item{\code{"distilbert-base-uncased"}}
-  \item{\code{"distilbert-base-cased"}}
-  \item{\code{"distilbert-base-multilingual-cased"}}
-  \item{\code{"xlm-roberta-base"}}
-  \item{\code{"xlm-roberta-large"}}
-  \item{\code{"xlnet-base-cased"}}
-  \item{\code{"xlnet-large-cased"}}
+  \item{\code{"gpt2"} (50257 vocab, 768 dims, 12 layers)}
+  \item{\code{"openai-gpt"} (40478 vocab, 768 dims, 12 layers)}
+  \item{\code{"bert-base-uncased"} (30522 vocab, 768 dims, 12 layers)}
+  \item{\code{"bert-large-uncased"} (30522 vocab, 1024 dims, 24 layers)}
+  \item{\code{"bert-base-cased"} (28996 vocab, 768 dims, 12 layers)}
+  \item{\code{"bert-large-cased"} (28996 vocab, 1024 dims, 24 layers)}
+  \item{\code{"bert-base-chinese"} (21128 vocab, 768 dims, 12 layers)}
+  \item{\code{"bert-base-multilingual-cased"} (119547 vocab, 768 dims, 12 layers)}
+  \item{\code{"distilbert-base-uncased"} (30522 vocab, 768 dims, 6 layers)}
+  \item{\code{"distilbert-base-cased"} (28996 vocab, 768 dims, 6 layers)}
+  \item{\code{"distilbert-base-multilingual-cased"} (119547 vocab, 768 dims, 6 layers)}
+  \item{\code{"albert-base-v2"} (30000 vocab, 768 dims, 12 layers)}
+  \item{\code{"albert-large-v2"} (30000 vocab, 1024 dims, 24 layers)}
+  \item{\code{"roberta-base"} (50265 vocab, 768 dims, 12 layers)}
+  \item{\code{"roberta-large"} (50265 vocab, 1024 dims, 24 layers)}
+  \item{\code{"xlm-roberta-base"} (250002 vocab, 768 dims, 12 layers)}
+  \item{\code{"xlm-roberta-large"} (250002 vocab, 1024 dims, 24 layers)}
+  \item{\code{"xlnet-base-cased"} (32000 vocab, 768 dims, 12 layers)}
+  \item{\code{"xlnet-large-cased"} (32000 vocab, 1024 dims, 24 layers)}
+  \item{\code{"microsoft/deberta-v3-base"} (128100 vocab, 768 dims, 12 layers)}
+  \item{\code{"microsoft/deberta-v3-large"} (128100 vocab, 1024 dims, 24 layers)}
   \item{\code{...} (see \url{https://huggingface.co/models})}
 }}
+
+\item{save.config}{Save configuration file of the model to the current path.
+Defaults to \code{TRUE}.}
 }
 \value{
 Invisibly return the names of all downloaded models.
 }
 \description{
 Download pre-trained language models (Transformers Models,
-such as GPT, BERT, RoBERTa, DeBERTa, DistilBERT, XLM, etc.)
+such as GPT, BERT, RoBERTa, DeBERTa, DistilBERT, etc.)
 from \href{https://huggingface.co/models}{HuggingFace} to
-your local ".cache" folder ("C:/Users/[UserName]/.cache/").
+your local ".cache" folder ("C:/Users/[YourUserName]/.cache/").
 The models will never be removed unless you run
 \code{\link{text_model_remove}}.
 }
 \examples{
 \dontrun{
+# text_init()  # initialize the environment
+
 text_model_download()  # check downloaded models
 text_model_download(c(
   "bert-base-uncased",
@@ -60,7 +67,11 @@ text_model_download(c(
 
 }
 \seealso{
-\code{\link{text_env_setup}}
+\code{\link{text_init}}
 
 \code{\link{text_model_remove}}
+
+\code{\link{text_to_vec}}
+
+\code{\link{text_unmask}}
 }

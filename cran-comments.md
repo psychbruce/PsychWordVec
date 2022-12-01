@@ -1,6 +1,6 @@
 ## News
 
-In this version, I have improved `test_WEAT()` and `test_RND()`, and added `as_matrix()` and `as_wordvec()` as two wrappers of `data_wordvec_reshape()`.
+In this version, I have added many new functions and fixed some bugs.
 
 ## Test environments
 

@@ -28,7 +28,8 @@ Defaults to \code{" "}.}
 Defaults to \code{"_|'|<br/>|<br />|e\\\\.g\\\\.|i\\\\.e\\\\."}.
 You may turn off this by specifying \code{remove=NULL}.}
 
-\item{encoding}{Text encoding. Defaults to \code{"UTF-8"}.}
+\item{encoding}{Text encoding (only used if \code{text} is a file).
+Defaults to \code{"UTF-8"}.}
 
 \item{simplify}{Return a character vector (\code{TRUE}) or a list of character vectors (\code{FALSE}).
 Defaults to \code{TRUE}.}

@@ -1,21 +1,16 @@
 **Please check the [latest news (change log)](https://psychbruce.github.io/PsychWordVec/news/index.html) and keep this package updated.**
 
-# To-Do List
-
--   [x] Function to expand a dictionary based on cosine similarity
--   [x] Function to evaluate the internal consistency reliability of a dictionary
--   [x] Function to perform the orthogonal Procrustes matrix alignment
--   [x] Function to extract contextualized word vectors from language models
-
-# PsychWordVec 0.1.5 (ongoing...)
+# PsychWordVec 0.2.0 (Dec 2022)
 
 ## Breaking News
 
--   New series of `text_*` functions for contextualized word embeddings! Based on the R package [`text`](https://www.r-text.org/), a series of new functions have been developed for researchers to download [HuggingFace](https://huggingface.co/models) Transformers pre-trained language models and get contextualized word (token) embeddings and text embeddings.
-    -   `text_env_setup()`
-    -   `text_model_download()`
-    -   `text_model_remove()`
-    -   `text_to_vec()`
+-   Most functions now internally use `embed` (an extended class of matrix) rather than `wordvec` in order to enhance the speed!
+-   New series of `text_*` functions for contextualized word embeddings! Based on the R package [`text`](https://www.r-text.org/) (and using the R package `reticulate` to call functions from the Python module `transformers`), a series of new functions have been developed to (1) download [HuggingFace](https://huggingface.co/models) Transformers *pre-trained language models* (PLM; thousands of options such as GPT, BERT, RoBERTa, DeBERTa, DistilBERT, etc.), (2) extract contextualized token (roughly word) embeddings and text embeddings, and (3) fill in the blank mask(s) in a query (e.g., "Beijing is the [MASK] of China.").
+    -   `text_init()`: set up a Python environment for PLM
+    -   `text_model_download()`: download PLMs from [HuggingFace](https://huggingface.co/models) to local ".cache" folder
+    -   `text_model_remove()`: remove PLMs from local ".cache" folder
+    -   `text_to_vec()`: extract contextualized token and text embeddings
+    -   `text_unmask()`: fill in the blank mask(s) in a query
 -   New `orth_procrustes()` function: Orthogonal Procrustes matrix alignment. Users can input either two matrices of word embeddings or two `wordvec` objects as loaded by `data_wordvec_load()` or transformed from matrices by `as_wordvec()`.
 -   New `dict_expand()` function: Expand a dictionary from the most similar words, based on `most_similar()`.
 -   New `dict_reliability()` function: Reliability analysis (Cronbach's α) and Principal Component Analysis (PCA) of a dictionary. Note that Cronbach's α may be misleading when the number of items/words is large.
@@ -25,11 +20,30 @@
 -   New `sum_wordvec()` function: Calculate the sum vector of multiple words.
 -   New `plot_similarity()` function: Visualize cosine similarities between word pairs in a style of correlation matrix plot.
 -   New `tab_similarity_cross()` function: A wrapper of `tab_similarity()` to tabulate cosine similarities for only n1 \* n2 word pairs from two sets of words (arguments: `words1`, `words2`).
--   New S3 print method `print.wordvec()`: Tidy print of `wordvec` object.
+-   New S3 methods:
+    -   `print.wordvec()`
+
+    -   `print.embed()`
+
+    -   `rbind.wordvec()`
+
+    -   `rbind.embed()`
+
+    -   `subset.wordvec()`
+
+    -   `subset.embed()`
+
+    -   `subset.character()`
+
+## Major Changes
+
+-   `as_matrix()` has been renamed to `as_embed()`: Now `PsychWordVec` supports two classes of data objects -- `wordvec` (data.table) and `embed` (matrix). Most functions now use `embed` (or transform `wordvec` to `embed`) internally so as to enhance the speed. Matrix is much faster!
+-   Deprecated `data_wordvec_reshape()` function: Use `as_wordvec()` and `as_embed()` now.
 
 ## Minor Changes
 
--   Improved `print.weat()` and `print.rnd()`.
+-   Defaults changed in `data_wordvec_subset()`, `get_wordvecs()`, `tab_similarity()`, and `plot_similarity()`: If neither `words` nor `pattern` are specified (`NULL`), then all words in `data` will be extracted.
+-   Improved S3 methods `print.weat()` and `print.rnd()`.
 
 # PsychWordVec 0.1.2 (Nov 2022)
 

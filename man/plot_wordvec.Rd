@@ -4,11 +4,16 @@
 \alias{plot_wordvec}
 \title{Visualize word vectors.}
 \usage{
-plot_wordvec(dt, dims = NULL, step = 0.05, border = "white")
+plot_wordvec(x, dims = NULL, step = 0.05, border = "white")
 }
 \arguments{
-\item{dt}{A \code{data.table} returned by \code{\link{get_wordvecs}}
-or loaded by \code{\link{data_wordvec_load}}.}
+\item{x}{Can be:
+\itemize{
+  \item{a \code{data.table} returned by \code{\link{get_wordvecs}}}
+  \item{a \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table)
+  or \code{\link[PsychWordVec:as_embed]{embed}} (matrix)
+  loaded by \code{\link{data_wordvec_load}}}
+}}
 
 \item{dims}{Dimensions to be plotted (e.g., \code{1:100}).
 Defaults to \code{NULL} (plot all dimensions).}
@@ -31,9 +36,12 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-d = data_wordvec_normalize(demodata)
+d = as_wordvec(demodata, normalize=TRUE)
 
-dt = get_wordvecs(d, cc("king, queen, man, woman"))
+plot_wordvec(d[1:10])
+plot_wordvec(as_embed(d[1:10]))
+
+\donttest{dt = get_wordvecs(d, cc("king, queen, man, woman"))
 dt[, QUEEN := king - man + woman]
 dt[, QUEEN := QUEEN / sqrt(sum(QUEEN^2))]  # normalize
 names(dt)[5] = "king - man + woman"
@@ -45,7 +53,7 @@ dt[, GIRL := GIRL / sqrt(sum(GIRL^2))]  # normalize
 names(dt)[5] = "boy - he + she"
 plot_wordvec(dt[, c(1,3,4,5,2)], dims=1:50)
 
-\donttest{dt = get_wordvecs(d, cc("
+dt = get_wordvecs(d, cc("
   male, man, boy, he, his,
   female, woman, girl, she, her"))
 

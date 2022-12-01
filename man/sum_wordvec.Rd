@@ -4,14 +4,16 @@
 \alias{sum_wordvec}
 \title{Calculate the sum vector of multiple words.}
 \usage{
-sum_wordvec(data, x, verbose = TRUE)
+sum_wordvec(data, x = NULL, verbose = TRUE)
 }
 \arguments{
-\item{data}{A \code{data.table} (of new class \code{wordvec})
-loaded by \code{\link{data_wordvec_load}}.}
+\item{data}{A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
+\code{\link[PsychWordVec:as_embed]{embed}} (matrix),
+see \code{\link{data_wordvec_load}}.}
 
-\item{x}{Can be one of the following:
+\item{x}{Can be:
 \itemize{
+  \item{\code{NULL}: use the sum of all word vectors in \code{data}}
   \item{a single word:
 
   \code{"China"}}

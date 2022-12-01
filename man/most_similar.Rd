@@ -4,14 +4,23 @@
 \alias{most_similar}
 \title{Find the Top-N most similar words.}
 \usage{
-most_similar(data, x, topn = 10, above = NULL, keep = FALSE, verbose = TRUE)
+most_similar(
+  data,
+  x = NULL,
+  topn = 10,
+  above = NULL,
+  keep = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
-\item{data}{A \code{data.table} (of new class \code{wordvec})
-loaded by \code{\link{data_wordvec_load}}.}
+\item{data}{A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
+\code{\link[PsychWordVec:as_embed]{embed}} (matrix),
+see \code{\link{data_wordvec_load}}.}
 
-\item{x}{Can be one of the following:
+\item{x}{Can be:
 \itemize{
+  \item{\code{NULL}: use the sum of all word vectors in \code{data}}
   \item{a single word:
 
   \code{"China"}}
@@ -35,7 +44,7 @@ loaded by \code{\link{data_wordvec_load}}.}
 
 \item{topn}{Top-N most similar words. Defaults to \code{10}.}
 
-\item{above}{Defaults to \code{NULL}. Can be one of the following:
+\item{above}{Defaults to \code{NULL}. Can be:
 \itemize{
   \item{a threshold value to find all words with cosine similarities
   higher than this value}
@@ -71,8 +80,9 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-d = data_wordvec_normalize(demodata)
+d = as_wordvec(demodata, normalize=TRUE)
 
+most_similar(d)
 most_similar(d, "China")
 most_similar(d, c("king", "queen"))
 most_similar(d, cc(" king , queen ; man | woman "))
@@ -103,6 +113,8 @@ str(ms)
 \code{\link{sum_wordvec}}
 
 \code{\link{dict_expand}}
+
+\code{\link{dict_reliability}}
 
 \code{\link{cosine_similarity}}
 

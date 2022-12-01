@@ -16,12 +16,15 @@ tab_similarity(
 tab_similarity_cross(data, words1, words2, distance = FALSE)
 }
 \arguments{
-\item{data}{A \code{data.table} (of new class \code{wordvec})
-loaded by \code{\link{data_wordvec_load}}.}
+\item{data}{A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
+\code{\link[PsychWordVec:as_embed]{embed}} (matrix),
+see \code{\link{data_wordvec_load}}.}
 
 \item{words}{[Option 1] Word strings (\code{NULL}; a single word; a vector of words).}
 
-\item{pattern}{[Option 2] Pattern of regular expression (see \code{\link[stringr:str_subset]{str_subset}}).}
+\item{pattern}{[Option 2] Pattern of regular expression (see \code{\link[stringr:str_subset]{str_subset}}).
+If neither \code{words} nor \code{pattern} are specified (i.e., both are \code{NULL}),
+then all words in the data will be extracted.}
 
 \item{unique}{Word pairs: unique pairs (\code{TRUE})
 or full pairs with duplicates (\code{FALSE}; default).}

@@ -4,27 +4,20 @@
 \alias{dict_reliability}
 \title{Reliability analysis and PCA of a dictionary.}
 \usage{
-dict_reliability(
-  data,
-  words = NULL,
-  pattern = NULL,
-  sort = TRUE,
-  plot = TRUE,
-  ...
-)
+dict_reliability(data, words = NULL, pattern = NULL, sort = TRUE, ...)
 }
 \arguments{
-\item{data}{A \code{data.table} (of new class \code{wordvec})
-loaded by \code{\link{data_wordvec_load}}.}
+\item{data}{A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
+\code{\link[PsychWordVec:as_embed]{embed}} (matrix),
+see \code{\link{data_wordvec_load}}.}
 
 \item{words}{[Option 1] Word strings (\code{NULL}; a single word; a vector of words).}
 
-\item{pattern}{[Option 2] Pattern of regular expression (see \code{\link[stringr:str_subset]{str_subset}}).}
+\item{pattern}{[Option 2] Pattern of regular expression (see \code{\link[stringr:str_subset]{str_subset}}).
+If neither \code{words} nor \code{pattern} are specified (i.e., both are \code{NULL}),
+then all words in the data will be extracted.}
 
 \item{sort}{Sort items by the first principal component loading (PC1)?
-Defaults to \code{TRUE}.}
-
-\item{plot}{Visualize cosine similarities with words ordered by PC1?
 Defaults to \code{TRUE}.}
 
 \item{...}{Other parameters passed to \code{\link{plot_similarity}}.}
@@ -42,13 +35,17 @@ A \code{list} object of new class \code{reliability}:
     PCA with varimax rotation (if potential principal components > 1)}
   \item{\code{items}}{
     Item statistics}
-  \item{\code{cos.sim}}{
+  \item{\code{cos.sim.mat}}{
     A matrix of cosine similarities of all word pairs}
+  \item{\code{cos.sim}}{
+    Lower triangular part of the matrix of cosine similarities}
 }
 }
 \description{
 Reliability analysis (Cronbach's \eqn{\alpha}) and
-Principal Component Analysis (PCA) of a dictionary.
+Principal Component Analysis (PCA) of a dictionary,
+with \link[PsychWordVec:plot_similarity]{visualization of cosine similarities}
+between words (ordered by the first principal component loading).
 Note that Cronbach's \eqn{\alpha} may be misleading
 when the number of items/words is large.
 }
@@ -59,7 +56,7 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-d = data_wordvec_normalize(demodata)
+\donttest{d = data_wordvec_normalize(demodata)
 
 dict = dict_expand(d, "king")
 dict_reliability(d, dict)
@@ -69,7 +66,7 @@ dict_reliability(d, dict.cn)
 
 dict_reliability(d, c(dict, dict.cn))
 # low-loading items should be removed
-
+}
 }
 \references{
 Nicolas, G., Bai, X., & Fiske, S. T. (2021).

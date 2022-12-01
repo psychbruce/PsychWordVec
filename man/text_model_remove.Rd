@@ -2,7 +2,7 @@
 % Please edit documentation in R/PWV2_dynamic.R
 \name{text_model_remove}
 \alias{text_model_remove}
-\title{Remove downloaded models from .cache folder.}
+\title{Remove downloaded models from the local .cache folder.}
 \usage{
 text_model_remove(model = NULL)
 }
@@ -11,16 +11,22 @@ text_model_remove(model = NULL)
 Defaults to automatically find all downloaded models in the .cache folder.}
 }
 \description{
-Remove downloaded models from .cache folder.
+Remove downloaded models from the local .cache folder.
 }
 \examples{
 \dontrun{
+# text_init()  # initialize the environment
+
 text_model_remove()
 }
 
 }
 \seealso{
-\code{\link{text_env_setup}}
+\code{\link{text_init}}
 
 \code{\link{text_model_download}}
+
+\code{\link{text_to_vec}}
+
+\code{\link{text_unmask}}
 }

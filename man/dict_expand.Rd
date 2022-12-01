@@ -7,10 +7,13 @@
 dict_expand(data, words, threshold = 0.5, iteration = 5, verbose = TRUE)
 }
 \arguments{
-\item{data}{A \code{data.table} (of new class \code{wordvec})
-loaded by \code{\link{data_wordvec_load}}.}
+\item{data}{A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
+\code{\link[PsychWordVec:as_embed]{embed}} (matrix),
+see \code{\link{data_wordvec_load}}.}
 
-\item{words}{A vector of words.}
+\item{words}{A single word or a list of words,
+used to calculate the
+\link[PsychWordVec:sum_wordvec]{sum vector}.}
 
 \item{threshold}{Threshold of cosine similarity,
 used to find all words with similarities higher than this value.
@@ -33,7 +36,7 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-dict = dict_expand(demodata, "king")
+\donttest{dict = dict_expand(demodata, "king")
 dict
 
 dict = dict_expand(demodata, cc("king, queen"))
@@ -41,7 +44,7 @@ dict
 
 most_similar(demodata, dict)
 
-\donttest{dict.cn = dict_expand(demodata, "China")
+dict.cn = dict_expand(demodata, "China")
 dict.cn  # too inclusive if setting threshold = 0.5
 
 dict.cn = dict_expand(demodata,
@@ -54,4 +57,6 @@ dict.cn  # adequate to represent "China"
 \code{\link{sum_wordvec}}
 
 \code{\link{most_similar}}
+
+\code{\link{dict_reliability}}
 }

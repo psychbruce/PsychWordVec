@@ -2,11 +2,14 @@
 % Please edit documentation in R/PWV1_static.R
 \name{data_transform}
 \alias{data_transform}
-\title{Transform plain text data of word vectors into a compressed ".RData" file.}
+\title{Transform plain text of word vectors into
+\code{wordvec} (data.table) or \code{embed} (matrix),
+saved in a compressed ".RData" file.}
 \usage{
 data_transform(
   file.load,
   file.save,
+  as = c("wordvec", "embed"),
   sep = " ",
   header = "auto",
   encoding = "auto",
@@ -16,7 +19,7 @@ data_transform(
 )
 }
 \arguments{
-\item{file.load}{File name of raw data (must be plain text).
+\item{file.load}{File name of raw text (must be plain text).
 
 Data must be in this format (values separated by \code{sep}):
 
@@ -25,6 +28,11 @@ cat 0.001 0.002 0.003 0.004 0.005 ... 0.300
 dog 0.301 0.302 0.303 0.304 0.305 ... 0.600}
 
 \item{file.save}{File name of to-be-saved R data (must be .RData).}
+
+\item{as}{Transform the text to which R object?
+\code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
+\code{\link[PsychWordVec:as_embed]{embed}} (matrix).
+Defaults to \code{wordvec}.}
 
 \item{sep}{Column separator. Defaults to \code{" "}.}
 
@@ -53,10 +61,12 @@ Options include:
 \item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
 }
 \value{
-A \code{data.table} (of new class \code{wordvec}) with two variables: \code{word} and \code{vec}.
+A \code{wordvec} (data.table) or \code{embed} (matrix).
 }
 \description{
-Transform plain text data of word vectors into a compressed ".RData" file.
+Transform plain text of word vectors into
+\code{wordvec} (data.table) or \code{embed} (matrix),
+saved in a compressed ".RData" file.
 
 \emph{Speed}: In total (preprocess + compress + save),
 it can process about 30000 words/min
@@ -85,11 +95,11 @@ data_transform(file.load="cc.zh.300.vec",   # plain text file
 
 }
 \seealso{
+\code{\link{as_wordvec}} / \code{\link{as_embed}}
+
 \code{\link{data_wordvec_load}}
 
 \code{\link{data_wordvec_normalize}}
-
-\code{\link{data_wordvec_reshape}}
 
 \code{\link{data_wordvec_subset}}
 }

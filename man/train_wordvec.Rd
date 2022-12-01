@@ -37,9 +37,13 @@ or a file path on disk containing text.}
 
 \item{method}{Training algorithm:
 \itemize{
-  \item{\code{"word2vec"} (default): using the \code{\link[word2vec:word2vec]{word2vec}} package}
-  \item{\code{"glove"}: using the \code{\link[rsparse:GloVe]{rsparse}} and \code{\link[text2vec:text2vec]{text2vec}} packages}
-  \item{\code{"fasttext"}: using the \code{\link[fastTextR:ft_train]{fastTextR}} package}
+  \item{\code{"word2vec"} (default):
+  using the \code{\link[word2vec:word2vec]{word2vec}} package}
+  \item{\code{"glove"}:
+  using the \code{\link[rsparse:GloVe]{rsparse}} and
+  \code{\link[text2vec:text2vec]{text2vec}} packages}
+  \item{\code{"fasttext"}:
+  using the \code{\link[fastTextR:ft_train]{fastTextR}} package}
 }}
 
 \item{dims}{Number of dimensions of word vectors to be trained.
@@ -64,8 +68,10 @@ Defaults to \code{8}.}
 
 Learning model architecture:
 \itemize{
-  \item{\code{"skip-gram"} (default): Skip-Gram, which predicts surrounding words given the current word}
-  \item{\code{"cbow"}: Continuous Bag-of-Words, which predicts the current word based on the context}
+  \item{\code{"skip-gram"} (default): Skip-Gram,
+  which predicts surrounding words given the current word}
+  \item{\code{"cbow"}: Continuous Bag-of-Words,
+  which predicts the current word based on the context}
 }}
 
 \item{loss}{\strong{<Only for Word2Vec / FastText>}
@@ -147,11 +153,8 @@ Options include:
 \item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
 }
 \value{
-A \code{data.table} (of new class \code{wordvec}) with two variables:
-\describe{
-  \item{\code{word}}{words (tokens)}
-  \item{\code{vec}}{\strong{raw} \emph{or} \strong{normalized} word vectors}
-}
+A \code{wordvec} (data.table) with three variables:
+\code{word}, \code{vec}, \code{freq}.
 }
 \description{
 Train static word embeddings using the
@@ -180,7 +183,7 @@ dt1 = train_wordvec(
   dims=50, window=5,
   normalize=TRUE)
 
-as_tibble(dt1)  # just check
+dt1
 most_similar(dt1, "Ive")  # evaluate performance
 most_similar(dt1, ~ man - he + she, topn=5)  # evaluate performance
 most_similar(dt1, ~ boy - he + she, topn=5)  # evaluate performance
@@ -192,7 +195,7 @@ dt2 = train_wordvec(
   dims=50, window=5,
   normalize=TRUE)
 
-as_tibble(dt2)  # just check
+dt2
 most_similar(dt2, "Ive")  # evaluate performance
 most_similar(dt2, ~ man - he + she, topn=5)  # evaluate performance
 most_similar(dt2, ~ boy - he + she, topn=5)  # evaluate performance
@@ -205,7 +208,7 @@ dt3 = train_wordvec(
   dims=50, window=5,
   normalize=TRUE)
 
-as_tibble(dt3)  # just check
+dt3
 most_similar(dt3, "Ive")  # evaluate performance
 most_similar(dt3, ~ man - he + she, topn=5)  # evaluate performance
 most_similar(dt3, ~ boy - he + she, topn=5)  # evaluate performance

@@ -4,7 +4,15 @@
 \alias{text_to_vec}
 \title{Extract contextualized word embeddings from transformers (pre-trained language models).}
 \usage{
-text_to_vec(text, model, layers = -2)
+text_to_vec(
+  text,
+  model,
+  layers = -2,
+  layer.to.token = "concatenate",
+  token.to.text = "mean",
+  encoding = "UTF-8",
+  ...
+)
 }
 \arguments{
 \item{text}{Can be:
@@ -27,37 +35,65 @@ You may extract only the layers you need (e.g., \code{11:12}) or
 all layers (\code{"all"}).
 Note that layer 0 is the \emph{decontextualized} input layer
 (i.e., not comprising hidden states) and is normally not used.}
+
+\item{layer.to.token}{Method to aggregate hidden layers to each token.
+Defaults to \code{"concatenate"},
+which links together each word embedding layer to one long row.
+Options include \code{"mean"}, \code{"min"}, \code{"max"}, and \code{"concatenate"}.}
+
+\item{token.to.text}{Method to aggregate all tokens to each text.
+Defaults to \code{"mean"}.
+Options include \code{"mean"}, \code{"min"}, \code{"max"}, and \code{"concatenate"}.}
+
+\item{encoding}{Text encoding (only used if \code{text} is a file).
+Defaults to \code{"UTF-8"}.}
+
+\item{...}{Other parameters passed to
+\code{\link[text:textEmbed]{text::textEmbed()}}.}
 }
 \value{
 A \code{list} of:
 \describe{
-  \item{\code{word.embed}}{
+  \item{\code{token.embed}}{
     Token (roughly word) embeddings}
   \item{\code{text.embed}}{
     Text embeddings, aggregated from token embeddings}
 }
 }
 \description{
-Extract model layers and aggregate them to
-token (roughly word) embeddings and text embeddings
+Extract hidden layers from a language model and aggregate them to
+get token (roughly word) embeddings and text embeddings
 (all reshaped to \code{\link[PsychWordVec:as_wordvec]{wordvec}} data tables).
-A wrapper function of \code{\link[text:textEmbed]{text::textEmbed()}}.
+It is a wrapper function of \code{\link[text:textEmbed]{text::textEmbed()}}.
 }
 \examples{
 \dontrun{
-embed = text_to_vec(
-  c("I love China.", "Beijing is the capital of China."),
-  model="bert-base-cased"
-)
-embed$word.embed
+# text_init()  # initialize the environment
+
+text = c("I love China.", "Beijing is the capital of China.")
+embed = text_to_vec(text, model="bert-base-cased")
+embed$token.embed
 embed$text.embed
 
-embed1 = embed$word.embed[[1]]
-embed2 = embed$word.embed[[2]]
+embed1 = embed$token.embed[[1]]
+embed2 = embed$token.embed[[2]]
 
 View(embed1)
 View(embed2)
 View(embed$text.embed)
+
+plot_similarity(embed1, value.color="grey")
+plot_similarity(embed2, value.color="grey")
+plot_similarity(rbind(embed1, embed2))
 }
 
+}
+\seealso{
+\code{\link{text_init}}
+
+\code{\link{text_model_download}}
+
+\code{\link{text_model_remove}}
+
+\code{\link{text_unmask}}
 }

@@ -2,18 +2,19 @@
 % Please edit documentation in R/PWV1_static.R
 \name{data_wordvec_normalize}
 \alias{data_wordvec_normalize}
-\title{Normalize all word vectors to unit length.}
+\title{Normalize all word vectors to the unit length 1.}
 \usage{
 data_wordvec_normalize(data, verbose = TRUE)
 }
 \arguments{
-\item{data}{A \code{data.table} (of new class \code{wordvec})
-loaded by \code{\link{data_wordvec_load}}.}
+\item{data}{A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
+\code{\link[PsychWordVec:as_embed]{embed}} (matrix),
+see \code{\link{data_wordvec_load}}.}
 
 \item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
 }
 \value{
-A \code{data.table} (of new class \code{wordvec}) with \strong{normalized} word vectors.
+A \code{wordvec} (data.table) or \code{embed} (matrix) with \strong{normalized} word vectors.
 }
 \description{
 L2-normalization (scaling to unit euclidean length):
@@ -32,16 +33,17 @@ Download pre-trained word vectors data (\code{.RData}):
 
 \examples{
 d = data_wordvec_normalize(demodata)
+# the same: d = as_wordvec(demodata, normalize=TRUE)
 
 data_wordvec_normalize(d)  # already normalized
 
 }
 \seealso{
+\code{\link{as_wordvec}} / \code{\link{as_embed}}
+
 \code{\link{data_transform}}
 
 \code{\link{data_wordvec_load}}
-
-\code{\link{data_wordvec_reshape}}
 
 \code{\link{data_wordvec_subset}}
 }

@@ -2,28 +2,45 @@
 % Please edit documentation in R/PWV1_static.R
 \name{data_wordvec_subset}
 \alias{data_wordvec_subset}
-\title{Extract a subset of word vectors data.}
+\alias{subset.wordvec}
+\alias{subset.embed}
+\alias{subset.character}
+\title{Extract a subset of word vectors data (with S3 methods).}
 \usage{
 data_wordvec_subset(
   x,
   words = NULL,
   pattern = NULL,
+  as = c("wordvec", "embed"),
   file.save,
   compress = "bzip2",
   compress.level = 9,
   verbose = TRUE
 )
+
+\method{subset}{wordvec}(x, ...)
+
+\method{subset}{embed}(x, ...)
+
+\method{subset}{character}(x, ...)
 }
 \arguments{
-\item{x}{Can be one of the following:
+\item{x}{Can be:
 \itemize{
-  \item{a \code{data.table} (of new class \code{wordvec}) loaded by \code{\link{data_wordvec_load}}}
+  \item{a \code{wordvec} or \code{embed} loaded by \code{\link{data_wordvec_load}}}
   \item{an .RData file transformed by \code{\link{data_transform}}}
 }}
 
 \item{words}{[Option 1] Word strings (\code{NULL}; a single word; a vector of words).}
 
-\item{pattern}{[Option 2] Pattern of regular expression (see \code{\link[stringr:str_subset]{str_subset}}).}
+\item{pattern}{[Option 2] Pattern of regular expression (see \code{\link[stringr:str_subset]{str_subset}}).
+If neither \code{words} nor \code{pattern} are specified (i.e., both are \code{NULL}),
+then all words in the data will be extracted.}
+
+\item{as}{Reshape to
+\code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
+\code{\link[PsychWordVec:as_embed]{embed}} (matrix).
+Defaults to the original class of \code{x}.}
 
 \item{file.save}{File name of to-be-saved R data (must be .RData).}
 
@@ -40,13 +57,16 @@ Options include:
 (maximal compression for minimal file size). Defaults to \code{9}.}
 
 \item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
+
+\item{...}{Parameters passed to \code{data_wordvec_subset}
+when using the S3 method \code{subset}.}
 }
 \value{
-A subset of word vectors data of valid (available) words.
+A subset of \code{wordvec} or \code{embed} of valid (available) words.
 }
 \description{
-Extract a subset of word vectors data.
-You may specify either a \code{data.table} loaded by \code{\link{data_wordvec_load}})
+Extract a subset of word vectors data (with S3 methods).
+You may specify either a \code{wordvec} or \code{embed} loaded by \code{\link{data_wordvec_load}})
 or an .RData file transformed by \code{\link{data_transform}}).
 }
 \section{Download}{
@@ -56,35 +76,35 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-## specify `x` as a data.table:
-d = data_wordvec_subset(demodata, c("China", "Japan", "Korea"))
-d
+## specify `x` as a `wordvec` or `embed` object:
+subset(demodata, c("China", "Japan", "Korea"))
+subset(as_embed(demodata), c("China", "Japan", "Korea"))
 
-## specify `x` and `pattern`, and save with `file.save`:
-data_wordvec_subset(demodata, pattern="Chin[ae]|Japan|Korea",
-                    file.save="subset.RData")
+\donttest{## specify `x` and `pattern`, and save with `file.save`:
+subset(demodata, pattern="Chin[ae]|Japan|Korea",
+       file.save="subset.RData")
 
 ## load the subset:
 d.subset = data_wordvec_load("subset.RData")
 d.subset
 
 ## specify `x` as an .RData file and save with `file.save`:
-data_wordvec_subset("subset.RData",
-                    words=c("China", "Chinese"),
-                    file.save="new.subset.RData")
-d.new.subset = data_wordvec_load("new.subset.RData")
+subset("subset.RData",
+       words=c("China", "Chinese"),
+       file.save="new.subset.RData")
+d.new.subset = data_wordvec_load("new.subset.RData", as="embed")
 d.new.subset
 
 unlink("subset.RData")  # delete file for code check
 unlink("new.subset.RData")  # delete file for code check
-
+}
 }
 \seealso{
+\code{\link{as_wordvec}} / \code{\link{as_embed}}
+
 \code{\link{data_transform}}
 
 \code{\link{data_wordvec_load}}
 
 \code{\link{data_wordvec_normalize}}
-
-\code{\link{data_wordvec_reshape}}
 }

@@ -7,8 +7,9 @@
 get_wordvec(data, word)
 }
 \arguments{
-\item{data}{A \code{data.table} (of new class \code{wordvec})
-loaded by \code{\link{data_wordvec_load}}.}
+\item{data}{A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
+\code{\link[PsychWordVec:as_embed]{embed}} (matrix),
+see \code{\link{data_wordvec_load}}.}
 
 \item{word}{Word string (a single word).}
 }
@@ -26,12 +27,12 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-d = data_wordvec_normalize(demodata)
+d = as_wordvec(demodata, normalize=TRUE)
 
 v1 = get_wordvec(demodata, "China")  # raw vector
 v2 = get_wordvec(d, "China")  # normalized vector
 cor(v1, v2)
-cosine_similarity(v1, v2)
+cos_sim(v1, v2)
 
 }
 \seealso{

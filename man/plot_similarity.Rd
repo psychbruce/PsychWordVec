@@ -25,12 +25,15 @@ plot_similarity(
 )
 }
 \arguments{
-\item{data}{A \code{data.table} (of new class \code{wordvec})
-loaded by \code{\link{data_wordvec_load}}.}
+\item{data}{A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
+\code{\link[PsychWordVec:as_embed]{embed}} (matrix),
+see \code{\link{data_wordvec_load}}.}
 
 \item{words}{[Option 1] Word strings (\code{NULL}; a single word; a vector of words).}
 
-\item{pattern}{[Option 2] Pattern of regular expression (see \code{\link[stringr:str_subset]{str_subset}}).}
+\item{pattern}{[Option 2] Pattern of regular expression (see \code{\link[stringr:str_subset]{str_subset}}).
+If neither \code{words} nor \code{pattern} are specified (i.e., both are \code{NULL}),
+then all words in the data will be extracted.}
 
 \item{label}{Position of text labels.
 Defaults to \code{"auto"} (add labels if less than 20 words).

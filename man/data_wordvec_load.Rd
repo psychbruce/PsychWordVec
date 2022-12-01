@@ -2,13 +2,23 @@
 % Please edit documentation in R/PWV1_static.R
 \name{data_wordvec_load}
 \alias{data_wordvec_load}
-\title{Load word vectors data from an ".RData" file.}
+\title{Load word vectors data (\code{wordvec} or \code{embed}) from ".RData" file.}
 \usage{
-data_wordvec_load(file.load, normalize = FALSE, verbose = TRUE)
+data_wordvec_load(
+  file.load,
+  as = c("wordvec", "embed"),
+  normalize = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{file.load}{File name (must be .RData transformed by
 \code{\link{data_transform}}).}
+
+\item{as}{Load as
+\code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
+\code{\link[PsychWordVec:as_embed]{embed}} (matrix).
+Defaults to the original class of the R object in \code{file.load}.}
 
 \item{normalize}{Normalize all word vectors to unit length?
 Defaults to \code{FALSE}. See \code{\link{data_wordvec_normalize}}.}
@@ -16,14 +26,10 @@ Defaults to \code{FALSE}. See \code{\link{data_wordvec_normalize}}.}
 \item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
 }
 \value{
-A \code{data.table} (of new class \code{wordvec}) with two variables:
-\describe{
-  \item{\code{word}}{words (tokens)}
-  \item{\code{vec}}{\strong{raw} \emph{or} \strong{normalized} word vectors}
-}
+A \code{wordvec} (data.table) or \code{embed} (matrix).
 }
 \description{
-Load word vectors data from an ".RData" file.
+Load word vectors data (\code{wordvec} or \code{embed}) from ".RData" file.
 }
 \section{Download}{
 
@@ -46,11 +52,11 @@ d = data_wordvec_load("GloVe/glove_wiki_50d.RData")
 
 }
 \seealso{
+\code{\link{as_wordvec}} / \code{\link{as_embed}}
+
 \code{\link{data_transform}}
 
 \code{\link{data_wordvec_normalize}}
-
-\code{\link{data_wordvec_reshape}}
 
 \code{\link{data_wordvec_subset}}
 }
