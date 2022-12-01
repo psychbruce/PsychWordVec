@@ -20,20 +20,7 @@
 -   New `sum_wordvec()` function: Calculate the sum vector of multiple words.
 -   New `plot_similarity()` function: Visualize cosine similarities between word pairs in a style of correlation matrix plot.
 -   New `tab_similarity_cross()` function: A wrapper of `tab_similarity()` to tabulate cosine similarities for only n1 \* n2 word pairs from two sets of words (arguments: `words1`, `words2`).
--   New S3 methods:
-    -   `print.wordvec()`
-
-    -   `print.embed()`
-
-    -   `rbind.wordvec()`
-
-    -   `rbind.embed()`
-
-    -   `subset.wordvec()`
-
-    -   `subset.embed()`
-
-    -   `subset.character()`
+-   New S3 methods: `print.wordvec()`, `print.embed()`, `rbind.wordvec()`, `rbind.embed()`, `subset.wordvec()`, `subset.embed()`
 
 ## Major Changes
 

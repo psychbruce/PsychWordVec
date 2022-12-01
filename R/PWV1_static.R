@@ -800,7 +800,7 @@ data_wordvec_subset = function(
   if(is.valid(x)) {
     x = check_data_validity(x)
   } else if(is.character(x)) {
-    file.load = x
+    file.load = paste(x, collapse="")
     if(!str_detect(file.load, "\\.rda$|\\.[Rr][Dd]ata$"))
       stop("`x` must be .RData!", call.=FALSE)
     x = data_wordvec_load(file.load)
