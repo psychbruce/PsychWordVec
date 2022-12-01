@@ -774,9 +774,9 @@ normalize = function(x) {
 #' d.subset
 #'
 #' ## specify `x` as an .RData file and save with `file.save`:
-#' subset("subset.RData",
-#'        words=c("China", "Chinese"),
-#'        file.save="new.subset.RData")
+#' data_wordvec_subset("subset.RData",
+#'                     words=c("China", "Chinese"),
+#'                     file.save="new.subset.RData")
 #' d.new.subset = data_wordvec_load("new.subset.RData", as="embed")
 #' d.new.subset
 #'
@@ -851,13 +851,6 @@ subset.wordvec = function(x, ...) {
 #' @rdname data_wordvec_subset
 #' @export
 subset.embed = function(x, ...) {
-  data_wordvec_subset(x, ...)
-}
-
-
-#' @rdname data_wordvec_subset
-#' @export
-subset.character = function(x, ...) {
   data_wordvec_subset(x, ...)
 }
 

@@ -4,7 +4,6 @@
 \alias{data_wordvec_subset}
 \alias{subset.wordvec}
 \alias{subset.embed}
-\alias{subset.character}
 \title{Extract a subset of word vectors data (with S3 methods).}
 \usage{
 data_wordvec_subset(
@@ -21,8 +20,6 @@ data_wordvec_subset(
 \method{subset}{wordvec}(x, ...)
 
 \method{subset}{embed}(x, ...)
-
-\method{subset}{character}(x, ...)
 }
 \arguments{
 \item{x}{Can be:
@@ -89,9 +86,9 @@ d.subset = data_wordvec_load("subset.RData")
 d.subset
 
 ## specify `x` as an .RData file and save with `file.save`:
-subset("subset.RData",
-       words=c("China", "Chinese"),
-       file.save="new.subset.RData")
+data_wordvec_subset("subset.RData",
+                    words=c("China", "Chinese"),
+                    file.save="new.subset.RData")
 d.new.subset = data_wordvec_load("new.subset.RData", as="embed")
 d.new.subset
 
