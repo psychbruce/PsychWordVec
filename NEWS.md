@@ -1,5 +1,15 @@
 **Please check the [latest news (change log)](https://psychbruce.github.io/PsychWordVec/news/index.html) and keep this package updated.**
 
+# PsychWordVec 0.2.1 (ongoing...)
+
+## Major Changes
+
+-   Most functions now have been substantially enhanced for a faster speed, especially `tab_similarity()`, `most_similar()`, `dict_expand()`, `dict_reliability()`, `test_WEAT()`, `test_RND()`.
+-   `pair_similarity()` has been improved by using matrix manipulation `tcrossprod(embed, embed)` to compute cosine similarity, with `embed` normalized.
+-   `data_wordvec_normalize()` (deprecated) has been renamed as `normalize()`.
+-   `get_wordvecs()` (deprecated) has been integrated into `get_wordvec()`.
+-   `tab_similarity_cross()` (deprecated) has been integrated into `tab_similarity()`.
+
 # PsychWordVec 0.2.0 (Dec 2022)
 
 ## Breaking News

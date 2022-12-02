@@ -4,7 +4,7 @@ Word Embedding Research Framework for Psychological Science.
 
 An integrated toolbox of word embedding research that provides:
 
-1.  A collection of [pre-trained static word vectors](https://psychbruce.github.io/WordVector_RData.pdf) in the `.RData` compressed format;
+1.  A collection of [pre-trained static word vectors](https://psychbruce.github.io/WordVector_RData.pdf) in the .RData compressed format;
 2.  A series of functions to process, analyze, and visualize word vectors;
 3.  A range of tests to examine conceptual associations, including the *Word Embedding Association Test* (Caliskan et al., 2017) and the *Relative Norm Distance* (Garg et al., 2018), with permutation test of significance;
 4.  A set of training methods to locally train (*static*) word vectors from text corpora, including *Word2Vec* (Mikolov et al., 2013), *GloVe* (Pennington et al., 2014), and *FastText* (Bojanowski et al., 2017);
@@ -47,16 +47,15 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
     -   `as_embed()`: from `wordvec` (data.table) to `embed` (matrix)
     -   `as_wordvec()`: from `embed` (matrix) to `wordvec` (data.table)
     -   `data_transform()`: transform plain text word vectors to `wordvec` or `embed`
-    -   `data_wordvec_load()`
-    -   `data_wordvec_normalize()`
-    -   `data_wordvec_subset()` or `subset()` (S3 method for `wordvec` and `embed`)
-    -   `orth_procrustes()`: Orthogonal Procrustes matrix alignment
+    -   `data_wordvec_load()`: load transformed .RData file
 -   Word Vectors Extraction, Linear Operation, and Visualization
+    -   `subset()`: extract a subset of `wordvec` and `embed`
+    -   `normalize()`: normalize all word vectors to the unit length 1
     -   `get_wordvec()`
-    -   `get_wordvecs()`
     -   `sum_wordvec()`
     -   `plot_wordvec()`
     -   `plot_wordvec_tSNE()`: 2D or 3D visualization with t-SNE
+    -   `orth_procrustes()`: Orthogonal Procrustes matrix alignment
 -   Word Semantic Similarity Analysis and Conceptual Association Test
     -   `cosine_similarity()`
         -   `cos_sim()`
@@ -64,7 +63,6 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
     -   `pair_similarity()`
     -   `plot_similarity()`
     -   `tab_similarity()`
-    -   `tab_similarity_cross()`
     -   `most_similar()`: find the Top-N most similar words
     -   `test_WEAT()`: WEAT and SC-WEAT with permutation test of significance
     -   `test_RND()`: RND with permutation test of significance

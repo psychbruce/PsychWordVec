@@ -78,68 +78,70 @@
 #### Basic ####
 
 
-#' Cosine similarity/distance between two vectors.
+#' Normalize all word vectors to the unit length 1.
 #'
-#' @details
-#' Cosine similarity =
+#' @description
+#' L2-normalization (scaling to unit euclidean length):
+#' the \emph{norm} of each vector in the vector space will be normalized to 1.
+#' It is necessary for any linear operation of word vectors.
 #'
-#' \code{sum(v1 * v2) / ( sqrt(sum(v1^2)) * sqrt(sum(v2^2)) )}
+#' R code:
+#' \itemize{
+#'   \item{Vector: \code{vec / sqrt(sum(vec^2))}}
+#'   \item{Matrix: \code{mat / sqrt(rowSums(mat^2))}}
+#' }
 #'
-#' Cosine distance =
+#' @param x A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
+#' \code{\link[PsychWordVec:as_embed]{embed}} (matrix),
+#' see \code{\link{data_wordvec_load}}.
 #'
-#' \code{1 - cosine_similarity(v1, v2)}
+#' @return
+#' A \code{wordvec} (data.table) or \code{embed} (matrix) with \strong{normalized} word vectors.
 #'
-#' @param v1,v2 Numeric vector (of the same length).
-#' @param distance Compute cosine distance instead?
-#' Defaults to \code{FALSE} (cosine similarity).
-#'
-#' @return A value of cosine similarity/distance.
+#' @section Download:
+#' Download pre-trained word vectors data (\code{.RData}):
+#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
 #'
 #' @seealso
-#' \code{\link{pair_similarity}}
+#' \code{\link{as_wordvec}} / \code{\link{as_embed}}
 #'
-#' \code{\link{tab_similarity}}
+#' \code{\link{data_transform}}
 #'
-#' \code{\link{most_similar}}
+#' \code{\link{data_wordvec_load}}
+#'
+#' \code{\link{data_wordvec_subset}}
 #'
 #' @examples
-#' cos_sim(v1=c(1,1,1), v2=c(2,2,2))  # 1
-#' cos_sim(v1=c(1,4,1), v2=c(4,1,1))  # 0.5
-#' cos_sim(v1=c(1,1,0), v2=c(0,0,1))  # 0
-#'
-#' cos_dist(v1=c(1,1,1), v2=c(2,2,2))  # 0
-#' cos_dist(v1=c(1,4,1), v2=c(4,1,1))  # 0.5
-#' cos_dist(v1=c(1,1,0), v2=c(0,0,1))  # 1
+#' d = normalize(demodata)
+#' # the same: d = as_wordvec(demodata, normalize=TRUE)
 #'
 #' @export
-cosine_similarity = function(v1, v2, distance=FALSE) {
-  if(length(v1) != length(v2)) stop("v1 and v2 must have equal length!", call.=FALSE)
-  cos_sim = sum(v1 * v2) / ( sqrt(sum(v1^2)) * sqrt(sum(v2^2)) )
-  if(distance)
-    return(1 - cos_sim)
-  else
-    return(cos_sim)
+normalize = function(x) {
+  # L2-normalized (unit euclidean length)
+  if(is.null(attr(x, "normalized")))
+    attr(x, "normalized") = FALSE
+  if(attr(x, "normalized")) return(x)
+  if(is.wordvec(x))
+    x$vec = lapply(x$vec, function(v) { v / sqrt(sum(v^2)) } )
+  if(is.matrix(x))
+    x = x / sqrt(rowSums(x^2))  # matrix is much faster!
+  attr(x, "normalized") = TRUE
+  # gc()
+  return(x)
 }
 
 
-#' @rdname cosine_similarity
-#' @export
-cos_sim = function(v1, v2) {
-  cosine_similarity(v1, v2, distance=FALSE)
+force_normalize = function(x, verbose=TRUE) {
+  check_data_validity(x)
+  if(attr(x, "normalized")==FALSE) {
+    if(verbose)
+      cli::cli_alert_warning("Results may be inaccurate if word vectors are not normalized.")
+    x = normalize(x)
+    if(verbose)
+      cli::cli_alert_success("All word vectors now have been automatically normalized.")
+  }
+  return(x)
 }
-
-
-#' @rdname cosine_similarity
-#' @export
-cos_dist = function(v1, v2) {
-  cosine_similarity(v1, v2, distance=TRUE)
-}
-
-
-# Normalized vectors: vec / sqrt(sum(vec^2))
-# cosine_similarity_norm = function(v1, v2) {
-#   sum(v1 * v2)
-# }
 
 
 #' Reshape word vectors data between \code{wordvec} and \code{embed}.
@@ -147,25 +149,27 @@ cos_dist = function(v1, v2) {
 #' Reshape word vectors data between
 #' \code{wordvec} (data.table, with two variables \code{word} and \code{vec})
 #' and \code{embed} (matrix, with dimensions as columns and words as row names).
+#' Note that matrix manipulation makes \code{embed} much faster than \code{wordvec}.
 #'
-#' @describeIn as_wordvec From \code{embed} (matrix) to \code{wordvec} (data.table).
+#' @describeIn as_embed From \code{wordvec} (data.table) to \code{embed} (matrix).
 #'
-#' @inheritParams data_wordvec_load
 #' @param x Object to be reshaped. See examples.
+#' @param normalize Normalize all word vectors to unit length?
+#' Defaults to \code{FALSE}. See \code{\link{normalize}}.
 #'
 #' @return
-#' \code{wordvec} (data.table) or \code{embed} (matrix).
+#' A \code{wordvec} (data.table) or \code{embed} (matrix).
 #'
 #' @section Download:
 #' Download pre-trained word vectors data (\code{.RData}):
 #' \url{https://psychbruce.github.io/WordVector_RData.pdf}
 #'
 #' @seealso
+#' \code{\link{normalize}}
+#'
 #' \code{\link{data_transform}}
 #'
 #' \code{\link{data_wordvec_load}}
-#'
-#' \code{\link{data_wordvec_normalize}}
 #'
 #' \code{\link{data_wordvec_subset}}
 #'
@@ -179,211 +183,157 @@ cos_dist = function(v1, v2) {
 #' wordvec
 #'
 #' @export
-as_wordvec = function(x, normalize=FALSE, verbose=TRUE) {
-  if(is.data.table(x)) {
-    wordvec = check_data_validity(x)
-  } else {
-    mat = as.matrix(x)  # much faster
-    wordvec = data.table(
-      word = row.names(mat),
-      vec = do.call("list", lapply(
-        1:nrow(mat), function(i) {
-          as.numeric(mat[i,])
-        }))
-    )
-  }
-  if(is.null(attr(x, "dims")))
-    attr(wordvec, "dims") = length(wordvec[[1, "vec"]])
-  else
-    attr(wordvec, "dims") = attr(x, "dims")
-  if(is.null(attr(x, "normalized")))
-    attr(wordvec, "normalized") = FALSE
-  else
-    attr(wordvec, "normalized") = attr(x, "normalized")
-  class(wordvec) = c("wordvec", "data.table", "data.frame")
-  if(normalize) wordvec = data_wordvec_normalize(wordvec, verbose)
-  return(wordvec)
-}
-
-
-#' @describeIn as_wordvec From \code{wordvec} (data.table) to \code{embed} (matrix).
-#' @export
-as_embed = function(x, normalize=FALSE, verbose=TRUE) {
+as_embed = function(x, normalize=FALSE) {
+  if(is.embed(x) & normalize==FALSE) return(x)
+  dims = attr(x, "dims")
+  norm = attr(x, "normalized")
+  null.dims = is.null(dims)
+  null.norm = is.null(norm)
   if(is.matrix(x)) {
-    embed = x
+    # x = x
   } else if(is.numeric(x)) {
-    embed = t(matrix(x))
-    rownames(embed) = ""
+    x = t(matrix(x))
+    rownames(x) = ""
+  } else if(is.wordvec(x)) {
+    # matrix is much faster!
+    x = matrix(unlist(x$vec),
+               nrow=nrow(x),
+               byrow=TRUE,
+               dimnames=list(x$word))
   } else {
-    data = check_data_validity(x)
-    embed = do.call("rbind", lapply(data$vec, function(x) {
-      t(x)  # matrix is much faster
-    }))
-    rownames(embed) = data$word
+    stop("`x` must be a matrix or data.table!", call.=FALSE)
   }
-  if(is.null(colnames(embed)))
-    colnames(embed) = paste0("dim", 1:ncol(embed))
-  if(is.null(attr(x, "dims")))
-    attr(embed, "dims") = ncol(embed)
-  else
-    attr(embed, "dims") = attr(x, "dims")
-  if(is.null(attr(x, "normalized")))
-    attr(embed, "normalized") = FALSE
-  else
-    attr(embed, "normalized") = attr(x, "normalized")
-  class(embed) = c("embed", "matrix", "array")
-  if(normalize) embed = data_wordvec_normalize(embed, verbose)
-  return(embed)
+  if(is.null(colnames(x)))
+    colnames(x) = paste0("dim", seq_len(ncol(x)))
+  attr(x, "dims") = ifelse(null.dims, ncol(x), dims)
+  attr(x, "normalized") = ifelse(null.norm, FALSE, norm)
+  class(x) = c("embed", "matrix", "array")
+  if(normalize) x = normalize(x)
+  return(x)
+}
+
+
+#' @describeIn as_embed From \code{embed} (matrix) to \code{wordvec} (data.table).
+#' @export
+as_wordvec = function(x, normalize=FALSE) {
+  if(is.wordvec(x) & normalize==FALSE) return(x)
+  dims = attr(x, "dims")
+  norm = attr(x, "normalized")
+  null.dims = is.null(dims)
+  null.norm = is.null(norm)
+  if(is.data.table(x)) {
+    # x = x
+  } else if(is.matrix(x)) {
+    dims = ncol(x)
+    null.dims = FALSE
+    x = data.table(
+      word = rownames(x),
+      vec = lapply(1:nrow(x), function(i) {
+        as.numeric(x[i,])
+      })
+    )
+  } else {
+    stop("`x` must be a matrix or data.table!", call.=FALSE)
+  }
+  attr(x, "dims") = ifelse(null.dims, length(x[[1, "vec"]]), dims)
+  attr(x, "normalized") = ifelse(null.norm, FALSE, norm)
+  class(x) = c("wordvec", "data.table", "data.frame")
+  if(normalize) x = normalize(x)
+  return(x)
 }
 
 
 #' @export
-print.wordvec = function(x, ...) {
-  norm = ifelse(attr(x, "normalized"), "(normalized)", "(NOT normalized)")
-  dims = paste0("<", attr(x, "dims"), " dims>")
-  x$vec = sapply(x$vec, function(i) {
-    paste0("[", sprintf("% .4f", i[1]), ", ...", dims, "]")
-  })
-  cli::cli_text(grey("{.strong # wordvec (data.table)}: {nrow(x)} \u00d7 {ncol(x)} {norm}"))
-  print(as.data.table(x))
-}
-
-
-#' @export
-print.embed = function(x, ...) {
-  norm = ifelse(attr(x, "normalized"), "(normalized)", "(NOT normalized)")
+print.embed = function(x, maxn=100, ...) {
+  n = nrow(x)
   ndim = ncol(x)
   dims = paste0("<", ndim, " dims>")
-  n = nrow(x)
-  rownames = rownames(x)
-  x = x[, c(1, 2, ndim)]
-  if(!is.matrix(x)) x = t(matrix(x))
-  rowids = sprintf(paste0("% ", nchar(n), "s:"), 1:n)
-  rownames(x) = paste(rowids, rownames)
-  colnames(x) = paste0("dim", c(1, 2, ndim))
+  norm = ifelse(attr(x, "normalized"), "(normalized)", "(NOT normalized)")
+  cols = c(1, 2, ndim)
+  fmt = paste0("% ", nchar(n)+1, "s")
+
+  if(n > maxn) {
+    rows = c(1:5, (n-4):n)
+    null = t(matrix(rep("", 3)))
+    rownames(null) = ""
+    x = x[rows, cols]
+    rowids = sprintf(fmt, c(
+      paste0(rows[1:5], ":"),
+      paste(rep("-", nchar(n)+1), collapse=""),
+      paste0(rows[6:10], ":")
+    ))
+  } else {
+    if(n == 1) {
+      x = matrix(x[, cols],  # numeric vector
+                 nrow=1,
+                 byrow=TRUE,
+                 dimnames=list(rownames(x)))
+    } else {
+      x = x[, cols]
+    }
+    rowids = sprintf(fmt, paste0(1:n, ":"))
+  }
   x[, 1] = sprintf("% .4f", x[, 1])
   x[, 2] = "..."
   x[, 3] = dims
-  if(n > 100) {
-    null = t(matrix(rep("", 3)))
-    rownames(null) = paste(rep("-", nchar(n)+1), collapse="")
-    x = rbind(x[1:5,],
-              null,
-              x[(n-4):n,])
-  }
+  if(n > maxn) x = rbind(x[1:5,], null, x[6:10,])
   x = as.data.frame(x)
-  names(x)[2] = "..."
+  rownames(x) = paste(rowids, rownames(x))
+  colnames(x) = c("dim1", "...", paste0("dim", ndim))
   cli::cli_text(grey("{.strong # embed (matrix)}: {n} \u00d7 {ndim} {norm}"))
   print(x)
 }
 
 
 #' @export
-rbind.wordvec = function(...) {
-  wordvec = rbindlist(lapply(list(...), function(d) {
-    as.data.table(d)
-  }))
-  attr(wordvec, "dims") = attr(list(...)[[1]], "dims")
-  attr(wordvec, "normalized") = attr(list(...)[[1]], "normalized")
-  class(wordvec) = c("wordvec", "data.table", "data.frame")
-  return(wordvec)
+print.wordvec = function(x, maxn=100, ...) {
+  n = nrow(x)
+  ndim = attr(x, "dims")
+  dims = paste0("<", ndim, " dims>")
+  norm = ifelse(attr(x, "normalized"), "(normalized)", "(NOT normalized)")
+  cols = c(1, 2, ndim)
+  fmt = paste0("% ", nchar(n)+1, "s")
+
+  if(n > maxn) {
+    rows = c(1:5, (n-4):n)
+    null = data.frame(word="", vec="")
+    rownames(null) = ""
+    x = x[rows,]
+    rowids = sprintf(fmt, c(
+      paste0(rows[1:5], ":"),
+      paste(rep("-", nchar(n)+1), collapse=""),
+      paste0(rows[6:10], ":")
+    ))
+  } else {
+    rowids = sprintf(fmt, paste0(1:n, ":"))
+  }
+  x$vec = sapply(x$vec, function(i) {
+    paste0("[", sprintf("% .4f", i[1]), ", ...", dims, "]")
+  })
+  x = as.data.frame(x)
+  if(n > maxn) x = rbind(x[1:5,], null, x[6:10,])
+  rownames(x) = rowids
+  cli::cli_text(grey("{.strong # wordvec (data.table)}: {n} \u00d7 {ncol(x)} {norm}"))
+  print(x)
 }
 
 
 #' @export
 rbind.embed = function(...) {
-  embed = do.call("rbind", lapply(list(...), function(m) {
-    m = as.matrix(m)
+  m = do.call("rbind", lapply(list(...), function(m) {
     class(m) = c("matrix", "array")
     return(m)
   }))
-  attr(embed, "dims") = attr(list(...)[[1]], "dims")
-  attr(embed, "normalized") = attr(list(...)[[1]], "normalized")
-  class(embed) = c("embed", "matrix", "array")
-  return(embed)
+  return(as_embed(m))
 }
 
 
-#### Utils ####
-
-
-#' @importFrom bruceR cc
 #' @export
-bruceR::cc
-
-
-is.wordvec = function(x) inherits(x, "wordvec")
-is.embed = function(x) inherits(x, "embed")
-is.valid = function(x) inherits(x, c("wordvec", "embed"))
-grey = cli::make_ansi_style("grey60")
-
-
-check_data_validity = function(x) {
-  if(!is.valid(x))
-    stop("Data must be loaded using `data_wordvec_load()`.", call.=FALSE)
-  if(is.wordvec(x)) {
-    if(names(x)[1] != "word")
-      names(x)[1] = "word"
-    if(length(unique(x$word)) < nrow(x))
-      x$word = number_duplicate(x$word)
-  }
-  return(x)
-}
-
-
-check_load_validity = function(file.load) {
-  if(!is.null(file.load))
-    if(!str_detect(file.load, "\\.rda$|\\.[Rr][Dd]ata$"))
-      stop("`file.load` must be .RData!", call.=FALSE)
-}
-
-
-check_save_validity = function(file.save) {
-  if(!is.null(file.save))
-    if(!str_detect(file.save, "\\.rda$|\\.[Rr][Dd]ata$"))
-      stop("`file.save` must be .RData!", call.=FALSE)
-}
-
-
-force_normalize = function(x, verbose=TRUE) {
-  x = check_data_validity(x)
-  if(attr(x, "normalized")==FALSE) {
-    if(verbose) cli::cli_alert_warning("Results may be inaccurate if word vectors are not normalized.")
-    x = data_wordvec_normalize(x, verbose)
-  }
-  return(x)
-}
-
-
-extract_valid_subset = function(x, words=NULL, pattern=NULL) {
-  xs = as_embed(check_data_validity(x))
-  vocab = rownames(xs)
-  if(is.null(words)) {
-    if(is.null(pattern)) {
-      return(xs)  # new default
-    } else {
-      words.valid = str_subset(vocab, pattern)
-      message(Glue("{length(words.valid)} words matched..."))
-    }
-  } else {
-    words.valid = intersect(words, vocab)  # faster
-  }
-  if(length(words.valid) < length(words)) {
-    not.found = setdiff(words, words.valid)
-    cli::cli_alert_danger("{length(not.found)} words not found: {.val {not.found}}")
-  }
-  if(length(words.valid) == 0) {
-    return(NULL)
-  } else {
-    xs = xs[words.valid,]
-    if(length(words.valid) == 1) {
-      xs = t(xs)
-      rownames(xs) = words.valid
-    }
-    xs = as_embed(xs)
-    if(is.wordvec(x)) xs = as_wordvec(xs)
-    return(xs)
-  }
+rbind.wordvec = function(...) {
+  d = rbindlist(lapply(list(...), function(d) {
+    as.data.table(d)
+  }))
+  return(as_wordvec(d))
 }
 
 
@@ -447,9 +397,9 @@ extract_valid_subset = function(x, words=NULL, pattern=NULL) {
 #' @seealso
 #' \code{\link{as_wordvec}} / \code{\link{as_embed}}
 #'
-#' \code{\link{data_wordvec_load}}
+#' \code{\link{normalize}}
 #'
-#' \code{\link{data_wordvec_normalize}}
+#' \code{\link{data_wordvec_load}}
 #'
 #' \code{\link{data_wordvec_subset}}
 #'
@@ -510,10 +460,9 @@ data_transform = function(
       # wordvec
       x = data.table(
         word = str_split(dt$x, sep, n=2, simplify=TRUE)[,1],
-        vec = do.call("list", lapply(
-          str_split(dt$x, sep, n=2, simplify=TRUE)[,2], function(v) {
-            as.numeric(cc(v, sep=sep))
-          }))
+        vec = lapply(
+          str_split(dt$x, sep, n=2, simplify=TRUE)[,2],
+          function(v) { as.numeric(cc(v, sep=sep)) })
       )
       dims = unique(sapply(x$vec, length))
       ndim = length(x[[1, "vec"]])
@@ -521,9 +470,8 @@ data_transform = function(
     } else {
       # matrix
       x = do.call("rbind", lapply(
-        str_split(dt$x, sep, n=2, simplify=TRUE)[,2], function(v) {
-          as.numeric(cc(v, sep=sep))
-        }))
+        str_split(dt$x, sep, n=2, simplify=TRUE)[,2],
+        function(v) { as.numeric(cc(v, sep=sep)) }))
       rownames(x) = str_split(dt$x, sep, n=2, simplify=TRUE)[,1]
       dims = ndim = ncol(x)
       colnames(x) = paste0("dim", 1:ndim)
@@ -532,7 +480,7 @@ data_transform = function(
     if(length(dims) > 1)
       warning("The number of dimensions is not consistent between words!", call.=FALSE)
     if(verbose)
-      Print("Word vectors data: {nrow(x)} words, {ndim} dimensions (time cost = {dtime(t0, 'auto')})")
+      Print("Word vectors data: {nrow(x)} vocab, {ndim} dims (time cost = {dtime(t0, 'auto')})")
   }
   if(!missing(file.save)) {
     t1 = Sys.time()
@@ -561,6 +509,7 @@ data_transform = function(
 
 #' Load word vectors data (\code{wordvec} or \code{embed}) from ".RData" file.
 #'
+#' @inheritParams as_embed
 #' @inheritParams data_transform
 #' @param file.load File name (must be .RData transformed by
 #' \code{\link{data_transform}}).
@@ -568,8 +517,6 @@ data_transform = function(
 #' \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
 #' \code{\link[PsychWordVec:as_embed]{embed}} (matrix).
 #' Defaults to the original class of the R object in \code{file.load}.
-#' @param normalize Normalize all word vectors to unit length?
-#' Defaults to \code{FALSE}. See \code{\link{data_wordvec_normalize}}.
 #'
 #' @return
 #' A \code{wordvec} (data.table) or \code{embed} (matrix).
@@ -581,9 +528,9 @@ data_transform = function(
 #' @seealso
 #' \code{\link{as_wordvec}} / \code{\link{as_embed}}
 #'
-#' \code{\link{data_transform}}
+#' \code{\link{normalize}}
 #'
-#' \code{\link{data_wordvec_normalize}}
+#' \code{\link{data_transform}}
 #'
 #' \code{\link{data_wordvec_subset}}
 #'
@@ -634,90 +581,70 @@ data_wordvec_load = function(
   }
   if(length(as)==1) {
     if(as=="wordvec")
-      x = as_wordvec(x, normalize, verbose)
+      x = as_wordvec(x, normalize)
     if(as=="embed")
-      x = as_embed(x, normalize, verbose)
+      x = as_embed(x, normalize)
   } else {
     if(is.wordvec(x))
-      x = as_wordvec(x, normalize, verbose)
+      x = as_wordvec(x, normalize)
     if(is.embed(x))
-      x = as_embed(x, normalize, verbose)
+      x = as_embed(x, normalize)
   }
   gc()  # Garbage Collection: Free the Memory
-  return(x)
-}
-
-
-#### Normalize ####
-
-
-#' Normalize all word vectors to the unit length 1.
-#'
-#' @description
-#' L2-normalization (scaling to unit euclidean length):
-#' the \emph{norm} of each vector in the vector space will be normalized to 1.
-#'
-#' R formula: \code{normalized_vec = vec / sqrt(sum(vec^2))}
-#'
-#' \emph{Note}: Normalization does not change the results of cosine similarity and
-#' can make the computation faster.
-#'
-#' @inheritParams data_transform
-#' @param data A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
-#' \code{\link[PsychWordVec:as_embed]{embed}} (matrix),
-#' see \code{\link{data_wordvec_load}}.
-#'
-#' @return
-#' A \code{wordvec} (data.table) or \code{embed} (matrix) with \strong{normalized} word vectors.
-#'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
-#'
-#' @seealso
-#' \code{\link{as_wordvec}} / \code{\link{as_embed}}
-#'
-#' \code{\link{data_transform}}
-#'
-#' \code{\link{data_wordvec_load}}
-#'
-#' \code{\link{data_wordvec_subset}}
-#'
-#' @examples
-#' d = data_wordvec_normalize(demodata)
-#' # the same: d = as_wordvec(demodata, normalize=TRUE)
-#'
-#' data_wordvec_normalize(d)  # already normalized
-#'
-#' @export
-data_wordvec_normalize = function(data, verbose=TRUE) {
-  data = check_data_validity(data)
-  if(attr(data, "normalized")) {
-    if(verbose) cli::cli_alert_warning("Word vectors have already been normalized.")
-  } else {
-    data = normalize(data)
-    if(verbose) cli::cli_alert_success("All word vectors have now been normalized.")
-  }
-  gc()  # Garbage Collection: Free the Memory
-  invisible(data)
-}
-
-
-normalize = function(x) {
-  # L2-normalized (unit euclidean length)
-  if(is.wordvec(x)) {
-    vec = NULL
-    x[, vec := lapply(vec, function(vec) { vec / sqrt(sum(vec^2)) } )]
-  }
-  if(is.embed(x)) {
-    x = x / sqrt(rowSums(x^2))
-  }
-  attr(x, "normalized") = TRUE
   return(x)
 }
 
 
 #### Subset ####
+
+
+vocab_str_subset = function(vocab, pattern) {
+  words.valid = str_subset(vocab, pattern)
+  message(Glue("{length(words.valid)} words matched..."))
+  return(words.valid)
+}
+
+
+extract_valid_subset = function(
+    x, words=NULL, pattern=NULL, words.order=TRUE
+) {
+  if(is.wordvec(x)) vocab = x$word
+  if(is.embed(x)) vocab = rownames(x)
+
+  if(is.null(words)) {
+    if(is.null(pattern))
+      return(x)  # new default
+    else
+      words.valid = vocab_str_subset(vocab, pattern)
+  } else {
+    words.valid = intersect(words, vocab)  # faster
+  }
+  if(length(words.valid) < length(words)) {
+    not.found = setdiff(words, words.valid)
+    cli::cli_alert_danger("{length(not.found)} words not found: {.val {not.found}}")
+  }
+
+  if(length(words.valid) == 0)
+    return(NULL)
+  if(is.wordvec(x)) {
+    if(words.order)
+      return(NULL)  # not yet implemented...
+    else
+      return(x[word %in% words.valid])
+  }
+  if(is.embed(x)) {
+    if(length(words.valid) == 1) {
+      xs = t(x[words.valid,])
+      rownames(xs) = words.valid
+      return(as_embed(xs))
+    } else {
+      if(words.order)
+        return(as_embed(x[words.valid,]))
+      else
+        return(as_embed(x[which(rownames(x) %in% words.valid),]))
+    }
+  }
+}
 
 
 #' Extract a subset of word vectors data (with S3 methods).
@@ -733,8 +660,8 @@ normalize = function(x) {
 #'   \item{a \code{wordvec} or \code{embed} loaded by \code{\link{data_wordvec_load}}}
 #'   \item{an .RData file transformed by \code{\link{data_transform}}}
 #' }
-#' @param words [Option 1] Word strings (\code{NULL}; a single word; a vector of words).
-#' @param pattern [Option 2] Pattern of regular expression (see \code{\link[stringr:str_subset]{str_subset}}).
+#' @param words [Option 1] Character string(s).
+#' @param pattern [Option 2] Regular expression (see \code{\link[stringr:str_subset]{str_subset}}).
 #' If neither \code{words} nor \code{pattern} are specified (i.e., both are \code{NULL}),
 #' then all words in the data will be extracted.
 #' @param as Reshape to
@@ -754,16 +681,16 @@ normalize = function(x) {
 #' @seealso
 #' \code{\link{as_wordvec}} / \code{\link{as_embed}}
 #'
+#' \code{\link{get_wordvec}}
+#'
 #' \code{\link{data_transform}}
 #'
 #' \code{\link{data_wordvec_load}}
 #'
-#' \code{\link{data_wordvec_normalize}}
-#'
 #' @examples
 #' ## specify `x` as a `wordvec` or `embed` object:
 #' subset(demodata, c("China", "Japan", "Korea"))
-#' subset(as_embed(demodata), c("China", "Japan", "Korea"))
+#' subset(as_embed(demodata), pattern="^Chi")
 #'
 #' \donttest{## specify `x` and `pattern`, and save with `file.save`:
 #' subset(demodata, pattern="Chin[ae]|Japan|Korea",
@@ -798,7 +725,7 @@ data_wordvec_subset = function(
     stop("`as` should be \"wordvec\" or \"embed\".", call.=FALSE)
   if(!missing(file.save)) check_save_validity(file.save)
   if(is.valid(x)) {
-    x = check_data_validity(x)
+    # wordvec or embed
   } else if(is.character(x)) {
     file.load = paste(x, collapse="")
     if(!str_detect(file.load, "\\.rda$|\\.[Rr][Dd]ata$"))
@@ -809,16 +736,11 @@ data_wordvec_subset = function(
       - a `wordvec` or `embed` loaded by `data_wordvec_load()`
       - an .RData file transformed by `data_transform()`", call.=FALSE)
   }
-  x = extract_valid_subset(x, words, pattern)
+  x = extract_valid_subset(x, words, pattern, words.order=FALSE)
   if(length(as)==1) {
     if(as=="wordvec")
       x = as_wordvec(x)
     if(as=="embed")
-      x = as_embed(x)
-  } else {
-    if(is.wordvec(x))
-      x = as_wordvec(x)
-    if(is.embed(x))
       x = as_embed(x)
   }
   if(!missing(file.save)) {
@@ -855,191 +777,17 @@ subset.embed = function(x, ...) {
 }
 
 
-#### Orthogonal Procrustes ####
-
-
-# adapted from cds::orthprocr()
-# same as psych::Procrustes() and pracma::procrustes()
-
-
-#' Orthogonal Procrustes solution for matrix alignment.
-#'
-#' In order to compare word embeddings from different time periods,
-#' we must ensure that the embedding matrices are aligned to
-#' the same semantic space (coordinate axes).
-#' The Orthogonal Procrustes solution (Schönemann, 1966) is
-#' commonly used to align historical embeddings over time
-#' (Hamilton et al., 2016; Li et al., 2020).
-#' This function produces the same results as by
-#' \code{cds::orthprocr()},
-#' \code{psych::Procrustes()}, and
-#' \code{pracma::procrustes()}.
-#'
-#' @param M,X Two embedding matrices of the same size (rows and columns),
-#' or two \code{\link[PsychWordVec:as_wordvec]{wordvec}} objects
-#' as loaded by \code{\link{data_wordvec_load}} or
-#' transformed from matrices by \code{\link{as_wordvec}}.
-#' \itemize{
-#'   \item{\code{M} is the reference (anchor/baseline/target) matrix,
-#'         e.g., the embedding matrix learned at
-#'         the later year (\eqn{t + 1}).}
-#'   \item{\code{X} is the matrix to be transformed/rotated.}
-#' }
-#' \emph{Note}: The function automatically extracts only
-#' the intersection (overlapped part) of words in \code{M} and \code{X}
-#' and sorts them in the same order (according to \code{M}).
-#'
-#' @return
-#' A \code{matrix} or \code{wordvec} object of
-#' \code{X} after rotation, depending on the class of
-#' \code{M} and \code{X}.
-#'
-#' @references
-#' Hamilton, W. L., Leskovec, J., & Jurafsky, D. (2016).
-#' Diachronic word embeddings reveal statistical laws of semantic change.
-#' In \emph{Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics}
-#' (Vol. 1, pp. 1489--1501). Association for Computational Linguistics.
-#'
-#' Li, Y., Hills, T., & Hertwig, R. (2020).
-#' A brief history of risk. \emph{Cognition, 203}, 104344.
-#'
-#' Schönemann, P. H. (1966).
-#' A generalized solution of the orthogonal Procrustes problem.
-#' \emph{Psychometrika, 31}(1), 1--10.
-#'
-#' @seealso
-#' \code{\link{as_wordvec}} / \code{\link{as_embed}}
-#'
-#' @examples
-#' M = matrix(c(0,0,  1,2,  2,0,  3,2,  4,0), ncol=2, byrow=TRUE)
-#' X = matrix(c(0,0, -2,1,  0,2, -2,3,  0,4), ncol=2, byrow=TRUE)
-#' rownames(M) = rownames(X) = cc("A, B, C, D, E")  # words
-#' colnames(M) = colnames(X) = cc("dim1, dim2")  # dimensions
-#'
-#' ggplot() +
-#'   geom_path(data=as.data.frame(M), aes(x=dim1, y=dim2),
-#'             color="red") +
-#'   geom_path(data=as.data.frame(X), aes(x=dim1, y=dim2),
-#'             color="blue") +
-#'   coord_equal()
-#'
-#' # Usage 1: input two matrices
-#' XR = orth_procrustes(M, X)
-#' XR  # aligned with M
-#'
-#' ggplot() +
-#'   geom_path(data=as.data.frame(XR), aes(x=dim1, y=dim2)) +
-#'   coord_equal()
-#'
-#' # Usage 2: input two `wordvec` objects
-#' M.wv = as_wordvec(M)
-#' X.wv = as_wordvec(X)
-#' XR.wv = orth_procrustes(M.wv, X.wv)
-#' XR.wv  # aligned with M.wv
-#'
-#' # M and X must have the same set and order of words
-#' # and the same number of word vector dimensions.
-#' # The function extracts only the intersection of words
-#' # and sorts them in the same order according to M.
-#'
-#' Y = rbind(X, X[rev(rownames(X)),])
-#' rownames(Y)[1:5] = cc("F, G, H, I, J")
-#' M.wv = as_wordvec(M)
-#' Y.wv = as_wordvec(Y)
-#' M.wv  # words: A, B, C, D, E
-#' Y.wv  # words: F, G, H, I, J, E, D, C, B, A
-#' YR.wv = orth_procrustes(M.wv, Y.wv)
-#' YR.wv  # aligned with M.wv, with the same order of words
-#'
-#' @export
-orth_procrustes = function(M, X) {
-  stopifnot(all.equal(class(M), class(X)))
-  class = "matrix"
-  if(is.wordvec(M)) {
-    class = "wordvec"
-    M = as_embed(M)
-    X = as_embed(X)
-  }
-  if(!is.matrix(M))
-    stop("M and X should be of class matrix or wordvec.", call.=FALSE)
-  ints = intersect(rownames(M), rownames(X))
-  XR = orthogonal_procrustes(M[ints,], X[ints,])
-  if(class=="wordvec")
-    XR = as_wordvec(XR)
-  return(XR)
-}
-
-
-orthogonal_procrustes = function(M, X) {
-  stopifnot(all.equal(dim(M), dim(X)))
-  MX = crossprod(M, X)  # = t(M) %*% X
-  svdMX = svd(MX)
-  R = tcrossprod(svdMX$v, svdMX$u)  # = svdMX$v %*% t(svdMX$u)
-  XR = X %*% R
-  colnames(XR) = colnames(X)
-  # attr(XR, "Rotation") = R
-  return(XR)
-}
-
-
 #### Get Word Vectors ####
 
 
-#' Extract the word vector of a single word.
+#' Extract word vector(s).
 #'
-#' @inheritParams data_wordvec_normalize
-#' @param word Word string (a single word).
+#' Extract word vector(s), using either a list of words or a regular expression.
 #'
-#' @return
-#' A numeric vector of the word
-#' (or \code{NA} if the word does not appear in the data).
-#'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
-#'
-#' @seealso
-#' \code{\link{get_wordvecs}}
-#'
-#' \code{\link{plot_wordvec}}
-#'
-#' \code{\link{plot_wordvec_tSNE}}
-#'
-#' @examples
-#' d = as_wordvec(demodata, normalize=TRUE)
-#'
-#' v1 = get_wordvec(demodata, "China")  # raw vector
-#' v2 = get_wordvec(d, "China")  # normalized vector
-#' cor(v1, v2)
-#' cos_sim(v1, v2)
-#'
-#' @export
-get_wordvec = function(data, word) {
-  data = check_data_validity(data)
-  if(length(word)>1)
-    stop("Please use `get_wordvecs()` for more than one word.", call.=FALSE)
-  if(is.wordvec(data)) {
-    WORD = word
-    di = data[word %in% WORD]
-    if(nrow(di)==1) vec = di[[1, "vec"]] else vec = NA
-  }
-  if(is.embed(data)) {
-    id = which(word == rownames(data))
-    if(length(id)==1) vec = as.numeric(data[id,]) else vec = NA
-  }
-  return(vec)
-}
-
-
-#' Extract the word vectors of multiple words.
-#'
-#' Extract the word vectors of multiple words,
-#' using either wordlist (a vector of words; using \code{words})
-#' or regular expression (a pattern of words; using \code{pattern}).
-#' If both the \code{words} and \code{pattern} arguments are specified, \code{words} wins.
-#'
-#' @inheritParams data_wordvec_normalize
 #' @inheritParams data_wordvec_subset
+#' @param data A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
+#' \code{\link[PsychWordVec:as_embed]{embed}} (matrix),
+#' see \code{\link{data_wordvec_load}}.
 #' @param plot Generate a plot to illustrate the word vectors? Defaults to \code{FALSE}.
 #' @param plot.dims Dimensions to be plotted (e.g., \code{1:100}).
 #' Defaults to \code{NULL} (plot all dimensions).
@@ -1055,25 +803,25 @@ get_wordvec = function(data, word) {
 #' \url{https://psychbruce.github.io/WordVector_RData.pdf}
 #'
 #' @seealso
-#' \code{\link{get_wordvec}}
+#' \code{\link{data_wordvec_subset}}
 #'
 #' \code{\link{plot_wordvec}}
 #'
 #' \code{\link{plot_wordvec_tSNE}}
 #'
 #' @examples
-#' d = as_wordvec(demodata, normalize=TRUE)
+#' d = normalize(demodata)
 #'
-#' get_wordvecs(d, c("China", "Japan", "Korea"))
-#' get_wordvecs(d, cc(" China, Japan; Korea "))
+#' get_wordvec(d, c("China", "Japan", "Korea"))
+#' get_wordvec(d, cc(" China, Japan; Korea "))
 #'
 #' ## specify `pattern`:
-#' get_wordvecs(d, pattern="Chin[ae]|Japan|Korea")
+#' get_wordvec(d, pattern="Chin[ae]|Japan|Korea")
 #'
 #' ## plot word vectors:
-#' get_wordvecs(d, cc("China, Japan, Korea,
-#'                     Mac, Linux, Windows"),
-#'              plot=TRUE, plot.dims=1:100)
+#' get_wordvec(d, cc("China, Japan, Korea,
+#'                    Mac, Linux, Windows"),
+#'             plot=TRUE, plot.dims=1:100)
 #'
 #' \donttest{## a more complex example:
 #'
@@ -1098,7 +846,7 @@ get_wordvec = function(data, word) {
 #' dog
 #' ")
 #'
-#' dt = get_wordvecs(
+#' dt = get_wordvec(
 #'   d, words,
 #'   plot=TRUE,
 #'   plot.dims=1:100,
@@ -1116,7 +864,7 @@ get_wordvec = function(data, word) {
 #' unlink("wordvecs.png")  # delete file for code check
 #' }
 #' @export
-get_wordvecs = function(
+get_wordvec = function(
     data,
     words=NULL,
     pattern=NULL,
@@ -1134,6 +882,7 @@ get_wordvecs = function(
     attr(dt, "ggplot") = p
     print(p)
   }
+  gc()  # Garbage Collection: Free the Memory
   return(dt)
 }
 
@@ -1147,7 +896,7 @@ get_wordembed = function(x, words=NULL, pattern=NULL) {
 #'
 #' @param x Can be:
 #' \itemize{
-#'   \item{a \code{data.table} returned by \code{\link{get_wordvecs}}}
+#'   \item{a \code{data.table} returned by \code{\link{get_wordvec}}}
 #'   \item{a \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table)
 #'   or \code{\link[PsychWordVec:as_embed]{embed}} (matrix)
 #'   loaded by \code{\link{data_wordvec_load}}}
@@ -1166,27 +915,31 @@ get_wordembed = function(x, words=NULL, pattern=NULL) {
 #' \url{https://psychbruce.github.io/WordVector_RData.pdf}
 #'
 #' @seealso
+#' \code{\link{get_wordvec}}
+#'
+#' \code{\link{plot_similarity}}
+#'
 #' \code{\link{plot_wordvec_tSNE}}
 #'
 #' @examples
-#' d = as_wordvec(demodata, normalize=TRUE)
+#' d = normalize(demodata)
 #'
 #' plot_wordvec(d[1:10])
 #' plot_wordvec(as_embed(d[1:10]))
 #'
-#' \donttest{dt = get_wordvecs(d, cc("king, queen, man, woman"))
+#' \donttest{dt = get_wordvec(d, cc("king, queen, man, woman"))
 #' dt[, QUEEN := king - man + woman]
 #' dt[, QUEEN := QUEEN / sqrt(sum(QUEEN^2))]  # normalize
 #' names(dt)[5] = "king - man + woman"
 #' plot_wordvec(dt[, c(1,3,4,5,2)], dims=1:50)
 #'
-#' dt = get_wordvecs(d, cc("boy, girl, he, she"))
+#' dt = get_wordvec(d, cc("boy, girl, he, she"))
 #' dt[, GIRL := boy - he + she]
 #' dt[, GIRL := GIRL / sqrt(sum(GIRL^2))]  # normalize
 #' names(dt)[5] = "boy - he + she"
 #' plot_wordvec(dt[, c(1,3,4,5,2)], dims=1:50)
 #'
-#' dt = get_wordvecs(d, cc("
+#' dt = get_wordvec(d, cc("
 #'   male, man, boy, he, his,
 #'   female, woman, girl, she, her"))
 #'
@@ -1293,9 +1046,9 @@ plot_wordvec = function(
 #' \code{\link{plot_wordvec}}
 #'
 #' @examples
-#' d = data_wordvec_normalize(demodata)
+#' d = normalize(demodata)
 #'
-#' dt = get_wordvecs(d, cc("
+#' dt = get_wordvec(d, cc("
 #'   man, woman,
 #'   king, queen,
 #'   China, Beijing,
@@ -1392,76 +1145,7 @@ plot_wordvec_tSNE = function(
 
 #' Calculate the sum vector of multiple words.
 #'
-#' @inheritParams most_similar
-#'
-#' @return
-#' Normalized sum vector.
-#'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
-#'
-#' @seealso
-#' \code{\link{most_similar}}
-#'
-#' \code{\link{dict_expand}}
-#'
-#' \code{\link{dict_reliability}}
-#'
-#' @examples
-#' sum_wordvec(demodata, ~ king - man + woman)
-#'
-#' @export
-sum_wordvec = function(data, x=NULL, verbose=TRUE) {
-  embed = force_normalize(as_embed(data), verbose)  # pre-normalized
-  if(is.null(x)) {
-    sum.vec = colSums(embed)
-    sum.vec = sum.vec / sqrt(sum(sum.vec^2))  # post-normalized
-    attr(sum.vec, "formula") = "<all>"
-    attr(sum.vec, "x.words") = "<all>"
-    return(sum.vec)
-  }
-
-  if(inherits(x, "character")) {
-    ft = paste(x, collapse=" + ")
-    positive = x
-    negative = character()
-  } else if(inherits(x, "formula")) {
-    ft = as.character(x[2])
-    xt = str_replace_all(ft, "`", "")
-    xts = str_split(xt, " (?=[+-])", simplify=TRUE)[1,]
-    positive = str_remove(str_subset(xts, "^\\-", negate=TRUE), "\\+ *")
-    negative = str_remove(str_subset(xts, "^\\-"), "\\- *")
-    x = c(positive, negative)
-  } else {
-    stop("`x` must be a character vector or an R formula!", call.=FALSE)
-  }
-
-  embed.pos = get_wordembed(embed, words=positive)
-  embed.neg = get_wordembed(embed, words=negative)
-  if(length(negative) == 0)
-    sum.vec = colSums(embed.pos)
-  else
-    sum.vec = colSums(embed.pos) - colSums(embed.neg)
-  sum.vec = sum.vec / sqrt(sum(sum.vec^2))  # post-normalized
-  attr(sum.vec, "formula") = ft
-  attr(sum.vec, "x.words") = x
-  return(sum.vec)
-}
-
-
-#### Similarity ####
-
-
-#' Find the Top-N most similar words.
-#'
-#' Find the Top-N most similar words, which replicates the results produced
-#' by the Python \code{gensim} module \code{most_similar()} function.
-#' (Exact replication of \code{gensim} requires the same word vectors data,
-#' not the \code{demodata} used here in examples.)
-#'
 #' @inheritParams get_wordvec
-#' @inheritParams data_transform
 #' @param x Can be:
 #' \itemize{
 #'   \item{\code{NULL}: use the sum of all word vectors in \code{data}}
@@ -1485,124 +1169,137 @@ sum_wordvec = function(data, x=NULL, verbose=TRUE) {
 #'
 #'   \code{~ Beijing - China + Japan}}
 #' }
-#' @param topn Top-N most similar words. Defaults to \code{10}.
-#' @param above Defaults to \code{NULL}. Can be:
-#' \itemize{
-#'   \item{a threshold value to find all words with cosine similarities
-#'   higher than this value}
-#'   \item{a critical word to find all words with cosine similarities
-#'   higher than that with this critical word}
-#' }
-#' If both \code{topn} and \code{above} are specified, \code{above} wins.
-#' @param keep Keep words specified in \code{x} in results?
-#' Defaults to \code{FALSE}.
 #'
 #' @return
-#' A \code{data.table} with the most similar words and their cosine similarities.
-#' The row number of each word in the raw data is also returned,
-#' which may help determine the relative word frequency in some cases.
-#'
-#' Two attributes are appended to the returned \code{data.table} (see examples):
-#' \code{wordvec} and \code{wordvec.formula}.
-#' Users may extract them for further use.
+#' Normalized sum vector.
 #'
 #' @section Download:
 #' Download pre-trained word vectors data (\code{.RData}):
 #' \url{https://psychbruce.github.io/WordVector_RData.pdf}
 #'
 #' @seealso
-#' \code{\link{sum_wordvec}}
+#' \code{\link{normalize}}
+#'
+#' \code{\link{most_similar}}
 #'
 #' \code{\link{dict_expand}}
 #'
 #' \code{\link{dict_reliability}}
 #'
-#' \code{\link{cosine_similarity}}
-#'
-#' \code{\link{pair_similarity}}
-#'
-#' \code{\link{plot_similarity}}
-#'
-#' \code{\link{tab_similarity}}
-#'
 #' @examples
-#' d = as_wordvec(demodata, normalize=TRUE)
+#' sum_wordvec(normalize(demodata), ~ king - man + woman)
 #'
-#' most_similar(d)
-#' most_similar(d, "China")
-#' most_similar(d, c("king", "queen"))
-#' most_similar(d, cc(" king , queen ; man | woman "))
-#'
-#' \donttest{# the same as above:
-#' most_similar(d, ~ China)
-#' most_similar(d, ~ king + queen)
-#' most_similar(d, ~ king + queen + man + woman)
-#'
-#' most_similar(d, ~ boy - he + she)
-#' most_similar(d, ~ Jack - he + she)
-#' most_similar(d, ~ Rose - she + he)
-#'
-#' most_similar(d, ~ king - man + woman)
-#' most_similar(d, ~ Tokyo - Japan + China)
-#' most_similar(d, ~ Beijing - China + Japan)
-#'
-#' most_similar(d, "China", above=0.7)
-#' most_similar(d, "China", above="Shanghai")
-#'
-#' # automatically normalized for more accurate results
-#' ms = most_similar(demodata, ~ king - man + woman)
-#' ms
-#' str(ms)
-#' }
 #' @export
-most_similar = function(
-    data,
-    x=NULL,
-    topn=10,
-    above=NULL,
-    keep=FALSE,
-    verbose=TRUE
-) {
-  embed = force_normalize(as_embed(data), verbose)
-  sum.vec = sum_wordvec(embed, x)
-  x = attr(sum.vec, "x.words")
-  f = attr(sum.vec, "formula")
-  cos.sim = embed %*% sum.vec  # faster
-  ms = data.table(
-    word = rownames(embed),
-    cos_sim = as.numeric(cos.sim),
-    row_id = 1:nrow(embed)
-  )
-  word = cos_sim = NULL
-  if(keep==FALSE)
-    ms = ms[!word %in% x]
-  if(is.null(above)) {
-    ms = ms[order(-cos_sim)][1:topn]
-  } else if(is.numeric(above)) {
-    ms = ms[order(-cos_sim)][cos_sim >= above]
-  } else if(is.character(above)) {
-    ms = ms[order(-cos_sim)][cos_sim >= cos.sim[above,]]
+sum_wordvec = function(data, x=NULL, verbose=TRUE) {
+  data = force_normalize(as_embed(data), verbose)  # pre-normalized
+
+  if(is.null(x)) {
+    sum.vec = colSums(data)
+    sum.vec = sum.vec / sqrt(sum(sum.vec^2))  # post-normalized
+    attr(sum.vec, "formula") = "<all>"
+    attr(sum.vec, "x.words") = "<all>"
+    return(sum.vec)
+  }
+
+  if(inherits(x, "character")) {
+    ft = paste(x, collapse=" + ")
+    positive = x
+    negative = character()
+  } else if(inherits(x, "formula")) {
+    ft = as.character(x[2])
+    xt = str_replace_all(ft, "`", "")
+    xts = str_split(xt, " (?=[+-])", simplify=TRUE)[1,]
+    positive = str_remove(str_subset(xts, "^\\-", negate=TRUE), "\\+ *")
+    negative = str_remove(str_subset(xts, "^\\-"), "\\- *")
+    x = c(positive, negative)
   } else {
-    stop("`above` must be a numeric value or a character string.", call.=FALSE)
+    stop("`x` must be a character vector or an R formula!", call.=FALSE)
   }
-  gc()  # Garbage Collection: Free the Memory
-  attr(ms, "sum.vec") = sum.vec
-  attr(ms, "sum.vec.formula") = f
-  if(verbose) {
-    Print("<<cyan [Word Vector]>> =~ {f}")
-    message("(normalized to unit length)")
-  }
-  return(ms)
+
+  embed.pos = get_wordembed(data, words=positive)
+  embed.neg = get_wordembed(data, words=negative)
+  if(length(negative) == 0)
+    sum.vec = colSums(embed.pos)
+  else
+    sum.vec = colSums(embed.pos) - colSums(embed.neg)
+  sum.vec = sum.vec / sqrt(sum(sum.vec^2))  # post-normalized
+  attr(sum.vec, "formula") = ft
+  attr(sum.vec, "x.words") = x
+  return(sum.vec)
 }
 
 
-#' Compute cosine similarity/distance for a pair of words.
+#### Similarity ####
+
+
+#' Cosine similarity/distance between two vectors.
+#'
+#' @details
+#' Cosine similarity =
+#'
+#' \code{sum(v1 * v2) / ( sqrt(sum(v1^2)) * sqrt(sum(v2^2)) )}
+#'
+#' Cosine distance =
+#'
+#' \code{1 - cosine_similarity(v1, v2)}
+#'
+#' @param v1,v2 Numeric vector (of the same length).
+#' @param distance Compute cosine distance instead?
+#' Defaults to \code{FALSE} (cosine similarity).
+#'
+#' @return A value of cosine similarity/distance.
+#'
+#' @seealso
+#' \code{\link{pair_similarity}}
+#'
+#' \code{\link{tab_similarity}}
+#'
+#' \code{\link{most_similar}}
+#'
+#' @examples
+#' cos_sim(v1=c(1,1,1), v2=c(2,2,2))  # 1
+#' cos_sim(v1=c(1,4,1), v2=c(4,1,1))  # 0.5
+#' cos_sim(v1=c(1,1,0), v2=c(0,0,1))  # 0
+#'
+#' cos_dist(v1=c(1,1,1), v2=c(2,2,2))  # 0
+#' cos_dist(v1=c(1,4,1), v2=c(4,1,1))  # 0.5
+#' cos_dist(v1=c(1,1,0), v2=c(0,0,1))  # 1
+#'
+#' @export
+cosine_similarity = function(v1, v2, distance=FALSE) {
+  if(length(v1) != length(v2)) stop("v1 and v2 must have equal length!", call.=FALSE)
+  cos_sim = sum(v1 * v2) / ( sqrt(sum(v1^2)) * sqrt(sum(v2^2)) )
+  if(distance)
+    return(1 - cos_sim)
+  else
+    return(cos_sim)
+}
+
+
+#' @rdname cosine_similarity
+#' @export
+cos_sim = function(v1, v2) {
+  cosine_similarity(v1, v2, distance=FALSE)
+}
+
+
+#' @rdname cosine_similarity
+#' @export
+cos_dist = function(v1, v2) {
+  cosine_similarity(v1, v2, distance=TRUE)
+}
+
+
+#' Compute a matrix of cosine similarity/distance of word pairs.
 #'
 #' @inheritParams cosine_similarity
 #' @inheritParams get_wordvec
-#' @param word1,word2 Word string (a single word).
+#' @inheritParams data_wordvec_subset
+#' @param words1,words2 [Option 3]
+#' Two sets of words for only n1 * n2 word pairs. See examples.
 #'
-#' @return A value of cosine similarity/distance.
+#' @return
+#' A matrix of pairwise cosine similarity/distance.
 #'
 #' @section Download:
 #' Download pre-trained word vectors data (\code{.RData}):
@@ -1618,28 +1315,47 @@ most_similar = function(
 #' \code{\link{most_similar}}
 #'
 #' @examples
-#' pair_similarity(demodata, "China", "Chinese")
+#' pair_similarity(demodata, c("China", "Chinese"))
+#'
+#' pair_similarity(demodata, pattern="^Chi")
+#'
+#' pair_similarity(demodata,
+#'                 words1=c("China", "Chinese"),
+#'                 words2=c("Japan", "Japanese"))
 #'
 #' @export
 pair_similarity = function(
     data,
-    word1,
-    word2,
+    words=NULL,
+    pattern=NULL,
+    words1=NULL,
+    words2=NULL,
     distance=FALSE
 ) {
-  embed = get_wordembed(data, c(word1, word2))
-  cosine_similarity(embed[1,], embed[2,], distance=distance)
+  if(is.null(words1) & is.null(words2)) {
+    data = as_embed(data)
+    embed = force_normalize(get_wordembed(data, words, pattern), verbose=FALSE)
+    if(distance)
+      return(1 - tcrossprod(embed, embed))
+    else
+      return(tcrossprod(embed, embed))
+  } else {
+    data = as_embed(data)
+    embed1 = force_normalize(get_wordembed(data, words1), verbose=FALSE)
+    embed2 = force_normalize(get_wordembed(data, words2), verbose=FALSE)
+    if(distance)
+      return(1 - tcrossprod(embed1, embed2))
+    else
+      return(tcrossprod(embed1, embed2))
+  }
 }
 
 
 #' Tabulate cosine similarity/distance of word pairs.
 #'
-#' @describeIn tab_similarity Tabulate data for all word pairs.
-#'
-#' @inheritParams cosine_similarity
-#' @inheritParams get_wordvecs
-#' @param unique Word pairs: unique pairs (\code{TRUE})
-#' or full pairs with duplicates (\code{FALSE}; default).
+#' @inheritParams pair_similarity
+#' @param unique Return unique word pairs (\code{TRUE})
+#' or all pairs with duplicates (\code{FALSE}; default).
 #'
 #' @return
 #' A \code{data.table} of words, word pairs,
@@ -1672,61 +1388,39 @@ pair_similarity = function(
 #' tab_similarity(demodata, cc("Beijing, China, Tokyo, Japan"),
 #'                unique=TRUE)
 #'
-#' ## only n1 * n2 word pairs crossing two sets of words w1 & w2
-#' w1 = cc("king, queen")
-#' w2 = cc("man, woman")
-#' tab_similarity_cross(demodata, w1, w2)
+#' ## only n1 * n2 word pairs across two sets of words
+#' tab_similarity(demodata,
+#'                words1=cc("king, queen, King, Queen"),
+#'                words2=cc("man, woman"))
 #'
 #' @export
 tab_similarity = function(
     data,
     words=NULL,
     pattern=NULL,
+    words1=NULL,
+    words2=NULL,
     unique=FALSE,
     distance=FALSE
 ) {
-  if(!is.null(words) & !is.null(pattern))
-    stop("You may use `tab_similarity_cross()` instead.", call.=FALSE)
-  embed = get_wordembed(data, words, pattern)
-  words.valid = rownames(embed)
+  mat = pair_similarity(data, words, pattern, words1, words2, distance)
+  word1 = rep(rownames(mat), each=ncol(mat))
+  word2 = rep(colnames(mat), times=nrow(mat))
+  dt = data.table(
+    word1 = word1,
+    word2 = word2,
+    wordpair = paste0(word1, "-", word2),
+    cos_sim = as.numeric(t(mat))
+  )
+  if(distance) names(dt)[4] = "cos_dist"
   if(unique) {
-    words.mat = utils::combn(words.valid, 2)
-    dts = data.table(
-      word1 = words.mat[1,],
-      word2 = words.mat[2,]
-    )
+    if(is.null(words1) & is.null(words2))
+      return(unique(dt[as.logical(lower.tri(mat))][word1!=word2], by="wordpair"))
+    else
+      return(unique(dt[word1!=word2], by="wordpair"))
   } else {
-    dts = as.data.table(expand.grid(
-      word2 = words.valid,
-      word1 = words.valid
-    )[c("word1", "word2")])
+    return(dt[word1!=word2])
   }
-  word1 = word2 = wordpair = NULL
-  dts[, wordpair := paste0(word1, "-", word2)]
-  dts$cos_sim = sapply(1:nrow(dts), function(i) {
-    cosine_similarity(embed[dts[[i, 1]],],
-                      embed[dts[[i, 2]],],
-                      distance=distance)
-  })
-  if(distance) names(dts)[4] = "cos_dist"
-  return(dts)
-}
-
-
-#' @describeIn tab_similarity Tabulate data for only n1 * n2 word pairs.
-#'
-#' @param words1,words2 [Used in \code{tab_similarity_cross}]
-#' Two sets of words for computing similarities of n1 * n2 word pairs.
-#'
-#' @export
-tab_similarity_cross = function(
-    data,
-    words1,
-    words2,
-    distance=FALSE
-) {
-  word1 = word2 = NULL
-  tab_similarity(data, c(words1, words2))[word1 %in% words1 & word2 %in% words2]
 }
 
 
@@ -1782,7 +1476,13 @@ tab_similarity_cross = function(
 #'                 order="hclust",
 #'                 hclust.n=2)
 #'
-#' w2 = cc("China, Chinese,
+#' plot_similarity(
+#'   demodata,
+#'   words1=cc("man, woman, king, queen"),
+#'   words2=cc("he, she, boy, girl, father, mother")
+#' )
+#'
+#' \donttest{w2 = cc("China, Chinese,
 #'          Japan, Japanese,
 #'          Korea, Korean,
 #'          man, woman, boy, girl,
@@ -1796,12 +1496,14 @@ tab_similarity_cross = function(
 #'                 file="plot.png")
 #'
 #' unlink("plot.png")  # delete file for code check
-#'
+#' }
 #' @export
 plot_similarity = function(
     data,
     words=NULL,
     pattern=NULL,
+    words1=NULL,
+    words2=NULL,
     label="auto",
     value.color=NULL,
     value.percent=FALSE,
@@ -1818,14 +1520,7 @@ plot_similarity = function(
     dpi=500,
     ...
 ) {
-  tab = tab_similarity(data=data,
-                       words=words,
-                       pattern=pattern,
-                       unique=FALSE,
-                       distance=FALSE)
-  words = unique(tab$word1)
-  mat = matrix(tab[[4]], nrow=length(words))
-  rownames(mat) = colnames(mat) = words
+  mat = pair_similarity(data, words, pattern, words1, words2)
   if(label=="auto") label = ifelse(length(words)<20, TRUE, FALSE)
 
   if(!is.null(file)) {
@@ -1851,6 +1546,131 @@ plot_similarity = function(
   }
 
   invisible(mat)
+}
+
+
+#' Find the Top-N most similar words.
+#'
+#' Find the Top-N most similar words, which replicates the results produced
+#' by the Python \code{gensim} module \code{most_similar()} function.
+#' (Exact replication of \code{gensim} requires the same word vectors data,
+#' not the \code{demodata} used here in examples.)
+#'
+#' @inheritParams get_wordvec
+#' @inheritParams sum_wordvec
+#' @inheritParams data_transform
+#' @param topn Top-N most similar words. Defaults to \code{10}.
+#' @param above Defaults to \code{NULL}. Can be:
+#' \itemize{
+#'   \item{a threshold value to find all words with cosine similarities
+#'   higher than this value}
+#'   \item{a critical word to find all words with cosine similarities
+#'   higher than that with this critical word}
+#' }
+#' If both \code{topn} and \code{above} are specified, \code{above} wins.
+#' @param keep Keep words specified in \code{x} in results?
+#' Defaults to \code{FALSE}.
+#' @param row.id Return the row number of each word? Defaults to \code{TRUE},
+#' which may help determine the relative word frequency in some cases.
+#'
+#' @return
+#' A \code{data.table} with the most similar words and their cosine similarities.
+#'
+#' @section Download:
+#' Download pre-trained word vectors data (\code{.RData}):
+#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#'
+#' @seealso
+#' \code{\link{sum_wordvec}}
+#'
+#' \code{\link{dict_expand}}
+#'
+#' \code{\link{dict_reliability}}
+#'
+#' \code{\link{cosine_similarity}}
+#'
+#' \code{\link{pair_similarity}}
+#'
+#' \code{\link{plot_similarity}}
+#'
+#' \code{\link{tab_similarity}}
+#'
+#' @examples
+#' d = normalize(demodata)
+#'
+#' most_similar(d)
+#' most_similar(d, "China")
+#' most_similar(d, c("king", "queen"))
+#' most_similar(d, cc(" king , queen ; man | woman "))
+#'
+#' \donttest{# the same as above:
+#' most_similar(d, ~ China)
+#' most_similar(d, ~ king + queen)
+#' most_similar(d, ~ king + queen + man + woman)
+#'
+#' most_similar(d, ~ boy - he + she)
+#' most_similar(d, ~ Jack - he + she)
+#' most_similar(d, ~ Rose - she + he)
+#'
+#' most_similar(d, ~ king - man + woman)
+#' most_similar(d, ~ Tokyo - Japan + China)
+#' most_similar(d, ~ Beijing - China + Japan)
+#'
+#' most_similar(d, "China", above=0.7)
+#' most_similar(d, "China", above="Shanghai")
+#'
+#' # automatically normalized for more accurate results
+#' ms = most_similar(demodata, ~ king - man + woman)
+#' ms
+#' str(ms)
+#' }
+#' @export
+most_similar = function(
+    data,
+    x=NULL,
+    topn=10,
+    above=NULL,
+    keep=FALSE,
+    row.id=TRUE,
+    verbose=TRUE
+) {
+  embed = force_normalize(as_embed(data), verbose)
+  rm(data)
+  sum.vec = sum_wordvec(embed, x)
+  x = attr(sum.vec, "x.words")
+  f = attr(sum.vec, "formula")
+  cos.sim = embed %*% sum.vec  # faster
+  cos.sim = cos.sim[order(cos.sim, decreasing=TRUE),]
+  if(keep==FALSE)
+    cos.sim = cos.sim[which(!names(cos.sim) %in% x)]
+  if(is.null(above)) {
+    cos.sim = cos.sim[1:topn]
+  } else if(is.numeric(above)) {
+    cos.sim = cos.sim[cos.sim >= above]
+  } else if(is.character(above)) {
+    cos.sim = cos.sim[cos.sim >= cos.sim[above]]
+  } else {
+    stop("`above` must be a numeric value or a character string.", call.=FALSE)
+  }
+  if(row.id) {
+    ms = data.table(
+      word = names(cos.sim),
+      cos_sim = cos.sim,
+      row_id = which(rownames(embed) %in% names(cos.sim))
+    )
+  } else {
+    ms = data.table(
+      word = names(cos.sim),
+      cos_sim = cos.sim
+    )
+  }
+  attr(ms, "sum.vec.formula") = f
+  if(verbose) {
+    Print("<<cyan [Word Vector]>> =~ {f}")
+    message("(normalized to unit length)")
+  }
+  gc()  # Garbage Collection: Free the Memory
+  return(ms)
 }
 
 
@@ -1908,22 +1728,24 @@ dict_expand = function(
     verbose=TRUE
 ) {
   embed = force_normalize(as_embed(data), verbose)
+  rm(data)
   cos_sim = NULL
   i = 1
   while(TRUE) {
-    ms = most_similar(data=embed, x=words, keep=FALSE,
-                      above=threshold, verbose=FALSE)
-    new.words = ms[cos_sim >= threshold]$word
+    new.words = most_similar(embed, words, above=threshold,
+                             row.id=FALSE, verbose=FALSE)$word
     n.new = length(new.words)
     words = unique(c(words, new.words))
     if(verbose) {
       cli::cli_h1("Iteration {i} (threshold of cosine similarity = {threshold})")
-      if(n.new>0)
+      if(n.new > 100)
+        cli::cli_alert_success("{n.new} more words appended: ... (omitted)")
+      else if(n.new > 0)
         cli::cli_alert_success("{n.new} more words appended: {.val {new.words}}")
       else
         cli::cli_alert_success("No more words appended. Successfully convergent.")
     }
-    if(n.new==0 | i>=iteration) break
+    if(n.new == 0 | i >= iteration) break
     i = i + 1
   }
   if(verbose) cli::cli_h2("Finish ({ifelse(n.new==0, 'convergent', 'NOT convergent')})")
@@ -1933,16 +1755,20 @@ dict_expand = function(
 
 #' Reliability analysis and PCA of a dictionary.
 #'
-#' Reliability analysis (Cronbach's \eqn{\alpha}) and
+#' Reliability analysis (Cronbach's \eqn{\alpha} and average cosine similarity) and
 #' Principal Component Analysis (PCA) of a dictionary,
 #' with \link[PsychWordVec:plot_similarity]{visualization of cosine similarities}
 #' between words (ordered by the first principal component loading).
-#' Note that Cronbach's \eqn{\alpha} may be misleading
+#' Note that Cronbach's \eqn{\alpha} can be misleading
 #' when the number of items/words is large.
 #'
 #' @inheritParams plot_similarity
+#' @param alpha Estimate the Cronbach's \eqn{\alpha}? Defaults to \code{TRUE}.
+#' Note that this can be \emph{misleading} and \emph{time-consuming}
+#' when the number of items/words is large.
 #' @param sort Sort items by the first principal component loading (PC1)?
 #' Defaults to \code{TRUE}.
+#' @param plot Visualize the cosine similarities? Defaults to \code{TRUE}.
 #' @param ... Other parameters passed to \code{\link{plot_similarity}}.
 #'
 #' @return
@@ -1987,7 +1813,7 @@ dict_expand = function(
 #' \code{\link{dict_expand}}
 #'
 #' @examples
-#' \donttest{d = data_wordvec_normalize(demodata)
+#' \donttest{d = normalize(demodata)
 #'
 #' dict = dict_expand(d, "king")
 #' dict_reliability(d, dict)
@@ -2003,23 +1829,34 @@ dict_reliability = function(
     data,
     words=NULL,
     pattern=NULL,
+    alpha=TRUE,
     sort=TRUE,
+    plot=TRUE,
     ...
 ) {
-  embed = force_normalize(as_embed(data))
+  embed = force_normalize(as_embed(data), verbose=TRUE)
+  rm(data)
   embed = get_wordembed(embed, words, pattern)
   sum.vec = sum_wordvec(embed)
   words.valid = rownames(embed)
   suppressMessages({
     suppressWarnings({
-      alpha = psych::alpha(t(embed))
+      if(alpha) {
+        alpha = psych::alpha(t(embed))
+      } else {
+        alpha = list()
+        alpha$total$raw_alpha = NA
+        alpha$item.stats["r.drop"] = NA
+        alpha$alpha.drop["raw_alpha"] = NA
+      }
       pca = psych::principal(t(embed), nfactors=1, scores=FALSE)
       n.factors = sum(pca$values>1)
       if(n.factors==1)
         pca.rotation = NULL
       else
-        pca.rotation = psych::principal(t(embed), nfactors=n.factors,
-                                        rotate="varimax", scores=FALSE)
+        pca.rotation = psych::principal(
+          t(embed), nfactors=n.factors,
+          rotate="varimax", scores=FALSE)
       cos.sim = embed %*% sum.vec  # faster
     })
   })
@@ -2027,6 +1864,7 @@ dict_reliability = function(
                 cos.sim,
                 alpha$item.stats["r.drop"],
                 alpha$alpha.drop["raw_alpha"])
+  items = as.data.frame(items)
   names(items) = c("pc.loading",
                    "sim.sumvec",
                    "item.rest.cor",
@@ -2035,10 +1873,10 @@ dict_reliability = function(
   if(sort)
     items = items[order(items$pc.loading, decreasing=TRUE),]
 
-  mat = plot_similarity(data,
-                        words.valid,
-                        order="FPC",
-                        ...)
+  if(plot)
+    mat = plot_similarity(embed, words.valid, order="FPC", ...)
+  else
+    mat = pair_similarity(embed, words.valid)
   cos.sims = mat[lower.tri(mat)]
 
   reliability = list(alpha=alpha$total$raw_alpha,
@@ -2048,6 +1886,7 @@ dict_reliability = function(
                      items=items,
                      cos.sim.mat=mat,
                      cos.sim=cos.sims)
+  gc()  # Garbage Collection: Free the Memory
   class(reliability) = "reliability"
   return(reliability)
 }
@@ -2270,27 +2109,27 @@ test_WEAT = function(
     else
       labels = list(T1="Target1", T2="Target2", A1="Attrib1", A2="Attrib2")
   }
-  embed = as_embed(data)
+  embed = force_normalize(as_embed(data), verbose=FALSE)
+  rm(data)
   if(use.pattern) {
     if(!is.null(T1)) {
       message(Glue("T1 ({labels$T1}):"))
-      T1 = rownames(get_wordembed(embed, pattern=T1))
+      T1 = vocab_str_subset(rownames(embed), T1)
     }
     if(!is.null(T2)) {
       message(Glue("T2 ({labels$T2}):"))
-      T2 = rownames(get_wordembed(embed, pattern=T2))
+      T2 = vocab_str_subset(rownames(embed), T2)
     }
     if(!is.null(A1)) {
       message(Glue("A1 ({labels$A1}):"))
-      A1 = rownames(get_wordembed(embed, pattern=A1))
+      A1 = vocab_str_subset(rownames(embed), A1)
     }
     if(!is.null(A2)) {
       message(Glue("A2 ({labels$A2}):"))
-      A2 = rownames(get_wordembed(embed, pattern=A2))
+      A2 = vocab_str_subset(rownames(embed), A2)
     }
   }
   words = c(T1, T2, A1, A2)
-  embed = force_normalize(embed, verbose=FALSE)
   embed = get_wordembed(embed, words)
   words.valid = rownames(embed)
 
@@ -2303,17 +2142,20 @@ test_WEAT = function(
   A2 = A2[A2 %in% words.valid]
 
   dweat = rbind(
-    expand.grid(Target=labels$T1, Attrib=labels$A1, T_word=T1, A_word=A1),
-    expand.grid(Target=labels$T1, Attrib=labels$A2, T_word=T1, A_word=A2),
-    expand.grid(Target=labels$T2, Attrib=labels$A1, T_word=T2, A_word=A1),
-    expand.grid(Target=labels$T2, Attrib=labels$A2, T_word=T2, A_word=A2))
-  attr(dweat, "out.attrs") = NULL
-  dweat$cos_sim = sapply(1:nrow(dweat), function(i) {
-    T_word = as.character(dweat[[i, 3]])
-    A_word = as.character(dweat[[i, 4]])
-    sum(embed[T_word,] * embed[A_word,])
-  })
-  dweat = as.data.table(dweat)
+    cbind(data.table(Target=labels$T1, Attrib=labels$A1),
+          tab_similarity(embed, words1=T1, words2=A1)),
+    cbind(data.table(Target=labels$T1, Attrib=labels$A2),
+          tab_similarity(embed, words1=T1, words2=A2)),
+    cbind(data.table(Target=labels$T2, Attrib=labels$A1),
+          tab_similarity(embed, words1=T2, words2=A1)),
+    cbind(data.table(Target=labels$T2, Attrib=labels$A2),
+          tab_similarity(embed, words1=T2, words2=A2))
+  )[,-5]  # delete "wordpair" column
+  names(dweat)[3:4] = c("T_word", "A_word")
+  dweat$Target = factor(dweat$Target, levels=c(labels$T1, labels$T2))
+  dweat$Attrib = factor(dweat$Attrib, levels=c(labels$A1, labels$A2))
+  dweat$T_word = factor(dweat$T_word, levels=c(T1, T2))
+  dweat$A_word = factor(dweat$A_word, levels=c(A1, A2))
 
   . = Target = Attrib = T_word = cos_sim = cos_sim_mean = cos_sim_diff = std_mean = std_diff = NULL
 
@@ -2426,6 +2268,7 @@ test_WEAT = function(
     eff=eff
   )
   if(!is.null(T2)) weat = c(weat, list(eff.ST=eff.ST))
+  gc()  # Garbage Collection: Free the Memory
   class(weat) = "weat"
   return(weat)
 }
@@ -2562,23 +2405,23 @@ test_RND = function(
   if(length(labels)==0)
     labels = list(T1="Target", A1="Attrib1", A2="Attrib2")
 
-  embed = as_embed(data)
+  embed = force_normalize(as_embed(data), verbose=FALSE)
+  rm(data)
   if(use.pattern) {
     if(!is.null(T1)) {
       message(Glue("T1 ({labels$T1}):"))
-      T1 = rownames(get_wordembed(embed, pattern=T1))
+      T1 = vocab_str_subset(rownames(embed), T1)
     }
     if(!is.null(A1)) {
       message(Glue("A1 ({labels$A1}):"))
-      A1 = rownames(get_wordembed(embed, pattern=A1))
+      A1 = vocab_str_subset(rownames(embed), A1)
     }
     if(!is.null(A2)) {
       message(Glue("A2 ({labels$A2}):"))
-      A2 = rownames(get_wordembed(embed, pattern=A2))
+      A2 = vocab_str_subset(rownames(embed), A2)
     }
   }
   words = c(T1, A1, A2)
-  embed = force_normalize(embed, verbose=FALSE)
   embed = get_wordembed(embed, words)
   words.valid = rownames(embed)
 
@@ -2591,17 +2434,13 @@ test_RND = function(
 
   # v1 = rowMeans(dt[, A1, with=FALSE])  # average vector for A1
   # v2 = rowMeans(dt[, A2, with=FALSE])  # average vector for A2
-  v1 = colMeans(embed[A1,])  # average vector for A1
-  v2 = colMeans(embed[A2,])  # average vector for A2
+  m1 = matrix(rep(colMeans(embed[A1,]), length(T1)),
+              nrow=length(T1), byrow=TRUE)
+  m2 = matrix(rep(colMeans(embed[A2,]), length(T1)),
+              nrow=length(T1), byrow=TRUE)
   drnd = data.table(T_word = T1)
-  drnd$norm_dist_A1 = sapply(1:length(T1), function(i) {
-    vm = embed[T1[i],]
-    sqrt(sum((vm - v1)^2))
-  })
-  drnd$norm_dist_A2 = sapply(1:length(T1), function(i) {
-    vm = embed[T1[i],]
-    sqrt(sum((vm - v2)^2))
-  })
+  drnd$norm_dist_A1 = sqrt(rowSums( (embed[T1,]-m1)^2 ))
+  drnd$norm_dist_A2 = sqrt(rowSums( (embed[T1,]-m2)^2 ))
   drnd$rnd = drnd$norm_dist_A1 - drnd$norm_dist_A2
   drnd$closer_to = ifelse(drnd$rnd < 0, labels$A1, labels$A2)
 
@@ -2637,6 +2476,7 @@ test_RND = function(
     eff=eff,
     eff.interpretation=interp
   )
+  gc()  # Garbage Collection: Free the Memory
   class(rnd) = "rnd"
   return(rnd)
 }
@@ -2675,476 +2515,131 @@ print.rnd = function(x, digits=3, ...) {
 }
 
 
-#### Train Static Word Vectors ####
+#### Orthogonal Procrustes ####
 
 
-## Default UTF-8 separators used to split words and sentences.
-##
-## Used only in \code{\link{train_wordvec}}.
-##
-## @return
-## A character vector of length 2:
-## (1) the first element indicates how to split words and
-## (2) the second element indicates how to split sentences.
-##
-## @examples
-## utf8_split_default()
-utf8_split_default = function() {
-  c(paste0(" \n,.-?!:;/\"#$%&'()*+<=>@[]\\^_`{|}~\t\v\f\r",
-           "\u3001\u3002\uff01\uff02\uff03\uff04\uff05\uff06\uff07\uff08\uff09\uff0a\uff0b\uff0c\uff0d\uff0e\uff0f",
-           "\uff1a\uff1b\uff1c\uff1d\uff1e\uff1f\u2014\u2018\u2019\u201c\u201d\u3010\u3011\u300a\u300b"),
-    "\n.?!\u3002\uff1f\uff01\u2026")
-}
+# adapted from cds::orthprocr()
+# same as psych::Procrustes() and pracma::procrustes()
 
 
-#' Tokenize raw text for training word embeddings.
+#' Orthogonal Procrustes solution for matrix alignment.
 #'
-#' @inheritParams data_transform
-#' @param text A character vector of text,
-#' or a file path on disk containing text.
-#' @param tokenizer Function used to tokenize the text.
-#' Defaults to \code{\link[text2vec:tokenizers]{text2vec::word_tokenizer}}.
-#' @param split Separator between tokens, only used when \code{simplify=TRUE}.
-#' Defaults to \code{" "}.
-#' @param remove Strings (in regular expression) to be removed from the text.
-#' Defaults to \code{"_|'|<br/>|<br />|e\\\\.g\\\\.|i\\\\.e\\\\."}.
-#' You may turn off this by specifying \code{remove=NULL}.
-#' @param encoding Text encoding (only used if \code{text} is a file).
-#' Defaults to \code{"UTF-8"}.
-#' @param simplify Return a character vector (\code{TRUE}) or a list of character vectors (\code{FALSE}).
-#' Defaults to \code{TRUE}.
+#' In order to compare word embeddings from different time periods,
+#' we must ensure that the embedding matrices are aligned to
+#' the same semantic space (coordinate axes).
+#' The Orthogonal Procrustes solution (Schönemann, 1966) is
+#' commonly used to align historical embeddings over time
+#' (Hamilton et al., 2016; Li et al., 2020).
+#' This function produces the same results as by
+#' \code{cds::orthprocr()},
+#' \code{psych::Procrustes()}, and
+#' \code{pracma::procrustes()}.
+#'
+#' @param M,X Two embedding matrices of the same size (rows and columns),
+#' or two \code{\link[PsychWordVec:as_wordvec]{wordvec}} objects
+#' as loaded by \code{\link{data_wordvec_load}} or
+#' transformed from matrices by \code{\link{as_wordvec}}.
+#' \itemize{
+#'   \item{\code{M} is the reference (anchor/baseline/target) matrix,
+#'         e.g., the embedding matrix learned at
+#'         the later year (\eqn{t + 1}).}
+#'   \item{\code{X} is the matrix to be transformed/rotated.}
+#' }
+#' \emph{Note}: The function automatically extracts only
+#' the intersection (overlapped part) of words in \code{M} and \code{X}
+#' and sorts them in the same order (according to \code{M}).
 #'
 #' @return
-#' \itemize{
-#'   \item{\code{simplify=TRUE}: A tokenized character vector,
-#'   with each element as a sentence.}
-#'   \item{\code{simplify=FALSE}: A list of tokenized character vectors,
-#'   with each element as a vector of tokens in a sentence.}
-#' }
-#'
-#' @seealso
-#' \code{\link{train_wordvec}}
-#'
-#' @examples
-#' txt1 = c(
-#'   "I love natural language processing (NLP)!",
-#'   "I've been in this city for 10 years. I really like here!",
-#'   "However, my computer is not among the \"Top 10\" list."
-#' )
-#' tokenize(txt1, simplify=FALSE)
-#' tokenize(txt1) %>% cat(sep="\n----\n")
-#'
-#' txt2 = text2vec::movie_review$review[1:5]
-#' texts = tokenize(txt2)
-#'
-#' txt2[1]
-#' texts[1:20]  # all sentences in txt2[1]
-#'
-#' @export
-tokenize = function(
-    text,
-    tokenizer=text2vec::word_tokenizer,
-    split=" ",
-    remove="_|'|<br/>|<br />|e\\.g\\.|i\\.e\\.",
-    # '\\w+
-    encoding="UTF-8",
-    simplify=TRUE,
-    verbose=TRUE
-) {
-  ## Import text if necesssary
-  t0 = Sys.time()
-  if(length(text) == 1) {
-    if(file.exists(text)) {
-      if(verbose) Print("Reading text from file...")
-      text = readLines(text, encoding=encoding, warn=FALSE)
-      if(verbose) cli::cli_alert_success("Raw text corpus has been loaded (time cost = {dtime(t0, 'auto')})")
-    }
-  }
-
-  t0 = Sys.time()
-  split.sentence = "\\n|\\.|:|;|\\?|\\!|\u3002|\uff1f|\uff01|\u2026"
-  if(!is.null(remove)) text = str_remove_all(text, remove)
-  text = str_trim(unlist(strsplit(text, split.sentence)))
-  tokens = tokenizer(text)
-  texts = vapply(tokens, paste, collapse=split, FUN.VALUE=character(1))
-  texts = texts[texts!=""]
-  gc()
-  if(verbose) cli::cli_alert_success("Tokenized: {length(texts)} sentences (time cost = {dtime(t0, 'auto')})")
-  if(simplify)
-    return(texts)
-  else
-    return(tokens)
-}
-
-
-#' Train static word embeddings using the Word2Vec, GloVe, or FastText algorithm.
-#'
-#' Train static word embeddings using the
-#' \code{\link[word2vec:word2vec]{Word2Vec}},
-#' \code{\link[rsparse:GloVe]{GloVe}}, or
-#' \code{\link[fastTextR:ft_train]{FastText}} algorithm
-#' with multi-threading.
-#'
-#' @inheritParams data_transform
-#' @inheritParams data_wordvec_load
-#' @inheritParams tokenize
-#' @param method Training algorithm:
-#' \itemize{
-#'   \item{\code{"word2vec"} (default):
-#'   using the \code{\link[word2vec:word2vec]{word2vec}} package}
-#'   \item{\code{"glove"}:
-#'   using the \code{\link[rsparse:GloVe]{rsparse}} and
-#'   \code{\link[text2vec:text2vec]{text2vec}} packages}
-#'   \item{\code{"fasttext"}:
-#'   using the \code{\link[fastTextR:ft_train]{fastTextR}} package}
-#' }
-#' @param dims Number of dimensions of word vectors to be trained.
-#' Common choices include 50, 100, 200, 300, and 500.
-#' Defaults to \code{300}.
-#' @param window Window size (number of nearby words behind/ahead the current word).
-#' It defines how many surrounding words to be included in training:
-#' [window] words behind and [window] words ahead ([window]*2 in total).
-#' Defaults to \code{5}.
-#' @param min.freq Minimum frequency of words to be included in training.
-#' Words that appear less than this value of times will be excluded from vocabulary.
-#' Defaults to \code{5} (take words that appear at least five times).
-#' @param threads Number of CPU threads used for training.
-#' A modest value produces the fastest training.
-#' Too many threads are not always helpful.
-#' Defaults to \code{8}.
-#'
-#' @param model \strong{<Only for Word2Vec / FastText>}
-#'
-#' Learning model architecture:
-#' \itemize{
-#'   \item{\code{"skip-gram"} (default): Skip-Gram,
-#'   which predicts surrounding words given the current word}
-#'   \item{\code{"cbow"}: Continuous Bag-of-Words,
-#'   which predicts the current word based on the context}
-#' }
-#'
-#' @param loss \strong{<Only for Word2Vec / FastText>}
-#'
-#' Loss function (computationally efficient approximation):
-#' \itemize{
-#'   \item{\code{"ns"} (default): Negative Sampling}
-#'   \item{\code{"hs"}: Hierarchical Softmax}
-#' }
-#'
-#' @param negative \strong{<Only for Negative Sampling in Word2Vec / FastText>}
-#'
-#' Number of negative examples.
-#' Values in the range 5~20 are useful for small training datasets,
-#' while for large datasets the value can be as small as 2~5.
-#' Defaults to \code{5}.
-#'
-#' @param subsample \strong{<Only for Word2Vec / FastText>}
-#'
-#' Subsampling of frequent words (threshold for occurrence of words).
-#' Those that appear with higher frequency in the training data will be randomly down-sampled.
-#' Defaults to \code{0.0001} (\code{1e-04}).
-#'
-#' @param learning \strong{<Only for Word2Vec / FastText>}
-#'
-#' Initial (starting) learning rate, also known as alpha.
-#' Defaults to \code{0.05}.
-#'
-#' @param ngrams \strong{<Only for FastText>}
-#'
-#' Minimal and maximal ngram length.
-#' Defaults to \code{c(3, 6)}.
-#'
-#' @param x.max \strong{<Only for GloVe>}
-#'
-#' Maximum number of co-occurrences to use in the weighting function.
-#' Defaults to \code{10}.
-#'
-#' @param convergence \strong{<Only for GloVe>}
-#'
-#' Convergence tolerance for SGD iterations. Defaults to \code{-1}.
-#'
-#' @param stopwords \strong{<Only for Word2Vec / GloVe>}
-#'
-#' A character vector of stopwords to be excluded from training.
-#'
-#' @param encoding Text encoding. Defaults to \code{"UTF-8"}.
-#' @param tolower Convert all upper-case characters to lower-case?
-#' Defaults to \code{FALSE}.
-#' @param iteration Number of training iterations.
-#' More iterations makes a more precise model,
-#' but computational cost is linearly proportional to iterations.
-#' Defaults to \code{5} for Word2Vec and FastText
-#' while \code{10} for GloVe.
-#'
-#' @return
-#' A \code{wordvec} (data.table) with three variables:
-#' \code{word}, \code{vec}, \code{freq}.
-#'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
-#'
-#' @seealso
-#' \code{\link{tokenize}}
+#' A \code{matrix} or \code{wordvec} object of
+#' \code{X} after rotation, depending on the class of
+#' \code{M} and \code{X}.
 #'
 #' @references
-#' All-in-one package:
-#' \itemize{
-#'   \item{\url{https://CRAN.R-project.org/package=wordsalad}}
-#' }
-#' Word2Vec:
-#' \itemize{
-#'   \item{\url{https://code.google.com/archive/p/word2vec/}}
-#'   \item{\url{https://CRAN.R-project.org/package=word2vec}}
-#'   \item{\url{https://github.com/maxoodf/word2vec}}
-#' }
-#' GloVe:
-#' \itemize{
-#'   \item{\url{https://nlp.stanford.edu/projects/glove/}}
-#'   \item{\url{https://text2vec.org/glove.html}}
-#'   \item{\url{https://CRAN.R-project.org/package=text2vec}}
-#'   \item{\url{https://CRAN.R-project.org/package=rsparse}}
-#' }
-#' FastText:
-#' \itemize{
-#'   \item{\url{https://fasttext.cc/}}
-#'   \item{\url{https://CRAN.R-project.org/package=fastTextR}}
-#' }
+#' Hamilton, W. L., Leskovec, J., & Jurafsky, D. (2016).
+#' Diachronic word embeddings reveal statistical laws of semantic change.
+#' In \emph{Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics}
+#' (Vol. 1, pp. 1489--1501). Association for Computational Linguistics.
+#'
+#' Li, Y., Hills, T., & Hertwig, R. (2020).
+#' A brief history of risk. \emph{Cognition, 203}, 104344.
+#'
+#' Schönemann, P. H. (1966).
+#' A generalized solution of the orthogonal Procrustes problem.
+#' \emph{Psychometrika, 31}(1), 1--10.
+#'
+#' @seealso
+#' \code{\link{as_wordvec}} / \code{\link{as_embed}}
 #'
 #' @examples
-#' \donttest{review = text2vec::movie_review  # a data.frame'
-#' text = review$review
+#' M = matrix(c(0,0,  1,2,  2,0,  3,2,  4,0), ncol=2, byrow=TRUE)
+#' X = matrix(c(0,0, -2,1,  0,2, -2,3,  0,4), ncol=2, byrow=TRUE)
+#' rownames(M) = rownames(X) = cc("A, B, C, D, E")  # words
+#' colnames(M) = colnames(X) = cc("dim1, dim2")  # dimensions
 #'
-#' ## Note: All the examples train 50 dims for faster code check.
+#' ggplot() +
+#'   geom_path(data=as.data.frame(M), aes(x=dim1, y=dim2),
+#'             color="red") +
+#'   geom_path(data=as.data.frame(X), aes(x=dim1, y=dim2),
+#'             color="blue") +
+#'   coord_equal()
 #'
-#' ## Word2Vec (SGNS)
-#' dt1 = train_wordvec(
-#'   text,
-#'   method="word2vec",
-#'   model="skip-gram",
-#'   dims=50, window=5,
-#'   normalize=TRUE)
+#' # Usage 1: input two matrices
+#' XR = orth_procrustes(M, X)
+#' XR  # aligned with M
 #'
-#' dt1
-#' most_similar(dt1, "Ive")  # evaluate performance
-#' most_similar(dt1, ~ man - he + she, topn=5)  # evaluate performance
-#' most_similar(dt1, ~ boy - he + she, topn=5)  # evaluate performance
+#' ggplot() +
+#'   geom_path(data=as.data.frame(XR), aes(x=dim1, y=dim2)) +
+#'   coord_equal()
 #'
-#' ## GloVe
-#' dt2 = train_wordvec(
-#'   text,
-#'   method="glove",
-#'   dims=50, window=5,
-#'   normalize=TRUE)
+#' # Usage 2: input two `wordvec` objects
+#' M.wv = as_wordvec(M)
+#' X.wv = as_wordvec(X)
+#' XR.wv = orth_procrustes(M.wv, X.wv)
+#' XR.wv  # aligned with M.wv
 #'
-#' dt2
-#' most_similar(dt2, "Ive")  # evaluate performance
-#' most_similar(dt2, ~ man - he + she, topn=5)  # evaluate performance
-#' most_similar(dt2, ~ boy - he + she, topn=5)  # evaluate performance
+#' # M and X must have the same set and order of words
+#' # and the same number of word vector dimensions.
+#' # The function extracts only the intersection of words
+#' # and sorts them in the same order according to M.
 #'
-#' ## FastText
-#' dt3 = train_wordvec(
-#'   text,
-#'   method="fasttext",
-#'   model="skip-gram",
-#'   dims=50, window=5,
-#'   normalize=TRUE)
+#' Y = rbind(X, X[rev(rownames(X)),])
+#' rownames(Y)[1:5] = cc("F, G, H, I, J")
+#' M.wv = as_wordvec(M)
+#' Y.wv = as_wordvec(Y)
+#' M.wv  # words: A, B, C, D, E
+#' Y.wv  # words: F, G, H, I, J, E, D, C, B, A
+#' YR.wv = orth_procrustes(M.wv, Y.wv)
+#' YR.wv  # aligned with M.wv, with the same order of words
 #'
-#' dt3
-#' most_similar(dt3, "Ive")  # evaluate performance
-#' most_similar(dt3, ~ man - he + she, topn=5)  # evaluate performance
-#' most_similar(dt3, ~ boy - he + she, topn=5)  # evaluate performance
-#' }
 #' @export
-train_wordvec = function(
-    text,
-    method=c("word2vec", "glove", "fasttext"),
-    dims=300,
-    window=5,
-    min.freq=5,
-    threads=8,
-    model=c("skip-gram", "cbow"),
-    loss=c("ns", "hs"),
-    negative=5,
-    subsample=0.0001,
-    learning=0.05,
-    ngrams=c(3, 6),
-    x.max=10,
-    convergence=-1,
-    stopwords=character(0),
-    encoding="UTF-8",
-    tolower=FALSE,
-    normalize=FALSE,
-    iteration,
-    tokenizer,
-    remove,
-    file.save,
-    compress="bzip2",
-    verbose=TRUE
-) {
-  ## Initialize
-  method = match.arg(method)
-  model = match.arg(model)
-  loss = match.arg(loss)
-  if(dims < 0)
-    stop("`dims` must be a positive integer.", call.=FALSE)
-  if(missing(tokenizer))
-    tokenizer = text2vec::word_tokenizer
-  if(missing(remove))
-    remove = "_|'|<br/>|<br />|e\\.g\\.|i\\.e\\."  # see tokenize()
-  if(missing(iteration))
-    iteration = ifelse(method=="glove", 10, 5)
-  if(method=="glove") {
-    method.text = "GloVe"
-  } else {
-    method.text = paste0(
-      ifelse(method=="word2vec", "Word2Vec (", "FastText ("),
-      ifelse(model=="skip-gram",
-             ifelse(loss=="ns",
-                    "Skip-Gram with Negative Sampling",
-                    "Skip-Gram with Hierarchical Softmax"),
-             ifelse(loss=="ns",
-                    "Continuous Bag-of-Words with Negative Sampling",
-                    "Continuous Bag-of-Words with Hierarchical Softmax")),
-      ")")
+orth_procrustes = function(M, X) {
+  stopifnot(all.equal(class(M), class(X)))
+  class = "matrix"
+  if(is.wordvec(M)) {
+    class = "wordvec"
+    M = as_embed(M)
+    X = as_embed(X)
   }
+  if(!is.matrix(M))
+    stop("M and X should be of class matrix or wordvec.", call.=FALSE)
+  ints = intersect(rownames(M), rownames(X))
+  XR = orthogonal_procrustes(M[ints,], X[ints,])
+  if(class=="wordvec")
+    XR = as_wordvec(XR)
+  gc()  # Garbage Collection: Free the Memory
+  return(XR)
+}
 
-  ## Import text if necesssary
-  if(length(text) == 1) {
-    if(file.exists(text)) {
-      t0 = Sys.time()
-      if(verbose) Print("Reading text from file...")
-      text = readLines(text, encoding=encoding, warn=FALSE)
-      if(verbose) cli::cli_alert_success("Raw text corpus has been loaded (time cost = {dtime(t0, 'auto')})")
-    }
-  }
 
-  ## Tokenize text and count token/word frequency
-  split = ifelse(model=="word2vec", "\t", " ")
-  text = tokenize(text, tokenizer, split, remove, TRUE, verbose)  # Print()
-  if(tolower) text = tolower(text)
-  tokens = unlist(strsplit(text, split))
-  freq = as.data.table(table(tokens))
-  names(freq) = c("token", "freq")
-  if(verbose)
-    cli::cli_alert_success("Text corpus: {sum(nchar(tokens))} characters, {length(tokens)} tokens (roughly words)")
-
-  ## Train word vectors
-  t1 = Sys.time()
-  if(verbose) {
-    cli::cli_h1("Training model information")
-    Print("
-    <<cyan
-    - Method:      {method.text}
-    - Dimensions:  {dims}
-    - Window size: {window} ({window} words behind and {window} words ahead the current word)
-    - Subsampling: {ifelse(method=='glove', 'N/A', subsample)}
-    - Min. freq.:  {min.freq} occurrences in text
-    - Iterations:  {iteration} training iterations
-    - CPU threads: {threads}
-    >>
-    ")
-    cli::cli_h3("Training...")
-  }
-  gc()
-
-  ##---- Word2Vec ----##
-  if(method == "word2vec") {
-    model = word2vec::word2vec(
-      x = text,
-      type = model,
-      dim = dims,
-      window = window,
-      iter = iteration,
-      lr = learning,
-      hs = ifelse(loss == "hs", TRUE, FALSE),
-      negative = negative,
-      sample = subsample,
-      min_count = min.freq,
-      stopwords = stopwords,
-      threads = threads,
-      encoding = encoding
-    )
-    wv = as.matrix(model) %>% as_wordvec()
-  }
-
-  ##---- GloVe ----##
-  if(method == "glove") {
-    itoken = text2vec::itoken(text2vec::space_tokenizer(text))
-    vocab = text2vec::prune_vocabulary(
-      text2vec::create_vocabulary(
-        itoken, stopwords = stopwords),
-      term_count_min = min.freq)
-    tcm = text2vec::create_tcm(
-      # Term Co-occurence Matrix
-      itoken,
-      text2vec::vocab_vectorizer(vocab),
-      skip_grams_window = window)
-    model = rsparse::GloVe$new(rank = dims, x_max = x.max)
-    temp = utils::capture.output({
-      wv.main = model$fit_transform(
-        tcm,  # input: term co-occurence matrix
-        n_iter = iteration,  # number of SGD iterations
-        convergence_tol = convergence,  # convergence tolerance
-        n_threads = threads)
-    })
-    wv.context = model$components
-    wv = wv.main + t(wv.context)
-    wv = as_wordvec(wv)
-  }
-
-  ##---- FastText ----##
-  if(method == "fasttext") {
-    tmp_file_text = tempfile()
-    on.exit({
-      if(file.exists(tmp_file_text)) file.remove(tmp_file_text)
-    })
-    writeLines(text, tmp_file_text)
-    control = fastTextR::ft_control(
-      loss = loss,
-      learning_rate = learning,
-      word_vec_size = dims,
-      window_size = window,
-      epoch = iteration,
-      min_count = min.freq,
-      neg = negative,
-      min_ngram = ngrams[1],
-      max_ngram = ngrams[2],
-      nthreads = threads,
-      threshold = subsample)
-    model = fastTextR::ft_train(
-      file = tmp_file_text,
-      method = gsub("-", "", model),
-      control = control)
-    wv = as.matrix(model$word_vectors(model$words())) %>%
-      as_wordvec()
-  }
-
-  ## Order by word frequency
-  wv = left_join(wv, freq, by=c("word"="token"))
-  wv = wv[order(-freq), ][freq>=min.freq, ]
-  if(verbose) cli::cli_alert_success("Word vectors trained: {nrow(wv)} unique tokens (time cost = {dtime(t1, 'auto')})")
-
-  ## Normalize
-  if(normalize) wv = data_wordvec_normalize(wv, verbose)
-
-  ## Save
-  if(!missing(file.save)) {
-    t2 = Sys.time()
-    if(verbose) Print("\n\n\nCompressing and saving...")
-    compress = switch(compress,
-                      `1`="gzip",
-                      `2`="bzip2",
-                      `3`="xz",
-                      compress)
-    save(wv, file=file.save,
-         compress=compress,
-         compression_level=9)
-    if(verbose) cli::cli_alert_success("Saved to \"{file.save}\" (time cost = {dtime(t2, 'auto')})")
-  }
-
-  gc()
-  return(wv)
+orthogonal_procrustes = function(M, X) {
+  stopifnot(all.equal(dim(M), dim(X)))
+  MX = crossprod(M, X)  # = t(M) %*% X
+  svdMX = svd(MX)
+  R = tcrossprod(svdMX$v, svdMX$u)  # = svdMX$v %*% t(svdMX$u)
+  XR = X %*% R
+  colnames(XR) = colnames(X)
+  # attr(XR, "Rotation") = R
+  return(XR)
 }
 
 
