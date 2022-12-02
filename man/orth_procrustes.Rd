@@ -2,15 +2,14 @@
 % Please edit documentation in R/01-basic.R
 \name{orth_procrustes}
 \alias{orth_procrustes}
-\title{Orthogonal Procrustes solution for matrix alignment.}
+\title{Orthogonal Procrustes rotation for matrix alignment.}
 \usage{
 orth_procrustes(M, X)
 }
 \arguments{
 \item{M, X}{Two embedding matrices of the same size (rows and columns),
-or two \code{\link[PsychWordVec:as_wordvec]{wordvec}} objects
-as loaded by \code{\link{data_wordvec_load}} or
-transformed from matrices by \code{\link{as_wordvec}}.
+can be \code{\link[PsychWordVec:as_embed]{embed}}
+or \code{\link[PsychWordVec:as_wordvec]{wordvec}} objects.
 \itemize{
   \item{\code{M} is the reference (anchor/baseline/target) matrix,
         e.g., the embedding matrix learned at
@@ -33,6 +32,16 @@ the same semantic space (coordinate axes).
 The Orthogonal Procrustes solution (Schönemann, 1966) is
 commonly used to align historical embeddings over time
 (Hamilton et al., 2016; Li et al., 2020).
+
+Note that this kind of rotation \emph{does not} change the
+relative relationships between vectors in the space,
+and thus \emph{does not} affect semantic similarities or distances
+within each embedding matrix.
+But it does influence the semantic relationships between
+different embedding matrices, and thus would be necessary
+for some purposes such as the "semantic drift analysis"
+(e.g., Hamilton et al., 2016; Li et al., 2020).
+
 This function produces the same results as by
 \code{cds::orthprocr()},
 \code{psych::Procrustes()}, and
@@ -51,7 +60,7 @@ ggplot() +
             color="blue") +
   coord_equal()
 
-# Usage 1: input two matrices
+# Usage 1: input two matrices (can be `embed` objects)
 XR = orth_procrustes(M, X)
 XR  # aligned with M
 

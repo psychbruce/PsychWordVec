@@ -6,6 +6,7 @@
 
 -   Most functions now have been substantially enhanced for a faster speed, especially `tab_similarity()`, `most_similar()`, `dict_expand()`, `dict_reliability()`, `test_WEAT()`, `test_RND()`.
 -   `pair_similarity()` has been improved by using matrix manipulation `tcrossprod(embed, embed)` to compute cosine similarity, with `embed` normalized.
+-   `data_wordvec_load()` has got two wrapper functions `load_wordvec()` and `load_embed()` for faster use.
 -   `data_wordvec_normalize()` (deprecated) has been renamed as `normalize()`.
 -   `get_wordvecs()` (deprecated) has been integrated into `get_wordvec()`.
 -   `tab_similarity_cross()` (deprecated) has been integrated into `tab_similarity()`.

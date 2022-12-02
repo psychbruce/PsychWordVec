@@ -39,9 +39,9 @@ d = normalize(demodata)
 \seealso{
 \code{\link{as_wordvec}} / \code{\link{as_embed}}
 
-\code{\link{data_transform}}
+\code{\link{load_wordvec}} / \code{\link{load_embed}}
 
-\code{\link{data_wordvec_load}}
+\code{\link{data_transform}}
 
 \code{\link{data_wordvec_subset}}
 }

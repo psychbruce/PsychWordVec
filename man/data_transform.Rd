@@ -97,9 +97,9 @@ data_transform(file.load="cc.zh.300.vec",   # plain text file
 \seealso{
 \code{\link{as_wordvec}} / \code{\link{as_embed}}
 
-\code{\link{normalize}}
+\code{\link{load_wordvec}} / \code{\link{load_embed}}
 
-\code{\link{data_wordvec_load}}
+\code{\link{normalize}}
 
 \code{\link{data_wordvec_subset}}
 }

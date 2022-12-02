@@ -46,8 +46,9 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
 -   Word Embeddings Data Management and Transformation
     -   `as_embed()`: from `wordvec` (data.table) to `embed` (matrix)
     -   `as_wordvec()`: from `embed` (matrix) to `wordvec` (data.table)
+    -   `load_embed()`: load word embeddings data as `embed` (matrix)
+    -   `load_wordvec()`: load word embeddings data as `wordvec` (data.table)
     -   `data_transform()`: transform plain text word vectors to `wordvec` or `embed`
-    -   `data_wordvec_load()`: load transformed .RData file
 -   Word Vectors Extraction, Linear Operation, and Visualization
     -   `subset()`: extract a subset of `wordvec` and `embed`
     -   `normalize()`: normalize all word vectors to the unit length 1

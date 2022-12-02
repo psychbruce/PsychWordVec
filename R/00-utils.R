@@ -179,7 +179,7 @@ fixed_string = function(v) {
 valid_words_info = function(x) {
   ns = x$eff.label$words
   ls = paste0(unlist(x$eff.label$labels), " (",
-              names(x$eff.label$labels), ")")
+              names(x$eff.label$labels), ") valid")
   nf = length(x$words.not.found)
   nf = ifelse(nf==0, "", paste0("\n(", nf, " words not found)"))
   info = paste0(paste(paste(ns, ls, "words"), collapse="\n"), nf)

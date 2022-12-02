@@ -3,7 +3,7 @@
 \name{as_embed}
 \alias{as_embed}
 \alias{as_wordvec}
-\title{Word vectors data type: \code{wordvec} and \code{embed}.}
+\title{Word vectors data class: \code{wordvec} and \code{embed}.}
 \usage{
 as_embed(x, normalize = FALSE)
 
@@ -49,11 +49,11 @@ wordvec
 
 }
 \seealso{
+\code{\link{load_wordvec}} / \code{\link{load_embed}}
+
 \code{\link{normalize}}
 
 \code{\link{data_transform}}
-
-\code{\link{data_wordvec_load}}
 
 \code{\link{data_wordvec_subset}}
 }

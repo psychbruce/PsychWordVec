@@ -2,23 +2,32 @@
 % Please edit documentation in R/01-basic.R
 \name{data_wordvec_load}
 \alias{data_wordvec_load}
+\alias{load_wordvec}
+\alias{load_embed}
 \title{Load word vectors data (\code{wordvec} or \code{embed}) from ".RData" file.}
 \usage{
 data_wordvec_load(
-  file.load,
+  file,
   as = c("wordvec", "embed"),
   normalize = FALSE,
   verbose = TRUE
 )
+
+load_wordvec(file, normalize = TRUE)
+
+load_embed(file, normalize = TRUE)
 }
 \arguments{
-\item{file.load}{File name (must be .RData transformed by
-\code{\link{data_transform}}).}
+\item{file}{File name of .RData transformed by \code{\link{data_transform}}.
+Can also be an .RData file containing an embedding matrix with words as row names.}
 
 \item{as}{Load as
 \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
 \code{\link[PsychWordVec:as_embed]{embed}} (matrix).
-Defaults to the original class of the R object in \code{file.load}.}
+Defaults to the original class of the R object in \code{file}.
+The two wrapper functions \code{load_wordvec} and \code{load_embed}
+automatically reshape the data to the corresponding class and
+normalize all word vectors (for faster future use).}
 
 \item{normalize}{Normalize all word vectors to unit length?
 Defaults to \code{FALSE}. See \code{\link{normalize}}.}
@@ -38,6 +47,14 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
+d = demodata[1:200]
+save(d, file="demo.RData")
+d = load_wordvec("demo.Rdata")
+d
+d = load_embed("demo.Rdata")
+d
+unlink("demo.RData")  # delete file for code check
+
 \dontrun{
 # please first manually download the .RData file
 # (see https://psychbruce.github.io/WordVector_RData.pdf)
@@ -47,7 +64,8 @@ Download pre-trained word vectors data (\code{.RData}):
 # the following code cannot run unless you have the file
 library(bruceR)
 set.wd()
-d = data_wordvec_load("GloVe/glove_wiki_50d.RData")
+d = load_embed("../data-raw/GloVe/glove_wiki_50d.RData")
+d
 }
 
 }

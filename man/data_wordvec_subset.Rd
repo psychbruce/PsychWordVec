@@ -82,14 +82,14 @@ subset(demodata, pattern="Chin[ae]|Japan|Korea",
        file.save="subset.RData")
 
 ## load the subset:
-d.subset = data_wordvec_load("subset.RData")
+d.subset = load_wordvec("subset.RData")
 d.subset
 
 ## specify `x` as an .RData file and save with `file.save`:
 data_wordvec_subset("subset.RData",
                     words=c("China", "Chinese"),
                     file.save="new.subset.RData")
-d.new.subset = data_wordvec_load("new.subset.RData", as="embed")
+d.new.subset = load_wordvec("new.subset.RData", as="embed")
 d.new.subset
 
 unlink("subset.RData")  # delete file for code check
@@ -99,9 +99,9 @@ unlink("new.subset.RData")  # delete file for code check
 \seealso{
 \code{\link{as_wordvec}} / \code{\link{as_embed}}
 
+\code{\link{load_wordvec}} / \code{\link{load_embed}}
+
 \code{\link{get_wordvec}}
 
 \code{\link{data_transform}}
-
-\code{\link{data_wordvec_load}}
 }

@@ -33,7 +33,7 @@
   }
 
   ## Loaded Package
-  pkgs = c("dplyr", "stringr", "ggplot2", "data.table")
+  pkgs = c("data.table", "dplyr", "stringr", "ggplot2")
 
   suppressMessages({
     suppressWarnings({
@@ -45,12 +45,17 @@
   if(all(loaded)) {
     cli::cli_h1("PsychWordVec (v{inst.ver})")
     cn()
-    cli::cli_alert_success("Packages also loaded: dplyr, stringr, ggplot2, data.table")
+    cli::cli_alert_success("
+    Packages also loaded: {.pkg data.table, dplyr, stringr, ggplot2}
+    ")
     cn()
+    # cli::cli_text("
+    # {.href [Documentation](https://psychbruce.github.io/PsychWordVec)}
+    # | Download pre-trained word vectors:
+    # {.url https://psychbruce.github.io/WordVector_RData.pdf}
+    # ")
     cli::cli_text("
-    {.href [Documentation](https://psychbruce.github.io/PsychWordVec)}
-    | Download pre-trained word vectors:
-    {.url https://psychbruce.github.io/WordVector_RData.pdf}
+    Documentation: {.url https://psychbruce.github.io/PsychWordVec}
     ")
     cn()
   } else {
@@ -105,9 +110,9 @@
 #' @seealso
 #' \code{\link{as_wordvec}} / \code{\link{as_embed}}
 #'
-#' \code{\link{data_transform}}
+#' \code{\link{load_wordvec}} / \code{\link{load_embed}}
 #'
-#' \code{\link{data_wordvec_load}}
+#' \code{\link{data_transform}}
 #'
 #' \code{\link{data_wordvec_subset}}
 #'
@@ -144,7 +149,7 @@ force_normalize = function(x, verbose=TRUE) {
 }
 
 
-#' Word vectors data type: \code{wordvec} and \code{embed}.
+#' Word vectors data class: \code{wordvec} and \code{embed}.
 #'
 #' \code{PsychWordVec} uses two types of word vectors data:
 #' \code{wordvec} (data.table, with two variables \code{word} and \code{vec})
@@ -166,11 +171,11 @@ force_normalize = function(x, verbose=TRUE) {
 #' \url{https://psychbruce.github.io/WordVector_RData.pdf}
 #'
 #' @seealso
+#' \code{\link{load_wordvec}} / \code{\link{load_embed}}
+#'
 #' \code{\link{normalize}}
 #'
 #' \code{\link{data_transform}}
-#'
-#' \code{\link{data_wordvec_load}}
 #'
 #' \code{\link{data_wordvec_subset}}
 #'
@@ -398,9 +403,9 @@ rbind.wordvec = function(...) {
 #' @seealso
 #' \code{\link{as_wordvec}} / \code{\link{as_embed}}
 #'
-#' \code{\link{normalize}}
+#' \code{\link{load_wordvec}} / \code{\link{load_embed}}
 #'
-#' \code{\link{data_wordvec_load}}
+#' \code{\link{normalize}}
 #'
 #' \code{\link{data_wordvec_subset}}
 #'
@@ -512,12 +517,15 @@ data_transform = function(
 #'
 #' @inheritParams as_embed
 #' @inheritParams data_transform
-#' @param file.load File name (must be .RData transformed by
-#' \code{\link{data_transform}}).
+#' @param file File name of .RData transformed by \code{\link{data_transform}}.
+#' Can also be an .RData file containing an embedding matrix with words as row names.
 #' @param as Load as
 #' \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
 #' \code{\link[PsychWordVec:as_embed]{embed}} (matrix).
-#' Defaults to the original class of the R object in \code{file.load}.
+#' Defaults to the original class of the R object in \code{file}.
+#' The two wrapper functions \code{load_wordvec} and \code{load_embed}
+#' automatically reshape the data to the corresponding class and
+#' normalize all word vectors (for faster future use).
 #'
 #' @return
 #' A \code{wordvec} (data.table) or \code{embed} (matrix).
@@ -536,6 +544,14 @@ data_transform = function(
 #' \code{\link{data_wordvec_subset}}
 #'
 #' @examples
+#' d = demodata[1:200]
+#' save(d, file="demo.RData")
+#' d = load_wordvec("demo.Rdata")
+#' d
+#' d = load_embed("demo.Rdata")
+#' d
+#' unlink("demo.RData")  # delete file for code check
+#'
 #' \dontrun{
 #' # please first manually download the .RData file
 #' # (see https://psychbruce.github.io/WordVector_RData.pdf)
@@ -545,12 +561,13 @@ data_transform = function(
 #' # the following code cannot run unless you have the file
 #' library(bruceR)
 #' set.wd()
-#' d = data_wordvec_load("GloVe/glove_wiki_50d.RData")
+#' d = load_embed("../data-raw/GloVe/glove_wiki_50d.RData")
+#' d
 #' }
 #'
 #' @export
 data_wordvec_load = function(
-    file.load,
+    file,
     as=c("wordvec", "embed"),
     normalize=FALSE,
     verbose=TRUE
@@ -558,10 +575,10 @@ data_wordvec_load = function(
   if(!any(as %in% c("wordvec", "embed")))
     stop("`as` should be \"wordvec\" or \"embed\".", call.=FALSE)
   t0 = Sys.time()
-  check_load_validity(file.load)
+  check_load_validity(file)
   if(verbose) cat("Loading...")
   envir = new.env()
-  load(file=file.load, envir=envir)
+  load(file=file, envir=envir)
   if(length(ls(envir)) > 1)
     warning("RData file contains multiple objects. Return the first object.", call.=FALSE)
   x = get(ls(envir)[1], envir)
@@ -576,10 +593,6 @@ data_wordvec_load = function(
   }
   attr(x, "dims") = ndim
   attr(x, "normalized") = normalize
-  if(verbose) {
-    cat("\015")
-    cli::cli_alert_success("Word vector data: {nrow(x)} vocab, {ndim} dims (loading time: {dtime(t0)})")
-  }
   if(length(as)==1) {
     if(as=="wordvec")
       x = as_wordvec(x, normalize)
@@ -591,8 +604,28 @@ data_wordvec_load = function(
     if(is.embed(x))
       x = as_embed(x, normalize)
   }
+  if(verbose) {
+    cat("\015")
+    cli::cli_alert_success("Word vectors data: {nrow(x)} vocab, {ndim} dims (time cost = {dtime(t0)})")
+    if(normalize)
+      cli::cli_alert_success("All word vectors have been normalized to unit length 1.")
+  }
   gc()  # Garbage Collection: Free the Memory
   return(x)
+}
+
+
+#' @rdname data_wordvec_load
+#' @export
+load_wordvec = function(file, normalize=TRUE) {
+  data_wordvec_load(file, as="wordvec", normalize)
+}
+
+
+#' @rdname data_wordvec_load
+#' @export
+load_embed = function(file, normalize=TRUE) {
+  data_wordvec_load(file, as="embed", normalize)
 }
 
 
@@ -622,7 +655,11 @@ extract_valid_subset = function(
   }
   if(length(words.valid) < length(words)) {
     not.found = setdiff(words, words.valid)
-    cli::cli_alert_danger("{length(not.found)} words not found: {.val {not.found}}")
+    n.nf = length(not.found)
+    if(n.nf > 100)
+      cli::cli_alert_danger("{n.nf} words not found: {.val {not.found[1]}}, ... (omitted)")
+    else if(n.nf > 0)
+      cli::cli_alert_danger("{n.nf} words not found: {.val {not.found}}")
   }
 
   if(length(words.valid) == 0)
@@ -682,11 +719,11 @@ extract_valid_subset = function(
 #' @seealso
 #' \code{\link{as_wordvec}} / \code{\link{as_embed}}
 #'
+#' \code{\link{load_wordvec}} / \code{\link{load_embed}}
+#'
 #' \code{\link{get_wordvec}}
 #'
 #' \code{\link{data_transform}}
-#'
-#' \code{\link{data_wordvec_load}}
 #'
 #' @examples
 #' ## specify `x` as a `wordvec` or `embed` object:
@@ -698,14 +735,14 @@ extract_valid_subset = function(
 #'        file.save="subset.RData")
 #'
 #' ## load the subset:
-#' d.subset = data_wordvec_load("subset.RData")
+#' d.subset = load_wordvec("subset.RData")
 #' d.subset
 #'
 #' ## specify `x` as an .RData file and save with `file.save`:
 #' data_wordvec_subset("subset.RData",
 #'                     words=c("China", "Chinese"),
 #'                     file.save="new.subset.RData")
-#' d.new.subset = data_wordvec_load("new.subset.RData", as="embed")
+#' d.new.subset = load_wordvec("new.subset.RData", as="embed")
 #' d.new.subset
 #'
 #' unlink("subset.RData")  # delete file for code check
@@ -1421,7 +1458,8 @@ tab_similarity = function(
     else
       return(unique(dt[word1!=word2], by="wordpair"))
   } else {
-    return(dt[word1!=word2])
+    # return(dt[word1!=word2])
+    return(dt)
   }
 }
 
@@ -2137,10 +2175,14 @@ test_WEAT = function(
   # words not found:
   not.found = setdiff(words, words.valid)
   # valid words:
-  T1 = T1[T1 %in% words.valid]
-  T2 = T2[T2 %in% words.valid]
-  A1 = A1[A1 %in% words.valid]
-  A2 = A2[A2 %in% words.valid]
+  T1 = intersect(T1, words.valid)
+  T2 = intersect(T2, words.valid)
+  A1 = intersect(A1, words.valid)
+  A2 = intersect(A2, words.valid)
+  if(length(intersect(T1, T2)) > 0)
+    stop("`T1` and `T2` have duplicate values!", call.=FALSE)
+  if(length(intersect(A1, A2)) > 0)
+    stop("`A1` and `A2` have duplicate values!", call.=FALSE)
 
   if(!is.null(T2)) {
     dweat = rbind(
@@ -2443,9 +2485,11 @@ test_RND = function(
   # words not found:
   not.found = setdiff(words, words.valid)
   # valid words:
-  T1 = T1[T1 %in% words.valid]
-  A1 = A1[A1 %in% words.valid]
-  A2 = A2[A2 %in% words.valid]
+  T1 = intersect(T1, words.valid)
+  A1 = intersect(A1, words.valid)
+  A2 = intersect(A2, words.valid)
+  if(length(intersect(A1, A2)) > 0)
+    stop("`A1` and `A2` have duplicate values!", call.=FALSE)
 
   # v1 = rowMeans(dt[, A1, with=FALSE])  # average vector for A1
   # v2 = rowMeans(dt[, A2, with=FALSE])  # average vector for A2
@@ -2537,23 +2581,33 @@ print.rnd = function(x, digits=3, ...) {
 # same as psych::Procrustes() and pracma::procrustes()
 
 
-#' Orthogonal Procrustes solution for matrix alignment.
+#' Orthogonal Procrustes rotation for matrix alignment.
 #'
+#' @description
 #' In order to compare word embeddings from different time periods,
 #' we must ensure that the embedding matrices are aligned to
 #' the same semantic space (coordinate axes).
 #' The Orthogonal Procrustes solution (Schönemann, 1966) is
 #' commonly used to align historical embeddings over time
 #' (Hamilton et al., 2016; Li et al., 2020).
+#'
+#' Note that this kind of rotation \emph{does not} change the
+#' relative relationships between vectors in the space,
+#' and thus \emph{does not} affect semantic similarities or distances
+#' within each embedding matrix.
+#' But it does influence the semantic relationships between
+#' different embedding matrices, and thus would be necessary
+#' for some purposes such as the "semantic drift analysis"
+#' (e.g., Hamilton et al., 2016; Li et al., 2020).
+#'
 #' This function produces the same results as by
 #' \code{cds::orthprocr()},
 #' \code{psych::Procrustes()}, and
 #' \code{pracma::procrustes()}.
 #'
 #' @param M,X Two embedding matrices of the same size (rows and columns),
-#' or two \code{\link[PsychWordVec:as_wordvec]{wordvec}} objects
-#' as loaded by \code{\link{data_wordvec_load}} or
-#' transformed from matrices by \code{\link{as_wordvec}}.
+#' can be \code{\link[PsychWordVec:as_embed]{embed}}
+#' or \code{\link[PsychWordVec:as_wordvec]{wordvec}} objects.
 #' \itemize{
 #'   \item{\code{M} is the reference (anchor/baseline/target) matrix,
 #'         e.g., the embedding matrix learned at
@@ -2598,7 +2652,7 @@ print.rnd = function(x, digits=3, ...) {
 #'             color="blue") +
 #'   coord_equal()
 #'
-#' # Usage 1: input two matrices
+#' # Usage 1: input two matrices (can be `embed` objects)
 #' XR = orth_procrustes(M, X)
 #' XR  # aligned with M
 #'
