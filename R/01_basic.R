@@ -144,12 +144,13 @@ force_normalize = function(x, verbose=TRUE) {
 }
 
 
-#' Reshape word vectors data between \code{wordvec} and \code{embed}.
+#' Word vectors data type: \code{wordvec} and \code{embed}.
 #'
-#' Reshape word vectors data between
+#' \code{PsychWordVec} uses two types of word vectors data:
 #' \code{wordvec} (data.table, with two variables \code{word} and \code{vec})
 #' and \code{embed} (matrix, with dimensions as columns and words as row names).
 #' Note that matrix manipulation makes \code{embed} much faster than \code{wordvec}.
+#' Users are suggested to reshape data to \code{embed} before using the other functions.
 #'
 #' @describeIn as_embed From \code{wordvec} (data.table) to \code{embed} (matrix).
 #'
@@ -243,6 +244,7 @@ as_wordvec = function(x, normalize=FALSE) {
 }
 
 
+#' @rdname as_embed
 #' @export
 print.embed = function(x, maxn=100, ...) {
   n = nrow(x)
@@ -285,6 +287,7 @@ print.embed = function(x, maxn=100, ...) {
 }
 
 
+#' @rdname as_embed
 #' @export
 print.wordvec = function(x, maxn=100, ...) {
   n = nrow(x)

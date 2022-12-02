@@ -35,7 +35,7 @@
 ## Major Changes
 
 -   `as_matrix()` has been renamed to `as_embed()`: Now `PsychWordVec` supports two classes of data objects -- `wordvec` (data.table) and `embed` (matrix). Most functions now use `embed` (or transform `wordvec` to `embed`) internally so as to enhance the speed. Matrix is much faster!
--   Deprecated `data_wordvec_reshape()` function: Use `as_wordvec()` and `as_embed()` now.
+-   Deprecated `data_wordvec_reshape()`: Now use `as_wordvec()` and `as_embed()`.
 
 ## Minor Changes
 
