@@ -291,13 +291,13 @@ print.wordvec = function(x, maxn=100, ...) {
   ndim = attr(x, "dims")
   dims = paste0("<", ndim, " dims>")
   norm = ifelse(attr(x, "normalized"), "(normalized)", "(NOT normalized)")
-  cols = c(1, 2, ndim)
   fmt = paste0("% ", nchar(n)+1, "s")
 
   if(n > maxn) {
     rows = c(1:5, (n-4):n)
-    null = data.frame(word="", vec="")
+    null = as.data.frame(t(rep("", ncol(x))))
     rownames(null) = ""
+    colnames(null) = names(x)
     x = x[rows,]
     rowids = sprintf(fmt, c(
       paste0(rows[1:5], ":"),
@@ -1146,6 +1146,7 @@ plot_wordvec_tSNE = function(
 #' Calculate the sum vector of multiple words.
 #'
 #' @inheritParams get_wordvec
+#' @inheritParams data_transform
 #' @param x Can be:
 #' \itemize{
 #'   \item{\code{NULL}: use the sum of all word vectors in \code{data}}
@@ -1558,7 +1559,6 @@ plot_similarity = function(
 #'
 #' @inheritParams get_wordvec
 #' @inheritParams sum_wordvec
-#' @inheritParams data_transform
 #' @param topn Top-N most similar words. Defaults to \code{10}.
 #' @param above Defaults to \code{NULL}. Can be:
 #' \itemize{
@@ -2141,21 +2141,35 @@ test_WEAT = function(
   A1 = A1[A1 %in% words.valid]
   A2 = A2[A2 %in% words.valid]
 
-  dweat = rbind(
-    cbind(data.table(Target=labels$T1, Attrib=labels$A1),
-          tab_similarity(embed, words1=T1, words2=A1)),
-    cbind(data.table(Target=labels$T1, Attrib=labels$A2),
-          tab_similarity(embed, words1=T1, words2=A2)),
-    cbind(data.table(Target=labels$T2, Attrib=labels$A1),
-          tab_similarity(embed, words1=T2, words2=A1)),
-    cbind(data.table(Target=labels$T2, Attrib=labels$A2),
-          tab_similarity(embed, words1=T2, words2=A2))
-  )[,-5]  # delete "wordpair" column
-  names(dweat)[3:4] = c("T_word", "A_word")
-  dweat$Target = factor(dweat$Target, levels=c(labels$T1, labels$T2))
-  dweat$Attrib = factor(dweat$Attrib, levels=c(labels$A1, labels$A2))
-  dweat$T_word = factor(dweat$T_word, levels=c(T1, T2))
-  dweat$A_word = factor(dweat$A_word, levels=c(A1, A2))
+  if(!is.null(T2)) {
+    dweat = rbind(
+      cbind(data.table(Target=labels$T1, Attrib=labels$A1),
+            tab_similarity(embed, words1=T1, words2=A1)),
+      cbind(data.table(Target=labels$T1, Attrib=labels$A2),
+            tab_similarity(embed, words1=T1, words2=A2)),
+      cbind(data.table(Target=labels$T2, Attrib=labels$A1),
+            tab_similarity(embed, words1=T2, words2=A1)),
+      cbind(data.table(Target=labels$T2, Attrib=labels$A2),
+            tab_similarity(embed, words1=T2, words2=A2))
+    )[,-5]  # delete "wordpair" column
+    names(dweat)[3:4] = c("T_word", "A_word")
+    dweat$Target = factor(dweat$Target, levels=c(labels$T1, labels$T2))
+    dweat$Attrib = factor(dweat$Attrib, levels=c(labels$A1, labels$A2))
+    dweat$T_word = factor(dweat$T_word, levels=c(T1, T2))
+    dweat$A_word = factor(dweat$A_word, levels=c(A1, A2))
+  } else {
+    dweat = rbind(
+      cbind(data.table(Target=labels$T1, Attrib=labels$A1),
+            tab_similarity(embed, words1=T1, words2=A1)),
+      cbind(data.table(Target=labels$T1, Attrib=labels$A2),
+            tab_similarity(embed, words1=T1, words2=A2))
+    )[,-5]  # delete "wordpair" column
+    names(dweat)[3:4] = c("T_word", "A_word")
+    dweat$Target = factor(dweat$Target, levels=c(labels$T1))
+    dweat$Attrib = factor(dweat$Attrib, levels=c(labels$A1, labels$A2))
+    dweat$T_word = factor(dweat$T_word, levels=c(T1))
+    dweat$A_word = factor(dweat$A_word, levels=c(A1, A2))
+  }
 
   . = Target = Attrib = T_word = cos_sim = cos_sim_mean = cos_sim_diff = std_mean = std_diff = NULL
 

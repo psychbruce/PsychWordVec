@@ -34,6 +34,8 @@ see \code{\link{data_wordvec_load}}.}
 
   \code{~ Beijing - China + Japan}}
 }}
+
+\item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
 }
 \value{
 Normalized sum vector.
