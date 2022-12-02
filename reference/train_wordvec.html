@@ -289,7 +289,7 @@ You may turn off this by specifying <code>remove=NULL</code>.</p></dd>
 <span class="r-in"><span>  model<span class="op">=</span><span class="st">"skip-gram"</span>,</span></span>
 <span class="r-in"><span>  dims<span class="op">=</span><span class="fl">50</span>, window<span class="op">=</span><span class="fl">5</span>,</span></span>
 <span class="r-in"><span>  normalize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tokenized: 70105 sentences (time cost = 2 secs)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tokenized: 70105 sentences (time cost = 3 secs)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Text corpus: 5242249 characters, 1185427 tokens (roughly words)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Training model information</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span>
@@ -307,49 +307,49 @@ You may turn off this by specifying <code>remove=NULL</code>.</p></dd>
 <span class="r-in"><span><span class="va">dt1</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># wordvec (data.table)</span><span style="color: #555555;">: 14205 × 3 (normalized)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 word                     vec  freq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1:           the [-0.1353, ...&lt;50 dims&gt;] 58797</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     2:           and [ 0.0030, ...&lt;50 dims&gt;] 32193</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     3:             a [-0.1082, ...&lt;50 dims&gt;] 31783</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     4:            of [ 0.0963, ...&lt;50 dims&gt;] 29142</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     5:            to [-0.0785, ...&lt;50 dims&gt;] 27218</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1:           the [ 0.0213, ...&lt;50 dims&gt;] 58797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2:           and [ 0.0354, ...&lt;50 dims&gt;] 32193</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3:             a [-0.0073, ...&lt;50 dims&gt;] 31783</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4:            of [ 0.0485, ...&lt;50 dims&gt;] 29142</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     5:            to [-0.1313, ...&lt;50 dims&gt;] 27218</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ------                                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14201:        parrot [ 0.1382, ...&lt;50 dims&gt;]     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14202:          Lori [ 0.0915, ...&lt;50 dims&gt;]     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14203:      shambles [ 0.0564, ...&lt;50 dims&gt;]     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14204: comprehension [ 0.1711, ...&lt;50 dims&gt;]     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14205:        drunks [ 0.1628, ...&lt;50 dims&gt;]     5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14201:        parrot [ 0.1264, ...&lt;50 dims&gt;]     5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14202:          Lori [ 0.1606, ...&lt;50 dims&gt;]     5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14203:      shambles [ 0.0511, ...&lt;50 dims&gt;]     5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14204: comprehension [-0.0157, ...&lt;50 dims&gt;]     5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14205:        drunks [ 0.1221, ...&lt;50 dims&gt;]     5</span>
 <span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt1</span>, <span class="st">"Ive"</span><span class="op">)</span>  <span class="co"># evaluate performance</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">[Word Vector]</span> =~ Ive</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> (normalized to unit length)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          word   cos_sim row_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:       ive 0.8976945   1542</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:  funniest 0.8209991   2644</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:    lately 0.8157991   3125</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:      Weve 0.8038545   3487</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: Bollywood 0.8027822   3585</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:     Youve 0.7953886   5137</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:     quote 0.7876179   5989</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:    recall 0.7864091   6230</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:     WORST 0.7859848   6904</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:  Possibly 0.7856509   6928</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           word   cos_sim row_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:        ive 0.8702901    110</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:     lately 0.8290399    124</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:       seen 0.8088747   1542</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:       Weve 0.7953829   3487</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: criticized 0.7909629   4275</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:      WORST 0.7899848   5137</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:       EVER 0.7899203   6230</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:       ever 0.7833623   6904</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:   Possibly 0.7830964   6928</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   funniest 0.7786060   8457</span>
 <span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt1</span>, <span class="op">~</span> <span class="va">man</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span>, topn<span class="op">=</span><span class="fl">5</span><span class="op">)</span>  <span class="co"># evaluate performance</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">[Word Vector]</span> =~ man - he + she</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> (normalized to unit length)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     word   cos_sim row_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: woman 0.8774977    197</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  girl 0.7639517    260</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  lady 0.7452522    299</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:   boy 0.7380817    478</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: young 0.7253292   1140</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          word   cos_sim row_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:      woman 0.8577149    260</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:       girl 0.7946854    299</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:       lady 0.7841336   1140</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:     blonde 0.7336618   1454</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: mysterious 0.7331705   1946</span>
 <span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt1</span>, <span class="op">~</span> <span class="va">boy</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span>, topn<span class="op">=</span><span class="fl">5</span><span class="op">)</span>  <span class="co"># evaluate performance</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">[Word Vector]</span> =~ boy - he + she</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> (normalized to unit length)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     word   cos_sim row_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: woman 0.8188442    197</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  girl 0.8089247    260</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  aged 0.7365908    299</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: young 0.7153971   1140</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:  lady 0.7083755   1839</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  girl 0.7754179    260</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:   kid 0.7315294    299</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  lady 0.7227306    674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: woman 0.7125164   1140</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:  aged 0.7099250   1839</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## GloVe</span></span></span>
 <span class="r-in"><span><span class="va">dt2</span> <span class="op">=</span> <span class="fu">train_wordvec</span><span class="op">(</span></span></span>
@@ -357,7 +357,7 @@ You may turn off this by specifying <code>remove=NULL</code>.</p></dd>
 <span class="r-in"><span>  method<span class="op">=</span><span class="st">"glove"</span>,</span></span>
 <span class="r-in"><span>  dims<span class="op">=</span><span class="fl">50</span>, window<span class="op">=</span><span class="fl">5</span>,</span></span>
 <span class="r-in"><span>  normalize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tokenized: 70105 sentences (time cost = 2 secs)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tokenized: 70105 sentences (time cost = 3 secs)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Text corpus: 5242249 characters, 1185427 tokens (roughly words)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Training model information</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span>
@@ -370,54 +370,54 @@ You may turn off this by specifying <code>remove=NULL</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">- CPU threads: 8</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── Training... </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Word vectors trained: 14207 unique tokens (time cost = 13 secs)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Word vectors trained: 14207 unique tokens (time cost = 14 secs)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">dt2</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># wordvec (data.table)</span><span style="color: #555555;">: 14207 × 3 (normalized)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            word                     vec  freq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1:      the [-0.0140, ...&lt;50 dims&gt;] 58797</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     2:      and [-0.0271, ...&lt;50 dims&gt;] 32193</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     3:        a [-0.0900, ...&lt;50 dims&gt;] 31783</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     4:       of [-0.0650, ...&lt;50 dims&gt;] 29142</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     5:       to [-0.0209, ...&lt;50 dims&gt;] 27218</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1:      the [-0.0158, ...&lt;50 dims&gt;] 58797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2:      and [-0.0462, ...&lt;50 dims&gt;] 32193</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3:        a [-0.0823, ...&lt;50 dims&gt;] 31783</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4:       of [-0.0747, ...&lt;50 dims&gt;] 29142</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     5:       to [-0.0170, ...&lt;50 dims&gt;] 27218</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ------                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14203:      yea [ 0.2127, ...&lt;50 dims&gt;]     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14204:   yearly [ 0.0098, ...&lt;50 dims&gt;]     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14205: yearning [ 0.0063, ...&lt;50 dims&gt;]     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14206:   yelled [ 0.3461, ...&lt;50 dims&gt;]     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14207:      yer [-0.0461, ...&lt;50 dims&gt;]     5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14203:      yea [ 0.2038, ...&lt;50 dims&gt;]     5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14204:   yearly [ 0.0177, ...&lt;50 dims&gt;]     5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14205: yearning [ 0.0087, ...&lt;50 dims&gt;]     5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14206:   yelled [ 0.3610, ...&lt;50 dims&gt;]     5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14207:      yer [-0.0500, ...&lt;50 dims&gt;]     5</span>
 <span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt2</span>, <span class="st">"Ive"</span><span class="op">)</span>  <span class="co"># evaluate performance</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">[Word Vector]</span> =~ Ive</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> (normalized to unit length)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        word   cos_sim row_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:    seen 0.9418886     74</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:    ever 0.8890449     91</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:   worst 0.7587585    110</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   heard 0.7482815    124</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   since 0.7353002    261</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   youve 0.7196752    262</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: watched 0.6933724    305</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:  havent 0.6919672    515</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:    been 0.6843755    767</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:  movies 0.6830995    950</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:    seen 0.9494513     91</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:    ever 0.9014850    110</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:   worst 0.7597036    124</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   heard 0.7594434    261</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   since 0.7370661    262</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   youve 0.7203705    305</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:  havent 0.7051926    468</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: watched 0.6969740    515</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: already 0.6962465    767</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:  movies 0.6899783    950</span>
 <span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt2</span>, <span class="op">~</span> <span class="va">man</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span>, topn<span class="op">=</span><span class="fl">5</span><span class="op">)</span>  <span class="co"># evaluate performance</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">[Word Vector]</span> =~ man - he + she</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> (normalized to unit length)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     word   cos_sim row_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: woman 0.8665479     34</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: young 0.7539589    198</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  girl 0.7420098    260</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:   hit 0.7351864    299</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:   who 0.7269766    594</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: woman 0.8617809    198</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: young 0.7595842    260</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:   hit 0.7488106    299</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:  girl 0.7485862    523</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: child 0.7321372    594</span>
 <span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt2</span>, <span class="op">~</span> <span class="va">boy</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span>, topn<span class="op">=</span><span class="fl">5</span><span class="op">)</span>  <span class="co"># evaluate performance</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">[Word Vector]</span> =~ boy - he + she</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> (normalized to unit length)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     word   cos_sim row_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  girl 0.8145042    153</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: young 0.7714409    198</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: woman 0.7319337    260</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: named 0.7168601    299</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:   man 0.6927964    867</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  girl 0.8166628    153</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: young 0.7542111    198</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: woman 0.7235805    260</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: named 0.7087475    299</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:   man 0.6908048    867</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## FastText</span></span></span>
 <span class="r-in"><span><span class="va">dt3</span> <span class="op">=</span> <span class="fu">train_wordvec</span><span class="op">(</span></span></span>
@@ -426,7 +426,7 @@ You may turn off this by specifying <code>remove=NULL</code>.</p></dd>
 <span class="r-in"><span>  model<span class="op">=</span><span class="st">"skip-gram"</span>,</span></span>
 <span class="r-in"><span>  dims<span class="op">=</span><span class="fl">50</span>, window<span class="op">=</span><span class="fl">5</span>,</span></span>
 <span class="r-in"><span>  normalize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tokenized: 70105 sentences (time cost = 2 secs)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tokenized: 70105 sentences (time cost = 3 secs)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Text corpus: 5242249 characters, 1185427 tokens (roughly words)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Training model information</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span>
@@ -444,49 +444,49 @@ You may turn off this by specifying <code>remove=NULL</code>.</p></dd>
 <span class="r-in"><span><span class="va">dt3</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># wordvec (data.table)</span><span style="color: #555555;">: 14207 × 3 (normalized)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                word                     vec  freq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1:          the [-0.0282, ...&lt;50 dims&gt;] 58797</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     2:          and [ 0.0636, ...&lt;50 dims&gt;] 32193</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     3:            a [ 0.0504, ...&lt;50 dims&gt;] 31783</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     4:           of [ 0.0294, ...&lt;50 dims&gt;] 29142</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     5:           to [-0.0913, ...&lt;50 dims&gt;] 27218</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1:          the [-0.0067, ...&lt;50 dims&gt;] 58797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2:          and [ 0.1312, ...&lt;50 dims&gt;] 32193</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3:            a [ 0.0246, ...&lt;50 dims&gt;] 31783</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4:           of [ 0.0960, ...&lt;50 dims&gt;] 29142</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     5:           to [-0.0546, ...&lt;50 dims&gt;] 27218</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ------                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14203:        spray [ 0.1067, ...&lt;50 dims&gt;]     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14204: disabilities [ 0.0685, ...&lt;50 dims&gt;]     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14205:        crook [ 0.1113, ...&lt;50 dims&gt;]     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14206:     Syndrome [ 0.0457, ...&lt;50 dims&gt;]     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14207:      snipers [ 0.0363, ...&lt;50 dims&gt;]     5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14203:        spray [ 0.1074, ...&lt;50 dims&gt;]     5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14204: disabilities [ 0.1477, ...&lt;50 dims&gt;]     5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14205:        crook [ 0.0980, ...&lt;50 dims&gt;]     5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14206:     Syndrome [ 0.0444, ...&lt;50 dims&gt;]     5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14207:      snipers [ 0.1044, ...&lt;50 dims&gt;]     5</span>
 <span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt3</span>, <span class="st">"Ive"</span><span class="op">)</span>  <span class="co"># evaluate performance</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">[Word Vector]</span> =~ Ive</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> (normalized to unit length)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           word   cos_sim row_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:      Youve 0.8326553    110</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:       Weve 0.8177303    765</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:       seen 0.8069014    945</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:      youve 0.7905689   3105</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:         ve 0.7786911   3494</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:      WORST 0.7628926   5898</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:        ive 0.7608112   6913</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:    funnier 0.7526305   7108</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:     havent 0.7419649   9171</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: beforehand 0.7414662  12894</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:      Youve 0.8197791    110</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:       seen 0.8178786    765</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:       Weve 0.8166078    945</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:         ve 0.7866914   3250</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:      youve 0.7813996   3494</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:     havent 0.7626662   5898</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:      WORST 0.7567682   6913</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:    Columbo 0.7541109   7108</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:        ive 0.7478455   9171</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: beforehand 0.7477734  12894</span>
 <span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt3</span>, <span class="op">~</span> <span class="va">man</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span>, topn<span class="op">=</span><span class="fl">5</span><span class="op">)</span>  <span class="co"># evaluate performance</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">[Word Vector]</span> =~ man - he + she</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> (normalized to unit length)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        word   cos_sim row_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    woman 0.8393727    261</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: salesman 0.7489472   5594</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  caveman 0.7414980   6553</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:   madman 0.7392588  12263</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: henchman 0.7389202  12884</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    woman 0.8807206    261</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:     girl 0.7640413    299</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: henchman 0.7582157   5594</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:   madman 0.7509481   6553</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: salesman 0.7400140  12263</span>
 <span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">dt3</span>, <span class="op">~</span> <span class="va">boy</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span>, topn<span class="op">=</span><span class="fl">5</span><span class="op">)</span>  <span class="co"># evaluate performance</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">[Word Vector]</span> =~ boy - he + she</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> (normalized to unit length)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        word   cos_sim row_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:     girl 0.8123875    261</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    woman 0.7463328    299</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:     boys 0.6853294   1045</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: teenager 0.6829861   2364</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    widow 0.6661927   5504</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:     girl 0.8163023    261</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    woman 0.7553517    299</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:      kid 0.7242860    676</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: teenager 0.6969723   1045</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:     boys 0.6961752   2364</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

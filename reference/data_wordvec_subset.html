@@ -142,9 +142,9 @@ when using the S3 method <code>subset</code>.</p></dd>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="as_embed.html">as_wordvec</a></code> / <code><a href="as_embed.html">as_embed</a></code></p>
+<p><code><a href="data_wordvec_load.html">load_wordvec</a></code> / <code><a href="data_wordvec_load.html">load_embed</a></code></p>
 <p><code><a href="get_wordvec.html">get_wordvec</a></code></p>
-<p><code><a href="data_transform.html">data_transform</a></code></p>
-<p><code><a href="data_wordvec_load.html">data_wordvec_load</a></code></p></div>
+<p><code><a href="data_transform.html">data_transform</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -182,11 +182,12 @@ when using the S3 method <code>subset</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6:    Korea [ 0.1089, ...&lt;300 dims&gt;]</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## load the subset:</span></span></span>
-<span class="r-in"><span><span class="va">d.subset</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_load.html">data_wordvec_load</a></span><span class="op">(</span><span class="st">"subset.RData"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">d.subset</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_load.html">load_wordvec</a></span><span class="op">(</span><span class="st">"subset.RData"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Word vector data: 6 vocab, 300 dims (loading time: 0.002 secs)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Word vectors data: 6 vocab, 300 dims (time cost = 0.002 secs)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> All word vectors have been normalized to unit length 1.</span>
 <span class="r-in"><span><span class="va">d.subset</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># wordvec (data.table)</span><span style="color: #555555;">: 6 × 2 (NOT normalized)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># wordvec (data.table)</span><span style="color: #555555;">: 6 × 2 (normalized)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        word                      vec</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:    China [-0.0732, ...&lt;300 dims&gt;]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:    Japan [ 0.0508, ...&lt;300 dims&gt;]</span>
@@ -200,7 +201,7 @@ when using the S3 method <code>subset</code>.</p></dd>
 <span class="r-in"><span>                    words<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"China"</span>, <span class="st">"Chinese"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                    file.save<span class="op">=</span><span class="st">"new.subset.RData"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Word vector data: 6 vocab, 300 dims (loading time: 0.002 secs)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Word vectors data: 6 vocab, 300 dims (time cost = 0.002 secs)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Compressing and saving...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Saved to "new.subset.RData" (time cost = 0.003 secs)</span>
@@ -208,14 +209,10 @@ when using the S3 method <code>subset</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       word                      vec</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:   China [-0.0732, ...&lt;300 dims&gt;]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2: Chinese [-0.1367, ...&lt;300 dims&gt;]</span>
-<span class="r-in"><span><span class="va">d.new.subset</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_load.html">data_wordvec_load</a></span><span class="op">(</span><span class="st">"new.subset.RData"</span>, as<span class="op">=</span><span class="st">"embed"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Loading...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Word vector data: 2 vocab, 300 dims (loading time: 0.001 secs)</span>
+<span class="r-in"><span><span class="va">d.new.subset</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_load.html">load_wordvec</a></span><span class="op">(</span><span class="st">"new.subset.RData"</span>, as<span class="op">=</span><span class="st">"embed"</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in load_wordvec("new.subset.RData", as = "embed"):</span> unused argument (as = "embed")</span>
 <span class="r-in"><span><span class="va">d.new.subset</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># embed (matrix)</span><span style="color: #555555;">: 2 × 300 (NOT normalized)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               dim1 ...     dim300</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: China   -0.0732 ... &lt;300 dims&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: Chinese -0.1367 ... &lt;300 dims&gt;</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'd.new.subset' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">"subset.RData"</span><span class="op">)</span>  <span class="co"># delete file for code check</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">"new.subset.RData"</span><span class="op">)</span>  <span class="co"># delete file for code check</span></span></span>
