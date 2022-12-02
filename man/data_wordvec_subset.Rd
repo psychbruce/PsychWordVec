@@ -89,7 +89,7 @@ d.subset
 data_wordvec_subset("subset.RData",
                     words=c("China", "Chinese"),
                     file.save="new.subset.RData")
-d.new.subset = load_wordvec("new.subset.RData", as="embed")
+d.new.subset = load_embed("new.subset.RData")
 d.new.subset
 
 unlink("subset.RData")  # delete file for code check
