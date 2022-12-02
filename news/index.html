@@ -85,14 +85,14 @@
 <ul><li>New <code><a href="../reference/sum_wordvec.html">sum_wordvec()</a></code> function: Calculate the sum vector of multiple words.</li>
 <li>New <code><a href="../reference/plot_similarity.html">plot_similarity()</a></code> function: Visualize cosine similarities between word pairs in a style of correlation matrix plot.</li>
 <li>New <code>tab_similarity_cross()</code> function: A wrapper of <code><a href="../reference/tab_similarity.html">tab_similarity()</a></code> to tabulate cosine similarities for only n1 * n2 word pairs from two sets of words (arguments: <code>words1</code>, <code>words2</code>).</li>
-<li>New S3 methods: <code>print.wordvec()</code>, <code>print.embed()</code>, <code>rbind.wordvec()</code>, <code>rbind.embed()</code>, <code><a href="../reference/data_wordvec_subset.html">subset.wordvec()</a></code>, <code><a href="../reference/data_wordvec_subset.html">subset.embed()</a></code>
+<li>New S3 methods: <code><a href="../reference/as_embed.html">print.wordvec()</a></code>, <code><a href="../reference/as_embed.html">print.embed()</a></code>, <code>rbind.wordvec()</code>, <code>rbind.embed()</code>, <code><a href="../reference/data_wordvec_subset.html">subset.wordvec()</a></code>, <code><a href="../reference/data_wordvec_subset.html">subset.embed()</a></code>
 </li>
 </ul></div>
 <div class="section level3">
 <h3 id="major-changes-0-2-0">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-0-2-0"></a></h3>
 <ul><li>
 <code>as_matrix()</code> has been renamed to <code><a href="../reference/as_embed.html">as_embed()</a></code>: Now <code>PsychWordVec</code> supports two classes of data objects – <code>wordvec</code> (data.table) and <code>embed</code> (matrix). Most functions now use <code>embed</code> (or transform <code>wordvec</code> to <code>embed</code>) internally so as to enhance the speed. Matrix is much faster!</li>
-<li>Deprecated <code>data_wordvec_reshape()</code> function: Use <code><a href="../reference/as_embed.html">as_wordvec()</a></code> and <code><a href="../reference/as_embed.html">as_embed()</a></code> now.</li>
+<li>Deprecated <code>data_wordvec_reshape()</code>: Now use <code><a href="../reference/as_embed.html">as_wordvec()</a></code> and <code><a href="../reference/as_embed.html">as_embed()</a></code>.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="minor-changes-0-2-0">Minor Changes<a class="anchor" aria-label="anchor" href="#minor-changes-0-2-0"></a></h3>
