@@ -49,9 +49,9 @@ Download pre-trained word vectors data (\code{.RData}):
 \examples{
 d = demodata[1:200]
 save(d, file="demo.RData")
-d = load_wordvec("demo.Rdata")
+d = load_wordvec("demo.RData")
 d
-d = load_embed("demo.Rdata")
+d = load_embed("demo.RData")
 d
 unlink("demo.RData")  # delete file for code check
 
