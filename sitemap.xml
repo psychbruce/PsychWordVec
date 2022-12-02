@@ -16,6 +16,9 @@
     <loc>https://psychbruce.github.io/PsychWordVec/news/index.html</loc>
   </url>
   <url>
+    <loc>https://psychbruce.github.io/PsychWordVec/reference/as_embed.html</loc>
+  </url>
+  <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/cosine_similarity.html</loc>
   </url>
   <url>
@@ -23,12 +26,6 @@
   </url>
   <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/data_wordvec_load.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/data_wordvec_normalize.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/data_wordvec_reshape.html</loc>
   </url>
   <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/data_wordvec_subset.html</loc>
@@ -46,13 +43,13 @@
     <loc>https://psychbruce.github.io/PsychWordVec/reference/get_wordvec.html</loc>
   </url>
   <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/get_wordvecs.html</loc>
-  </url>
-  <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/index.html</loc>
   </url>
   <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/most_similar.html</loc>
+  </url>
+  <url>
+    <loc>https://psychbruce.github.io/PsychWordVec/reference/normalize.html</loc>
   </url>
   <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/orth_procrustes.html</loc>
@@ -85,7 +82,7 @@
     <loc>https://psychbruce.github.io/PsychWordVec/reference/test_WEAT.html</loc>
   </url>
   <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/text_env_setup.html</loc>
+    <loc>https://psychbruce.github.io/PsychWordVec/reference/text_init.html</loc>
   </url>
   <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/text_model_download.html</loc>
@@ -95,6 +92,9 @@
   </url>
   <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/text_to_vec.html</loc>
+  </url>
+  <url>
+    <loc>https://psychbruce.github.io/PsychWordVec/reference/text_unmask.html</loc>
   </url>
   <url>
     <loc>https://psychbruce.github.io/PsychWordVec/reference/tokenize.html</loc>

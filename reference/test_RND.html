@@ -14,7 +14,7 @@ This is an alternative method to Single-Category WEAT."><meta property="og:image
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,7 +45,7 @@ This is an alternative method to Single-Category WEAT."><meta property="og:image
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Relative Norm Distance (RND) analysis.</h1>
-      <small class="dont-index">Source: <a href="https://github.com/psychbruce/PsychWordVec/blob/HEAD/R/PWV1_static.R" class="external-link"><code>R/PWV1_static.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/psychbruce/PsychWordVec/blob/HEAD/R/PWV1_basic.R" class="external-link"><code>R/PWV1_basic.R</code></a></small>
       <div class="d-none name"><code>test_RND.Rd</code></div>
     </div>
 
@@ -74,8 +74,9 @@ This is an alternative method to <a href="test_WEAT.html">Single-Category WEAT</
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
-<dd><p>A <code>data.table</code> (of new class <code>wordvec</code>)
-loaded by <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</p></dd>
+<dd><p>A <code><a href="as_embed.html">wordvec</a></code> (data.table) or
+<code><a href="as_embed.html">embed</a></code> (matrix),
+see <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</p></dd>
 
 
 <dt>T1</dt>
@@ -109,7 +110,8 @@ Defaults to <code>TRUE</code>. See also the <code><a href="https://rdrr.io/pkg/s
 <p>If <code>p.nsim</code> is larger than the number of all possible permutations (rearrangements of data),
 then it will be ignored and an exact permutation test will be conducted.
 Otherwise (in most cases for real data and always for SC-WEAT), a resampling test is performed,
-which takes much less computation time and produces the approximate <em>p</em> value (comparable to the exact one).</p></dd>
+which takes much less computation time and produces the approximate <em>p</em> value
+(comparable to the exact one).</p></dd>
 
 
 <dt>p.side</dt>

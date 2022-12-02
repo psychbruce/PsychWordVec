@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,34 +56,31 @@
 
       <dl><dt>
           
-          <code><a href="cosine_similarity.html">cosine_similarity()</a></code> 
+          <code><a href="as_embed.html">as_embed()</a></code> <code><a href="as_embed.html">as_wordvec()</a></code> 
+        </dt>
+        <dd>Reshape word vectors data between <code>wordvec</code> and <code>embed</code>.</dd>
+      </dl><dl><dt>
+          
+          <code><a href="cosine_similarity.html">cosine_similarity()</a></code> <code><a href="cosine_similarity.html">cos_sim()</a></code> <code><a href="cosine_similarity.html">cos_dist()</a></code> 
         </dt>
         <dd>Cosine similarity/distance between two vectors.</dd>
       </dl><dl><dt>
           
           <code><a href="data_transform.html">data_transform()</a></code> 
         </dt>
-        <dd>Transform plain text data of word vectors into a compressed ".RData" file.</dd>
+        <dd>Transform plain text of word vectors into
+<code>wordvec</code> (data.table) or <code>embed</code> (matrix),
+saved in a compressed ".RData" file.</dd>
       </dl><dl><dt>
           
           <code><a href="data_wordvec_load.html">data_wordvec_load()</a></code> 
         </dt>
-        <dd>Load word vectors data from an ".RData" file.</dd>
+        <dd>Load word vectors data (<code>wordvec</code> or <code>embed</code>) from ".RData" file.</dd>
       </dl><dl><dt>
           
-          <code><a href="data_wordvec_normalize.html">data_wordvec_normalize()</a></code> 
+          <code><a href="data_wordvec_subset.html">data_wordvec_subset()</a></code> <code><a href="data_wordvec_subset.html">subset(<i>&lt;wordvec&gt;</i>)</a></code> <code><a href="data_wordvec_subset.html">subset(<i>&lt;embed&gt;</i>)</a></code> 
         </dt>
-        <dd>Normalize all word vectors to unit length.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_wordvec_reshape.html">data_wordvec_reshape()</a></code> <code><a href="data_wordvec_reshape.html">as_wordvec()</a></code> <code><a href="data_wordvec_reshape.html">as_matrix()</a></code> 
-        </dt>
-        <dd>Reshape word vectors data.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="data_wordvec_subset.html">data_wordvec_subset()</a></code> 
-        </dt>
-        <dd>Extract a subset of word vectors data.</dd>
+        <dd>Extract a subset of word vectors data (with S3 methods).</dd>
       </dl><dl><dt>
           
           <code><a href="demodata.html">demodata</a></code> 
@@ -103,17 +100,17 @@
           
           <code><a href="get_wordvec.html">get_wordvec()</a></code> 
         </dt>
-        <dd>Extract the word vector of a single word.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="get_wordvecs.html">get_wordvecs()</a></code> 
-        </dt>
-        <dd>Extract the word vectors of multiple words.</dd>
+        <dd>Extract word vector(s).</dd>
       </dl><dl><dt>
           
           <code><a href="most_similar.html">most_similar()</a></code> 
         </dt>
         <dd>Find the Top-N most similar words.</dd>
+      </dl><dl><dt>
+          
+          <code><a href="normalize.html">normalize()</a></code> 
+        </dt>
+        <dd>Normalize all word vectors to the unit length 1.</dd>
       </dl><dl><dt>
           
           <code><a href="orth_procrustes.html">orth_procrustes()</a></code> 
@@ -123,7 +120,7 @@
           
           <code><a href="pair_similarity.html">pair_similarity()</a></code> 
         </dt>
-        <dd>Compute cosine similarity/distance for a pair of words.</dd>
+        <dd>Compute a matrix of cosine similarity/distance of word pairs.</dd>
       </dl><dl><dt>
           
           <code><a href="plot_similarity.html">plot_similarity()</a></code> 
@@ -146,7 +143,7 @@
         <dd>Calculate the sum vector of multiple words.</dd>
       </dl><dl><dt>
           
-          <code><a href="tab_similarity.html">tab_similarity()</a></code> <code><a href="tab_similarity.html">tab_similarity_cross()</a></code> 
+          <code><a href="tab_similarity.html">tab_similarity()</a></code> 
         </dt>
         <dd>Tabulate cosine similarity/distance of word pairs.</dd>
       </dl><dl><dt>
@@ -161,10 +158,13 @@
         <dd>Word Embedding Association Test (WEAT) and Single-Category WEAT.</dd>
       </dl><dl><dt>
           
-          <code><a href="text_env_setup.html">text_env_setup()</a></code> 
+          <code><a href="text_init.html">text_init()</a></code> 
         </dt>
-        <dd>Set up a Python environment for contextualized (dynamic) word embeddings,
-necessary for all <code>text_*</code> functions.</dd>
+        <dd>Install required Python modules
+in a new conda environment
+and initialize the environment,
+necessary for all <code>text_*</code> functions
+designed for contextualized word embeddings.</dd>
       </dl><dl><dt>
           
           <code><a href="text_model_download.html">text_model_download()</a></code> 
@@ -174,12 +174,17 @@ necessary for all <code>text_*</code> functions.</dd>
           
           <code><a href="text_model_remove.html">text_model_remove()</a></code> 
         </dt>
-        <dd>Remove downloaded models from .cache folder.</dd>
+        <dd>Remove downloaded models from the local .cache folder.</dd>
       </dl><dl><dt>
           
           <code><a href="text_to_vec.html">text_to_vec()</a></code> 
         </dt>
         <dd>Extract contextualized word embeddings from transformers (pre-trained language models).</dd>
+      </dl><dl><dt>
+          
+          <code><a href="text_unmask.html">text_unmask()</a></code> 
+        </dt>
+        <dd>Fill in the blank mask(s) in a query (sentence).</dd>
       </dl><dl><dt>
           
           <code><a href="tokenize.html">tokenize()</a></code> 

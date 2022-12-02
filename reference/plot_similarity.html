@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +41,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Visualize cosine similarity of word pairs.</h1>
-      <small class="dont-index">Source: <a href="https://github.com/psychbruce/PsychWordVec/blob/HEAD/R/PWV1_static.R" class="external-link"><code>R/PWV1_static.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/psychbruce/PsychWordVec/blob/HEAD/R/PWV1_basic.R" class="external-link"><code>R/PWV1_basic.R</code></a></small>
       <div class="d-none name"><code>plot_similarity.Rd</code></div>
     </div>
 
@@ -55,6 +55,8 @@
 <span>  <span class="va">data</span>,</span>
 <span>  words <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pattern <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  words1 <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  words2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  label <span class="op">=</span> <span class="st">"auto"</span>,</span>
 <span>  value.color <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  value.percent <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -75,16 +77,24 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
-<dd><p>A <code>data.table</code> (of new class <code>wordvec</code>)
-loaded by <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</p></dd>
+<dd><p>A <code><a href="as_embed.html">wordvec</a></code> (data.table) or
+<code><a href="as_embed.html">embed</a></code> (matrix),
+see <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</p></dd>
 
 
 <dt>words</dt>
-<dd><p>[Option 1] Word strings (<code>NULL</code>; a single word; a vector of words).</p></dd>
+<dd><p>[Option 1] Character string(s).</p></dd>
 
 
 <dt>pattern</dt>
-<dd><p>[Option 2] Pattern of regular expression (see <code><a href="https://stringr.tidyverse.org/reference/str_subset.html" class="external-link">str_subset</a></code>).</p></dd>
+<dd><p>[Option 2] Regular expression (see <code><a href="https://stringr.tidyverse.org/reference/str_subset.html" class="external-link">str_subset</a></code>).
+If neither <code>words</code> nor <code>pattern</code> are specified (i.e., both are <code>NULL</code>),
+then all words in the data will be extracted.</p></dd>
+
+
+<dt>words1, words2</dt>
+<dd><p>[Option 3]
+Two sets of words for only n1 * n2 word pairs. See examples.</p></dd>
 
 
 <dt>label</dt>
@@ -189,6 +199,13 @@ Defaults to <code>8</code> and <code>6</code>.</p></dd>
 <span class="r-in"><span>                hclust.n<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_similarity-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">plot_similarity</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">demodata</span>,</span></span>
+<span class="r-in"><span>  words1<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"man, woman, king, queen"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  words2<span class="op">=</span><span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"he, she, boy, girl, father, mother"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="plot_similarity-4.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">w2</span> <span class="op">=</span> <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"China, Chinese,</span></span></span>
 <span class="r-in"><span><span class="st">         Japan, Japanese,</span></span></span>
 <span class="r-in"><span><span class="st">         Korea, Korean,</span></span></span>
@@ -197,12 +214,12 @@ Defaults to <code>8</code> and <code>6</code>.</p></dd>
 <span class="r-in"><span><span class="fu">plot_similarity</span><span class="op">(</span><span class="va">demodata</span>, <span class="va">w2</span>,</span></span>
 <span class="r-in"><span>                order<span class="op">=</span><span class="st">"hclust"</span>,</span></span>
 <span class="r-in"><span>                hclust.n<span class="op">=</span><span class="fl">3</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="plot_similarity-4.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="plot_similarity-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">plot_similarity</span><span class="op">(</span><span class="va">demodata</span>, <span class="va">w2</span>,</span></span>
 <span class="r-in"><span>                order<span class="op">=</span><span class="st">"hclust"</span>,</span></span>
 <span class="r-in"><span>                hclust.n<span class="op">=</span><span class="fl">7</span>,</span></span>
 <span class="r-in"><span>                file<span class="op">=</span><span class="st">"plot.png"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Saved to /tmp/RtmpHDdUrV/file3d835719e7bc/reference/plot.png</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Saved to /home/runner/work/PsychWordVec/PsychWordVec/docs/reference/plot.png</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">"plot.png"</span><span class="op">)</span>  <span class="co"># delete file for code check</span></span></span>
 <span class="r-in"><span></span></span>

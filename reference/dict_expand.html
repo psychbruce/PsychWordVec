@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +41,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Expand a dictionary from the most similar words.</h1>
-      <small class="dont-index">Source: <a href="https://github.com/psychbruce/PsychWordVec/blob/HEAD/R/PWV1_static.R" class="external-link"><code>R/PWV1_static.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/psychbruce/PsychWordVec/blob/HEAD/R/PWV1_basic.R" class="external-link"><code>R/PWV1_basic.R</code></a></small>
       <div class="d-none name"><code>dict_expand.Rd</code></div>
     </div>
 
@@ -57,12 +57,15 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
-<dd><p>A <code>data.table</code> (of new class <code>wordvec</code>)
-loaded by <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</p></dd>
+<dd><p>A <code><a href="as_embed.html">wordvec</a></code> (data.table) or
+<code><a href="as_embed.html">embed</a></code> (matrix),
+see <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</p></dd>
 
 
 <dt>words</dt>
-<dd><p>A vector of words.</p></dd>
+<dd><p>A single word or a list of words,
+used to calculate the
+<a href="sum_wordvec.html">sum vector</a>.</p></dd>
 
 
 <dt>threshold</dt>
@@ -95,14 +98,15 @@ Defaults to <code>0.5</code>. A low threshold may lead to failure of convergence
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="sum_wordvec.html">sum_wordvec</a></code></p>
-<p><code><a href="most_similar.html">most_similar</a></code></p></div>
+<p><code><a href="most_similar.html">most_similar</a></code></p>
+<p><code><a href="dict_reliability.html">dict_reliability</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dict</span> <span class="op">=</span> <span class="fu">dict_expand</span><span class="op">(</span><span class="va">demodata</span>, <span class="st">"king"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Results may be inaccurate if word vectors are not normalized.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> All word vectors have now been normalized.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> All word vectors now have been automatically normalized.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Iteration 1 (threshold of cosine similarity = 0.5)</span> <span style="color: #00BBBB;">──────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> 3 more words appended: <span style="color: #0000BB;">"queen"</span>, <span style="color: #0000BB;">"royal"</span>, and <span style="color: #0000BB;">"King"</span></span>
@@ -120,7 +124,7 @@ Defaults to <code>0.5</code>. A low threshold may lead to failure of convergence
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">dict</span> <span class="op">=</span> <span class="fu">dict_expand</span><span class="op">(</span><span class="va">demodata</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"king, queen"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Results may be inaccurate if word vectors are not normalized.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> All word vectors have now been normalized.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> All word vectors now have been automatically normalized.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Iteration 1 (threshold of cosine similarity = 0.5)</span> <span style="color: #00BBBB;">──────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> 2 more words appended: <span style="color: #0000BB;">"royal"</span> and <span style="color: #0000BB;">"Queen"</span></span>
@@ -141,24 +145,24 @@ Defaults to <code>0.5</code>. A low threshold may lead to failure of convergence
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="most_similar.html">most_similar</a></span><span class="op">(</span><span class="va">demodata</span>, <span class="va">dict</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Results may be inaccurate if word vectors are not normalized.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> All word vectors have now been normalized.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> All word vectors now have been automatically normalized.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">[Word Vector]</span> =~ king + queen + royal + Queen + King + Prince</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> (normalized to unit length)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          word   cos_sim row_id vec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   Jackson 0.3615837   1066    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:    Albert 0.3607588   6472    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:     Crown 0.3587386   6775    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:     crown 0.3399563   5174    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: superstar 0.3375027   7218    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   royalty 0.3353748   7893    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:     Kings 0.3330198   4068    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:    legend 0.3305279   5428    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:       Sir 0.3121715   5054    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:      pope 0.3093004   6388    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          word   cos_sim row_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   Jackson 0.3615837   1066</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:    Albert 0.3607588   4068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:     Crown 0.3587386   5054</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:     crown 0.3399563   5174</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: superstar 0.3375027   5428</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   royalty 0.3353748   6388</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:     Kings 0.3330198   6472</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:    legend 0.3305279   6775</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:       Sir 0.3121715   7218</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:      pope 0.3093004   7893</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">dict.cn</span> <span class="op">=</span> <span class="fu">dict_expand</span><span class="op">(</span><span class="va">demodata</span>, <span class="st">"China"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Results may be inaccurate if word vectors are not normalized.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> All word vectors have now been normalized.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> All word vectors now have been automatically normalized.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Iteration 1 (threshold of cosine similarity = 0.5)</span> <span style="color: #00BBBB;">──────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> 19 more words appended: <span style="color: #0000BB;">"Chinese"</span>, <span style="color: #0000BB;">"Beijing"</span>, <span style="color: #0000BB;">"Taiwan"</span>, <span style="color: #0000BB;">"Shanghai"</span>, <span style="color: #0000BB;">"Shenzhen"</span>, <span style="color: #0000BB;">"Guangzhou"</span>, <span style="color: #0000BB;">"yuan"</span>, <span style="color: #0000BB;">"India"</span>, <span style="color: #0000BB;">"Japan"</span>, <span style="color: #0000BB;">"Li"</span>, <span style="color: #0000BB;">"Asia"</span>, <span style="color: #0000BB;">"Korea"</span>, <span style="color: #0000BB;">"Taiwanese"</span>, <span style="color: #0000BB;">"mainland"</span>, <span style="color: #0000BB;">"Russia"</span>, <span style="color: #0000BB;">"Tibet"</span>, <span style="color: #0000BB;">"Wang"</span>, <span style="color: #0000BB;">"Chen"</span>, and <span style="color: #0000BB;">"Vietnam"</span></span>
@@ -191,7 +195,7 @@ Defaults to <code>0.5</code>. A low threshold may lead to failure of convergence
 <span class="r-in"><span>                      <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"China, Chinese"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                      threshold<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Results may be inaccurate if word vectors are not normalized.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> All word vectors have now been normalized.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> All word vectors now have been automatically normalized.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Iteration 1 (threshold of cosine similarity = 0.6)</span> <span style="color: #00BBBB;">──────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> 8 more words appended: <span style="color: #0000BB;">"Beijing"</span>, <span style="color: #0000BB;">"Taiwan"</span>, <span style="color: #0000BB;">"Taiwanese"</span>, <span style="color: #0000BB;">"Shanghai"</span>, <span style="color: #0000BB;">"Li"</span>, <span style="color: #0000BB;">"Guangzhou"</span>, <span style="color: #0000BB;">"Shenzhen"</span>, and <span style="color: #0000BB;">"yuan"</span></span>

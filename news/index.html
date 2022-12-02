@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,28 +45,60 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.5" id="psychwordvec-015-ongoing">PsychWordVec 0.1.5 (ongoing…)<a class="anchor" aria-label="anchor" href="#psychwordvec-015-ongoing"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.2.1" id="psychwordvec-021-ongoing">PsychWordVec 0.2.1 (ongoing…)<a class="anchor" aria-label="anchor" href="#psychwordvec-021-ongoing"></a></h2>
 <div class="section level3">
-<h3 id="breaking-news-0-1-5">Breaking News<a class="anchor" aria-label="anchor" href="#breaking-news-0-1-5"></a></h3>
-<ul><li>New series of <code>text_*</code> functions for contextualized word embeddings! Based on the R package <a href="https://www.r-text.org/" class="external-link"><code>text</code></a>, a series of new functions have been developed for researchers to download <a href="https://huggingface.co/models" class="external-link">HuggingFace</a> Transformers pre-trained language models and get contextualized word (token) embeddings and text embeddings.<ul><li><code><a href="../reference/text_env_setup.html">text_env_setup()</a></code></li>
-<li><code><a href="../reference/text_model_download.html">text_model_download()</a></code></li>
-<li><code><a href="../reference/text_model_remove.html">text_model_remove()</a></code></li>
-<li><code><a href="../reference/text_to_vec.html">text_to_vec()</a></code></li>
+<h3 id="major-changes-0-2-1">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-0-2-1"></a></h3>
+<ul><li>Most functions now have been substantially enhanced for a faster speed, especially <code><a href="../reference/tab_similarity.html">tab_similarity()</a></code>, <code><a href="../reference/most_similar.html">most_similar()</a></code>, <code><a href="../reference/dict_expand.html">dict_expand()</a></code>, <code><a href="../reference/dict_reliability.html">dict_reliability()</a></code>, <code><a href="../reference/test_WEAT.html">test_WEAT()</a></code>, <code><a href="../reference/test_RND.html">test_RND()</a></code>.</li>
+<li>
+<code><a href="../reference/pair_similarity.html">pair_similarity()</a></code> has been improved by using matrix manipulation <code>tcrossprod(embed, embed)</code> to compute cosine similarity, with <code>embed</code> normalized.</li>
+<li>
+<code>data_wordvec_normalize()</code> (deprecated) has been renamed as <code><a href="../reference/normalize.html">normalize()</a></code>.</li>
+<li>
+<code>get_wordvecs()</code> (deprecated) has been integrated into <code><a href="../reference/get_wordvec.html">get_wordvec()</a></code>.</li>
+<li>
+<code>tab_similarity_cross()</code> (deprecated) has been integrated into <code><a href="../reference/tab_similarity.html">tab_similarity()</a></code>.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="psychwordvec-020-dec-2022">PsychWordVec 0.2.0 (Dec 2022)<a class="anchor" aria-label="anchor" href="#psychwordvec-020-dec-2022"></a></h2><p class="text-muted">CRAN release: 2022-12-01</p>
+<div class="section level3">
+<h3 id="breaking-news-0-2-0">Breaking News<a class="anchor" aria-label="anchor" href="#breaking-news-0-2-0"></a></h3>
+<ul><li>Most functions now internally use <code>embed</code> (an extended class of matrix) rather than <code>wordvec</code> in order to enhance the speed!</li>
+<li>New series of <code>text_*</code> functions for contextualized word embeddings! Based on the R package <a href="https://www.r-text.org/" class="external-link"><code>text</code></a> (and using the R package <code>reticulate</code> to call functions from the Python module <code>transformers</code>), a series of new functions have been developed to (1) download <a href="https://huggingface.co/models" class="external-link">HuggingFace</a> Transformers <em>pre-trained language models</em> (PLM; thousands of options such as GPT, BERT, RoBERTa, DeBERTa, DistilBERT, etc.), (2) extract contextualized token (roughly word) embeddings and text embeddings, and (3) fill in the blank mask(s) in a query (e.g., “Beijing is the [MASK] of China.”).
+<ul><li>
+<code><a href="../reference/text_init.html">text_init()</a></code>: set up a Python environment for PLM</li>
+<li>
+<code><a href="../reference/text_model_download.html">text_model_download()</a></code>: download PLMs from <a href="https://huggingface.co/models" class="external-link">HuggingFace</a> to local “.cache” folder</li>
+<li>
+<code><a href="../reference/text_model_remove.html">text_model_remove()</a></code>: remove PLMs from local “.cache” folder</li>
+<li>
+<code><a href="../reference/text_to_vec.html">text_to_vec()</a></code>: extract contextualized token and text embeddings</li>
+<li>
+<code><a href="../reference/text_unmask.html">text_unmask()</a></code>: fill in the blank mask(s) in a query</li>
 </ul></li>
-<li>New <code><a href="../reference/orth_procrustes.html">orth_procrustes()</a></code> function: Orthogonal Procrustes matrix alignment. Users can input either two matrices of word embeddings or two <code>wordvec</code> objects as loaded by <code><a href="../reference/data_wordvec_load.html">data_wordvec_load()</a></code> or transformed from matrices by <code><a href="../reference/data_wordvec_reshape.html">as_wordvec()</a></code>.</li>
+<li>New <code><a href="../reference/orth_procrustes.html">orth_procrustes()</a></code> function: Orthogonal Procrustes matrix alignment. Users can input either two matrices of word embeddings or two <code>wordvec</code> objects as loaded by <code><a href="../reference/data_wordvec_load.html">data_wordvec_load()</a></code> or transformed from matrices by <code><a href="../reference/as_embed.html">as_wordvec()</a></code>.</li>
 <li>New <code><a href="../reference/dict_expand.html">dict_expand()</a></code> function: Expand a dictionary from the most similar words, based on <code><a href="../reference/most_similar.html">most_similar()</a></code>.</li>
 <li>New <code><a href="../reference/dict_reliability.html">dict_reliability()</a></code> function: Reliability analysis (Cronbach’s α) and Principal Component Analysis (PCA) of a dictionary. Note that Cronbach’s α may be misleading when the number of items/words is large.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="new-features-0-1-5">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-5"></a></h3>
+<h3 id="new-features-0-2-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
 <ul><li>New <code><a href="../reference/sum_wordvec.html">sum_wordvec()</a></code> function: Calculate the sum vector of multiple words.</li>
 <li>New <code><a href="../reference/plot_similarity.html">plot_similarity()</a></code> function: Visualize cosine similarities between word pairs in a style of correlation matrix plot.</li>
-<li>New <code><a href="../reference/tab_similarity.html">tab_similarity_cross()</a></code> function: A wrapper of <code><a href="../reference/tab_similarity.html">tab_similarity()</a></code> to tabulate cosine similarities for only n1 * n2 word pairs from two sets of words (arguments: <code>words1</code>, <code>words2</code>).</li>
-<li>New S3 print method <code>print.wordvec()</code>: Tidy print of <code>wordvec</code> object.</li>
+<li>New <code>tab_similarity_cross()</code> function: A wrapper of <code><a href="../reference/tab_similarity.html">tab_similarity()</a></code> to tabulate cosine similarities for only n1 * n2 word pairs from two sets of words (arguments: <code>words1</code>, <code>words2</code>).</li>
+<li>New S3 methods: <code>print.wordvec()</code>, <code>print.embed()</code>, <code>rbind.wordvec()</code>, <code>rbind.embed()</code>, <code><a href="../reference/data_wordvec_subset.html">subset.wordvec()</a></code>, <code><a href="../reference/data_wordvec_subset.html">subset.embed()</a></code>
+</li>
 </ul></div>
 <div class="section level3">
-<h3 id="minor-changes-0-1-5">Minor Changes<a class="anchor" aria-label="anchor" href="#minor-changes-0-1-5"></a></h3>
-<ul><li>Improved <code>print.weat()</code> and <code>print.rnd()</code>.</li></ul></div>
+<h3 id="major-changes-0-2-0">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-0-2-0"></a></h3>
+<ul><li>
+<code>as_matrix()</code> has been renamed to <code><a href="../reference/as_embed.html">as_embed()</a></code>: Now <code>PsychWordVec</code> supports two classes of data objects – <code>wordvec</code> (data.table) and <code>embed</code> (matrix). Most functions now use <code>embed</code> (or transform <code>wordvec</code> to <code>embed</code>) internally so as to enhance the speed. Matrix is much faster!</li>
+<li>Deprecated <code>data_wordvec_reshape()</code> function: Use <code><a href="../reference/as_embed.html">as_wordvec()</a></code> and <code><a href="../reference/as_embed.html">as_embed()</a></code> now.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="minor-changes-0-2-0">Minor Changes<a class="anchor" aria-label="anchor" href="#minor-changes-0-2-0"></a></h3>
+<ul><li>Defaults changed in <code><a href="../reference/data_wordvec_subset.html">data_wordvec_subset()</a></code>, <code>get_wordvecs()</code>, <code><a href="../reference/tab_similarity.html">tab_similarity()</a></code>, and <code><a href="../reference/plot_similarity.html">plot_similarity()</a></code>: If neither <code>words</code> nor <code>pattern</code> are specified (<code>NULL</code>), then all words in <code>data</code> will be extracted.</li>
+<li>Improved S3 methods <code>print.weat()</code> and <code>print.rnd()</code>.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.2" id="psychwordvec-012-nov-2022">PsychWordVec 0.1.2 (Nov 2022)<a class="anchor" aria-label="anchor" href="#psychwordvec-012-nov-2022"></a></h2><p class="text-muted">CRAN release: 2022-11-03</p>
@@ -74,7 +106,7 @@
 <h3 id="new-features-0-1-2">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-2"></a></h3>
 <ul><li>Added permutation test of significance for both <code><a href="../reference/test_WEAT.html">test_WEAT()</a></code> and <code><a href="../reference/test_RND.html">test_RND()</a></code>: Users can specify the number of permutation samples and choose to calculate either one-sided or two-sided <em>p</em> value. It can well reproduce the results in Caliskan et al.’s (2017) article.</li>
 <li>Added the <code>pooled.sd</code> argument for <code><a href="../reference/test_WEAT.html">test_WEAT()</a></code>: Users can choose the method used to calculate the pooled <em>SD</em> for effect size estimate in WEAT. However, the original approach proposed by Caliskan et al. (2017) is the default and highly suggested.</li>
-<li>Wrapper functions <code><a href="../reference/data_wordvec_reshape.html">as_matrix()</a></code> and <code><a href="../reference/data_wordvec_reshape.html">as_wordvec()</a></code> for <code><a href="../reference/data_wordvec_reshape.html">data_wordvec_reshape()</a></code>, which can make it easier to reshape word embeddings data from <code>matrix</code> to “wordvec” <code>data.table</code> or vice versa.</li>
+<li>Wrapper functions <code>as_matrix()</code> and <code><a href="../reference/as_embed.html">as_wordvec()</a></code> for <code>data_wordvec_reshape()</code>, which can make it easier to reshape word embeddings data from <code>matrix</code> to “wordvec” <code>data.table</code> or vice versa.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="major-changes-0-1-2">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-0-1-2"></a></h3>
@@ -95,7 +127,7 @@
 <ul><li>Added <code>wordvec</code> as the primary class of word vectors data: Now the data classes contain <code>wordvec</code>, <code>data.table</code>, and <code>data.frame</code>, which actually perform as a <code>data.table</code>.</li>
 <li>New <code><a href="../reference/train_wordvec.html">train_wordvec()</a></code> function: Train word vectors using the <em>Word2Vec</em>, <em>GloVe</em>, or <em>FastText</em> algorithm with multi-threading.</li>
 <li>New <code><a href="../reference/tokenize.html">tokenize()</a></code> function: Tokenize raw texts for training word vectors.</li>
-<li>New <code><a href="../reference/data_wordvec_reshape.html">data_wordvec_reshape()</a></code> function: Reshape word vectors data from dense (a <code>data.table</code> of new classs <code>wordvec</code> with two variables <code>word</code> and <code>vec</code>) to plain (a <code>matrix</code> of word vectors) or vice versa.</li>
+<li>New <code>data_wordvec_reshape()</code> function: Reshape word vectors data from dense (a <code>data.table</code> of new classs <code>wordvec</code> with two variables <code>word</code> and <code>vec</code>) to plain (a <code>matrix</code> of word vectors) or vice versa.</li>
 <li>New <code><a href="../reference/test_RND.html">test_RND()</a></code> function, and <code>tab_WEAT()</code> is renamed to <code><a href="../reference/test_WEAT.html">test_WEAT()</a></code>: These two functions serve as convenient tools of word semantic similarity analysis and conceptual association test.</li>
 <li>New <code><a href="../reference/plot_wordvec_tSNE.html">plot_wordvec_tSNE()</a></code> function: Visualize 2-D or 3-D word vectors with dimensionality reduced using the t-Distributed Stochastic Neighbor Embedding (t-SNE) method.</li>
 </ul></div>
@@ -112,10 +144,12 @@
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.4" id="psychwordvec-004-apr-2022">PsychWordVec 0.0.4 (Apr 2022)<a class="anchor" aria-label="anchor" href="#psychwordvec-004-apr-2022"></a></h2>
-<ul><li>Initial public release on <a href="https://github.com/psychbruce/PsychWordVec" class="external-link">GitHub</a> with more functions.</li></ul></div>
+<ul><li>Initial public release on <a href="https://github.com/psychbruce/PsychWordVec" class="external-link">GitHub</a> with more functions.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.1" id="psychwordvec-001-mar-2022">PsychWordVec 0.0.1 (Mar 2022)<a class="anchor" aria-label="anchor" href="#psychwordvec-001-mar-2022"></a></h2>
-<ul><li>Basic functions and the <a href="https://psychbruce.github.io/WordVector_RData.pdf" class="external-link">WordVector_RData.pdf</a> file.</li></ul></div>
+<ul><li>Basic functions and the <a href="https://psychbruce.github.io/WordVector_RData.pdf" class="external-link">WordVector_RData.pdf</a> file.</li>
+</ul></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

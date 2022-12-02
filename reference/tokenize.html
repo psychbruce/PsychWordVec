@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +41,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Tokenize raw text for training word embeddings.</h1>
-      <small class="dont-index">Source: <a href="https://github.com/psychbruce/PsychWordVec/blob/HEAD/R/PWV1_static.R" class="external-link"><code>R/PWV1_static.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/psychbruce/PsychWordVec/blob/HEAD/R/PWV2_static.R" class="external-link"><code>R/PWV2_static.R</code></a></small>
       <div class="d-none name"><code>tokenize.Rd</code></div>
     </div>
 
@@ -86,7 +86,8 @@ You may turn off this by specifying <code>remove=NULL</code>.</p></dd>
 
 
 <dt>encoding</dt>
-<dd><p>Text encoding. Defaults to <code>"UTF-8"</code>.</p></dd>
+<dd><p>Text encoding (only used if <code>text</code> is a file).
+Defaults to <code>"UTF-8"</code>.</p></dd>
 
 
 <dt>simplify</dt>
@@ -120,7 +121,7 @@ Defaults to <code>TRUE</code>.</p></dd>
 <span class="r-in"><span>  <span class="st">"However, my computer is not among the \"Top 10\" list."</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">tokenize</span><span class="op">(</span><span class="va">txt1</span>, simplify<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tokenized: 4 sentences (time cost = 0.2 secs)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tokenized: 4 sentences (time cost = 0.3 secs)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "I"          "love"       "natural"    "language"   "processing"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6] "NLP"       </span>

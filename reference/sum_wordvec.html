@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +41,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Calculate the sum vector of multiple words.</h1>
-      <small class="dont-index">Source: <a href="https://github.com/psychbruce/PsychWordVec/blob/HEAD/R/PWV1_static.R" class="external-link"><code>R/PWV1_static.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/psychbruce/PsychWordVec/blob/HEAD/R/PWV1_basic.R" class="external-link"><code>R/PWV1_basic.R</code></a></small>
       <div class="d-none name"><code>sum_wordvec.Rd</code></div>
     </div>
 
@@ -51,18 +51,20 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sum_wordvec</span><span class="op">(</span><span class="va">data</span>, <span class="va">x</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sum_wordvec</span><span class="op">(</span><span class="va">data</span>, x <span class="op">=</span> <span class="cn">NULL</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
-<dd><p>A <code>data.table</code> (of new class <code>wordvec</code>)
-loaded by <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</p></dd>
+<dd><p>A <code><a href="as_embed.html">wordvec</a></code> (data.table) or
+<code><a href="as_embed.html">embed</a></code> (matrix),
+see <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</p></dd>
 
 
 <dt>x</dt>
-<dd><p>Can be one of the following:</p><ul><li><p>a single word:  <code>"China"</code></p></li>
+<dd><p>Can be:</p><ul><li><p><code>NULL</code>: use the sum of all word vectors in <code>data</code></p></li>
+<li><p>a single word:  <code>"China"</code></p></li>
 <li><p>a list of words:  <code>c("king", "queen")</code></p>
 <p><code>cc(" king , queen ; man | woman")</code></p></li>
 <li><p>an R formula (<code>~ xxx</code>) specifying
@@ -90,76 +92,135 @@ loaded by <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="most_similar.html">most_similar</a></code></p>
+    <div class="dont-index"><p><code><a href="normalize.html">normalize</a></code></p>
+<p><code><a href="most_similar.html">most_similar</a></code></p>
 <p><code><a href="dict_expand.html">dict_expand</a></code></p>
 <p><code><a href="dict_reliability.html">dict_reliability</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">sum_wordvec</span><span class="op">(</span><span class="va">demodata</span>, <span class="op">~</span> <span class="va">king</span> <span class="op">-</span> <span class="va">man</span> <span class="op">+</span> <span class="va">woman</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Results may be inaccurate if word vectors are not normalized.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> All word vectors have now been normalized.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] -0.0055029992 -0.0670502053 -0.0451917763  0.0387523404 -0.0028627068</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [6] -0.0311541918  0.0722744639 -0.0547962213 -0.0020958381  0.1267937027</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [11] -0.1177978229 -0.1116193754 -0.0432157999  0.0087648568 -0.0212594939</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [16] -0.0361886454 -0.0145757764 -0.0391255380  0.0236719225  0.0679695260</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [21]  0.0825006128  0.0179503178 -0.0102744498  0.0096805959  0.0097418516</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [26] -0.0583066547 -0.1043284916  0.0066451406  0.0774529645 -0.0630043398</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [31]  0.0176932143 -0.0357660002 -0.0127675640  0.0952755743 -0.1004202304</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [36] -0.0307725420  0.0191817489  0.0342936599 -0.0381161430 -0.0036010425</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [41] -0.0222736867 -0.0654523468  0.0581761410  0.0386649344  0.0625108822</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [46]  0.0144455335 -0.0298451219  0.0179820393 -0.0070950816  0.0410382461</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [51]  0.0193902936  0.0009054039 -0.0824461123  0.0896711960 -0.1071550823</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [56]  0.0090518215 -0.0452947722 -0.0242425101  0.0499748883  0.0017788248</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [61]  0.0896162255  0.0778694536  0.0043599153  0.0777055479  0.0090822422</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [66] -0.0272763870  0.0142941177  0.0595841030 -0.0188500428  0.0720441406</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [71]  0.0662750676  0.0333189751 -0.0275026411  0.0473774977  0.0302065682</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [76]  0.0363555415 -0.0305552844  0.0234168307  0.1017575023  0.0411732703</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [81]  0.0094623327  0.0278133126 -0.0067087575  0.0304040180 -0.0629132792</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [86]  0.0630248067 -0.0340541402  0.0388550926  0.0546983130  0.0218934638</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [91]  0.0433205797 -0.1001378189 -0.0860689768 -0.0450885649  0.0072867091</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [96]  0.0317569448  0.0645638429 -0.0160440819  0.0639956819 -0.0188932674</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [101]  0.0053826412 -0.0191800667 -0.0261438897 -0.1247332173 -0.1010494892</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [106]  0.0587875995 -0.1849463247 -0.0674423763  0.0657176846 -0.0205700926</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [111]  0.0666514408  0.0815598320  0.0569012270 -0.0101953971  0.0484093475</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [116] -0.1185521372  0.0030313936 -0.0933326263  0.0544090501  0.0927743854</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [121]  0.0572259111  0.0394707134 -0.0271925329 -0.0265718034  0.0412028096</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [126]  0.0438836936  0.0418592306  0.0034390046  0.0029262269  0.0134619940</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [131]  0.0060545735  0.0513732397  0.0327279879  0.1054238844  0.0668562286</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [136]  0.0769686804 -0.0227940919 -0.0422079731  0.0703340490 -0.0155774872</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [141]  0.0372660027 -0.1356710009  0.0350093190  0.0236513594  0.0484942080</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [146] -0.0400414708  0.0188626798  0.0274173715 -0.0486294492  0.0038126260</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [151]  0.0133522101  0.0559058596  0.0022117502 -0.0837040985 -0.0849908637</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [156] -0.0533659570 -0.0608346184  0.0319297479  0.0282798544  0.0078445029</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [161] -0.0496067834 -0.0011413436  0.1585030627 -0.0257539005 -0.0556869160</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [166] -0.0376501897  0.0119025195 -0.0722575073 -0.0134277815  0.0713891951</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [171] -0.1004959954  0.0377733481  0.1079291741  0.0487607486  0.0176890786</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [176] -0.0642323537  0.0939240962  0.0323515907  0.0062917470  0.0628913182</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [181] -0.1168540632  0.0042852646 -0.1256198725 -0.0767676420  0.0159300785</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [186]  0.0294246554  0.0809427655  0.0357663118 -0.0218166578  0.0638628914</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [191]  0.0283086395 -0.0002039863 -0.0330815284  0.0067946163  0.0198031884</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [196]  0.0572634491  0.0025753907 -0.0179017809  0.0275942861 -0.0879453025</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [201] -0.0565598458  0.0206358787  0.0228473515 -0.0461282294 -0.0145729556</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [206] -0.0143933569  0.0095678299  0.0631869552  0.0659021305  0.0042216349</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [211]  0.0293649478  0.1033812547 -0.0516775577 -0.1253424596  0.0270994610</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [216]  0.0385621533 -0.0036571112 -0.0278117809  0.0295294855  0.0024058853</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [221] -0.0144733111  0.0180931805  0.0579378103 -0.0116669835  0.0087559466</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [226] -0.0283575865 -0.0278965844 -0.0272467575  0.0342410954  0.0878225024</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [231] -0.0741101358 -0.0684089597 -0.1740935244 -0.0044601583  0.0376029740</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [236]  0.0221138776  0.0207988624 -0.0113099903 -0.0275133395 -0.0000199454</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [241]  0.0563714279 -0.1243700668  0.0584321684  0.0294712221  0.0939427080</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [246] -0.0011363452 -0.0734356129  0.0425710531  0.0715560074 -0.0782001568</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [251]  0.0274794287  0.0326764105  0.0565690520 -0.0124150119  0.0545865281</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [256]  0.0131866584 -0.1333997208 -0.0673208573 -0.0237475804 -0.0439831482</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [261]  0.0048958304  0.0900008028 -0.0692655794  0.0177480897 -0.0185615675</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [266] -0.0438003657  0.0037071559  0.0152207093  0.0955843067  0.1068395259</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [271]  0.0044241142  0.1174178922 -0.0404572738  0.0672502162 -0.0424039690</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [276] -0.1056443456 -0.0766069551  0.0035567801 -0.0748190562  0.0503630702</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [281]  0.0909204843 -0.0668049051  0.0951348101 -0.0171847044  0.0625944510</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [286] -0.0035357800 -0.0205028927 -0.0161002229 -0.0182009416  0.0601725192</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [291] -0.0265177060 -0.0849906153 -0.0761131339 -0.1206830347  0.0004351351</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [296]  0.0062921084 -0.0137075363  0.0623639418  0.0806824072  0.0592501645</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">sum_wordvec</span><span class="op">(</span><span class="fu"><a href="normalize.html">normalize</a></span><span class="op">(</span><span class="va">demodata</span><span class="op">)</span>, <span class="op">~</span> <span class="va">king</span> <span class="op">-</span> <span class="va">man</span> <span class="op">+</span> <span class="va">woman</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          dim1          dim2          dim3          dim4          dim5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0055029992 -0.0670502053 -0.0451917763  0.0387523404 -0.0028627068 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          dim6          dim7          dim8          dim9         dim10 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0311541918  0.0722744639 -0.0547962213 -0.0020958381  0.1267937027 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         dim11         dim12         dim13         dim14         dim15 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.1177978229 -0.1116193754 -0.0432157999  0.0087648568 -0.0212594939 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         dim16         dim17         dim18         dim19         dim20 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0361886454 -0.0145757764 -0.0391255380  0.0236719225  0.0679695260 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         dim21         dim22         dim23         dim24         dim25 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0825006128  0.0179503178 -0.0102744498  0.0096805959  0.0097418516 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         dim26         dim27         dim28         dim29         dim30 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0583066547 -0.1043284916  0.0066451406  0.0774529645 -0.0630043398 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         dim31         dim32         dim33         dim34         dim35 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0176932143 -0.0357660002 -0.0127675640  0.0952755743 -0.1004202304 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         dim36         dim37         dim38         dim39         dim40 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0307725420  0.0191817489  0.0342936599 -0.0381161430 -0.0036010425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         dim41         dim42         dim43         dim44         dim45 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0222736867 -0.0654523468  0.0581761410  0.0386649344  0.0625108822 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         dim46         dim47         dim48         dim49         dim50 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0144455335 -0.0298451219  0.0179820393 -0.0070950816  0.0410382461 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         dim51         dim52         dim53         dim54         dim55 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0193902936  0.0009054039 -0.0824461123  0.0896711960 -0.1071550823 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         dim56         dim57         dim58         dim59         dim60 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0090518215 -0.0452947722 -0.0242425101  0.0499748883  0.0017788248 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         dim61         dim62         dim63         dim64         dim65 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0896162255  0.0778694536  0.0043599153  0.0777055479  0.0090822422 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         dim66         dim67         dim68         dim69         dim70 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0272763870  0.0142941177  0.0595841030 -0.0188500428  0.0720441406 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         dim71         dim72         dim73         dim74         dim75 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0662750676  0.0333189751 -0.0275026411  0.0473774977  0.0302065682 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         dim76         dim77         dim78         dim79         dim80 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0363555415 -0.0305552844  0.0234168307  0.1017575023  0.0411732703 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         dim81         dim82         dim83         dim84         dim85 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0094623327  0.0278133126 -0.0067087575  0.0304040180 -0.0629132792 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         dim86         dim87         dim88         dim89         dim90 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0630248067 -0.0340541402  0.0388550926  0.0546983130  0.0218934638 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         dim91         dim92         dim93         dim94         dim95 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0433205797 -0.1001378189 -0.0860689768 -0.0450885649  0.0072867091 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         dim96         dim97         dim98         dim99        dim100 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0317569448  0.0645638429 -0.0160440819  0.0639956819 -0.0188932674 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim101        dim102        dim103        dim104        dim105 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0053826412 -0.0191800667 -0.0261438897 -0.1247332173 -0.1010494892 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim106        dim107        dim108        dim109        dim110 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0587875995 -0.1849463247 -0.0674423763  0.0657176846 -0.0205700926 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim111        dim112        dim113        dim114        dim115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0666514408  0.0815598320  0.0569012270 -0.0101953971  0.0484093475 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim116        dim117        dim118        dim119        dim120 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.1185521372  0.0030313936 -0.0933326263  0.0544090501  0.0927743854 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim121        dim122        dim123        dim124        dim125 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0572259111  0.0394707134 -0.0271925329 -0.0265718034  0.0412028096 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim126        dim127        dim128        dim129        dim130 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0438836936  0.0418592306  0.0034390046  0.0029262269  0.0134619940 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim131        dim132        dim133        dim134        dim135 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0060545735  0.0513732397  0.0327279879  0.1054238844  0.0668562286 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim136        dim137        dim138        dim139        dim140 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0769686804 -0.0227940919 -0.0422079731  0.0703340490 -0.0155774872 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim141        dim142        dim143        dim144        dim145 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0372660027 -0.1356710009  0.0350093190  0.0236513594  0.0484942080 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim146        dim147        dim148        dim149        dim150 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0400414708  0.0188626798  0.0274173715 -0.0486294492  0.0038126260 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim151        dim152        dim153        dim154        dim155 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0133522101  0.0559058596  0.0022117502 -0.0837040985 -0.0849908637 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim156        dim157        dim158        dim159        dim160 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0533659570 -0.0608346184  0.0319297479  0.0282798544  0.0078445029 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim161        dim162        dim163        dim164        dim165 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0496067834 -0.0011413436  0.1585030627 -0.0257539005 -0.0556869160 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim166        dim167        dim168        dim169        dim170 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0376501897  0.0119025195 -0.0722575073 -0.0134277815  0.0713891951 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim171        dim172        dim173        dim174        dim175 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.1004959954  0.0377733481  0.1079291741  0.0487607486  0.0176890786 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim176        dim177        dim178        dim179        dim180 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0642323537  0.0939240962  0.0323515907  0.0062917470  0.0628913182 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim181        dim182        dim183        dim184        dim185 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.1168540632  0.0042852646 -0.1256198725 -0.0767676420  0.0159300785 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim186        dim187        dim188        dim189        dim190 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0294246554  0.0809427655  0.0357663118 -0.0218166578  0.0638628914 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim191        dim192        dim193        dim194        dim195 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0283086395 -0.0002039863 -0.0330815284  0.0067946163  0.0198031884 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim196        dim197        dim198        dim199        dim200 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0572634491  0.0025753907 -0.0179017809  0.0275942861 -0.0879453025 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim201        dim202        dim203        dim204        dim205 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0565598458  0.0206358787  0.0228473515 -0.0461282294 -0.0145729556 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim206        dim207        dim208        dim209        dim210 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0143933569  0.0095678299  0.0631869552  0.0659021305  0.0042216349 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim211        dim212        dim213        dim214        dim215 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0293649478  0.1033812547 -0.0516775577 -0.1253424596  0.0270994610 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim216        dim217        dim218        dim219        dim220 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0385621533 -0.0036571112 -0.0278117809  0.0295294855  0.0024058853 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim221        dim222        dim223        dim224        dim225 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0144733111  0.0180931805  0.0579378103 -0.0116669835  0.0087559466 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim226        dim227        dim228        dim229        dim230 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0283575865 -0.0278965844 -0.0272467575  0.0342410954  0.0878225024 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim231        dim232        dim233        dim234        dim235 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0741101358 -0.0684089597 -0.1740935244 -0.0044601583  0.0376029740 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim236        dim237        dim238        dim239        dim240 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0221138776  0.0207988624 -0.0113099903 -0.0275133395 -0.0000199454 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim241        dim242        dim243        dim244        dim245 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0563714279 -0.1243700668  0.0584321684  0.0294712221  0.0939427080 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim246        dim247        dim248        dim249        dim250 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0011363452 -0.0734356129  0.0425710531  0.0715560074 -0.0782001568 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim251        dim252        dim253        dim254        dim255 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0274794287  0.0326764105  0.0565690520 -0.0124150119  0.0545865281 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim256        dim257        dim258        dim259        dim260 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0131866584 -0.1333997208 -0.0673208573 -0.0237475804 -0.0439831482 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim261        dim262        dim263        dim264        dim265 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0048958304  0.0900008028 -0.0692655794  0.0177480897 -0.0185615675 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim266        dim267        dim268        dim269        dim270 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0438003657  0.0037071559  0.0152207093  0.0955843067  0.1068395259 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim271        dim272        dim273        dim274        dim275 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0044241142  0.1174178922 -0.0404572738  0.0672502162 -0.0424039690 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim276        dim277        dim278        dim279        dim280 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.1056443456 -0.0766069551  0.0035567801 -0.0748190562  0.0503630702 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim281        dim282        dim283        dim284        dim285 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0909204843 -0.0668049051  0.0951348101 -0.0171847044  0.0625944510 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim286        dim287        dim288        dim289        dim290 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0035357800 -0.0205028927 -0.0161002229 -0.0182009416  0.0601725192 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim291        dim292        dim293        dim294        dim295 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.0265177060 -0.0849906153 -0.0761131339 -0.1206830347  0.0004351351 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        dim296        dim297        dim298        dim299        dim300 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0062921084 -0.0137075363  0.0623639418  0.0806824072  0.0592501645 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"formula")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "king - man + woman"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"x.words")</span>

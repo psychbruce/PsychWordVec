@@ -28,7 +28,7 @@ pracma::procrustes()."><meta property="og:image" content="https://psychbruce.git
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,7 +59,7 @@ pracma::procrustes()."><meta property="og:image" content="https://psychbruce.git
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Orthogonal Procrustes solution for matrix alignment.</h1>
-      <small class="dont-index">Source: <a href="https://github.com/psychbruce/PsychWordVec/blob/HEAD/R/PWV1_static.R" class="external-link"><code>R/PWV1_static.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/psychbruce/PsychWordVec/blob/HEAD/R/PWV1_basic.R" class="external-link"><code>R/PWV1_basic.R</code></a></small>
       <div class="d-none name"><code>orth_procrustes.Rd</code></div>
     </div>
 
@@ -85,9 +85,9 @@ This function produces the same results as by
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>M, X</dt>
 <dd><p>Two embedding matrices of the same size (rows and columns),
-or two <code><a href="data_wordvec_reshape.html">wordvec</a></code> objects
+or two <code><a href="as_embed.html">wordvec</a></code> objects
 as loaded by <code><a href="data_wordvec_load.html">data_wordvec_load</a></code> or
-transformed from matrices by <code><a href="data_wordvec_reshape.html">as_wordvec</a></code>.</p><ul><li><p><code>M</code> is the reference (anchor/baseline/target) matrix,
+transformed from matrices by <code><a href="as_embed.html">as_wordvec</a></code>.</p><ul><li><p><code>M</code> is the reference (anchor/baseline/target) matrix,
         e.g., the embedding matrix learned at
         the later year (\(t + 1\)).</p></li>
 <li><p><code>X</code> is the matrix to be transformed/rotated.</p></li>
@@ -118,8 +118,7 @@ A generalized solution of the orthogonal Procrustes problem.
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="data_wordvec_reshape.html">data_wordvec_reshape</a></code>:
-<code><a href="data_wordvec_reshape.html">as_matrix()</a></code> and <code><a href="data_wordvec_reshape.html">as_wordvec()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="as_embed.html">as_wordvec</a></code> / <code><a href="as_embed.html">as_embed</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -143,9 +142,9 @@ A generalized solution of the orthogonal Procrustes problem.
 <span class="r-out co"><span class="r-pr">#&gt;</span>   dim1          dim2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A    0  0.000000e+00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> B    1  2.000000e+00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> C    2 -6.661338e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C    2 -6.337448e-16</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> D    3  2.000000e+00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> E    4 -1.332268e-15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> E    4 -1.267490e-15</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu">geom_path</span><span class="op">(</span>data<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">XR</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">dim1</span>, y<span class="op">=</span><span class="va">dim2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
@@ -153,16 +152,17 @@ A generalized solution of the orthogonal Procrustes problem.
 <span class="r-plt img"><img src="orth_procrustes-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Usage 2: input two `wordvec` objects</span></span></span>
-<span class="r-in"><span><span class="va">M.wv</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_reshape.html">as_wordvec</a></span><span class="op">(</span><span class="va">M</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">X.wv</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_reshape.html">as_wordvec</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">M.wv</span> <span class="op">=</span> <span class="fu"><a href="as_embed.html">as_wordvec</a></span><span class="op">(</span><span class="va">M</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">X.wv</span> <span class="op">=</span> <span class="fu"><a href="as_embed.html">as_wordvec</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">XR.wv</span> <span class="op">=</span> <span class="fu">orth_procrustes</span><span class="op">(</span><span class="va">M.wv</span>, <span class="va">X.wv</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">XR.wv</span>  <span class="co"># aligned with M.wv</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    word                     vec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    A [ 0.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    B [ 1.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    C [ 2.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    D [ 3.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    E [ 4.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># wordvec (data.table)</span><span style="color: #555555;">: 5 × 2 (NOT normalized)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    word                    vec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    A [ 0.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    B [ 1.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    C [ 2.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    D [ 3.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    E [ 4.0000, ...&lt;2 dims&gt;]</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># M and X must have the same set and order of words</span></span></span>
 <span class="r-in"><span><span class="co"># and the same number of word vector dimensions.</span></span></span>
@@ -171,35 +171,38 @@ A generalized solution of the orthogonal Procrustes problem.
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">Y</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">X</span>, <span class="va">X</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">)</span>,<span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"F, G, H, I, J"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">M.wv</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_reshape.html">as_wordvec</a></span><span class="op">(</span><span class="va">M</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">Y.wv</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_reshape.html">as_wordvec</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">M.wv</span> <span class="op">=</span> <span class="fu"><a href="as_embed.html">as_wordvec</a></span><span class="op">(</span><span class="va">M</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Y.wv</span> <span class="op">=</span> <span class="fu"><a href="as_embed.html">as_wordvec</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">M.wv</span>  <span class="co"># words: A, B, C, D, E</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    word                     vec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    A [ 0.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    B [ 1.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    C [ 2.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    D [ 3.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    E [ 4.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># wordvec (data.table)</span><span style="color: #555555;">: 5 × 2 (NOT normalized)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    word                    vec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    A [ 0.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    B [ 1.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    C [ 2.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    D [ 3.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    E [ 4.0000, ...&lt;2 dims&gt;]</span>
 <span class="r-in"><span><span class="va">Y.wv</span>  <span class="co"># words: F, G, H, I, J, E, D, C, B, A</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     word                     vec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:    F [ 0.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:    G [-2.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:    H [ 0.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:    I [-2.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:    J [ 0.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:    E [ 0.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:    D [-2.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:    C [ 0.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:    B [-2.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:    A [ 0.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># wordvec (data.table)</span><span style="color: #555555;">: 10 × 2 (NOT normalized)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     word                    vec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:    F [ 0.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:    G [-2.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:    H [ 0.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:    I [-2.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:    J [ 0.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:    E [ 0.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:    D [-2.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:    C [ 0.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:    B [-2.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:    A [ 0.0000, ...&lt;2 dims&gt;]</span>
 <span class="r-in"><span><span class="va">YR.wv</span> <span class="op">=</span> <span class="fu">orth_procrustes</span><span class="op">(</span><span class="va">M.wv</span>, <span class="va">Y.wv</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">YR.wv</span>  <span class="co"># aligned with M.wv, with the same order of words</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    word                     vec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    A [ 0.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    B [ 1.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    C [ 2.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    D [ 3.0000, ... &lt;2 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    E [ 4.0000, ... &lt;2 dims&gt;]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># wordvec (data.table)</span><span style="color: #555555;">: 5 × 2 (NOT normalized)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    word                    vec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    A [ 0.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    B [ 1.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:    C [ 2.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    D [ 3.0000, ...&lt;2 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:    E [ 4.0000, ...&lt;2 dims&gt;]</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -18,7 +18,7 @@ whereas a few are selected from less frequent words and appended.'><meta propert
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,7 +49,7 @@ whereas a few are selected from less frequent words and appended.'><meta propert
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Demo data (corpus: Google News; algorithm: word2vec; vocabulary: 8000; dimensions: 300).</h1>
-      <small class="dont-index">Source: <a href="https://github.com/psychbruce/PsychWordVec/blob/HEAD/R/PWV1_static.R" class="external-link"><code>R/PWV1_static.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/psychbruce/PsychWordVec/blob/HEAD/R/utils.R" class="external-link"><code>R/utils.R</code></a></small>
       <div class="d-none name"><code>demodata.Rd</code></div>
     </div>
 
@@ -81,20 +81,38 @@ using the <code><a href="data_transform.html">data_transform</a></code> function
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">demodata</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "wordvec"    "data.table" "data.frame"</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">demodata</span>, <span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     word                       vec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   in [ 0.0530, ... &lt;300 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:  for [-0.0085, ... &lt;300 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: that [-0.0124, ... &lt;300 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   is [ 0.0037, ... &lt;300 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   on [ 0.0167, ... &lt;300 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: with [-0.0160, ... &lt;300 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: said [-0.0045, ... &lt;300 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:  was [ 0.0126, ... &lt;300 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:  the [ 0.0747, ... &lt;300 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   at [-0.0354, ... &lt;300 dims&gt;]</span>
-<span class="r-in"><span><span class="fu"><a href="data_wordvec_normalize.html">data_wordvec_normalize</a></span><span class="op">(</span><span class="va">demodata</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> All word vectors have now been normalized.</span>
+<span class="r-in"><span><span class="va">demodata</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># wordvec (data.table)</span><span style="color: #555555;">: 8000 × 2 (NOT normalized)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  word                      vec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1:              in [ 0.0703, ...&lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2:             for [-0.0118, ...&lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    3:            that [-0.0157, ...&lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4:              is [ 0.0070, ...&lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    5:              on [ 0.0267, ...&lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -----                                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7996:     salesperson [ 0.1245, ...&lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7997:     computation [ 0.0791, ...&lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7998:   psychotherapy [ 0.1445, ...&lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7999:       equations [ 0.3242, ...&lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8000: psychotherapist [ 0.1357, ...&lt;300 dims&gt;]</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">embed</span> <span class="op">=</span> <span class="fu"><a href="as_embed.html">as_embed</a></span><span class="op">(</span><span class="va">demodata</span>, normalize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">embed</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "embed"  "matrix" "array" </span>
+<span class="r-in"><span><span class="va">embed</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># embed (matrix)</span><span style="color: #555555;">: 8000 × 300 (normalized)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                          dim1 ...     dim300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1: in               0.0530 ... &lt;300 dims&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2: for             -0.0085 ... &lt;300 dims&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    3: that            -0.0124 ... &lt;300 dims&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4: is               0.0037 ... &lt;300 dims&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    5: on               0.0167 ... &lt;300 dims&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -----                                       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7996: salesperson      0.0381 ... &lt;300 dims&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7997: computation      0.0227 ... &lt;300 dims&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7998: psychotherapy    0.0405 ... &lt;300 dims&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7999: equations        0.0957 ... &lt;300 dims&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8000: psychotherapist  0.0364 ... &lt;300 dims&gt;</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
