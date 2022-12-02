@@ -244,7 +244,6 @@ as_wordvec = function(x, normalize=FALSE) {
 }
 
 
-#' @rdname as_embed
 #' @export
 print.embed = function(x, maxn=100, ...) {
   n = nrow(x)
@@ -287,7 +286,6 @@ print.embed = function(x, maxn=100, ...) {
 }
 
 
-#' @rdname as_embed
 #' @export
 print.wordvec = function(x, maxn=100, ...) {
   n = nrow(x)
