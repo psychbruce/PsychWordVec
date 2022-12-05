@@ -41,6 +41,19 @@ install.packages("devtools")
 devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
 ```
 
+## Types of Data for `PsychWordVec`
+
+|                  | `embed`                        | `wordvec`                    |
+|------------------|----------------------------|--------------------------|
+| Basic class      | matrix                         | data.table                   |
+| Row size         | vocabulary size                | vocabulary size              |
+| Column size      | dimension size                 | 2 (variables: `word`, `vec`) |
+| Advantage        | faster (with matrix operation) | easier to inspect and manage |
+| Function to get  | `as_embed()`                   | `as_wordvec()`               |
+| Function to load | `load_embed()`                 | `load_wordvec()`             |
+
+: *Note*: Word embedding refers to a natural language processing technique that embeds word semantics into a low-dimensional ***embedding matrix***, with each word (actually token) quantified as a ***numeric vector*** representing its (uninterpretable) semantic features. Users are suggested to import [word vectors data](https://psychbruce.github.io/WordVector_RData.pdf) as the `embed` class using the function `load_embed()`, which would automatically normalize all word vectors to the unit length 1 (see the `normalize()` function) and accelerate the running of most functions in `PsychWordVec`.
+
 ## Functions in `PsychWordVec`
 
 -   Word Embeddings Data Management and Transformation

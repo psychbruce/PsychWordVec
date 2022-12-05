@@ -22,7 +22,7 @@ A \code{wordvec} (data.table) or \code{embed} (matrix).
 \code{PsychWordVec} uses two types of word vectors data:
 \code{wordvec} (data.table, with two variables \code{word} and \code{vec})
 and \code{embed} (matrix, with dimensions as columns and words as row names).
-Note that matrix manipulation makes \code{embed} much faster than \code{wordvec}.
+Note that matrix operation makes \code{embed} much faster than \code{wordvec}.
 Users are suggested to reshape data to \code{embed} before using the other functions.
 }
 \section{Functions}{
@@ -39,13 +39,17 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-d = head(demodata, 10)
+dt = head(demodata, 10)
 
-embed = as_embed(d)
+embed = as_embed(dt)
 embed
 
 wordvec = as_wordvec(embed)
 wordvec
+
+df = data.frame(token=LETTERS, D1=1:26/10000, D2=26:1/10000)
+as_embed(df)
+as_wordvec(df)
 
 }
 \seealso{

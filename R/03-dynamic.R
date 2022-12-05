@@ -237,15 +237,15 @@ text_model_remove = function(model=NULL) {
 #'
 #' Extract hidden layers from a language model and aggregate them to
 #' get token (roughly word) embeddings and text embeddings
-#' (all reshaped to \code{\link[PsychWordVec:as_wordvec]{wordvec}} data tables).
+#' (all reshaped to \code{\link[PsychWordVec:as_embed]{embed}} matrix).
 #' It is a wrapper function of \code{\link[text:textEmbed]{text::textEmbed()}}.
 #'
 #' @param text Can be:
 #' \itemize{
 #'   \item{a character string or vector of text (usually sentences)}
-#'   \item{a file path on disk containing text}
 #'   \item{a data frame with at least one character variable
 #'   (for text from all character variables in a given data frame)}
+#'   \item{a file path on disk containing text}
 #' }
 #' @param model Model name at \href{https://huggingface.co/models}{HuggingFace}.
 #' See \code{\link{text_model_download}}.
@@ -253,20 +253,22 @@ text_model_remove = function(model=NULL) {
 #' @param layers Layers to be extracted from the \code{model},
 #' which are then aggregated in the function
 #' \code{\link[text:textEmbedLayerAggregation]{text::textEmbedLayerAggregation()}}.
-#' Defaults to \code{-2} which extracts the second to last layers.
-#' You may extract only the layers you need (e.g., \code{11:12}) or
-#' all layers (\code{"all"}).
+#' Defaults to \code{"all"} which extracts all layers.
+#' You may extract only the layers you need (e.g., \code{11:12}).
 #' Note that layer 0 is the \emph{decontextualized} input layer
-#' (i.e., not comprising hidden states) and is normally not used.
+#' (i.e., not comprising hidden states).
 #' @param encoding Text encoding (only used if \code{text} is a file).
 #' Defaults to \code{"UTF-8"}.
 #' @param layer.to.token Method to aggregate hidden layers to each token.
 #' Defaults to \code{"concatenate"},
 #' which links together each word embedding layer to one long row.
 #' Options include \code{"mean"}, \code{"min"}, \code{"max"}, and \code{"concatenate"}.
-#' @param token.to.text Method to aggregate all tokens to each text.
-#' Defaults to \code{"mean"}.
-#' Options include \code{"mean"}, \code{"min"}, \code{"max"}, and \code{"concatenate"}.
+#' @param token.to.word Aggregate subword token embeddings (if whole word is out of vocabulary)
+#' to whole word embeddings. Defaults to \code{TRUE}, which sums up subword token embeddings.
+#' @param token.to.text Aggregate token embeddings to each text.
+#' Defaults to \code{TRUE}, which averages all token embeddings.
+#' If \code{FALSE}, the text embedding will be the token embedding of \code{[CLS]}
+#' (the special token that is used to represent the beginning of a text sequence).
 #' @param ... Other parameters passed to
 #' \code{\link[text:textEmbed]{text::textEmbed()}}.
 #'
@@ -292,30 +294,35 @@ text_model_remove = function(model=NULL) {
 #' \dontrun{
 #' # text_init()  # initialize the environment
 #'
-#' text = c("I love China.", "Beijing is the capital of China.")
-#' embed = text_to_vec(text, model="bert-base-cased")
-#' embed$token.embed
-#' embed$text.embed
+#' text = c("Download models from HuggingFace",
+#'          "Chinese are East Asian",
+#'          "Beijing is the capital of China")
+#' embed = text_to_vec(text, model="bert-base-cased", layers=c(0, 12))
+#' embed
 #'
 #' embed1 = embed$token.embed[[1]]
 #' embed2 = embed$token.embed[[2]]
+#' embed3 = embed$token.embed[[3]]
 #'
 #' View(embed1)
 #' View(embed2)
+#' View(embed3)
 #' View(embed$text.embed)
 #'
 #' plot_similarity(embed1, value.color="grey")
 #' plot_similarity(embed2, value.color="grey")
-#' plot_similarity(rbind(embed1, embed2))
+#' plot_similarity(embed3, value.color="grey")
+#' plot_similarity(rbind(embed1, embed2, embed3))
 #' }
 #'
 #' @export
 text_to_vec = function(
     text,
     model,
-    layers=-2,
+    layers="all",
     layer.to.token="concatenate",
-    token.to.text="mean",
+    token.to.word=TRUE,
+    token.to.text=TRUE,
     encoding="UTF-8",
     ...
 ) {
@@ -339,48 +346,44 @@ text_to_vec = function(
     layers=layers,
     keep_token_embeddings=TRUE,
     aggregation_from_layers_to_tokens=layer.to.token,
-    aggregation_from_tokens_to_texts=token.to.text,
+    aggregation_from_tokens_to_texts="mean",
     ...)
-  {
-    token.embed = lapply(
-      embed[["tokens"]][["texts"]],
-      function(data) {
-        mat = as.matrix(data[-1])
-        data = data.table(
-          token = data$tokens,
-          vec = do.call("list", lapply(
-            1:nrow(mat), function(i) {
-              as.numeric(mat[i,])
-            }))
-        )
-        attr(data, "dims") = ncol(mat)
-        attr(data, "normalized") = FALSE
-        class(data) = c("wordvec", "data.table", "data.frame")
-        return(data)
-      })
-  }
-  {
-    tmat = as.matrix(embed[["texts"]][["texts"]])
-    text.embed = data.table(
-      text = sapply(
-        embed[["tokens"]][["texts"]],
-        function(data) {
-          paste(data$tokens, collapse=" ")
-        }),
-      vec = do.call("list", lapply(
-        1:nrow(tmat), function(i) {
-          as.numeric(tmat[i,])
-        }))
-    )
-    attr(text.embed, "dims") = ncol(tmat)
-    attr(text.embed, "normalized") = FALSE
-    class(text.embed) = c("wordvec", "data.table", "data.frame")
-  }
+
+  token.embed = lapply(embed[["tokens"]][["texts"]], as_embed)
+  if(token.to.word)
+    token.embed = lapply(token.embed, token_to_word)
+  if(token.to.text)
+    text.embed = as_embed(embed[["texts"]][["texts"]])
+  else
+    text.embed = do.call(
+      "rbind",
+      lapply(embed[["tokens"]][["texts"]], function(df) {
+        as_embed(df[1,])
+      }))
+  rownames(text.embed) = sapply(
+    embed[["tokens"]][["texts"]],
+    function(data) { paste(data$tokens, collapse=" ") })
 
   embeds = list(token.embed=token.embed,
                 text.embed=text.embed)
 
   return(embeds)
+}
+
+
+token_to_word = function(embed) {
+  if(any(str_detect(rownames(embed), "##"))) {
+    for(i in nrow(embed):2) {
+      if(str_detect(rownames(embed)[i], "^##")) {
+        embed[i-1,] = embed[i-1,] + embed[i,]
+        rownames(embed)[i-1] = paste0(
+          rownames(embed)[i-1],
+          str_remove(rownames(embed)[i], "##"))
+      }
+    }
+    embed = as_embed(embed[str_detect(rownames(embed), "^##", negate=TRUE),])
+  }
+  return(embed)
 }
 
 

@@ -2,14 +2,20 @@
 
 # PsychWordVec 0.2.1 (ongoing...)
 
+⚠️ *All users should update the package to version ≥ 0.2.1. Old versions (≤ 0.2.0) may have a slow running speed and some old functions have been deprecated.*
+
 ## Major Changes
 
 -   Most functions now have been substantially enhanced for a faster speed, especially `tab_similarity()`, `most_similar()`, `dict_expand()`, `dict_reliability()`, `test_WEAT()`, `test_RND()`.
--   `pair_similarity()` has been improved by using matrix manipulation `tcrossprod(embed, embed)` to compute cosine similarity, with `embed` normalized.
+-   `pair_similarity()` has been improved by using matrix operation `tcrossprod(embed, embed)` to compute cosine similarity, with `embed` normalized.
 -   `data_wordvec_load()` has got two wrapper functions `load_wordvec()` and `load_embed()` for faster use.
 -   `data_wordvec_normalize()` (deprecated) has been renamed as `normalize()`.
 -   `get_wordvecs()` (deprecated) has been integrated into `get_wordvec()`.
 -   `tab_similarity_cross()` (deprecated) has been integrated into `tab_similarity()`.
+
+## Bug Fixes
+
+-   Fixed the issue of unexpected long loading and processing time in 0.2.0, which was related to duplicate words in .RData, too many words in `embed` or `wordvec`, and too many words to be printed to console. Now all related functions have been substantially improved so that they would not take unnecessarily long time.
 
 # PsychWordVec 0.2.0 (Dec 2022)
 

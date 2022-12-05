@@ -154,7 +154,7 @@ force_normalize = function(x, verbose=TRUE) {
 #' \code{PsychWordVec} uses two types of word vectors data:
 #' \code{wordvec} (data.table, with two variables \code{word} and \code{vec})
 #' and \code{embed} (matrix, with dimensions as columns and words as row names).
-#' Note that matrix manipulation makes \code{embed} much faster than \code{wordvec}.
+#' Note that matrix operation makes \code{embed} much faster than \code{wordvec}.
 #' Users are suggested to reshape data to \code{embed} before using the other functions.
 #'
 #' @describeIn as_embed From \code{wordvec} (data.table) to \code{embed} (matrix).
@@ -180,13 +180,17 @@ force_normalize = function(x, verbose=TRUE) {
 #' \code{\link{data_wordvec_subset}}
 #'
 #' @examples
-#' d = head(demodata, 10)
+#' dt = head(demodata, 10)
 #'
-#' embed = as_embed(d)
+#' embed = as_embed(dt)
 #' embed
 #'
 #' wordvec = as_wordvec(embed)
 #' wordvec
+#'
+#' df = data.frame(token=LETTERS, D1=1:26/10000, D2=26:1/10000)
+#' as_embed(df)
+#' as_wordvec(df)
 #'
 #' @export
 as_embed = function(x, normalize=FALSE) {
@@ -202,12 +206,22 @@ as_embed = function(x, normalize=FALSE) {
     rownames(x) = ""
   } else if(is.wordvec(x)) {
     # matrix is much faster!
-    x = matrix(unlist(x$vec),
+    x = matrix(unlist(x[[2]]),  # vec
                nrow=nrow(x),
                byrow=TRUE,
-               dimnames=list(x$word))
+               dimnames=list(x[[1]]))  # word or token
+  } else if(is.data.frame(x)) {
+    if(is.character(x[[1]])) {
+      x = matrix(as.matrix(x[,-1]),
+                 nrow=nrow(x),
+                 dimnames=list(x[[1]]))
+    } else {
+      x = matrix(as.matrix(x),
+                 nrow=nrow(x),
+                 dimnames=list(rownames(x)))
+    }
   } else {
-    stop("`x` must be a matrix or data.table!", call.=FALSE)
+    stop("`x` must be a matrix, data.frame, or data.table!", call.=FALSE)
   }
   if(is.null(colnames(x)))
     colnames(x) = paste0("dim", seq_len(ncol(x)))
@@ -227,7 +241,12 @@ as_wordvec = function(x, normalize=FALSE) {
   norm = attr(x, "normalized")
   null.dims = is.null(dims)
   null.norm = is.null(norm)
-  if(is.data.table(x)) {
+  if(is.data.frame(x) & !is.data.table(x)) {
+    x = as_embed(x)
+    dims = ncol(x)
+    null.dims = FALSE
+    x = as_wordvec(x)
+  } else if(is.data.table(x)) {
     # x = x
   } else if(is.matrix(x)) {
     dims = ncol(x)
@@ -239,7 +258,7 @@ as_wordvec = function(x, normalize=FALSE) {
       })
     )
   } else {
-    stop("`x` must be a matrix or data.table!", call.=FALSE)
+    stop("`x` must be a matrix, data.frame, or data.table!", call.=FALSE)
   }
   attr(x, "dims") = ifelse(null.dims, length(x[[1, "vec"]]), dims)
   attr(x, "normalized") = ifelse(null.norm, FALSE, norm)
@@ -642,7 +661,7 @@ vocab_str_subset = function(vocab, pattern) {
 extract_valid_subset = function(
     x, words=NULL, pattern=NULL, words.order=TRUE
 ) {
-  if(is.wordvec(x)) vocab = x$word
+  if(is.wordvec(x)) vocab = x[[1]]  # word or token
   if(is.embed(x)) vocab = rownames(x)
 
   if(is.null(words)) {
@@ -1703,7 +1722,7 @@ most_similar = function(
       cos_sim = cos.sim
     )
   }
-  attr(ms, "sum.vec.formula") = f
+  attr(ms, "formula") = f
   if(verbose) {
     Print("<<cyan [Word Vector]>> =~ {f}")
     message("(normalized to unit length)")
