@@ -46,11 +46,12 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.1" id="psychwordvec-021-ongoing">PsychWordVec 0.2.1 (ongoing…)<a class="anchor" aria-label="anchor" href="#psychwordvec-021-ongoing"></a></h2>
+<p>⚠️ <em>All users should update the package to version ≥ 0.2.1. Old versions (≤ 0.2.0) may have a slow running speed and some old functions have been deprecated.</em></p>
 <div class="section level3">
 <h3 id="major-changes-0-2-1">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-0-2-1"></a></h3>
 <ul><li>Most functions now have been substantially enhanced for a faster speed, especially <code><a href="../reference/tab_similarity.html">tab_similarity()</a></code>, <code><a href="../reference/most_similar.html">most_similar()</a></code>, <code><a href="../reference/dict_expand.html">dict_expand()</a></code>, <code><a href="../reference/dict_reliability.html">dict_reliability()</a></code>, <code><a href="../reference/test_WEAT.html">test_WEAT()</a></code>, <code><a href="../reference/test_RND.html">test_RND()</a></code>.</li>
 <li>
-<code><a href="../reference/pair_similarity.html">pair_similarity()</a></code> has been improved by using matrix manipulation <code>tcrossprod(embed, embed)</code> to compute cosine similarity, with <code>embed</code> normalized.</li>
+<code><a href="../reference/pair_similarity.html">pair_similarity()</a></code> has been improved by using matrix operation <code>tcrossprod(embed, embed)</code> to compute cosine similarity, with <code>embed</code> normalized.</li>
 <li>
 <code><a href="../reference/data_wordvec_load.html">data_wordvec_load()</a></code> has got two wrapper functions <code><a href="../reference/data_wordvec_load.html">load_wordvec()</a></code> and <code><a href="../reference/data_wordvec_load.html">load_embed()</a></code> for faster use.</li>
 <li>
@@ -59,6 +60,10 @@
 <code>get_wordvecs()</code> (deprecated) has been integrated into <code><a href="../reference/get_wordvec.html">get_wordvec()</a></code>.</li>
 <li>
 <code>tab_similarity_cross()</code> (deprecated) has been integrated into <code><a href="../reference/tab_similarity.html">tab_similarity()</a></code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-2-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-1"></a></h3>
+<ul><li>Fixed the issue of unexpected long loading and processing time in 0.2.0, which was related to duplicate words in .RData, too many words in <code>embed</code> or <code>wordvec</code>, and too many words to be printed to console. Now all related functions have been substantially improved so that they would not take unnecessarily long time.</li>
 </ul></div>
 </div>
     <div class="section level2">

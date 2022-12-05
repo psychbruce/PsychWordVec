@@ -144,6 +144,57 @@
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"psychbruce/PsychWordVec"</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="types-of-data-for-psychwordvec">Types of Data for <code>PsychWordVec</code>
+<a class="anchor" aria-label="anchor" href="#types-of-data-for-psychwordvec"></a>
+</h2>
+<table class="table">
+<caption>
+<em>Note</em>: Word embedding refers to a natural language processing technique that embeds word semantics into a low-dimensional <strong><em>embedding matrix</em></strong>, with each word (actually token) quantified as a <strong><em>numeric vector</em></strong> representing its (uninterpretable) semantic features. Users are suggested to import <a href="https://psychbruce.github.io/WordVector_RData.pdf" class="external-link">word vectors data</a> as the <code>embed</code> class using the function <code><a href="reference/data_wordvec_load.html">load_embed()</a></code>, which would automatically normalize all word vectors to the unit length 1 (see the <code><a href="reference/normalize.html">normalize()</a></code> function) and accelerate the running of most functions in <code>PsychWordVec</code>.</caption>
+<colgroup>
+<col width="25%">
+<col width="38%">
+<col width="36%">
+</colgroup>
+<thead><tr class="header">
+<th></th>
+<th><code>embed</code></th>
+<th><code>wordvec</code></th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Basic class</td>
+<td>matrix</td>
+<td>data.table</td>
+</tr>
+<tr class="even">
+<td>Row size</td>
+<td>vocabulary size</td>
+<td>vocabulary size</td>
+</tr>
+<tr class="odd">
+<td>Column size</td>
+<td>dimension size</td>
+<td>2 (variables: <code>word</code>, <code>vec</code>)</td>
+</tr>
+<tr class="even">
+<td>Advantage</td>
+<td>faster (with matrix operation)</td>
+<td>easier to inspect and manage</td>
+</tr>
+<tr class="odd">
+<td>Function to get</td>
+<td><code><a href="reference/as_embed.html">as_embed()</a></code></td>
+<td><code><a href="reference/as_embed.html">as_wordvec()</a></code></td>
+</tr>
+<tr class="even">
+<td>Function to load</td>
+<td><code><a href="reference/data_wordvec_load.html">load_embed()</a></code></td>
+<td><code><a href="reference/data_wordvec_load.html">load_wordvec()</a></code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level2">
 <h2 id="functions-in-psychwordvec">Functions in <code>PsychWordVec</code>
 <a class="anchor" aria-label="anchor" href="#functions-in-psychwordvec"></a>
 </h2>
