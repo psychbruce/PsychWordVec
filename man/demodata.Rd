@@ -2,7 +2,7 @@
 % Please edit documentation in R/00-utils.R
 \name{demodata}
 \alias{demodata}
-\title{Demo data (corpus: Google News; algorithm: word2vec; vocabulary: 8000; dimensions: 300).}
+\title{Demo data (pre-trained using word2vec on Google News; 8000 vocab, 300 dims).}
 \format{
 A \code{data.table} (of new class \code{wordvec}) with two variables \code{word} and \code{vec},
 transformed from the raw data (see the URL in Source) into \code{.RData}
@@ -16,7 +16,7 @@ data(demodata)
 }
 \description{
 This demo data contains a sample of 8000 English words
-with their 300-d word embeddings (word vectors) trained
+with 300-dimension word vectors pre-trained
 using the "word2vec" algorithm based on the Google News corpus.
 Most of these words are from the Top 8000 frequent wordlist,
 whereas a few are selected from less frequent words and appended.

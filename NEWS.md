@@ -1,12 +1,16 @@
 **Please check the [latest news (change log)](https://psychbruce.github.io/PsychWordVec/news/index.html) and keep this package updated.**
 
-# PsychWordVec 0.2.1 (ongoing...)
+# PsychWordVec 0.2.2 (ongoing...)
 
-⚠️ *All users should update the package to version ≥ 0.2.1. Old versions (≤ 0.2.0) may have a slow running speed and some old functions have been deprecated.*
+⚠️ *All users should update the package to version ≥ 0.2.2. Old versions (≤ 0.2.0) may run slowly, and some old functions have been deprecated.*
 
 ## Major Changes
 
 -   Most functions now have been substantially enhanced for a faster speed, especially `tab_similarity()`, `most_similar()`, `dict_expand()`, `dict_reliability()`, `test_WEAT()`, `test_RND()`.
+-   Improved S3 `print()` method for `embed` and `wordvec`.
+-   New S3 `[` method for `embed`, see new examples in `as_embed()`.
+-   New S3 `unique()` method to delete duplicate words.
+-   New S3 `str()` method to print the data structure and attributes.
 -   `pair_similarity()` has been improved by using matrix operation `tcrossprod(embed, embed)` to compute cosine similarity, with `embed` normalized.
 -   `data_wordvec_load()` has got two wrapper functions `load_wordvec()` and `load_embed()` for faster use.
 -   `data_wordvec_normalize()` (deprecated) has been renamed as `normalize()`.

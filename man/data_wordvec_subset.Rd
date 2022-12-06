@@ -73,9 +73,15 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
+## directly use `embed[i, j]` (3x faster than `wordvec`):
+d = as_embed(demodata)
+d[1:5]
+d["people"]
+d[c("China", "Japan", "Korea")]
+
 ## specify `x` as a `wordvec` or `embed` object:
 subset(demodata, c("China", "Japan", "Korea"))
-subset(as_embed(demodata), pattern="^Chi")
+subset(d, pattern="^Chi")
 
 \donttest{## specify `x` and `pattern`, and save with `file.save`:
 subset(demodata, pattern="Chin[ae]|Japan|Korea",

@@ -62,7 +62,7 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-d = normalize(demodata)
+d = as_embed(demodata, normalize=TRUE)
 
 dt = get_wordvec(d, cc("
   man, woman,

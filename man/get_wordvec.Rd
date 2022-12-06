@@ -48,7 +48,7 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-d = normalize(demodata)
+d = as_embed(demodata, normalize=TRUE)
 
 get_wordvec(d, c("China", "Japan", "Korea"))
 get_wordvec(d, cc(" China, Japan; Korea "))

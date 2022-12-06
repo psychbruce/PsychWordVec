@@ -404,7 +404,7 @@ train_wordvec = function(
       text2vec::vocab_vectorizer(vocab),
       skip_grams_window = window)
     model = rsparse::GloVe$new(rank = dims, x_max = x.max)
-    temp = utils::capture.output({
+    temp = capture.output({
       wv.main = model$fit_transform(
         tcm,  # input: term co-occurence matrix
         n_iter = iteration,  # number of SGD iterations
@@ -466,7 +466,7 @@ train_wordvec = function(
     if(verbose) cli::cli_alert_success("Saved to \"{file.save}\" (time cost = {dtime(t2, 'auto')})")
   }
 
-  gc()
+  gc()  # Garbage Collection: Free the Memory
   return(wv)
 }
 

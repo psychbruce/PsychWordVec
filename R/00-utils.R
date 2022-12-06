@@ -19,11 +19,11 @@ if(FALSE) {
 }
 
 
-#' Demo data (corpus: Google News; algorithm: word2vec; vocabulary: 8000; dimensions: 300).
+#' Demo data (pre-trained using word2vec on Google News; 8000 vocab, 300 dims).
 #'
 #' @description
 #' This demo data contains a sample of 8000 English words
-#' with their 300-d word embeddings (word vectors) trained
+#' with 300-dimension word vectors pre-trained
 #' using the "word2vec" algorithm based on the Google News corpus.
 #' Most of these words are from the Top 8000 frequent wordlist,
 #' whereas a few are selected from less frequent words and appended.

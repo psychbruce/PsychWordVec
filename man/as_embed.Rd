@@ -40,17 +40,41 @@ Download pre-trained word vectors data (\code{.RData}):
 
 \examples{
 dt = head(demodata, 10)
+str(dt)
 
-embed = as_embed(dt)
+embed = as_embed(dt, normalize=TRUE)
 embed
+str(embed)
 
-wordvec = as_wordvec(embed)
+wordvec = as_wordvec(embed, normalize=TRUE)
 wordvec
+str(wordvec)
 
 df = data.frame(token=LETTERS, D1=1:26/10000, D2=26:1/10000)
 as_embed(df)
 as_wordvec(df)
 
+dd = rbind(dt[1:5], dt[1:5])
+dd  # duplicate words
+unique(dd)
+
+dm = as_embed(dd)
+dm  # duplicate words
+unique(dm)
+
+\donttest{# more examples for extracting a subset using `x[i, j]`
+# (3x faster than `wordvec`)
+embed = as_embed(demodata)
+embed[1]
+embed[1:5]
+embed["for"]
+embed[cc("for, in, on, xxx")]
+embed[cc("for, in, on, xxx"), 5:10]
+embed[1:5, 5:10]
+embed[, 5:10]
+embed[3, 4]
+embed["that", 4]
+}
 }
 \seealso{
 \code{\link{load_wordvec}} / \code{\link{load_embed}}

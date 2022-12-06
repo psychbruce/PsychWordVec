@@ -4,6 +4,7 @@
 #' @import stringr
 #' @import ggplot2
 #' @import data.table
+#' @importFrom utils head menu packageVersion capture.output
 #' @importFrom corrplot corrplot
 #' @importFrom grDevices png pdf dev.off
 #' @importFrom dplyr %>% select left_join
@@ -11,7 +12,7 @@
 .onAttach = function(libname, pkgname) {
   ## Version Check
   new = FALSE
-  inst.ver = as.character(utils::packageVersion("PsychWordVec"))
+  inst.ver = as.character(packageVersion("PsychWordVec"))
   xml = suppressWarnings({
     try({
       readLines("https://cran.r-project.org/web/packages/PsychWordVec/index.html")
@@ -131,7 +132,7 @@ normalize = function(x) {
   if(is.matrix(x))
     x = x / sqrt(rowSums(x^2))  # matrix is much faster!
   attr(x, "normalized") = TRUE
-  # gc()
+  # gc()  # Garbage Collection: Free the Memory
   return(x)
 }
 
@@ -181,17 +182,41 @@ force_normalize = function(x, verbose=TRUE) {
 #'
 #' @examples
 #' dt = head(demodata, 10)
+#' str(dt)
 #'
-#' embed = as_embed(dt)
+#' embed = as_embed(dt, normalize=TRUE)
 #' embed
+#' str(embed)
 #'
-#' wordvec = as_wordvec(embed)
+#' wordvec = as_wordvec(embed, normalize=TRUE)
 #' wordvec
+#' str(wordvec)
 #'
 #' df = data.frame(token=LETTERS, D1=1:26/10000, D2=26:1/10000)
 #' as_embed(df)
 #' as_wordvec(df)
 #'
+#' dd = rbind(dt[1:5], dt[1:5])
+#' dd  # duplicate words
+#' unique(dd)
+#'
+#' dm = as_embed(dd)
+#' dm  # duplicate words
+#' unique(dm)
+#'
+#' \donttest{# more examples for extracting a subset using `x[i, j]`
+#' # (3x faster than `wordvec`)
+#' embed = as_embed(demodata)
+#' embed[1]
+#' embed[1:5]
+#' embed["for"]
+#' embed[cc("for, in, on, xxx")]
+#' embed[cc("for, in, on, xxx"), 5:10]
+#' embed[1:5, 5:10]
+#' embed[, 5:10]
+#' embed[3, 4]
+#' embed["that", 4]
+#' }
 #' @export
 as_embed = function(x, normalize=FALSE) {
   if(is.embed(x) & normalize==FALSE) return(x)
@@ -270,12 +295,16 @@ as_wordvec = function(x, normalize=FALSE) {
 
 #' @export
 print.embed = function(x, maxn=100, ...) {
+  class(x) = c("matrix", "array")
   n = nrow(x)
   ndim = ncol(x)
   dims = paste0("<", ndim, " dims>")
   norm = ifelse(attr(x, "normalized"), "(normalized)", "(NOT normalized)")
   cols = c(1, 2, ndim)
+  colnames = colnames(x)[cols]
   fmt = paste0("% ", nchar(n)+1, "s")
+  is.duplicate = duplicated(rownames(x))
+  has.duplicate = any(is.duplicate)
 
   if(n > maxn) {
     rows = c(1:5, (n-4):n)
@@ -292,7 +321,8 @@ print.embed = function(x, maxn=100, ...) {
       x = matrix(x[, cols],  # numeric vector
                  nrow=1,
                  byrow=TRUE,
-                 dimnames=list(rownames(x)))
+                 dimnames=list(rownames(x),
+                               colnames))
     } else {
       x = x[, cols]
     }
@@ -302,11 +332,15 @@ print.embed = function(x, maxn=100, ...) {
   x[, 2] = "..."
   x[, 3] = dims
   if(n > maxn) x = rbind(x[1:5,], null, x[6:10,])
+  rownames = rownames(x)  # otherwise, data.frame will print duplicate row names with extra ids
   x = as.data.frame(x)
-  rownames(x) = paste(rowids, rownames(x))
-  colnames(x) = c("dim1", "...", paste0("dim", ndim))
-  cli::cli_text(grey("{.strong # embed (matrix)}: {n} \u00d7 {ndim} {norm}"))
+  rownames(x) = paste(rowids, rownames)
+  colnames(x)[2] = "..."
+  cli::cli_text(grey("{.strong # embed (matrix)}: [{n} \u00d7 {ndim}] {norm}"))
   print(x)
+  if(has.duplicate)
+    cli::cli_alert_warning("
+    {sum(is.duplicate)} duplicate words: use {.pkg `unique()`} to delete duplicates")
 }
 
 
@@ -317,6 +351,8 @@ print.wordvec = function(x, maxn=100, ...) {
   dims = paste0("<", ndim, " dims>")
   norm = ifelse(attr(x, "normalized"), "(normalized)", "(NOT normalized)")
   fmt = paste0("% ", nchar(n)+1, "s")
+  is.duplicate = duplicated(x, by=1)  # faster than duplicated(x[[1]])
+  has.duplicate = any(is.duplicate)
 
   if(n > maxn) {
     rows = c(1:5, (n-4):n)
@@ -338,8 +374,124 @@ print.wordvec = function(x, maxn=100, ...) {
   x = as.data.frame(x)
   if(n > maxn) x = rbind(x[1:5,], null, x[6:10,])
   rownames(x) = rowids
-  cli::cli_text(grey("{.strong # wordvec (data.table)}: {n} \u00d7 {ncol(x)} {norm}"))
+  cli::cli_text(grey("{.strong # wordvec (data.table)}: [{n} \u00d7 {ncol(x)}] {norm}"))
   print(x)
+  if(has.duplicate)
+    cli::cli_alert_warning("
+    {sum(is.duplicate)} duplicate words: use {.pkg `unique()`} to delete duplicates")
+}
+
+
+#' @export
+str.embed = function(object, ...) {
+  rn = paste(paste0("\"", head(rownames(object), 5), "\""), collapse=" ")
+  cn = paste(paste0("\"", head(colnames(object), 5), "\""), collapse=" ")
+  Print("
+  Class \"embed\" [{nrow(object)} \u00d7 {ncol(object)}] (inherits: \"matrix\")
+  - rownames(*) : {rn}{ifelse(nrow(object) > 5, ' ...', '')}
+  - colnames(*) : {cn}{ifelse(ncol(object) > 5, ' ...', '')}
+  - attr(*, \"dims\") = {attr(object, 'dims')}
+  - attr(*, \"normalized\") = {attr(object, 'normalized')}
+  ")
+}
+
+
+#' @export
+str.wordvec = function(object, ...) {
+  words = paste(paste0("\"", head(object, 5)[[1]], "\""), collapse=" ")
+  Print("
+  Class \"wordvec\" [{nrow(object)} \u00d7 {ncol(object)}] (inherits: \"data.table\")
+  $ {names(object)[1]} : {words}{ifelse(nrow(object) > 5, ' ...', '')}
+  $ {names(object)[2]} : list of {nrow(object)}
+  - attr(*, \"dims\") = {attr(object, 'dims')}
+  - attr(*, \"normalized\") = {attr(object, 'normalized')}
+  ")
+}
+
+
+#' @export
+`[.embed` = function(x, i, j, ...) {
+  if(missing(i) & missing(j)) {
+    return(x)
+  } else {
+    dims = attr(x, "dims")
+    norm = attr(x, "normalized")
+    class(x) = c("matrix", "array")
+    i.miss = missing(i)
+    j.miss = missing(j)
+    rown = rownames(x)
+    dimn = colnames(x)
+    if(i.miss) i = seq_len(nrow(x))
+    if(j.miss) j = dimn
+    if(is.logical(i)) i = which(i==TRUE)
+    if(is.character(i)) {
+      words.valid = intersect(i, rown)  # faster
+      if(length(words.valid) < length(i)) {
+        not.found = setdiff(i, words.valid)
+        n.nf = length(not.found)
+        if(n.nf > 100)
+          cli::cli_alert_danger("{n.nf} words not found: {.val {not.found[1]}}, ... (omitted)")
+        else if(n.nf > 0)
+          cli::cli_alert_danger("{n.nf} words not found: {.val {not.found}}")
+      }
+      if(length(words.valid) == 0) {
+        rm(rown, dimn)
+        return(NA)
+      }
+      i = words.valid
+    }
+    if(length(i) == 1) {
+      if(length(j) == 1) {
+        # x[1, 1]
+        # x["in", "dim10"]
+        v = x[i, j]
+        word = ifelse(is.numeric(i), rown[i], i)
+        dimj = ifelse(is.numeric(j), paste0("[", dimn[j], "]"),
+                      paste0("[", j, "]"))
+        names(v) = paste(word, dimj)
+        rm(rown, dimn, word, dimj)
+        return(v)
+      } else {
+        # x[1]
+        # x["for"]
+        # x[1, ]
+        # x[1, 2:5]
+        # x["for", paste0("dim", 3:10)]
+        word = ifelse(is.numeric(i), rown[i], i)
+        dimj = if(is.numeric(j)) dimn[j] else j
+        x = matrix(if(j.miss) x[i, ] else x[i, j],  # numeric vector
+                   nrow=1,
+                   byrow=TRUE,
+                   dimnames=list(word, dimj))
+      }
+    } else {
+      if(length(j) == 1) {
+        # x[1:5, 2]
+        # x[cc("for, in, on"), "dim3"]
+        v = x[i, j]
+        dimj = ifelse(is.numeric(j), paste0("[dim", j, "]"),
+                      paste0("[", j, "]"))
+        names(v) = paste(names(v), dimj)
+        rm(rown, dimn, dimj)
+        return(v)
+      } else {
+        # x[1:5]
+        # x[cc("for, in, on")]
+        # x[1:5, 2:5]
+        # x[cc("for, in, on"), 2:5]
+        # x[cc("for, in, on"), paste0("dim", 2:5)]
+        word = if(is.numeric(i)) rown[i] else i
+        dimj = if(is.numeric(j)) dimn[j] else j
+        x = matrix(if(j.miss) x[i, ] else x[i, j],
+                   nrow=length(i),
+                   dimnames=list(word, dimj))
+      }
+    }
+    rm(rown, dimn, word, dimj)
+    attr(x, "dims") = dims
+    attr(x, "normalized") = norm
+    return(as_embed(x))
+  }
 }
 
 
@@ -359,6 +511,18 @@ rbind.wordvec = function(...) {
     as.data.table(d)
   }))
   return(as_wordvec(d))
+}
+
+
+#' @export
+unique.embed = function(x, ...) {
+  as_embed(x[which(!duplicated(rownames(x))),])
+}
+
+
+#' @export
+unique.wordvec = function(x, ...) {
+  x[!duplicated(x[[1]]),]
 }
 
 
@@ -690,6 +854,7 @@ extract_valid_subset = function(
       return(x[word %in% words.valid])
   }
   if(is.embed(x)) {
+    class(x) = c("matrix", "array")
     if(length(words.valid) == 1) {
       xs = t(x[words.valid,])
       rownames(xs) = words.valid
@@ -745,9 +910,15 @@ extract_valid_subset = function(
 #' \code{\link{data_transform}}
 #'
 #' @examples
+#' ## directly use `embed[i, j]` (3x faster than `wordvec`):
+#' d = as_embed(demodata)
+#' d[1:5]
+#' d["people"]
+#' d[c("China", "Japan", "Korea")]
+#'
 #' ## specify `x` as a `wordvec` or `embed` object:
 #' subset(demodata, c("China", "Japan", "Korea"))
-#' subset(as_embed(demodata), pattern="^Chi")
+#' subset(d, pattern="^Chi")
 #'
 #' \donttest{## specify `x` and `pattern`, and save with `file.save`:
 #' subset(demodata, pattern="Chin[ae]|Japan|Korea",
@@ -815,7 +986,7 @@ data_wordvec_subset = function(
     if(verbose)
       cli::cli_alert_success("Saved to \"{file.save}\" (time cost = {dtime(t1, 'auto')})")
   }
-  gc()  # Garbage Collection: Free the Memory
+  # gc()  # Garbage Collection: Free the Memory
   return(x)
 }
 
@@ -867,7 +1038,7 @@ subset.embed = function(x, ...) {
 #' \code{\link{plot_wordvec_tSNE}}
 #'
 #' @examples
-#' d = normalize(demodata)
+#' d = as_embed(demodata, normalize=TRUE)
 #'
 #' get_wordvec(d, c("China", "Japan", "Korea"))
 #' get_wordvec(d, cc(" China, Japan; Korea "))
@@ -930,22 +1101,22 @@ get_wordvec = function(
     plot.step=0.05,
     plot.border="white"
 ) {
-  embed = get_wordembed(data, words, pattern)
-  if(is.null(embed)) return(NULL)
-  dt = as.data.table(t(embed))
+  data = get_wordembed(data, words, pattern)
+  if(is.null(data)) return(NULL)
+  data = as.data.table(t(data))
   if(plot) {
-    p = plot_wordvec(dt, dims=plot.dims,
+    p = plot_wordvec(data, dims=plot.dims,
                      step=plot.step, border=plot.border)
-    attr(dt, "ggplot") = p
+    attr(data, "ggplot") = p
     print(p)
   }
-  gc()  # Garbage Collection: Free the Memory
-  return(dt)
+  # gc()  # Garbage Collection: Free the Memory
+  return(data)
 }
 
 
-get_wordembed = function(x, words=NULL, pattern=NULL) {
-  extract_valid_subset(as_embed(x), words, pattern)
+get_wordembed = function(x, words=NULL, pattern=NULL, words.order=TRUE) {
+  extract_valid_subset(as_embed(x), words, pattern, words.order)
 }
 
 
@@ -979,10 +1150,9 @@ get_wordembed = function(x, words=NULL, pattern=NULL) {
 #' \code{\link{plot_wordvec_tSNE}}
 #'
 #' @examples
-#' d = normalize(demodata)
+#' d = as_embed(demodata, normalize=TRUE)
 #'
 #' plot_wordvec(d[1:10])
-#' plot_wordvec(as_embed(d[1:10]))
 #'
 #' \donttest{dt = get_wordvec(d, cc("king, queen, man, woman"))
 #' dt[, QUEEN := king - man + woman]
@@ -1103,7 +1273,7 @@ plot_wordvec = function(
 #' \code{\link{plot_wordvec}}
 #'
 #' @examples
-#' d = normalize(demodata)
+#' d = as_embed(demodata, normalize=TRUE)
 #'
 #' dt = get_wordvec(d, cc("
 #'   man, woman,
@@ -1274,8 +1444,8 @@ sum_wordvec = function(data, x=NULL, verbose=TRUE) {
     stop("`x` must be a character vector or an R formula!", call.=FALSE)
   }
 
-  embed.pos = get_wordembed(data, words=positive)
-  embed.neg = get_wordembed(data, words=negative)
+  embed.pos = get_wordembed(data, words=positive, words.order=FALSE)
+  embed.neg = get_wordembed(data, words=negative, words.order=FALSE)
   if(length(negative) == 0)
     sum.vec = colSums(embed.pos)
   else
@@ -1538,7 +1708,8 @@ tab_similarity = function(
 #' plot_similarity(
 #'   demodata,
 #'   words1=cc("man, woman, king, queen"),
-#'   words2=cc("he, she, boy, girl, father, mother")
+#'   words2=cc("he, she, boy, girl, father, mother"),
+#'   value.color="grey20"
 #' )
 #'
 #' \donttest{w2 = cc("China, Chinese,
@@ -1654,7 +1825,7 @@ plot_similarity = function(
 #' \code{\link{tab_similarity}}
 #'
 #' @examples
-#' d = normalize(demodata)
+#' d = as_embed(demodata, normalize=TRUE)
 #'
 #' most_similar(d)
 #' most_similar(d, "China")
@@ -1697,7 +1868,7 @@ most_similar = function(
   sum.vec = sum_wordvec(embed, x)
   x = attr(sum.vec, "x.words")
   f = attr(sum.vec, "formula")
-  cos.sim = embed %*% sum.vec  # faster
+  cos.sim = embed %*% sum.vec  # much faster
   cos.sim = cos.sim[order(cos.sim, decreasing=TRUE),]
   if(keep==FALSE)
     cos.sim = cos.sim[which(!names(cos.sim) %in% x)]
@@ -1727,7 +1898,8 @@ most_similar = function(
     Print("<<cyan [Word Vector]>> =~ {f}")
     message("(normalized to unit length)")
   }
-  gc()  # Garbage Collection: Free the Memory
+  rm(embed, sum.vec, cos.sim)
+  # gc()  # Garbage Collection: Free the Memory
   return(ms)
 }
 
@@ -1871,7 +2043,7 @@ dict_expand = function(
 #' \code{\link{dict_expand}}
 #'
 #' @examples
-#' \donttest{d = normalize(demodata)
+#' \donttest{d = as_embed(demodata, normalize=TRUE)
 #'
 #' dict = dict_expand(d, "king")
 #' dict_reliability(d, dict)
@@ -1915,7 +2087,7 @@ dict_reliability = function(
         pca.rotation = psych::principal(
           t(embed), nfactors=n.factors,
           rotate="varimax", scores=FALSE)
-      cos.sim = embed %*% sum.vec  # faster
+      cos.sim = embed %*% sum.vec  # much faster
     })
   })
   items = cbind(pca$loadings[,1],
@@ -1944,7 +2116,8 @@ dict_reliability = function(
                      items=items,
                      cos.sim.mat=mat,
                      cos.sim=cos.sims)
-  gc()  # Garbage Collection: Free the Memory
+  rm(embed, sum.vec, cos.sim)
+  # gc()  # Garbage Collection: Free the Memory
   class(reliability) = "reliability"
   return(reliability)
 }
@@ -2344,7 +2517,8 @@ test_WEAT = function(
     eff=eff
   )
   if(!is.null(T2)) weat = c(weat, list(eff.ST=eff.ST))
-  gc()  # Garbage Collection: Free the Memory
+  rm(embed)
+  # gc()  # Garbage Collection: Free the Memory
   class(weat) = "weat"
   return(weat)
 }
@@ -2554,7 +2728,8 @@ test_RND = function(
     eff=eff,
     eff.interpretation=interp
   )
-  gc()  # Garbage Collection: Free the Memory
+  rm(embed)
+  # gc()  # Garbage Collection: Free the Memory
   class(rnd) = "rnd"
   return(rnd)
 }
@@ -2714,7 +2889,8 @@ orth_procrustes = function(M, X) {
   XR = orthogonal_procrustes(M[ints,], X[ints,])
   if(class=="wordvec")
     XR = as_wordvec(XR)
-  gc()  # Garbage Collection: Free the Memory
+  rm(M, X, ints)
+  # gc()  # Garbage Collection: Free the Memory
   return(XR)
 }
 
@@ -2727,6 +2903,7 @@ orthogonal_procrustes = function(M, X) {
   XR = X %*% R
   colnames(XR) = colnames(X)
   # attr(XR, "Rotation") = R
+  rm(M, X, MX, svdMX, R)
   return(XR)
 }
 

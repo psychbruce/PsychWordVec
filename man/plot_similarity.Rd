@@ -112,7 +112,8 @@ plot_similarity(demodata, w1,
 plot_similarity(
   demodata,
   words1=cc("man, woman, king, queen"),
-  words2=cc("he, she, boy, girl, father, mother")
+  words2=cc("he, she, boy, girl, father, mother"),
+  value.color="grey20"
 )
 
 \donttest{w2 = cc("China, Chinese,

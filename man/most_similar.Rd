@@ -78,7 +78,7 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-d = normalize(demodata)
+d = as_embed(demodata, normalize=TRUE)
 
 most_similar(d)
 most_similar(d, "China")

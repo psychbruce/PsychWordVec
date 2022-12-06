@@ -220,7 +220,7 @@ text_model_remove = function(model=NULL) {
   if("NoModelsAvailable" %in% model) {
     cli::cli_alert_warning("No models available. Download using `text_model_download()`.")
   } else {
-    yesno = utils::menu(
+    yesno = menu(
       c("Yes", "No"),
       title=paste("\nDo you want to delete these models?\n",
                   paste(paste0("\"", model, "\""),

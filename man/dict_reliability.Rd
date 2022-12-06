@@ -70,7 +70,7 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-\donttest{d = normalize(demodata)
+\donttest{d = as_embed(demodata, normalize=TRUE)
 
 dict = dict_expand(d, "king")
 dict_reliability(d, dict)
