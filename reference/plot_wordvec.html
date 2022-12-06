@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -100,12 +100,10 @@ To remove the border color, set <code>border=NA</code>.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="normalize.html">normalize</a></span><span class="op">(</span><span class="va">demodata</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="as_embed.html">as_embed</a></span><span class="op">(</span><span class="va">demodata</span>, normalize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">plot_wordvec</span><span class="op">(</span><span class="va">d</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_wordvec-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">plot_wordvec</span><span class="op">(</span><span class="fu"><a href="as_embed.html">as_embed</a></span><span class="op">(</span><span class="va">d</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="plot_wordvec-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">dt</span> <span class="op">=</span> <span class="fu"><a href="get_wordvec.html">get_wordvec</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"king, queen, man, woman"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dt</span><span class="op">[</span>, <span class="va">QUEEN</span> <span class="op">:=</span> <span class="va">king</span> <span class="op">-</span> <span class="va">man</span> <span class="op">+</span> <span class="va">woman</span><span class="op">]</span></span></span>
@@ -136,7 +134,7 @@ To remove the border color, set <code>border=NA</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 300:  0.086812717  0.050951612  0.00908675 -0.01107800  0.059250164</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dt</span><span class="op">)</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span> <span class="op">=</span> <span class="st">"king - man + woman"</span></span></span>
 <span class="r-in"><span><span class="fu">plot_wordvec</span><span class="op">(</span><span class="va">dt</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">2</span><span class="op">)</span><span class="op">]</span>, dims<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="plot_wordvec-3.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="plot_wordvec-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">dt</span> <span class="op">=</span> <span class="fu"><a href="get_wordvec.html">get_wordvec</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"boy, girl, he, she"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dt</span><span class="op">[</span>, <span class="va">GIRL</span> <span class="op">:=</span> <span class="va">boy</span> <span class="op">-</span> <span class="va">he</span> <span class="op">+</span> <span class="va">she</span><span class="op">]</span></span></span>
@@ -167,7 +165,7 @@ To remove the border color, set <code>border=NA</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 300:  0.048429498  0.012946613 -0.090954911 -0.05392007  0.066007034</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dt</span><span class="op">)</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span> <span class="op">=</span> <span class="st">"boy - he + she"</span></span></span>
 <span class="r-in"><span><span class="fu">plot_wordvec</span><span class="op">(</span><span class="va">dt</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">2</span><span class="op">)</span><span class="op">]</span>, dims<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="plot_wordvec-4.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="plot_wordvec-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">dt</span> <span class="op">=</span> <span class="fu"><a href="get_wordvec.html">get_wordvec</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://psychbruce.github.io/bruceR/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="st">"</span></span></span>
 <span class="r-in"><span><span class="st">  male, man, boy, he, his,</span></span></span>
@@ -177,7 +175,7 @@ To remove the border color, set <code>border=NA</code>.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># if you want to change something:</span></span></span>
 <span class="r-in"><span><span class="va">p</span> <span class="op">+</span> <span class="fu">theme</span><span class="op">(</span>legend.key.height<span class="op">=</span><span class="fu">unit</span><span class="op">(</span><span class="fl">0.1</span>, <span class="st">"npc"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="plot_wordvec-5.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="plot_wordvec-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># or to save the plot:</span></span></span>
 <span class="r-in"><span><span class="fu">ggsave</span><span class="op">(</span><span class="va">p</span>, filename<span class="op">=</span><span class="st">"wordvecs.png"</span>,</span></span>

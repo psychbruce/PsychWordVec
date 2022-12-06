@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,11 +45,15 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.1" id="psychwordvec-021-ongoing">PsychWordVec 0.2.1 (ongoing…)<a class="anchor" aria-label="anchor" href="#psychwordvec-021-ongoing"></a></h2>
-<p>⚠️ <em>All users should update the package to version ≥ 0.2.1. Old versions (≤ 0.2.0) may have a slow running speed and some old functions have been deprecated.</em></p>
+<h2 class="pkg-version" data-toc-text="0.2.2" id="psychwordvec-022-ongoing">PsychWordVec 0.2.2 (ongoing…)<a class="anchor" aria-label="anchor" href="#psychwordvec-022-ongoing"></a></h2>
+<p>⚠️ <em>All users should update the package to version ≥ 0.2.2. Old versions (≤ 0.2.0) may run slowly, and some old functions have been deprecated.</em></p>
 <div class="section level3">
-<h3 id="major-changes-0-2-1">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-0-2-1"></a></h3>
+<h3 id="major-changes-0-2-2">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-0-2-2"></a></h3>
 <ul><li>Most functions now have been substantially enhanced for a faster speed, especially <code><a href="../reference/tab_similarity.html">tab_similarity()</a></code>, <code><a href="../reference/most_similar.html">most_similar()</a></code>, <code><a href="../reference/dict_expand.html">dict_expand()</a></code>, <code><a href="../reference/dict_reliability.html">dict_reliability()</a></code>, <code><a href="../reference/test_WEAT.html">test_WEAT()</a></code>, <code><a href="../reference/test_RND.html">test_RND()</a></code>.</li>
+<li>Improved S3 <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> method for <code>embed</code> and <code>wordvec</code>.</li>
+<li>New S3 <code>[</code> method for <code>embed</code>, see new examples in <code><a href="../reference/as_embed.html">as_embed()</a></code>.</li>
+<li>New S3 <code><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique()</a></code> method to delete duplicate words.</li>
+<li>New S3 <code><a href="https://rdrr.io/r/utils/str.html" class="external-link">str()</a></code> method to print the data structure and attributes.</li>
 <li>
 <code><a href="../reference/pair_similarity.html">pair_similarity()</a></code> has been improved by using matrix operation <code>tcrossprod(embed, embed)</code> to compute cosine similarity, with <code>embed</code> normalized.</li>
 <li>
@@ -62,7 +66,7 @@
 <code>tab_similarity_cross()</code> (deprecated) has been integrated into <code><a href="../reference/tab_similarity.html">tab_similarity()</a></code>.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-0-2-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-1"></a></h3>
+<h3 id="bug-fixes-0-2-2">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-2"></a></h3>
 <ul><li>Fixed the issue of unexpected long loading and processing time in 0.2.0, which was related to duplicate words in .RData, too many words in <code>embed</code> or <code>wordvec</code>, and too many words to be printed to console. Now all related functions have been substantially improved so that they would not take unnecessarily long time.</li>
 </ul></div>
 </div>

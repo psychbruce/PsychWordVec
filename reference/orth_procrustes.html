@@ -44,7 +44,7 @@ pracma::procrustes().'><meta property="og:image" content="https://psychbruce.git
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -179,7 +179,7 @@ A generalized solution of the orthogonal Procrustes problem.
 <span class="r-in"><span><span class="va">X.wv</span> <span class="op">=</span> <span class="fu"><a href="as_embed.html">as_wordvec</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">XR.wv</span> <span class="op">=</span> <span class="fu">orth_procrustes</span><span class="op">(</span><span class="va">M.wv</span>, <span class="va">X.wv</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">XR.wv</span>  <span class="co"># aligned with M.wv</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># wordvec (data.table)</span><span style="color: #555555;">: 5 × 2 (NOT normalized)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># wordvec (data.table)</span><span style="color: #555555;">: [5 × 2] (NOT normalized)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    word                    vec</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:    A [ 0.0000, ...&lt;2 dims&gt;]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:    B [ 1.0000, ...&lt;2 dims&gt;]</span>
@@ -197,7 +197,7 @@ A generalized solution of the orthogonal Procrustes problem.
 <span class="r-in"><span><span class="va">M.wv</span> <span class="op">=</span> <span class="fu"><a href="as_embed.html">as_wordvec</a></span><span class="op">(</span><span class="va">M</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">Y.wv</span> <span class="op">=</span> <span class="fu"><a href="as_embed.html">as_wordvec</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">M.wv</span>  <span class="co"># words: A, B, C, D, E</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># wordvec (data.table)</span><span style="color: #555555;">: 5 × 2 (NOT normalized)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># wordvec (data.table)</span><span style="color: #555555;">: [5 × 2] (NOT normalized)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    word                    vec</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:    A [ 0.0000, ...&lt;2 dims&gt;]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:    B [ 1.0000, ...&lt;2 dims&gt;]</span>
@@ -205,7 +205,7 @@ A generalized solution of the orthogonal Procrustes problem.
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4:    D [ 3.0000, ...&lt;2 dims&gt;]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5:    E [ 4.0000, ...&lt;2 dims&gt;]</span>
 <span class="r-in"><span><span class="va">Y.wv</span>  <span class="co"># words: F, G, H, I, J, E, D, C, B, A</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># wordvec (data.table)</span><span style="color: #555555;">: 10 × 2 (NOT normalized)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># wordvec (data.table)</span><span style="color: #555555;">: [10 × 2] (NOT normalized)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     word                    vec</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:    F [ 0.0000, ...&lt;2 dims&gt;]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:    G [-2.0000, ...&lt;2 dims&gt;]</span>
@@ -219,7 +219,7 @@ A generalized solution of the orthogonal Procrustes problem.
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10:    A [ 0.0000, ...&lt;2 dims&gt;]</span>
 <span class="r-in"><span><span class="va">YR.wv</span> <span class="op">=</span> <span class="fu">orth_procrustes</span><span class="op">(</span><span class="va">M.wv</span>, <span class="va">Y.wv</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">YR.wv</span>  <span class="co"># aligned with M.wv, with the same order of words</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># wordvec (data.table)</span><span style="color: #555555;">: 5 × 2 (NOT normalized)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># wordvec (data.table)</span><span style="color: #555555;">: [5 × 2] (NOT normalized)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    word                    vec</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:    A [ 0.0000, ...&lt;2 dims&gt;]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:    B [ 1.0000, ...&lt;2 dims&gt;]</span>
