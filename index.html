@@ -65,7 +65,7 @@
     
     <a class="navbar-brand me-2" href="index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -114,7 +114,7 @@
 <li>A set of training methods to locally train (<em>static</em>) word vectors from text corpora, including <em>Word2Vec</em> (Mikolov et al., 2013), <em>GloVe</em> (Pennington et al., 2014), and <em>FastText</em> (Bojanowski et al., 2017);</li>
 <li>A group of functions to download pre-trained language models (e.g., <em>GPT</em>, <em>BERT</em>), extract contextualized (<em>dynamic</em>) word vectors (based on the R package <a href="https://www.r-text.org/" class="external-link">text</a>), and perform language analysis tasks (e.g., fill in the blank masks).</li>
 </ol>
-<p>⚠️ <em>All users should update the package to version ≥ 0.2.2. Old versions (≤ 0.2.0) may run slowly, and some old functions have been deprecated.</em></p>
+<p>⚠️ <em>All users should update the package to version ≥ 0.2.3. Old versions (≤ 0.2.0) may run slowly, and some old functions have been deprecated.</em></p>
 <!-- badges: start -->
 
 <!-- badges: end -->
@@ -153,9 +153,9 @@
 <caption>
 <strong><em>Note</em>:</strong> Word embedding refers to a natural language processing technique that embeds word semantics into a low-dimensional <strong>embedding matrix</strong>, with each word (actually token) quantified as a <strong>numeric vector</strong> representing its (uninterpretable) semantic features. Users are suggested to import <a href="https://psychbruce.github.io/WordVector_RData.pdf" class="external-link">word vectors data</a> as the <code>embed</code> class using the function <code><a href="reference/data_wordvec_load.html">load_embed()</a></code>, which would automatically normalize all word vectors to the unit length 1 (see the <code><a href="reference/normalize.html">normalize()</a></code> function) and accelerate the running of most functions in <code>PsychWordVec</code>.</caption>
 <colgroup>
-<col width="25%">
-<col width="38%">
-<col width="36%">
+<col width="22%">
+<col width="40%">
+<col width="37%">
 </colgroup>
 <thead><tr class="header">
 <th></th>
@@ -232,20 +232,18 @@
 <code><a href="reference/orth_procrustes.html">orth_procrustes()</a></code>: Orthogonal Procrustes matrix alignment</li>
 </ul>
 </li>
-<li>Word Semantic Similarity Analysis and Conceptual Association Test
+<li>Word Semantic Similarity Analysis, Network Analysis, and Association Test
 <ul>
 <li>
-<code><a href="reference/cosine_similarity.html">cosine_similarity()</a></code>
-<ul>
-<li><code><a href="reference/cosine_similarity.html">cos_sim()</a></code></li>
-<li><code><a href="reference/cosine_similarity.html">cos_dist()</a></code></li>
-</ul>
+<code><a href="reference/cosine_similarity.html">cosine_similarity()</a></code>: <code><a href="reference/cosine_similarity.html">cos_sim()</a></code> or <code><a href="reference/cosine_similarity.html">cos_dist()</a></code>
 </li>
 <li><code><a href="reference/pair_similarity.html">pair_similarity()</a></code></li>
 <li><code><a href="reference/plot_similarity.html">plot_similarity()</a></code></li>
 <li><code><a href="reference/tab_similarity.html">tab_similarity()</a></code></li>
 <li>
 <code><a href="reference/most_similar.html">most_similar()</a></code>: find the Top-N most similar words</li>
+<li>
+<code><a href="reference/plot_network.html">plot_network()</a></code>: visualize a (partial correlation) network graph of words</li>
 <li>
 <code><a href="reference/test_WEAT.html">test_WEAT()</a></code>: WEAT and SC-WEAT with permutation test of significance</li>
 <li>
@@ -260,7 +258,7 @@
 <code><a href="reference/dict_reliability.html">dict_reliability()</a></code>: reliability analysis and PCA of a dictionary</li>
 </ul>
 </li>
-<li>Word Vectors Local Training (Word2Vec, GloVe, and FastText)
+<li>Local Training of Static Word Embeddings (Word2Vec, GloVe, and FastText)
 <ul>
 <li><code><a href="reference/tokenize.html">tokenize()</a></code></li>
 <li><code><a href="reference/train_wordvec.html">train_wordvec()</a></code></li>
