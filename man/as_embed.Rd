@@ -3,17 +3,27 @@
 \name{as_embed}
 \alias{as_embed}
 \alias{as_wordvec}
+\alias{[.embed}
+\alias{pattern}
 \title{Word vectors data class: \code{wordvec} and \code{embed}.}
 \usage{
 as_embed(x, normalize = FALSE)
 
 as_wordvec(x, normalize = FALSE)
+
+\method{[}{embed}(x, i, j)
+
+pattern(pattern)
 }
 \arguments{
 \item{x}{Object to be reshaped. See examples.}
 
 \item{normalize}{Normalize all word vectors to unit length?
 Defaults to \code{FALSE}. See \code{\link{normalize}}.}
+
+\item{i, j}{Row (\code{i}) and column (\code{j}) filter to be used in \code{embed[i, j]}.}
+
+\item{pattern}{Regular expression to be used in \code{embed[pattern("...")]}.}
 }
 \value{
 A \code{wordvec} (data.table) or \code{embed} (matrix).
@@ -68,6 +78,7 @@ embed = as_embed(demodata)
 embed[1]
 embed[1:5]
 embed["for"]
+embed[pattern("^for.{0,2}$")]
 embed[cc("for, in, on, xxx")]
 embed[cc("for, in, on, xxx"), 5:10]
 embed[1:5, 5:10]

@@ -20,7 +20,7 @@ plot_similarity(
   hclust.color = "black",
   hclust.line = 2,
   file = NULL,
-  width = 8,
+  width = 10,
   height = 6,
   dpi = 500,
   ...
@@ -77,10 +77,10 @@ Defaults to \code{"black"}.}
 \item{hclust.line}{Line width of rectangle border, only valid when \code{hclust.n} >= 1.
 Defaults to \code{2}.}
 
-\item{file}{File name to be saved, should be of \code{png} or \code{pdf}.}
+\item{file}{File name to be saved, should be png or pdf.}
 
 \item{width, height}{Width and height (in inches) for the saved file.
-Defaults to \code{8} and \code{6}.}
+Defaults to \code{10} and \code{6}.}
 
 \item{dpi}{Dots per inch. Defaults to \code{500} (i.e., file resolution: 4000 * 3000).}
 
@@ -140,4 +140,6 @@ unlink("plot.png")  # delete file for code check
 \code{\link{tab_similarity}}
 
 \code{\link{most_similar}}
+
+\code{\link{plot_network}}
 }

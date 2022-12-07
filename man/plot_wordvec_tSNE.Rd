@@ -102,4 +102,6 @@ Visualizing data using t-SNE.
 }
 \seealso{
 \code{\link{plot_wordvec}}
+
+\code{\link{plot_network}}
 }

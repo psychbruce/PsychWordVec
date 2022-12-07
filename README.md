@@ -10,7 +10,7 @@ An integrated toolbox of word embedding research that provides:
 4.  A set of training methods to locally train (*static*) word vectors from text corpora, including *Word2Vec* (Mikolov et al., 2013), *GloVe* (Pennington et al., 2014), and *FastText* (Bojanowski et al., 2017);
 5.  A group of functions to download pre-trained language models (e.g., *GPT*, *BERT*), extract contextualized (*dynamic*) word vectors (based on the R package [text](https://www.r-text.org/)), and perform language analysis tasks (e.g., fill in the blank masks).
 
-⚠️ *All users should update the package to version ≥ 0.2.2. Old versions (≤ 0.2.0) may run slowly, and some old functions have been deprecated.*
+⚠️ *All users should update the package to version ≥ 0.2.3. Old versions (≤ 0.2.0) may run slowly, and some old functions have been deprecated.*
 
 <!-- badges: start -->
 
@@ -46,7 +46,7 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
 ## Types of Data for `PsychWordVec`
 
 |                  | `embed`                        | `wordvec`                    |
-|------------------|----------------------------|--------------------------|
+|------------------|--------------------------------|------------------------------|
 | Basic class      | matrix                         | data.table                   |
 | Row size         | vocabulary size                | vocabulary size              |
 | Column size      | dimension size                 | 2 (variables: `word`, `vec`) |
@@ -72,20 +72,19 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
     -   `plot_wordvec()`
     -   `plot_wordvec_tSNE()`: 2D or 3D visualization with t-SNE
     -   `orth_procrustes()`: Orthogonal Procrustes matrix alignment
--   Word Semantic Similarity Analysis and Conceptual Association Test
-    -   `cosine_similarity()`
-        -   `cos_sim()`
-        -   `cos_dist()`
+-   Word Semantic Similarity Analysis, Network Analysis, and Association Test
+    -   `cosine_similarity()`: `cos_sim()` or `cos_dist()`
     -   `pair_similarity()`
     -   `plot_similarity()`
     -   `tab_similarity()`
     -   `most_similar()`: find the Top-N most similar words
+    -   `plot_network()`: visualize a (partial correlation) network graph of words
     -   `test_WEAT()`: WEAT and SC-WEAT with permutation test of significance
     -   `test_RND()`: RND with permutation test of significance
 -   Dictionary Automatic Expansion and Reliability Analysis
     -   `dict_expand()`: expand a dictionary from the most similar words
     -   `dict_reliability()`: reliability analysis and PCA of a dictionary
--   Word Vectors Local Training (Word2Vec, GloVe, and FastText)
+-   Local Training of Static Word Embeddings (Word2Vec, GloVe, and FastText)
     -   `tokenize()`
     -   `train_wordvec()`
 -   Pre-trained Language Models (PLM) and Contextualized Word Embeddings

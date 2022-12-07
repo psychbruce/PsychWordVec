@@ -4,6 +4,7 @@
 #' @import stringr
 #' @import ggplot2
 #' @import data.table
+#' @importFrom stats cor
 #' @importFrom utils head menu packageVersion capture.output
 #' @importFrom corrplot corrplot
 #' @importFrom grDevices png pdf dev.off
@@ -210,6 +211,7 @@ force_normalize = function(x, verbose=TRUE) {
 #' embed[1]
 #' embed[1:5]
 #' embed["for"]
+#' embed[pattern("^for.{0,2}$")]
 #' embed[cc("for, in, on, xxx")]
 #' embed[cc("for, in, on, xxx"), 5:10]
 #' embed[1:5, 5:10]
@@ -409,8 +411,11 @@ str.wordvec = function(object, ...) {
 }
 
 
+#' @rdname as_embed
+#' @param i,j Row (\code{i}) and column (\code{j}) filter to be used in \code{embed[i, j]}.
+## @param ... Not used.
 #' @export
-`[.embed` = function(x, i, j, ...) {
+`[.embed` = function(x, i, j) {
   if(missing(i) & missing(j)) {
     return(x)
   } else {
@@ -423,17 +428,12 @@ str.wordvec = function(object, ...) {
     dimn = colnames(x)
     if(i.miss) i = seq_len(nrow(x))
     if(j.miss) j = dimn
+    if(inherits(i, "pattern")) i = str_which(rown, i)
     if(is.logical(i)) i = which(i==TRUE)
     if(is.character(i)) {
       words.valid = intersect(i, rown)  # faster
-      if(length(words.valid) < length(i)) {
-        not.found = setdiff(i, words.valid)
-        n.nf = length(not.found)
-        if(n.nf > 100)
-          cli::cli_alert_danger("{n.nf} words not found: {.val {not.found[1]}}, ... (omitted)")
-        else if(n.nf > 0)
-          cli::cli_alert_danger("{n.nf} words not found: {.val {not.found}}")
-      }
+      if(length(words.valid) < length(i))
+        warning_not_found(setdiff(i, words.valid))
       if(length(words.valid) == 0) {
         rm(rown, dimn)
         return(NA)
@@ -492,6 +492,15 @@ str.wordvec = function(object, ...) {
     attr(x, "normalized") = norm
     return(as_embed(x))
   }
+}
+
+
+#' @rdname as_embed
+#' @param pattern Regular expression to be used in \code{embed[pattern("...")]}.
+#' @export
+pattern = function(pattern) {
+  class(pattern) = c("pattern", "character")
+  return(pattern)
 }
 
 
@@ -687,7 +696,7 @@ data_transform = function(
          compress=compress,
          compression_level=compress.level)
     if(verbose)
-      cli::cli_alert_success("Saved to \"{file.save}\" (time cost = {dtime(t1, 'mins')})")
+      cli::cli_alert_success("Saved to {.pkg {file.save}} (time cost = {dtime(t1, 'mins')})")
   }
   gc()  # Garbage Collection: Free the Memory
   if(verbose)
@@ -836,14 +845,8 @@ extract_valid_subset = function(
   } else {
     words.valid = intersect(words, vocab)  # faster
   }
-  if(length(words.valid) < length(words)) {
-    not.found = setdiff(words, words.valid)
-    n.nf = length(not.found)
-    if(n.nf > 100)
-      cli::cli_alert_danger("{n.nf} words not found: {.val {not.found[1]}}, ... (omitted)")
-    else if(n.nf > 0)
-      cli::cli_alert_danger("{n.nf} words not found: {.val {not.found}}")
-  }
+  if(length(words.valid) < length(words))
+    warning_not_found(setdiff(words, words.valid))
 
   if(length(words.valid) == 0)
     return(NULL)
@@ -984,7 +987,7 @@ data_wordvec_subset = function(
          compress=compress,
          compression_level=compress.level)
     if(verbose)
-      cli::cli_alert_success("Saved to \"{file.save}\" (time cost = {dtime(t1, 'auto')})")
+      cli::cli_alert_success("Saved to {.pkg {file.save}} (time cost = {dtime(t1, 'auto')})")
   }
   # gc()  # Garbage Collection: Free the Memory
   return(x)
@@ -1271,6 +1274,8 @@ plot_wordvec = function(
 #'
 #' @seealso
 #' \code{\link{plot_wordvec}}
+#'
+#' \code{\link{plot_network}}
 #'
 #' @examples
 #' d = as_embed(demodata, normalize=TRUE)
@@ -1563,6 +1568,7 @@ pair_similarity = function(
   if(is.null(words1) & is.null(words2)) {
     data = as_embed(data)
     embed = force_normalize(get_wordembed(data, words, pattern), verbose=FALSE)
+    rm(data)
     if(distance)
       return(1 - tcrossprod(embed, embed))
     else
@@ -1571,6 +1577,7 @@ pair_similarity = function(
     data = as_embed(data)
     embed1 = force_normalize(get_wordembed(data, words1), verbose=FALSE)
     embed2 = force_normalize(get_wordembed(data, words2), verbose=FALSE)
+    rm(data)
     if(distance)
       return(1 - tcrossprod(embed1, embed2))
     else
@@ -1672,9 +1679,9 @@ tab_similarity = function(
 #' Defaults to \code{"black"}.
 #' @param hclust.line Line width of rectangle border, only valid when \code{hclust.n} >= 1.
 #' Defaults to \code{2}.
-#' @param file File name to be saved, should be of \code{png} or \code{pdf}.
+#' @param file File name to be saved, should be png or pdf.
 #' @param width,height Width and height (in inches) for the saved file.
-#' Defaults to \code{8} and \code{6}.
+#' Defaults to \code{10} and \code{6}.
 #' @param dpi Dots per inch. Defaults to \code{500} (i.e., file resolution: 4000 * 3000).
 #' @param ... Other parameters passed to \code{\link[corrplot:corrplot]{corrplot}}.
 #'
@@ -1693,6 +1700,8 @@ tab_similarity = function(
 #' \code{\link{tab_similarity}}
 #'
 #' \code{\link{most_similar}}
+#'
+#' \code{\link{plot_network}}
 #'
 #' @examples
 #' w1 = cc("king, queen, man, woman")
@@ -1745,7 +1754,7 @@ plot_similarity = function(
     hclust.color="black",
     hclust.line=2,
     file=NULL,
-    width=8,
+    width=10,
     height=6,
     dpi=500,
     ...
@@ -1772,10 +1781,178 @@ plot_similarity = function(
            ...)
   if(!is.null(file)) {
     dev.off()
-    cli::cli_alert_success("Saved to {paste0(getwd(), '/', file)}")
+    cli::cli_alert_success("Saved to {.pkg {paste0(getwd(), '/', file)}}")
   }
 
   invisible(mat)
+}
+
+
+#' Visualize a (partial correlation) network graph of words.
+#'
+#' @inheritParams plot_similarity
+#' @param index Use which index to perform network analysis?
+#' Can be \code{"pcor"} (partial correlation, default and suggested),
+#' \code{"cor"} (raw correlation),
+#' \code{"glasso"} (graphical lasso-estimation of partial correlation matrix
+#' using the \code{glasso} package),
+#' or \code{"sim"} (pairwise cosine similarity).
+#' @param alpha Significance level to be used for not showing edges. Defaults to \code{0.05}.
+#' @param bonf Bonferroni correction of \emph{p} value. Defaults to \code{FALSE}.
+#' @param max Maximum value for scaling edge widths and colors. Defaults to the highest value of the index.
+#' Can be \code{1} if you want to compare several graphs.
+#' @param node.size Node size. Defaults to 8*exp(-nNodes/80)+1.
+#' @param node.group Node group(s). Can be a named list (see examples) in which each element
+#' is a vector of integers identifying the numbers of the nodes that belong together, or a factor.
+#' @param node.color Node color(s). Can be a character vector of colors corresponding to \code{node.group}.
+#' Defaults to white (if \code{node.group} is not specified)
+#' or the palette of ggplot2 (if \code{node.group} is specified).
+#' @param label.text Node label of text. Defaults to original words.
+#' @param label.size Node label font size. Defaults to \code{1.2}.
+#' @param label.size.equal Make the font size of all labels equal. Defaults to \code{TRUE}.
+#' @param label.color Node label color. Defaults to \code{"black"}.
+#' @param edge.color Edge colors for positive and negative values, respectively.
+#' Defaults to \code{c("#009900", "#BF0000")}.
+#' @param edge.label Edge label of values. Defaults to \code{FALSE}.
+#' @param edge.label.size Edge label font size. Defaults to \code{1}.
+#' @param edge.label.color Edge label color. Defaults to \code{edge.color}.
+#' @param edge.label.bg Edge label background color. Defaults to \code{"white"}.
+#' @param ... Other parameters passed to \code{\link[qgraph:qgraph]{qgraph}}.
+#'
+#' @return
+#' Invisibly return a \code{\link[qgraph:qgraph]{qgraph}} object,
+#' which further can be plotted using \code{plot()}.
+#'
+#' @section Download:
+#' Download pre-trained word vectors data (\code{.RData}):
+#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#'
+#' @seealso
+#' \code{\link{plot_similarity}}
+#'
+#' \code{\link{plot_wordvec_tSNE}}
+#'
+#' @examples
+#' d = as_embed(demodata, normalize=TRUE)
+#'
+#' words = cc("
+#' man, woman,
+#' he, she,
+#' boy, girl,
+#' father, mother,
+#' mom, dad,
+#' China, Japan
+#' ")
+#'
+#' plot_network(d, words)
+#'
+#' p = plot_network(
+#'   d, words,
+#'   node.group=list(Gender=1:6, Family=7:10, Country=11:12),
+#'   node.color=c("antiquewhite", "lightsalmon", "lightblue"),
+#'   file="network.png")
+#' plot(p)
+#'
+#' unlink("network.png")  # delete file for code check
+#'
+#' \donttest{# network analysis with centrality plot (see `qgraph` package)
+#' qgraph::centralityPlot(p, include="all", scale="raw",
+#'                        orderBy="Strength")
+#'
+#' # graphical lasso-estimation of partial correlation matrix
+#' plot_network(
+#'   d, words,
+#'   index="glasso",
+#'   # threshold=TRUE,
+#'   node.group=list(Gender=1:6, Family=7:10, Country=11:12),
+#'   node.color=c("antiquewhite", "lightsalmon", "lightblue"))
+#' }
+#' @export
+plot_network = function(
+    data,
+    words=NULL,
+    pattern=NULL,
+    index=c("pcor", "cor", "glasso", "sim"),
+    alpha=0.05,
+    bonf=FALSE,
+    max=NULL,
+    node.size="auto",
+    node.group=NULL,
+    node.color=NULL,
+    label.text=NULL,
+    label.size=1.2,
+    label.size.equal=TRUE,
+    label.color="black",
+    edge.color=c("#009900", "#BF0000"),
+    edge.label=FALSE,
+    edge.label.size=1,
+    edge.label.color=NULL,
+    edge.label.bg="white",
+    file=NULL,
+    width=10,
+    height=6,
+    dpi=500,
+    ...
+) {
+  index = match.arg(index)
+  if(index=="sim") {
+    index = "cor"
+    min = 0
+    mat = pair_similarity(data, words, pattern)
+  } else {
+    min = ifelse(index=="glasso", 0, "sig")
+    mat = cor(t(get_wordembed(data, words, pattern)))
+  }
+
+  if(!is.null(file)) {
+    if(str_detect(file, "\\.png$"))
+      png(file, width=width, height=height, units="in", res=dpi)
+    if(str_detect(file, "\\.pdf$"))
+      pdf(file, width=width, height=height)
+  }
+  p = qgraph::qgraph(
+    mat, layout="spring",
+
+    ## --- [graph] --- ##
+    graph=index,  # "cor", "pcor", "glasso"
+    shape="circle",
+    sampleSize=attr(data, "dims"),
+    minimum=min,
+    maximum=max,
+    alpha=alpha,
+    bonf=bonf,
+    # threshold="sig",  # or other adjust methods
+    # details=TRUE,
+
+    ## --- [node] --- ##
+    groups=node.group,
+    color=node.color,
+    palette="ggplot2",
+    vsize=if(node.size=="auto") 8*exp(-nrow(mat)/80)+1 else node.size,
+
+    ## --- [label] --- ##
+    labels=if(is.null(label.text)) rownames(mat) else label.text,
+    label.cex=label.size,
+    label.scale.equal=label.size.equal,
+    label.color=label.color,
+
+    ## --- [edge] --- ##
+    posCol=edge.color[1],
+    negCol=edge.color[2],
+    edge.labels=edge.label,
+    edge.label.cex=edge.label.size,
+    edge.label.color=edge.label.color,
+    edge.label.bg=edge.label.bg,
+
+    ## --- [others] --- ##
+    usePCH=TRUE,
+    ...)
+  if(!is.null(file)) {
+    dev.off()
+    cli::cli_alert_success("Saved to {.pkg {paste0(getwd(), '/', file)}}")
+  }
+
+  invisible(p)
 }
 
 
@@ -1968,12 +2145,13 @@ dict_expand = function(
     words = unique(c(words, new.words))
     if(verbose) {
       cli::cli_h1("Iteration {i} (threshold of cosine similarity = {threshold})")
+      new.ws = ifelse(n.new > 1, "words", "word")
       if(n.new > 100)
-        cli::cli_alert_success("{n.new} more words appended: ... (omitted)")
+        cli::cli_alert_success("{n.new} more {new.ws} appended: ... (omitted)")
       else if(n.new > 0)
-        cli::cli_alert_success("{n.new} more words appended: {.val {new.words}}")
+        cli::cli_alert_success("{n.new} more {new.ws} appended: {.val {new.words}}")
       else
-        cli::cli_alert_success("No more words appended. Successfully convergent.")
+        cli::cli_alert_success("No more word appended. Successfully convergent.")
     }
     if(n.new == 0 | i >= iteration) break
     i = i + 1

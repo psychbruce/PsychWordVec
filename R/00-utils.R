@@ -187,6 +187,16 @@ valid_words_info = function(x) {
 }
 
 
+warning_not_found = function(not.found) {
+  n.nf = length(not.found)
+  n.nf.ws = ifelse(n.nf > 1, "words", "word")
+  if(n.nf > 100)
+    cli::cli_alert_danger("{n.nf} {n.nf.ws} not found: {.val {not.found[1]}}, ... (omitted)")
+  else if(n.nf > 0)
+    cli::cli_alert_danger("{n.nf} {n.nf.ws} not found: {.val {not.found}}")
+}
+
+
 number_duplicate = function(x, sep="_") {
   v = z = c()
   for(xi in x) {
