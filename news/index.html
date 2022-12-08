@@ -54,6 +54,7 @@
 <li>New S3 <code><a href="https://rdrr.io/r/utils/str.html" class="external-link">str()</a></code> method to print the data structure and attributes.</li>
 <li>New <code><a href="../reference/as_embed.html">pattern()</a></code> function designed for S3 <code>[</code> method of <code>embed</code>: Users can directly use regular expression like <code>embed[pattern("^for")]</code> to extract a subset of embedding matrix.</li>
 <li>New <code><a href="../reference/plot_network.html">plot_network()</a></code> function: Visualize a (partial correlation) network graph of words. Very useful for identifying potential semantic clusters from a list of words and even useful for disentangling antonyms from synonyms.</li>
+<li>New <code>targets</code> argument of <code><a href="../reference/text_unmask.html">text_unmask()</a></code>: Return specific fill-mask results for certain target words (rather than the top <em>n</em> results).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="major-changes-0-2-3">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-0-2-3"></a></h3>
@@ -69,6 +70,8 @@
 <code>get_wordvecs()</code> (deprecated) has been integrated into <code><a href="../reference/get_wordvec.html">get_wordvec()</a></code>.</li>
 <li>
 <code>tab_similarity_cross()</code> (deprecated) has been integrated into <code><a href="../reference/tab_similarity.html">tab_similarity()</a></code>.</li>
+<li>
+<code><a href="../reference/test_WEAT.html">test_WEAT()</a></code> and <code><a href="../reference/test_RND.html">test_RND()</a></code>: Warning if <code>T1</code> and <code>T2</code> or <code>A1</code> and <code>A2</code> have duplicate values.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-2-3">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-3"></a></h3>
