@@ -4,7 +4,7 @@
 \alias{text_unmask}
 \title{Fill in the blank mask(s) in a query (sentence).}
 \usage{
-text_unmask(query, model, topn = 5)
+text_unmask(query, model, targets = NULL, topn = 5)
 }
 \arguments{
 \item{query}{A query (sentence/prompt) with masked token(s) \code{[MASK]}.
@@ -14,12 +14,18 @@ See examples.}
 See \code{\link{text_model_download}}.
 If the model has not been downloaded, it would automatically download the model.}
 
-\item{topn}{Number of predictions to return. Defaults to \code{5}.}
+\item{targets}{Specific target word(s) to be filled in the blank \code{[MASK]}.
+Defaults to \code{NULL} (i.e., return \code{topn}).
+If specified, then \code{topn} will be ignored (see examples).}
+
+\item{topn}{Number of the most likely predictions to return.
+Defaults to \code{5}. If \code{targets} is specified,
+then it will automatically change to the length of \code{targets}.}
 }
 \value{
 A \code{data.table} of query results:
 \describe{
-  \item{\code{mask_id}}{
+  \item{\code{mask_id} (if there are more than one [MASK] in \code{query})}{
     \code{[MASK]} ID (position in sequence, indicating multiple masks)}
   \item{\code{prob}}{
     Probability of the predicted token in the sequence}
@@ -47,10 +53,14 @@ See \url{https://huggingface.co/tasks/fill-mask} for details.
 # text_init()  # initialize the environment
 
 model = "distilbert-base-cased"
+
 text_unmask("Beijing is the [MASK] of China.", model)
 text_unmask("Beijing is the [MASK] [MASK] of China.", model)
 text_unmask("The man worked as a [MASK].", model)
 text_unmask("The woman worked as a [MASK].", model)
+
+text_unmask("The [MASK] worked as a nurse.", model,
+            targets=c("man", "woman"))
 }
 
 }

@@ -401,12 +401,17 @@ token_to_word = function(embed) {
 #' @inheritParams text_to_vec
 #' @param query A query (sentence/prompt) with masked token(s) \code{[MASK]}.
 #' See examples.
-#' @param topn Number of predictions to return. Defaults to \code{5}.
+#' @param targets Specific target word(s) to be filled in the blank \code{[MASK]}.
+#' Defaults to \code{NULL} (i.e., return \code{topn}).
+#' If specified, then \code{topn} will be ignored (see examples).
+#' @param topn Number of the most likely predictions to return.
+#' Defaults to \code{5}. If \code{targets} is specified,
+#' then it will automatically change to the length of \code{targets}.
 #'
 #' @return
 #' A \code{data.table} of query results:
 #' \describe{
-#'   \item{\code{mask_id}}{
+#'   \item{\code{mask_id} (if there are more than one [MASK] in \code{query})}{
 #'     \code{[MASK]} ID (position in sequence, indicating multiple masks)}
 #'   \item{\code{prob}}{
 #'     Probability of the predicted token in the sequence}
@@ -432,24 +437,36 @@ token_to_word = function(embed) {
 #' # text_init()  # initialize the environment
 #'
 #' model = "distilbert-base-cased"
+#'
 #' text_unmask("Beijing is the [MASK] of China.", model)
 #' text_unmask("Beijing is the [MASK] [MASK] of China.", model)
 #' text_unmask("The man worked as a [MASK].", model)
 #' text_unmask("The woman worked as a [MASK].", model)
+#'
+#' text_unmask("The [MASK] worked as a nurse.", model,
+#'             targets=c("man", "woman"))
 #' }
 #'
 #' @export
-text_unmask = function(query, model, topn=5) {
+text_unmask = function(query, model, targets=NULL, topn=5) {
   text_initialized()
+
+  if(!is.null(targets)) topn = length(targets)
   query = str_replace_all(query, "\\[mask\\]", "[MASK]")
-  nquery = str_count(query, "\\[MASK\\]")
-  mask_id = data.table(mask_id=rep(1:nquery, each=topn))
   transformers = reticulate::import("transformers")
   fill_mask = transformers$pipeline("fill-mask", model=model)
-  res = fill_mask(query, top_k=as.integer(topn))
-  if(nquery>1) res = unlist(res, recursive=FALSE)
-  res = cbind(mask_id, rbindlist(res))
-  names(res) = c("mask_id", "prob", "token_id", "token", "sequence")
+  res = fill_mask(query, targets=targets, top_k=as.integer(topn))
+
+  nmask = str_count(query, "\\[MASK\\]")
+  if(nmask > 1) {
+    mask_id = data.table(mask_id=rep(1:nmask, each=topn))
+    res = unlist(res, recursive=FALSE)
+    res = cbind(mask_id, rbindlist(res))
+    names(res) = c("mask_id", "prob", "token_id", "token", "sequence")
+  } else {
+    res = rbindlist(res)
+    names(res) = c("prob", "token_id", "token", "sequence")
+  }
   return(res)
 }
 

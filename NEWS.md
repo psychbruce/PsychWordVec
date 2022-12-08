@@ -11,6 +11,7 @@
 -   New S3 `str()` method to print the data structure and attributes.
 -   New `pattern()` function designed for S3 `[` method of `embed`: Users can directly use regular expression like `embed[pattern("^for")]` to extract a subset of embedding matrix.
 -   New `plot_network()` function: Visualize a (partial correlation) network graph of words. Very useful for identifying potential semantic clusters from a list of words and even useful for disentangling antonyms from synonyms.
+-   New `targets` argument of `text_unmask()`: Return specific fill-mask results for certain target words (rather than the top *n* results).
 
 ## Major Changes
 
@@ -21,6 +22,7 @@
 -   `data_wordvec_normalize()` (deprecated) has been renamed as `normalize()`.
 -   `get_wordvecs()` (deprecated) has been integrated into `get_wordvec()`.
 -   `tab_similarity_cross()` (deprecated) has been integrated into `tab_similarity()`.
+-   `test_WEAT()` and `test_RND()`: Warning if `T1` and `T2` or `A1` and `A2` have duplicate values.
 
 ## Bug Fixes
 

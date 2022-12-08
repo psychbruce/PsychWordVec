@@ -2550,9 +2550,9 @@ test_WEAT = function(
   A1 = intersect(A1, words.valid)
   A2 = intersect(A2, words.valid)
   if(length(intersect(T1, T2)) > 0)
-    stop("`T1` and `T2` have duplicate values!", call.=FALSE)
+    warning("`T1` and `T2` have duplicate values!", call.=FALSE)
   if(length(intersect(A1, A2)) > 0)
-    stop("`A1` and `A2` have duplicate values!", call.=FALSE)
+    warning("`A1` and `A2` have duplicate values!", call.=FALSE)
 
   if(!is.null(T2)) {
     dweat = rbind(
@@ -2568,8 +2568,8 @@ test_WEAT = function(
     names(dweat)[3:4] = c("T_word", "A_word")
     dweat$Target = factor(dweat$Target, levels=c(labels$T1, labels$T2))
     dweat$Attrib = factor(dweat$Attrib, levels=c(labels$A1, labels$A2))
-    dweat$T_word = factor(dweat$T_word, levels=c(T1, T2))
-    dweat$A_word = factor(dweat$A_word, levels=c(A1, A2))
+    dweat$T_word = factor(dweat$T_word, levels=unique(c(T1, T2)))
+    dweat$A_word = factor(dweat$A_word, levels=unique(c(A1, A2)))
   } else {
     dweat = rbind(
       cbind(data.table(Target=labels$T1, Attrib=labels$A1),
@@ -2580,8 +2580,8 @@ test_WEAT = function(
     names(dweat)[3:4] = c("T_word", "A_word")
     dweat$Target = factor(dweat$Target, levels=c(labels$T1))
     dweat$Attrib = factor(dweat$Attrib, levels=c(labels$A1, labels$A2))
-    dweat$T_word = factor(dweat$T_word, levels=c(T1))
-    dweat$A_word = factor(dweat$A_word, levels=c(A1, A2))
+    dweat$T_word = factor(dweat$T_word, levels=unique(c(T1)))
+    dweat$A_word = factor(dweat$A_word, levels=unique(c(A1, A2)))
   }
 
   . = Target = Attrib = T_word = cos_sim = cos_sim_mean = cos_sim_diff = std_mean = std_diff = NULL
@@ -2860,7 +2860,7 @@ test_RND = function(
   A1 = intersect(A1, words.valid)
   A2 = intersect(A2, words.valid)
   if(length(intersect(A1, A2)) > 0)
-    stop("`A1` and `A2` have duplicate values!", call.=FALSE)
+    warning("`A1` and `A2` have duplicate values!", call.=FALSE)
 
   # v1 = rowMeans(dt[, A1, with=FALSE])  # average vector for A1
   # v2 = rowMeans(dt[, A2, with=FALSE])  # average vector for A2

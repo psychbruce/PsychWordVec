@@ -14,7 +14,7 @@ An integrated toolbox of word embedding research that provides:
 
 <!-- badges: start -->
 
-[![CRAN-Version](https://www.r-pkg.org/badges/version/PsychWordVec?color=red)](https://CRAN.R-project.org/package=PsychWordVec) [![GitHub-Version](https://img.shields.io/github/r-package/v/psychbruce/PsychWordVec?label=GitHub&color=orange)](https://github.com/psychbruce/PsychWordVec) [![R-CMD-check](https://github.com/psychbruce/PsychWordVec/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/psychbruce/PsychWordVec/actions/workflows/R-CMD-check.yaml) [![CRAN-Downloads](https://cranlogs.r-pkg.org/badges/grand-total/PsychWordVec)](https://CRAN.R-project.org/package=PsychWordVec) [![GitHub-Stars](https://img.shields.io/github/stars/psychbruce/PsychWordVec?style=social)](https://github.com/psychbruce/PsychWordVec/stargazers)
+[![CRAN-Version](https://www.r-pkg.org/badges/version/PsychWordVec?color=red)](https://CRAN.R-project.org/package=PsychWordVec) [![GitHub-Version](https://img.shields.io/github/r-package/v/psychbruce/PsychWordVec?label=GitHub&color=orange)](https://github.com/psychbruce/PsychWordVec) [![R-CMD-check](https://github.com/psychbruce/PsychWordVec/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/psychbruce/PsychWordVec/actions/workflows/R-CMD-check.yaml) [![CRAN-Downloads](https://cranlogs.r-pkg.org/badges/grand-total/PsychWordVec)](https://psychbruce.github.io/PsychWordVec/) [![GitHub-Stars](https://img.shields.io/github/stars/psychbruce/PsychWordVec?style=social)](https://github.com/psychbruce/PsychWordVec/stargazers)
 
 <!-- badges: end -->
 
@@ -54,7 +54,7 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
 | Function to get  | `as_embed()`                   | `as_wordvec()`               |
 | Function to load | `load_embed()`                 | `load_wordvec()`             |
 
-: ***Note*****:** Word embedding refers to a natural language processing technique that embeds word semantics into a low-dimensional **embedding matrix**, with each word (actually token) quantified as a **numeric vector** representing its (uninterpretable) semantic features. Users are suggested to import [word vectors data](https://psychbruce.github.io/WordVector_RData.pdf) as the `embed` class using the function `load_embed()`, which would automatically normalize all word vectors to the unit length 1 (see the `normalize()` function) and accelerate the running of most functions in `PsychWordVec`.
+: Note: Word embedding refers to a natural language processing technique that embeds word semantics into a low-dimensional **embedding matrix**, with each word (actually token) quantified as a **numeric vector** representing its (uninterpretable) semantic features. Users are suggested to import [word vectors data](https://psychbruce.github.io/WordVector_RData.pdf) as the `embed` class using the function `load_embed()`, which would automatically normalize all word vectors to the unit length 1 (see the `normalize()` function) and accelerate the running of most functions in `PsychWordVec`.
 
 ## Functions in `PsychWordVec`
 
