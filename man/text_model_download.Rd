@@ -4,7 +4,7 @@
 \alias{text_model_download}
 \title{Download pre-trained language models from HuggingFace.}
 \usage{
-text_model_download(model = NULL, save.config = TRUE)
+text_model_download(model = NULL)
 }
 \arguments{
 \item{model}{Character string(s) specifying the
@@ -38,9 +38,6 @@ Example choices:
   \item{\code{"microsoft/deberta-v3-large"} (128100 vocab, 1024 dims, 24 layers)}
   \item{\code{...} (see \url{https://huggingface.co/models})}
 }}
-
-\item{save.config}{Save configuration file of the model to the current path.
-Defaults to \code{TRUE}.}
 }
 \value{
 Invisibly return the names of all downloaded models.

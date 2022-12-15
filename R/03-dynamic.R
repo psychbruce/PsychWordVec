@@ -133,8 +133,8 @@ text_initialized = function() {
 #'   \item{\code{"microsoft/deberta-v3-large"} (128100 vocab, 1024 dims, 24 layers)}
 #'   \item{\code{...} (see \url{https://huggingface.co/models})}
 #' }
-#' @param save.config Save configuration file of the model to the current path.
-#' Defaults to \code{TRUE}.
+## @param save.config Save configuration file of the model to the current path.
+## Defaults to \code{TRUE}.
 #'
 #' @return
 #' Invisibly return the names of all downloaded models.
@@ -161,7 +161,7 @@ text_initialized = function() {
 #' }
 #'
 #' @export
-text_model_download = function(model=NULL, save.config=TRUE) {
+text_model_download = function(model=NULL) {
   text_initialized()
   if(!is.null(model)) {
     for(m in model) {
@@ -175,7 +175,7 @@ text_model_download = function(model=NULL, save.config=TRUE) {
       Print("<<cyan Downloading model...>>")
       model = transformers$AutoModel$from_pretrained(m)
       cli::cli_alert_success("Successfully downloaded model \"{m}\"")
-      if(save.config) writeLines(as.character(config), paste0("config_", m))
+      # if(save.config) writeLines(as.character(config), paste0("config_", m))
       gc()
     }
   }
@@ -400,7 +400,7 @@ token_to_word = function(embed) {
 #'
 #' @inheritParams text_to_vec
 #' @param query A query (sentence/prompt) with masked token(s) \code{[MASK]}.
-#' See examples.
+#' Multiple queries are also supported. See examples.
 #' @param targets Specific target word(s) to be filled in the blank \code{[MASK]}.
 #' Defaults to \code{NULL} (i.e., return \code{topn}).
 #' If specified, then \code{topn} will be ignored (see examples).
@@ -411,7 +411,9 @@ token_to_word = function(embed) {
 #' @return
 #' A \code{data.table} of query results:
 #' \describe{
-#'   \item{\code{mask_id} (if there are more than one [MASK] in \code{query})}{
+#'   \item{\code{query_id} (if there are more than one \code{query})}{
+#'     \code{query} ID (indicating multiple queries)}
+#'   \item{\code{mask_id} (if there are more than one \code{[MASK]} in \code{query})}{
 #'     \code{[MASK]} ID (position in sequence, indicating multiple masks)}
 #'   \item{\code{prob}}{
 #'     Probability of the predicted token in the sequence}
@@ -439,10 +441,16 @@ token_to_word = function(embed) {
 #' model = "distilbert-base-cased"
 #'
 #' text_unmask("Beijing is the [MASK] of China.", model)
-#' text_unmask("Beijing is the [MASK] [MASK] of China.", model)
-#' text_unmask("The man worked as a [MASK].", model)
-#' text_unmask("The woman worked as a [MASK].", model)
 #'
+#' # multiple [MASK]s:
+#' text_unmask("Beijing is the [MASK] [MASK] of China.", model)
+#'
+#' # multiple queries:
+#' text_unmask(c("The man worked as a [MASK].",
+#'               "The woman worked as a [MASK]."),
+#'             model)
+#'
+#' # specific targets:
 #' text_unmask("The [MASK] worked as a nurse.", model,
 #'             targets=c("man", "woman"))
 #' }
@@ -451,22 +459,46 @@ token_to_word = function(embed) {
 text_unmask = function(query, model, targets=NULL, topn=5) {
   text_initialized()
 
-  if(!is.null(targets)) topn = length(targets)
+  if(!is.null(targets)) {
+    targets = as.character(unique(targets))
+    targets = factor(targets, levels=targets)
+    topn = length(targets)
+  }
+  topn = as.integer(topn)
   query = str_replace_all(query, "\\[mask\\]", "[MASK]")
+  if(str_detect(model, "roberta-base|roberta-large"))
+    query = str_replace_all(query, "\\[MASK\\]", "<mask>")
+  nmask = unique(str_count(query, "\\[MASK\\]|<mask>"))
+  nquery = length(query)
+  if(length(nmask) > 1)
+    stop("All queries should have the same number of [MASK].", call.=FALSE)
+
   transformers = reticulate::import("transformers")
   fill_mask = transformers$pipeline("fill-mask", model=model)
-  res = fill_mask(query, targets=targets, top_k=as.integer(topn))
 
-  nmask = str_count(query, "\\[MASK\\]")
-  if(nmask > 1) {
-    mask_id = data.table(mask_id=rep(1:nmask, each=topn))
-    res = unlist(res, recursive=FALSE)
-    res = cbind(mask_id, rbindlist(res))
-    names(res) = c("mask_id", "prob", "token_id", "token", "sequence")
+  if(is.null(targets)) {
+    res = do.call(c, lapply(query, function(q) fill_mask(q, top_k=topn)))
   } else {
-    res = rbindlist(res)
-    names(res) = c("prob", "token_id", "token", "sequence")
+    res = do.call(c, lapply(query, function(q) {
+      do.call(c, lapply(targets, function(target) {
+        fill_mask(q, targets=target, top_k=1L)
+      }))
+    }))
   }
+
+  if(nmask > 1) res = unlist(res, recursive=FALSE)
+  qm_id = data.table(
+    query_id = rep(1:nquery, each=topn*nmask),
+    mask_id = if(is.null(targets)) rep(1:nmask, each=topn) else rep(1:nmask, topn))
+  res = cbind(qm_id, rbindlist(res))
+  names(res) = c("query_id", "mask_id", "prob", "token_id", "token", "sequence")
+  if(!is.null(targets)) {
+    res$token = factor(str_remove(res$token, "\u2581"),
+                       levels=str_remove(as.character(targets), "\u2581"))
+    res = res[order(res$token)]
+  }
+  if(length(unique(res$query_id)) == 1) res$query_id = NULL
+  if(length(unique(res$mask_id)) == 1) res$mask_id = NULL
   return(res)
 }
 

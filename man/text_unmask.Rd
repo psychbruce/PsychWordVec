@@ -8,7 +8,7 @@ text_unmask(query, model, targets = NULL, topn = 5)
 }
 \arguments{
 \item{query}{A query (sentence/prompt) with masked token(s) \code{[MASK]}.
-See examples.}
+Multiple queries are also supported. See examples.}
 
 \item{model}{Model name at \href{https://huggingface.co/models}{HuggingFace}.
 See \code{\link{text_model_download}}.
@@ -25,7 +25,9 @@ then it will automatically change to the length of \code{targets}.}
 \value{
 A \code{data.table} of query results:
 \describe{
-  \item{\code{mask_id} (if there are more than one [MASK] in \code{query})}{
+  \item{\code{query_id} (if there are more than one \code{query})}{
+    \code{query} ID (indicating multiple queries)}
+  \item{\code{mask_id} (if there are more than one \code{[MASK]} in \code{query})}{
     \code{[MASK]} ID (position in sequence, indicating multiple masks)}
   \item{\code{prob}}{
     Probability of the predicted token in the sequence}
@@ -55,10 +57,16 @@ See \url{https://huggingface.co/tasks/fill-mask} for details.
 model = "distilbert-base-cased"
 
 text_unmask("Beijing is the [MASK] of China.", model)
-text_unmask("Beijing is the [MASK] [MASK] of China.", model)
-text_unmask("The man worked as a [MASK].", model)
-text_unmask("The woman worked as a [MASK].", model)
 
+# multiple [MASK]s:
+text_unmask("Beijing is the [MASK] [MASK] of China.", model)
+
+# multiple queries:
+text_unmask(c("The man worked as a [MASK].",
+              "The woman worked as a [MASK]."),
+            model)
+
+# specific targets:
 text_unmask("The [MASK] worked as a nurse.", model,
             targets=c("man", "woman"))
 }

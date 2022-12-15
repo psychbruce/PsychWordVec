@@ -1,8 +1,8 @@
 **Please check the [latest news (change log)](https://psychbruce.github.io/PsychWordVec/news/index.html) and keep this package updated.**
 
-# PsychWordVec 0.2.3 (ongoing...)
+# PsychWordVec 0.3.0 (Dec 2022)
 
-⚠️ *All users should update the package to version ≥ 0.2.3. Old versions (≤ 0.2.0) may run slowly, and some old functions have been deprecated.*
+⚠️ *All users should update the package to version ≥ 0.3.0. Old versions (≤ 0.2.0) may run slowly, and some old functions have been deprecated.*
 
 ## New Features
 
@@ -19,7 +19,7 @@
 -   Improved S3 `print()` method for `embed` and `wordvec`.
 -   `pair_similarity()` has been improved by using matrix operation `tcrossprod(embed, embed)` to compute cosine similarity, with `embed` normalized.
 -   `data_wordvec_load()` has got two wrapper functions `load_wordvec()` and `load_embed()` for faster use.
--   `data_wordvec_normalize()` (deprecated) has been renamed as `normalize()`.
+-   `data_wordvec_normalize()` (deprecated) has been renamed to `normalize()`.
 -   `get_wordvecs()` (deprecated) has been integrated into `get_wordvec()`.
 -   `tab_similarity_cross()` (deprecated) has been integrated into `tab_similarity()`.
 -   `test_WEAT()` and `test_RND()`: Warning if `T1` and `T2` or `A1` and `A2` have duplicate values.

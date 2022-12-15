@@ -10,7 +10,7 @@ An integrated toolbox of word embedding research that provides:
 4.  A set of training methods to locally train (*static*) word vectors from text corpora, including *Word2Vec* (Mikolov et al., 2013), *GloVe* (Pennington et al., 2014), and *FastText* (Bojanowski et al., 2017);
 5.  A group of functions to download pre-trained language models (e.g., *GPT*, *BERT*), extract contextualized (*dynamic*) word vectors (based on the R package [text](https://www.r-text.org/)), and perform language analysis tasks (e.g., fill in the blank masks).
 
-⚠️ *All users should update the package to version ≥ 0.2.3. Old versions (≤ 0.2.0) may run slowly, and some old functions have been deprecated.*
+⚠️ *All users should update the package to version ≥ 0.3.0. Old versions (≤ 0.2.0) may run slowly, and some old functions have been deprecated.*
 
 <!-- badges: start -->
 
