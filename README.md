@@ -30,7 +30,7 @@ Homepage: [psychbruce.github.io](https://psychbruce.github.io)
 
 ## Citation
 
--   Bao, H.-W.-S. (2022). PsychWordVec: Word embedding research framework for psychological science. R package version 0.2.x. <https://CRAN.R-project.org/package=PsychWordVec>
+-   Bao, H.-W.-S. (2022). PsychWordVec: Word embedding research framework for psychological science. R package version 0.3.x. <https://CRAN.R-project.org/package=PsychWordVec>
 
 ## Installation
 
@@ -67,16 +67,16 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
 -   Word Vectors Extraction, Linear Operation, and Visualization
     -   `subset()`: extract a subset of `wordvec` and `embed`
     -   `normalize()`: normalize all word vectors to the unit length 1
-    -   `get_wordvec()`
-    -   `sum_wordvec()`
-    -   `plot_wordvec()`
+    -   `get_wordvec()`: extract word vectors
+    -   `sum_wordvec()`: calculate the sum vector of multiple words
+    -   `plot_wordvec()`: visualize word vectors
     -   `plot_wordvec_tSNE()`: 2D or 3D visualization with t-SNE
     -   `orth_procrustes()`: Orthogonal Procrustes matrix alignment
 -   Word Semantic Similarity Analysis, Network Analysis, and Association Test
     -   `cosine_similarity()`: `cos_sim()` or `cos_dist()`
-    -   `pair_similarity()`
-    -   `plot_similarity()`
-    -   `tab_similarity()`
+    -   `pair_similarity()`: compute a similarity matrix of word pairs
+    -   `plot_similarity()`: visualize similarities of word pairs
+    -   `tab_similarity()`: tabulate similarities of word pairs
     -   `most_similar()`: find the Top-N most similar words
     -   `plot_network()`: visualize a (partial correlation) network graph of words
     -   `test_WEAT()`: WEAT and SC-WEAT with permutation test of significance
@@ -85,8 +85,8 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
     -   `dict_expand()`: expand a dictionary from the most similar words
     -   `dict_reliability()`: reliability analysis and PCA of a dictionary
 -   Local Training of Static Word Embeddings (Word2Vec, GloVe, and FastText)
-    -   `tokenize()`
-    -   `train_wordvec()`
+    -   `tokenize()`: tokenize raw text
+    -   `train_wordvec()`: train static word embeddings
 -   Pre-trained Language Models (PLM) and Contextualized Word Embeddings
     -   `text_init()`: set up a Python environment for PLM
     -   `text_model_download()`: download PLMs from [HuggingFace](https://huggingface.co/models) to local ".cache" folder
