@@ -130,7 +130,7 @@
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
 <ul>
-<li>Bao, H.-W.-S. (2022). PsychWordVec: Word embedding research framework for psychological science. R package version 0.2.x. <a href="https://CRAN.R-project.org/package=PsychWordVec" class="external-link uri">https://CRAN.R-project.org/package=PsychWordVec</a>
+<li>Bao, H.-W.-S. (2022). PsychWordVec: Word embedding research framework for psychological science. R package version 0.3.x. <a href="https://CRAN.R-project.org/package=PsychWordVec" class="external-link uri">https://CRAN.R-project.org/package=PsychWordVec</a>
 </li>
 </ul>
 </div>
@@ -222,9 +222,12 @@
 </li>
 <li>
 <code><a href="reference/normalize.html">normalize()</a></code>: normalize all word vectors to the unit length 1</li>
-<li><code><a href="reference/get_wordvec.html">get_wordvec()</a></code></li>
-<li><code><a href="reference/sum_wordvec.html">sum_wordvec()</a></code></li>
-<li><code><a href="reference/plot_wordvec.html">plot_wordvec()</a></code></li>
+<li>
+<code><a href="reference/get_wordvec.html">get_wordvec()</a></code>: extract word vectors</li>
+<li>
+<code><a href="reference/sum_wordvec.html">sum_wordvec()</a></code>: calculate the sum vector of multiple words</li>
+<li>
+<code><a href="reference/plot_wordvec.html">plot_wordvec()</a></code>: visualize word vectors</li>
 <li>
 <code><a href="reference/plot_wordvec_tSNE.html">plot_wordvec_tSNE()</a></code>: 2D or 3D visualization with t-SNE</li>
 <li>
@@ -236,9 +239,12 @@
 <li>
 <code><a href="reference/cosine_similarity.html">cosine_similarity()</a></code>: <code><a href="reference/cosine_similarity.html">cos_sim()</a></code> or <code><a href="reference/cosine_similarity.html">cos_dist()</a></code>
 </li>
-<li><code><a href="reference/pair_similarity.html">pair_similarity()</a></code></li>
-<li><code><a href="reference/plot_similarity.html">plot_similarity()</a></code></li>
-<li><code><a href="reference/tab_similarity.html">tab_similarity()</a></code></li>
+<li>
+<code><a href="reference/pair_similarity.html">pair_similarity()</a></code>: compute a similarity matrix of word pairs</li>
+<li>
+<code><a href="reference/plot_similarity.html">plot_similarity()</a></code>: visualize similarities of word pairs</li>
+<li>
+<code><a href="reference/tab_similarity.html">tab_similarity()</a></code>: tabulate similarities of word pairs</li>
 <li>
 <code><a href="reference/most_similar.html">most_similar()</a></code>: find the Top-N most similar words</li>
 <li>
@@ -259,8 +265,10 @@
 </li>
 <li>Local Training of Static Word Embeddings (Word2Vec, GloVe, and FastText)
 <ul>
-<li><code><a href="reference/tokenize.html">tokenize()</a></code></li>
-<li><code><a href="reference/train_wordvec.html">train_wordvec()</a></code></li>
+<li>
+<code><a href="reference/tokenize.html">tokenize()</a></code>: tokenize raw text</li>
+<li>
+<code><a href="reference/train_wordvec.html">train_wordvec()</a></code>: train static word embeddings</li>
 </ul>
 </li>
 <li>Pre-trained Language Models (PLM) and Contextualized Word Embeddings
