@@ -116,7 +116,7 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-## Remember: cc() is more convenient than c()!
+## cc() is more convenient than c()!
 
 weat = test_WEAT(
   demodata,
@@ -128,7 +128,7 @@ weat = test_WEAT(
   seed=1)
 weat
 
-sc_weat = test_WEAT(
+\donttest{sc_weat = test_WEAT(
   demodata,
   labels=list(T1="Occupation", A1="Male", A2="Female"),
   T1=cc("
@@ -140,7 +140,7 @@ sc_weat = test_WEAT(
   A2=cc("female, woman, girl, sister, she, her, hers, daughter"),
   seed=1)
 sc_weat
-
+}
 \dontrun{
 
 ## the same as the first example, but using regular expression

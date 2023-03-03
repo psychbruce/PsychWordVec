@@ -1,6 +1,6 @@
 ## News
 
-In this version, I have added many new functions and fixed some bugs.
+In this version, I have fixed problems on CRAN.
 
 ## Test environments
 
@@ -13,4 +13,4 @@ passing `devtools::check_win_devel()`
 
 ## R CMD check results
 
-passing (0 errors \| 0 warnings \| 0 notes)
+passing (0 errors | 0 warnings | 0 notes)

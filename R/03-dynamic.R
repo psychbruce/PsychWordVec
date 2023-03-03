@@ -58,9 +58,7 @@ text_init = function() {
   try({
     suppressMessages({
       suppressWarnings({
-        text::textrpp_initialize(
-          save_profile=TRUE,
-          prompt=FALSE)
+        text::textrpp_initialize(save_profile=TRUE, prompt=FALSE)
       })
     })
     error = FALSE
@@ -68,9 +66,7 @@ text_init = function() {
   if(error)
     stop("No valid Python or conda environment.
 
-       Please run `text_env_install()` or restart R/RStudio.
-
-       You may also need to specify the version of Python:
+       You may need to specify the version of Python:
          RStudio -> Tools -> Global/Project Options
          -> Python -> Select -> Conda Environments
          -> Choose \".../textrpp_condaenv/python.exe\"",
@@ -166,7 +162,6 @@ text_model_download = function(model=NULL) {
   if(!is.null(model)) {
     for(m in model) {
       cli::cli_h1("Downloading model \"{m}\"")
-      # try({ text::textEmbedRawLayers(" ", model=m) }, silent=TRUE)
       transformers = reticulate::import("transformers")
       Print("<<cyan Downloading configuration...>>")
       config = transformers$AutoConfig$from_pretrained(m)
@@ -175,7 +170,6 @@ text_model_download = function(model=NULL) {
       Print("<<cyan Downloading model...>>")
       model = transformers$AutoModel$from_pretrained(m)
       cli::cli_alert_success("Successfully downloaded model \"{m}\"")
-      # if(save.config) writeLines(as.character(config), paste0("config_", m))
       gc()
     }
   }
@@ -474,7 +468,9 @@ text_unmask = function(query, model, targets=NULL, topn=5) {
     stop("All queries should have the same number of [MASK].", call.=FALSE)
 
   transformers = reticulate::import("transformers")
-  fill_mask = transformers$pipeline("fill-mask", model=model)
+  reticulate::py_capture_output({
+    fill_mask = transformers$pipeline("fill-mask", model=model)
+  })
 
   if(is.null(targets)) {
     res = do.call(c, lapply(query, function(q) fill_mask(q, top_k=topn)))

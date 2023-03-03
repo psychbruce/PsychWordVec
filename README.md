@@ -30,7 +30,7 @@ Homepage: [psychbruce.github.io](https://psychbruce.github.io)
 
 ## Citation
 
--   Bao, H.-W.-S. (2022). PsychWordVec: Word embedding research framework for psychological science. R package version 0.3.x. <https://CRAN.R-project.org/package=PsychWordVec>
+-   Bao, H.-W.-S. (2023). PsychWordVec: Word embedding research framework for psychological science. R package version 0.3.x. <https://CRAN.R-project.org/package=PsychWordVec>
 
 ## Installation
 

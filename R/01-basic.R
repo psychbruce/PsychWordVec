@@ -45,40 +45,39 @@
 
   ## Welcome Message
   if(all(loaded)) {
-    cli::cli_h1("PsychWordVec (v{inst.ver})")
-    cn()
-    cli::cli_alert_success("
-    Packages also loaded: {.pkg data.table, dplyr, stringr, ggplot2}
-    ")
-    cn()
-    # cli::cli_text("
-    # {.href [Documentation](https://psychbruce.github.io/PsychWordVec)}
-    # | Download pre-trained word vectors:
-    # {.url https://psychbruce.github.io/WordVector_RData.pdf}
-    # ")
-    cli::cli_text("
-    Documentation: {.url https://psychbruce.github.io/PsychWordVec}
-    ")
-    cn()
-  } else {
-    Print("
+    packageStartupMessage(Glue("
     \n
-    These R packages are not installed:
+    <<magenta PsychWordVec (v{inst.ver})>>
+    <<blue Word Embedding Research Framework for Psychological Science>>
+
+    <<magenta Packages also loaded:>>
+    <<green \u2714 data.table, dplyr, stringr, ggplot2>>
+
+    <<magenta Online documentation:>>
+    <<underline https://psychbruce.github.io/PsychWordVec>>
+    \n
+    "))
+  } else {
+    packageStartupMessage(Glue("
+    \n
+    These R packages have not been installed:
     {paste(pkgs[loaded==FALSE], collapse=', ')}
 
     Please install them.
     \n
-    ")
+    "))
   }
 
   ## Update Info
   if(new)
-    Print("
-    NEWS: A new version of PsychWordVec ({cran.ver}) is available on {cran.ymd}!
-    ***** Please Update *****
+    packageStartupMessage(Glue("
+    \n
+    NEWS: A new version of PsychWordVec ({cran.ver}) is available ({cran.ymd})!
+
+    ***** Please update *****
     install.packages(\"PsychWordVec\")
     \n
-    ")
+    "))
 }
 
 
@@ -2429,7 +2428,7 @@ print.reliability = function(x, digits=3, ...) {
 #' \code{\link{test_RND}}
 #'
 #' @examples
-#' ## Remember: cc() is more convenient than c()!
+#' ## cc() is more convenient than c()!
 #'
 #' weat = test_WEAT(
 #'   demodata,
@@ -2441,7 +2440,7 @@ print.reliability = function(x, digits=3, ...) {
 #'   seed=1)
 #' weat
 #'
-#' sc_weat = test_WEAT(
+#' \donttest{sc_weat = test_WEAT(
 #'   demodata,
 #'   labels=list(T1="Occupation", A1="Male", A2="Female"),
 #'   T1=cc("
@@ -2453,7 +2452,7 @@ print.reliability = function(x, digits=3, ...) {
 #'   A2=cc("female, woman, girl, sister, she, her, hers, daughter"),
 #'   seed=1)
 #' sc_weat
-#'
+#' }
 #' \dontrun{
 #'
 #' ## the same as the first example, but using regular expression
