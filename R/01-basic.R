@@ -783,7 +783,8 @@ data_wordvec_load = function(
     class(x) = c("embed", "matrix", "array")
   }
   attr(x, "dims") = ndim
-  attr(x, "normalized") = normalize
+  if(is.null(attr(x, "normalized")))
+    attr(x, "normalized") = FALSE
   if(length(as)==1) {
     if(as=="wordvec")
       x = as_wordvec(x, normalize)

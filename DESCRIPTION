@@ -1,7 +1,7 @@
 Package: PsychWordVec
 Title: Word Embedding Research Framework for Psychological Science
-Version: 0.3.1
-Date: 2023-03-03
+Version: 0.3.2
+Date: 2023-03-04
 Authors@R:
     c(person(given = "Han-Wu-Shuang",
              family = "Bao",

@@ -1,13 +1,17 @@
 **Please check the [latest news (change log)](https://psychbruce.github.io/PsychWordVec/news/index.html) and keep this package updated.**
 
-⚠️ *All users should update the package to version ≥ 0.3.0. Old versions (≤ 0.2.0) may run slowly, and some old functions have been deprecated.*
+⚠️ *All users should update the package to version ≥ 0.3.2. Old versions may run slowly and have some problems.*
 
-# PsychWordVec 0.3.1 (Mar 2023)
+# PsychWordVec 0.3.2 (Mar 2023)
 
 ## Minor Changes
 
 -   Changed welcome messages by using `packageStartupMessage()` so that the messages can be suppressed.
 -   Improved `text_unmask()`, but a new package (currently *not* publicly available) has been developed for a more general purpose of using masked language models to measure conceptual associations. Please wait for the release of this new package and the publication of a related methodology article.
+
+## Bug Fixes
+
+-   Fixed problematic `normalized` attribute when using `data_wordvec_load()`.
 
 # PsychWordVec 0.3.0 (Dec 2022)
 
