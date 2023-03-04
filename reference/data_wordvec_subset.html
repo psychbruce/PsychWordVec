@@ -14,7 +14,7 @@ or an .RData file transformed by data_transform)."><meta property="og:image" con
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -210,12 +210,12 @@ when using the S3 method <code>subset</code>.</p></dd>
 <span class="r-in"><span><span class="va">d.subset</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># wordvec (data.table)</span><span style="color: #555555;">: [6 × 2] (normalized)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        word                      vec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    China [-0.0732, ...&lt;300 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    Japan [ 0.0508, ...&lt;300 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  Chinese [-0.1367, ...&lt;300 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: Japanese [ 0.0105, ...&lt;300 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:   Korean [ 0.0898, ...&lt;300 dims&gt;]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:    Korea [ 0.1089, ...&lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    China [-0.0270, ...&lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:    Japan [ 0.0183, ...&lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  Chinese [-0.0499, ...&lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: Japanese [ 0.0037, ...&lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:   Korean [ 0.0264, ...&lt;300 dims&gt;]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:    Korea [ 0.0338, ...&lt;300 dims&gt;]</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## specify `x` as an .RData file and save with `file.save`:</span></span></span>
 <span class="r-in"><span><span class="fu">data_wordvec_subset</span><span class="op">(</span><span class="st">"subset.RData"</span>,</span></span>
@@ -232,13 +232,13 @@ when using the S3 method <code>subset</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2: Chinese [-0.1367, ...&lt;300 dims&gt;]</span>
 <span class="r-in"><span><span class="va">d.new.subset</span> <span class="op">=</span> <span class="fu"><a href="data_wordvec_load.html">load_embed</a></span><span class="op">(</span><span class="st">"new.subset.RData"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Word vectors data: 2 vocab, 300 dims (time cost = 0.001 secs)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Word vectors data: 2 vocab, 300 dims (time cost = 0.002 secs)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> All word vectors have been normalized to unit length 1.</span>
 <span class="r-in"><span><span class="va">d.new.subset</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># embed (matrix)</span><span style="color: #555555;">: [2 × 300] (normalized)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               dim1 ...     dim300</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: China   -0.0732 ... &lt;300 dims&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: Chinese -0.1367 ... &lt;300 dims&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: China   -0.0270 ... &lt;300 dims&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: Chinese -0.0499 ... &lt;300 dims&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">"subset.RData"</span><span class="op">)</span>  <span class="co"># delete file for code check</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">"new.subset.RData"</span><span class="op">)</span>  <span class="co"># delete file for code check</span></span></span>

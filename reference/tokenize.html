@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -121,7 +121,7 @@ Defaults to <code>TRUE</code>.</p></dd>
 <span class="r-in"><span>  <span class="st">"However, my computer is not among the \"Top 10\" list."</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">tokenize</span><span class="op">(</span><span class="va">txt1</span>, simplify<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tokenized: 4 sentences (time cost = 0.3 secs)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tokenized: 4 sentences (time cost = 0.4 secs)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "I"          "love"       "natural"    "language"   "processing"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6] "NLP"       </span>
@@ -137,7 +137,7 @@ Defaults to <code>TRUE</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "the"      "Top"      "10"       "list"    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">tokenize</span><span class="op">(</span><span class="va">txt1</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span>sep<span class="op">=</span><span class="st">"\n----\n"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tokenized: 4 sentences (time cost = 0.2 secs)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tokenized: 4 sentences (time cost = 0.3 secs)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> I love natural language processing NLP</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Ive been in this city for 10 years</span>
@@ -148,7 +148,7 @@ Defaults to <code>TRUE</code>.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">txt2</span> <span class="op">=</span> <span class="fu">text2vec</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/text2vec/man/movie_review.html" class="external-link">movie_review</a></span><span class="op">$</span><span class="va">review</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">texts</span> <span class="op">=</span> <span class="fu">tokenize</span><span class="op">(</span><span class="va">txt2</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tokenized: 81 sentences (time cost = 0.2 secs)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tokenized: 81 sentences (time cost = 0.3 secs)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">txt2</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "With all this stuff going down at the moment with MJ i've started listening to his music, watching the odd documentary here and there, watched The Wiz and watched Moonwalker again. Maybe i just want to get a certain insight into this guy who i thought was really cool in the eighties just to maybe make up my mind whether he is guilty or innocent. Moonwalker is part biography, part feature film which i remember going to see at the cinema when it was originally released. Some of it has subtle messages about MJ's feeling towards the press and also the obvious message of drugs are bad m'kay.&lt;br /&gt;&lt;br /&gt;Visually impressive but of course this is all about Michael Jackson so unless you remotely like MJ in anyway then you are going to hate this and find it boring. Some may call MJ an egotist for consenting to the making of this movie BUT MJ and most of his fans would say that he made it for the fans which if true is really nice of him.&lt;br /&gt;&lt;br /&gt;The actual feature film bit when it finally starts is only on for 20 minutes or so excluding the Smooth Criminal sequence and Joe Pesci is convincing as a psychopathic all powerful drug lord. Why he wants MJ dead so bad is beyond me. Because MJ overheard his plans? Nah, Joe Pesci's character ranted that he wanted people to know it is he who is supplying drugs etc so i dunno, maybe he just hates MJ's music.&lt;br /&gt;&lt;br /&gt;Lots of cool things in this like MJ turning into a car and a robot and the whole Speed Demon sequence. Also, the director must have had the patience of a saint when it came to filming the kiddy Bad sequence as usually directors hate working with one kid let alone a whole bunch of them performing a complex dance scene.&lt;br /&gt;&lt;br /&gt;Bottom line, this movie is for people who like MJ on one level or another (which i think is most people). If not, then stay away. It does try and give off a wholesome message and ironically MJ's bestest buddy in this movie is a girl! Michael Jackson is truly one of the most talented people ever to grace this planet but is he guilty? Well, with all the attention i've gave this subject....hmmm well i don't know because people can be different behind closed doors, i know this for a fact. He is either an extremely nice but stupid guy or one of the most sickest liars. I hope he is not the latter."</span>
