@@ -1,6 +1,10 @@
-## News
+## News (Emergency Update!)
 
-In this version, I have fixed problems on CRAN.
+While v0.3.1 has just been released on CRAN (2023-03-03),
+I found a SERIOUS BUG regarding the use of `data_wordvec_load()`
+and have now fixed it (specifically, the `normalized` attribute).
+I'd like to update v0.3.2 as soon as possible so that
+users will not have problems when they use the package.
 
 ## Test environments
 

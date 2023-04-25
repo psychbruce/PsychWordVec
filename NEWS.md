@@ -1,6 +1,6 @@
 **Please check the [latest news (change log)](https://psychbruce.github.io/PsychWordVec/news/index.html) and keep this package updated.**
 
-⚠️ *All users should update the package to version ≥ 0.3.2. Old versions may run slowly and have some problems.*
+⚠️ *All users should update the package to version ≥ 0.3.2. Old versions may have slow processing speed and other problems.*
 
 # PsychWordVec 0.3.2 (Mar 2023)
 
