@@ -31,6 +31,8 @@ Homepage: [psychbruce.github.io](https://psychbruce.github.io)
 ## Citation
 
 -   Bao, H.-W.-S. (2023). PsychWordVec: Word embedding research framework for psychological science. R package version 0.3.x. <https://CRAN.R-project.org/package=PsychWordVec>
+-   Bao, H.-W.-S., Wang, Z.-X., Cheng, X., Su, Z., Yang, Y., Zhang, G.-Y., Wang, B., & Cai, H. (2023). Using word embeddings to investigate human psychology: Methods and applications. *Advances in Psychological Science, 31*(6), 887--904.\
+    [包寒吴霜, 王梓西, 程曦, 苏展, 杨盈, 张光耀, 王博, 蔡华俭. (2023). 基于词嵌入技术的心理学研究：方法及应用. *心理科学进展, 31*(6), 887--904.]
 
 ## Installation
 
