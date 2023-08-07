@@ -2,7 +2,7 @@
 
 Word Embedding Research Framework for Psychological Science.
 
-An integrated toolbox of word embedding research that provides:
+An integrative toolbox of word embedding research that provides:
 
 1.  A collection of [pre-trained static word vectors](https://psychbruce.github.io/WordVector_RData.pdf) in the .RData compressed format;
 2.  A series of functions to process, analyze, and visualize word vectors;
