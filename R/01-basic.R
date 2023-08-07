@@ -1768,17 +1768,19 @@ plot_similarity = function(
     if(str_detect(file, "\\.pdf$"))
       pdf(file, width=width, height=height)
   }
-  corrplot(mat, method="color",
-           tl.pos=label,
-           tl.col="black",
-           order=order,
-           hclust.method=hclust.method,
-           addCoef.col=value.color,
-           addCoefasPercent=value.percent,
-           addrect=hclust.n,
-           rect.col=hclust.color,
-           rect.lwd=hclust.line,
-           ...)
+  corrplot(
+    mat, method="color",
+    tl.pos=label,
+    tl.col="black",
+    cl.align.text="l",
+    order=order,
+    hclust.method=hclust.method,
+    addCoef.col=value.color,
+    addCoefasPercent=value.percent,
+    addrect=hclust.n,
+    rect.col=hclust.color,
+    rect.lwd=hclust.line,
+    ...)
   if(!is.null(file)) {
     dev.off()
     cli::cli_alert_success("Saved to {.pkg {paste0(getwd(), '/', file)}}")

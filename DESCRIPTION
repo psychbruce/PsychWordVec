@@ -1,7 +1,7 @@
 Package: PsychWordVec
 Title: Word Embedding Research Framework for Psychological Science
 Version: 2023.8
-Date: 2023-08-07
+Date: 2023-08-08
 Authors@R:
     c(person(given = "Han-Wu-Shuang",
              family = "Bao",
@@ -10,20 +10,20 @@ Authors@R:
              comment = c(ORCID = "0000-0003-3043-710X")))
 Maintainer: Han-Wu-Shuang Bao <baohws@foxmail.com>
 Description:
-  An integrative toolbox of word embedding research that provides:
-  (1) a collection of 'pre-trained' static word vectors in the '.RData'
-  compressed format <https://psychbruce.github.io/WordVector_RData.pdf>;
-  (2) a series of functions to process, analyze, and visualize word vectors;
-  (3) a range of tests to examine conceptual associations, including
-  the Word Embedding Association Test <doi:10.1126/science.aal4230>
-  and the Relative Norm Distance <doi:10.1073/pnas.1720347115>,
-  with permutation test of significance;
-  (4) a set of training methods to locally train (static) word vectors
-  from text corpora, including 'Word2Vec' <arXiv:1301.3781>,
-  'GloVe' <doi:10.3115/v1/D14-1162>, and 'FastText' <arXiv:1607.04606>;
-  (5) a group of functions to download 'pre-trained' language models
-  (e.g., 'GPT', 'BERT') and extract contextualized (dynamic) word vectors
-  (based on the R package 'text').
+    An integrative toolbox of word embedding research that provides:
+    (1) a collection of 'pre-trained' static word vectors in the '.RData'
+    compressed format <https://psychbruce.github.io/WordVector_RData.pdf>;
+    (2) a series of functions to process, analyze, and visualize word vectors;
+    (3) a range of tests to examine conceptual associations, including
+    the Word Embedding Association Test <doi:10.1126/science.aal4230>
+    and the Relative Norm Distance <doi:10.1073/pnas.1720347115>,
+    with permutation test of significance;
+    (4) a set of training methods to locally train (static) word vectors
+    from text corpora, including 'Word2Vec' <arXiv:1301.3781>,
+    'GloVe' <doi:10.3115/v1/D14-1162>, and 'FastText' <arXiv:1607.04606>;
+    (5) a group of functions to download 'pre-trained' language models
+    (e.g., 'GPT', 'BERT') and extract contextualized (dynamic) word vectors
+    (based on the R package 'text').
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -31,8 +31,9 @@ LazyDataCompression: xz
 URL: https://psychbruce.github.io/PsychWordVec/
 BugReports: https://github.com/psychbruce/PsychWordVec/issues
 Depends: R (>= 4.0.0)
-Imports: bruceR, dplyr, stringr, data.table, purrr, vroom, cli,
-         ggplot2, ggrepel, corrplot, psych, Rtsne, rgl, qgraph,
-         rsparse, text2vec, word2vec, fastTextR, text, reticulate
+Imports:
+    bruceR, dplyr, stringr, data.table, purrr, vroom, cli,
+    ggplot2, ggrepel, corrplot, psych, Rtsne, rgl, qgraph,
+    rsparse, text2vec, word2vec, fastTextR, text, reticulate
 Suggests: wordsalad, sweater
 RoxygenNote: 7.2.3

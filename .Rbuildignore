@@ -5,11 +5,11 @@ data-raw
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.travis\.yml$
-^LICENSE$
+^_pkgdown\.yml$
 ^cran-comments\.md$
+^LICENSE$
 ^CRAN-RELEASE$
 ^CRAN-SUBMISSION$
-^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
 ^\.github$

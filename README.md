@@ -48,7 +48,7 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
 ## Types of Data for `PsychWordVec`
 
 |                  | `embed`                        | `wordvec`                    |
-|------------------|----------------------------|--------------------------|
+|------------------|--------------------------------|------------------------------|
 | Basic class      | matrix                         | data.table                   |
 | Row size         | vocabulary size                | vocabulary size              |
 | Column size      | dimension size                 | 2 (variables: `word`, `vec`) |
