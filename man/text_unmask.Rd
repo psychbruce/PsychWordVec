@@ -2,7 +2,7 @@
 % Please edit documentation in R/03-dynamic.R
 \name{text_unmask}
 \alias{text_unmask}
-\title{Fill in the blank mask(s) in a query (sentence).}
+\title{<Deprecated> Fill in the blank mask(s) in a query (sentence).}
 \usage{
 text_unmask(query, model, targets = NULL, topn = 5)
 }
@@ -40,6 +40,11 @@ A \code{data.table} of query results:
 }
 }
 \description{
+\emph{Note}: This function has been deprecated and will not be updated
+since I have developed new package
+\href{https://psychbruce.github.io/FMAT/}{FMAT}
+as the integrative toolbox of \emph{Fill-Mask Association Test} (FMAT).
+
 Predict the probably correct masked token(s) in a sequence,
 based on the Python module \code{transformers}.
 }

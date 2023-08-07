@@ -1,4 +1,4 @@
-# PsychWordVec <a href="https://psychbruce.github.io/PsychWordVec/"><img src="man/figures/logo.png" align="right" height="138"/></a>
+# PsychWordVec <img src="man/figures/logo.png" align="right" height="160"/>
 
 Word Embedding Research Framework for Psychological Science.
 
@@ -8,7 +8,7 @@ An integrated toolbox of word embedding research that provides:
 2.  A series of functions to process, analyze, and visualize word vectors;
 3.  A range of tests to examine conceptual associations, including the *Word Embedding Association Test* (Caliskan et al., 2017) and the *Relative Norm Distance* (Garg et al., 2018), with permutation test of significance;
 4.  A set of training methods to locally train (*static*) word vectors from text corpora, including *Word2Vec* (Mikolov et al., 2013), *GloVe* (Pennington et al., 2014), and *FastText* (Bojanowski et al., 2017);
-5.  A group of functions to download pre-trained language models (e.g., *GPT*, *BERT*), extract contextualized (*dynamic*) word vectors (based on the R package [text](https://www.r-text.org/)), and perform language analysis tasks (e.g., fill in the blank masks).
+5.  A group of functions to download pre-trained language models (e.g., *GPT*, *BERT*) and extract contextualized (*dynamic*) word vectors (based on the R package [text](https://www.r-text.org/)).
 
 ⚠️ *All users should update the package to version ≥ 0.3.2. Old versions may have slow processing speed and other problems.*
 
@@ -24,13 +24,13 @@ An integrated toolbox of word embedding research that provides:
 
 Han-Wu-Shuang (Bruce) Bao 包寒吴霜
 
-Email: [baohws\@foxmail.com](mailto:baohws@foxmail.com)
+📬 [baohws\@foxmail.com](mailto:baohws@foxmail.com)
 
-Homepage: [psychbruce.github.io](https://psychbruce.github.io)
+📋 [psychbruce.github.io](https://psychbruce.github.io)
 
 ## Citation
 
--   Bao, H.-W.-S. (2023). PsychWordVec: Word embedding research framework for psychological science. R package version 0.3.x. <https://CRAN.R-project.org/package=PsychWordVec>
+-   Bao, H.-W.-S. (2023). *PsychWordVec: Word embedding research framework for psychological science*. R package version 2023.8. <https://CRAN.R-project.org/package=PsychWordVec>
 -   Bao, H.-W.-S., Wang, Z.-X., Cheng, X., Su, Z., Yang, Y., Zhang, G.-Y., Wang, B., & Cai, H. (2023). Using word embeddings to investigate human psychology: Methods and applications. *Advances in Psychological Science, 31*(6), 887--904.\
     [包寒吴霜, 王梓西, 程曦, 苏展, 杨盈, 张光耀, 王博, 蔡华俭. (2023). 基于词嵌入技术的心理学研究：方法及应用. *心理科学进展, 31*(6), 887--904.]
 
@@ -48,7 +48,7 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
 ## Types of Data for `PsychWordVec`
 
 |                  | `embed`                        | `wordvec`                    |
-|------------------|--------------------------------|------------------------------|
+|------------------|----------------------------|--------------------------|
 | Basic class      | matrix                         | data.table                   |
 | Row size         | vocabulary size                | vocabulary size              |
 | Column size      | dimension size                 | 2 (variables: `word`, `vec`) |
@@ -91,9 +91,9 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
     -   `train_wordvec()`: train static word embeddings
 -   Pre-trained Language Models (PLM) and Contextualized Word Embeddings
     -   `text_init()`: set up a Python environment for PLM
-    -   `text_model_download()`: download PLMs from [HuggingFace](https://huggingface.co/models) to local ".cache" folder
+    -   `text_model_download()`: download PLMs from [Hugging Face](https://huggingface.co/models) to local ".cache" folder
     -   `text_model_remove()`: remove PLMs from local ".cache" folder
     -   `text_to_vec()`: extract contextualized token and text embeddings
-    -   `text_unmask()`: fill in the blank mask(s) in a query
+    -   `text_unmask()`: \<deprecated\> \<please use [FMAT](https://psychbruce.github.io/FMAT/)\> fill in the blank mask(s) in a query
 
 See the documentation (help pages) for their usage and details.

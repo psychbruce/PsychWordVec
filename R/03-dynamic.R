@@ -381,11 +381,18 @@ token_to_word = function(embed) {
 }
 
 
-#' Fill in the blank mask(s) in a query (sentence).
+#' <Deprecated> Fill in the blank mask(s) in a query (sentence).
+#'
+#' @description
+#' \emph{Note}: This function has been deprecated and will not be updated
+#' since I have developed new package
+#' \href{https://psychbruce.github.io/FMAT/}{FMAT}
+#' as the integrative toolbox of \emph{Fill-Mask Association Test} (FMAT).
 #'
 #' Predict the probably correct masked token(s) in a sequence,
 #' based on the Python module \code{transformers}.
 #'
+#' @details
 #' Masked language modeling is the task of masking some of the words in a sentence
 #' and predicting which words should replace those masks.
 #' These models are useful when we want to get a statistical understanding of

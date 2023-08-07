@@ -3,5 +3,5 @@ template:
   bootstrap: 5
   bootswatch: simplex
   bslib:
-    heading_font: {google: "Nunito Sans"}
-    base_font: {google: "Nunito"}
+    heading_font: {google: "Source Sans Pro"}
+    base_font: {google: "Source Sans Pro"}

@@ -2,12 +2,19 @@
 
 ⚠️ *All users should update the package to version ≥ 0.3.2. Old versions may have slow processing speed and other problems.*
 
+# PsychWordVec 2023.8
+
+## Minor Changes
+
+-   Now use "YYYY.M" as package version number.
+-   Deprecated `text_unmask()` since I have developed a new package [FMAT](https://psychbruce.github.io/FMAT/) as the integrative toolbox of *Fill-Mask Association Test* (FMAT).
+
 # PsychWordVec 0.3.2 (Mar 2023)
 
 ## Minor Changes
 
 -   Changed welcome messages by using `packageStartupMessage()` so that the messages can be suppressed.
--   Improved `text_unmask()`, but a new package (currently *not* publicly available) has been developed for a more general purpose of using masked language models to measure conceptual associations. Please wait for the release of this new package and the publication of a related methodology article.
+-   Improved `text_unmask()`, but a new package (currently *not* publicly available) has been developed for a more general purpose of using masked language models to measure conceptual associations. Please wait for the release of this new package and the publication of a related methodological article.
 
 ## Bug Fixes
 

@@ -1,16 +1,16 @@
 Package: PsychWordVec
 Title: Word Embedding Research Framework for Psychological Science
-Version: 0.3.2
-Date: 2023-03-04
+Version: 2023.8
+Date: 2023-08-07
 Authors@R:
     c(person(given = "Han-Wu-Shuang",
              family = "Bao",
              role = c("aut", "cre"),
-             email = "baohws@foxmail.com"))
-Author: Han-Wu-Shuang Bao [aut, cre]
+             email = "baohws@foxmail.com",
+             comment = c(ORCID = "0000-0003-3043-710X")))
 Maintainer: Han-Wu-Shuang Bao <baohws@foxmail.com>
 Description:
-  An integrated toolbox of word embedding research that provides:
+  An integrative toolbox of word embedding research that provides:
   (1) a collection of 'pre-trained' static word vectors in the '.RData'
   compressed format <https://psychbruce.github.io/WordVector_RData.pdf>;
   (2) a series of functions to process, analyze, and visualize word vectors;
@@ -22,9 +22,8 @@ Description:
   from text corpora, including 'Word2Vec' <arXiv:1301.3781>,
   'GloVe' <doi:10.3115/v1/D14-1162>, and 'FastText' <arXiv:1607.04606>;
   (5) a group of functions to download 'pre-trained' language models
-  (e.g., 'GPT', 'BERT'), extract contextualized (dynamic) word vectors
-  (based on the R package 'text'), and perform language analysis tasks
-  (e.g., fill in the blank masks).
+  (e.g., 'GPT', 'BERT') and extract contextualized (dynamic) word vectors
+  (based on the R package 'text').
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
