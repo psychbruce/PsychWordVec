@@ -48,7 +48,7 @@ Defaults to \code{TRUE}.}
 Tokenize raw text for training word embeddings.
 }
 \examples{
-txt1 = c(
+\donttest{txt1 = c(
   "I love natural language processing (NLP)!",
   "I've been in this city for 10 years. I really like here!",
   "However, my computer is not among the \"Top 10\" list."
@@ -61,7 +61,7 @@ texts = tokenize(txt2)
 
 txt2[1]
 texts[1:20]  # all sentences in txt2[1]
-
+}
 }
 \seealso{
 \code{\link{train_wordvec}}

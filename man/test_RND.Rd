@@ -92,7 +92,7 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-rnd = test_RND(
+\donttest{rnd = test_RND(
   demodata,
   labels=list(T1="Occupation", A1="Male", A2="Female"),
   T1=cc("
@@ -104,7 +104,7 @@ rnd = test_RND(
   A2=cc("female, woman, girl, sister, she, her, hers, daughter"),
   seed=1)
 rnd
-
+}
 }
 \references{
 Garg, N., Schiebinger, L., Jurafsky, D., & Zou, J. (2018).

@@ -2433,7 +2433,7 @@ print.reliability = function(x, digits=3, ...) {
 #' @examples
 #' ## cc() is more convenient than c()!
 #'
-#' weat = test_WEAT(
+#' \donttest{weat = test_WEAT(
 #'   demodata,
 #'   labels=list(T1="King", T2="Queen", A1="Male", A2="Female"),
 #'   T1=cc("king, King"),
@@ -2443,7 +2443,7 @@ print.reliability = function(x, digits=3, ...) {
 #'   seed=1)
 #' weat
 #'
-#' \donttest{sc_weat = test_WEAT(
+#' sc_weat = test_WEAT(
 #'   demodata,
 #'   labels=list(T1="Occupation", A1="Male", A2="Female"),
 #'   T1=cc("
@@ -2805,7 +2805,7 @@ print.weat = function(x, digits=3, ...) {
 #' \code{\link{test_WEAT}}
 #'
 #' @examples
-#' rnd = test_RND(
+#' \donttest{rnd = test_RND(
 #'   demodata,
 #'   labels=list(T1="Occupation", A1="Male", A2="Female"),
 #'   T1=cc("
@@ -2817,7 +2817,7 @@ print.weat = function(x, digits=3, ...) {
 #'   A2=cc("female, woman, girl, sister, she, her, hers, daughter"),
 #'   seed=1)
 #' rnd
-#'
+#' }
 #' @export
 test_RND = function(
     data, T1, A1, A2,
@@ -3019,7 +3019,7 @@ print.rnd = function(x, digits=3, ...) {
 #' rownames(M) = rownames(X) = cc("A, B, C, D, E")  # words
 #' colnames(M) = colnames(X) = cc("dim1, dim2")  # dimensions
 #'
-#' ggplot() +
+#' \donttest{ggplot() +
 #'   geom_path(data=as.data.frame(M), aes(x=dim1, y=dim2),
 #'             color="red") +
 #'   geom_path(data=as.data.frame(X), aes(x=dim1, y=dim2),
@@ -3053,7 +3053,7 @@ print.rnd = function(x, digits=3, ...) {
 #' Y.wv  # words: F, G, H, I, J, E, D, C, B, A
 #' YR.wv = orth_procrustes(M.wv, Y.wv)
 #' YR.wv  # aligned with M.wv, with the same order of words
-#'
+#' }
 #' @export
 orth_procrustes = function(M, X) {
   stopifnot(all.equal(class(M), class(X)))

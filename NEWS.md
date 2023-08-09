@@ -7,7 +7,7 @@
 ## Minor Changes
 
 -   Now use "YYYY.M" as package version number.
--   Deprecated `text_unmask()` since I have developed a new package [FMAT](https://psychbruce.github.io/FMAT/) as the integrative toolbox of *Fill-Mask Association Test* (FMAT).
+-   Deprecated `text_unmask()` since I have developed a new package [FMAT](https://psychbruce.github.io/FMAT/) as an integrative toolbox of the *Fill-Mask Association Test* (FMAT).
 
 # PsychWordVec 0.3.2 (Mar 2023)
 

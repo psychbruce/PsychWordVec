@@ -118,7 +118,7 @@ Download pre-trained word vectors data (\code{.RData}):
 \examples{
 ## cc() is more convenient than c()!
 
-weat = test_WEAT(
+\donttest{weat = test_WEAT(
   demodata,
   labels=list(T1="King", T2="Queen", A1="Male", A2="Female"),
   T1=cc("king, King"),
@@ -128,7 +128,7 @@ weat = test_WEAT(
   seed=1)
 weat
 
-\donttest{sc_weat = test_WEAT(
+sc_weat = test_WEAT(
   demodata,
   labels=list(T1="Occupation", A1="Male", A2="Female"),
   T1=cc("

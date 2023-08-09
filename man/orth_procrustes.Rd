@@ -53,7 +53,7 @@ X = matrix(c(0,0, -2,1,  0,2, -2,3,  0,4), ncol=2, byrow=TRUE)
 rownames(M) = rownames(X) = cc("A, B, C, D, E")  # words
 colnames(M) = colnames(X) = cc("dim1, dim2")  # dimensions
 
-ggplot() +
+\donttest{ggplot() +
   geom_path(data=as.data.frame(M), aes(x=dim1, y=dim2),
             color="red") +
   geom_path(data=as.data.frame(X), aes(x=dim1, y=dim2),
@@ -87,7 +87,7 @@ M.wv  # words: A, B, C, D, E
 Y.wv  # words: F, G, H, I, J, E, D, C, B, A
 YR.wv = orth_procrustes(M.wv, Y.wv)
 YR.wv  # aligned with M.wv, with the same order of words
-
+}
 }
 \references{
 Hamilton, W. L., Leskovec, J., & Jurafsky, D. (2016).
