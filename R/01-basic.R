@@ -14,6 +14,7 @@
   ## Version Check
   new = FALSE
   inst.ver = as.character(packageVersion("PsychWordVec"))
+  pkg.date = substr(utils::packageDate("PsychWordVec"), 1, 4)
   xml = suppressWarnings({
     try({
       readLines("https://cran.r-project.org/web/packages/PsychWordVec/index.html")
@@ -45,38 +46,43 @@
 
   ## Welcome Message
   if(all(loaded)) {
-    packageStartupMessage(Glue("
-    \n
-    <<magenta PsychWordVec (v{inst.ver})>>
-    <<blue Word Embedding Research Framework for Psychological Science>>
+    packageStartupMessage(glue::glue_col("
 
-    <<magenta Packages also loaded:>>
-    <<green \u2714 data.table, dplyr, stringr, ggplot2>>
+    {magenta PsychWordVec (v{inst.ver})}
+    {blue Word Embedding Research Framework for Psychological Science}
 
-    <<magenta Online documentation:>>
-    <<underline https://psychbruce.github.io/PsychWordVec>>
-    \n
-    "))
+    {magenta Packages also loaded:}
+    {green \u2714 data.table, dplyr, stringr, ggplot2}
+
+    {magenta Online documentation:}
+    {underline https://psychbruce.github.io/PsychWordVec}
+
+    {magenta To use this package in publications, please cite:}
+    Bao, H.-W.-S. ({pkg.date}). "),
+    glue::glue_col("{italic PsychWordVec: Word embedding research framework for psychological science}"),
+    glue::glue_col(" (Version {inst.ver}) [Computer software]. "),
+    glue::glue_col("{underline https://CRAN.R-project.org/package=PsychWordVec}"),
+    "\n")
   } else {
-    packageStartupMessage(Glue("
-    \n
+    packageStartupMessage(glue::glue_col("
+
     These R packages have not been installed:
     {paste(pkgs[loaded==FALSE], collapse=', ')}
 
     Please install them.
-    \n
+
     "))
   }
 
   ## Update Info
   if(new)
-    packageStartupMessage(Glue("
-    \n
+    packageStartupMessage(glue::glue_col("
+
     NEWS: A new version of PsychWordVec ({cran.ver}) is available ({cran.ymd})!
 
     ***** Please update *****
     install.packages(\"PsychWordVec\")
-    \n
+
     "))
 }
 

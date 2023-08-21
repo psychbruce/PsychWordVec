@@ -35,5 +35,5 @@ Imports:
     bruceR, dplyr, stringr, data.table, purrr, vroom, cli,
     ggplot2, ggrepel, corrplot, psych, Rtsne, rgl, qgraph,
     rsparse, text2vec, word2vec, fastTextR, text, reticulate
-Suggests: wordsalad, sweater
+Suggests: wordsalad, sweater, glue
 RoxygenNote: 7.2.3
