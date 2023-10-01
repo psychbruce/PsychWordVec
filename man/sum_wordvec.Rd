@@ -50,8 +50,8 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-sum_wordvec(normalize(demodata), ~ king - man + woman)
-
+\donttest{sum_wordvec(normalize(demodata), ~ king - man + woman)
+}
 }
 \seealso{
 \code{\link{normalize}}

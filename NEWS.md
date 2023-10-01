@@ -2,6 +2,13 @@
 
 ⚠️ *All users should update the package to version ≥ 0.3.2. Old versions may have slow processing speed and other problems.*
 
+# PsychWordVec 2023.9
+
+## Minor Changes
+
+-   Use `\donttest{}` in more examples to avoid unnecessary errors.
+-   Improved `text_unmask()`, though it has been deprecated.
+
 # PsychWordVec 2023.8
 
 ## Minor Changes

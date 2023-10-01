@@ -62,7 +62,7 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-d = as_embed(demodata, normalize=TRUE)
+\donttest{d = as_embed(demodata, normalize=TRUE)
 
 dt = get_wordvec(d, cc("
   man, woman,
@@ -78,7 +78,7 @@ plot_wordvec_tSNE(dt, seed=1234)$data
 colors = c(rep("#2B579A", 4), rep("#B7472A", 4))
 plot_wordvec_tSNE(dt, colors=colors, seed=1234)
 
-\donttest{category = c(rep("gender", 4), rep("country", 4))
+category = c(rep("gender", 4), rep("country", 4))
 plot_wordvec_tSNE(dt, colors=category, seed=1234) +
   scale_x_continuous(limits=c(-200, 200),
                      labels=function(x) x/100) +

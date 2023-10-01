@@ -99,7 +99,7 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-w1 = cc("king, queen, man, woman")
+\donttest{w1 = cc("king, queen, man, woman")
 plot_similarity(demodata, w1)
 plot_similarity(demodata, w1,
                 value.color="grey",
@@ -116,7 +116,7 @@ plot_similarity(
   value.color="grey20"
 )
 
-\donttest{w2 = cc("China, Chinese,
+w2 = cc("China, Chinese,
          Japan, Japanese,
          Korea, Korean,
          man, woman, boy, girl,

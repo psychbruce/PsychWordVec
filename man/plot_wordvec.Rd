@@ -36,11 +36,11 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-d = as_embed(demodata, normalize=TRUE)
+\donttest{d = as_embed(demodata, normalize=TRUE)
 
 plot_wordvec(d[1:10])
 
-\donttest{dt = get_wordvec(d, cc("king, queen, man, woman"))
+dt = get_wordvec(d, cc("king, queen, man, woman"))
 dt[, QUEEN := king - man + woman]
 dt[, QUEEN := QUEEN / sqrt(sum(QUEEN^2))]  # normalize
 names(dt)[5] = "king - man + woman"

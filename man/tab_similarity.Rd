@@ -49,7 +49,7 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-tab_similarity(demodata, cc("king, queen, man, woman"))
+\donttest{tab_similarity(demodata, cc("king, queen, man, woman"))
 tab_similarity(demodata, cc("king, queen, man, woman"),
                unique=TRUE)
 
@@ -61,7 +61,7 @@ tab_similarity(demodata, cc("Beijing, China, Tokyo, Japan"),
 tab_similarity(demodata,
                words1=cc("king, queen, King, Queen"),
                words2=cc("man, woman"))
-
+}
 }
 \seealso{
 \code{\link{cosine_similarity}}

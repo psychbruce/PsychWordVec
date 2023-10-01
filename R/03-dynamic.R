@@ -460,6 +460,11 @@ token_to_word = function(embed) {
 text_unmask = function(query, model, targets=NULL, topn=5) {
   text_initialized()
 
+  uncased = str_detect(model, "uncased|albert")
+  prefix.u2581 = str_detect(model, "xlm-roberta|albert")
+  prefix.u0120 = str_detect(model, "roberta|bertweet-large") & !str_detect(model, "xlm")
+  mask.lower = str_detect(model, "roberta|bertweet")
+
   if(!is.null(targets)) {
     targets = as.character(unique(targets))
     targets = factor(targets, levels=targets)
@@ -467,8 +472,11 @@ text_unmask = function(query, model, targets=NULL, topn=5) {
   }
   topn = as.integer(topn)
   query = str_replace_all(query, "\\[mask\\]", "[MASK]")
-  if(str_detect(model, "roberta-base|roberta-large"))
-    query = str_replace_all(query, "\\[MASK\\]", "<mask>")
+  mask.begin = str_sub(query, 1, 6) == "[MASK]"
+  if(uncased) targets = tolower(targets)
+  if(prefix.u2581 & length(targets)>0) targets = paste0("\u2581", targets)
+  if(prefix.u0120 & !mask.begin & length(targets)>0) targets = paste0("\u0120", targets)
+  if(mask.lower) query = str_replace_all(query, "\\[MASK\\]", "<mask>")
   nmask = unique(str_count(query, "\\[MASK\\]|<mask>"))
   nquery = length(query)
   if(length(nmask) > 1)
@@ -479,7 +487,7 @@ text_unmask = function(query, model, targets=NULL, topn=5) {
     fill_mask = transformers$pipeline("fill-mask", model=model)
   })
 
-  if(is.null(targets)) {
+  if(length(targets)==0) {
     res = do.call(c, lapply(query, function(q) fill_mask(q, top_k=topn)))
   } else {
     res = do.call(c, lapply(query, function(q) {
@@ -495,9 +503,9 @@ text_unmask = function(query, model, targets=NULL, topn=5) {
     mask_id = if(is.null(targets)) rep(1:nmask, each=topn) else rep(1:nmask, topn))
   res = cbind(qm_id, rbindlist(res))
   names(res) = c("query_id", "mask_id", "prob", "token_id", "token", "sequence")
-  if(!is.null(targets)) {
-    res$token = factor(str_remove(res$token, "\u2581"),
-                       levels=str_remove(as.character(targets), "\u2581"))
+  if(length(targets)>0) {
+    res$token = factor(str_remove_all(res$token, "\u2581|\u0120"),
+                       levels=str_remove_all(as.character(targets), "\u2581|\u0120"))
     res = res[order(res$token)]
   }
   if(length(unique(res$query_id)) == 1) res$query_id = NULL

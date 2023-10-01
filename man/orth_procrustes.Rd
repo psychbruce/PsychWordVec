@@ -48,12 +48,12 @@ This function produces the same results as by
 \code{pracma::procrustes()}.
 }
 \examples{
-M = matrix(c(0,0,  1,2,  2,0,  3,2,  4,0), ncol=2, byrow=TRUE)
+\donttest{M = matrix(c(0,0,  1,2,  2,0,  3,2,  4,0), ncol=2, byrow=TRUE)
 X = matrix(c(0,0, -2,1,  0,2, -2,3,  0,4), ncol=2, byrow=TRUE)
 rownames(M) = rownames(X) = cc("A, B, C, D, E")  # words
 colnames(M) = colnames(X) = cc("dim1, dim2")  # dimensions
 
-\donttest{ggplot() +
+ggplot() +
   geom_path(data=as.data.frame(M), aes(x=dim1, y=dim2),
             color="red") +
   geom_path(data=as.data.frame(X), aes(x=dim1, y=dim2),

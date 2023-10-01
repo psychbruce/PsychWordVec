@@ -107,7 +107,7 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 
 \examples{
-d = as_embed(demodata, normalize=TRUE)
+\donttest{d = as_embed(demodata, normalize=TRUE)
 
 words = cc("
 man, woman,
@@ -129,7 +129,7 @@ plot(p)
 
 unlink("network.png")  # delete file for code check
 
-\donttest{# network analysis with centrality plot (see `qgraph` package)
+# network analysis with centrality plot (see `qgraph` package)
 qgraph::centralityPlot(p, include="all", scale="raw",
                        orderBy="Strength")
 
