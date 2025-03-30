@@ -4,11 +4,10 @@ Word Embedding Research Framework for Psychological Science.
 
 An integrative toolbox of word embedding research that provides:
 
-1.  A collection of [pre-trained static word vectors](https://psychbruce.github.io/WordVector_RData.pdf) in the .RData compressed format;
-2.  A series of functions to process, analyze, and visualize word vectors;
-3.  A range of tests to examine conceptual associations, including the *Word Embedding Association Test* (Caliskan et al., 2017) and the *Relative Norm Distance* (Garg et al., 2018), with permutation test of significance;
-4.  A set of training methods to locally train (*static*) word vectors from text corpora, including *Word2Vec* (Mikolov et al., 2013), *GloVe* (Pennington et al., 2014), and *FastText* (Bojanowski et al., 2017);
-5.  A group of functions to download pre-trained language models (e.g., *GPT*, *BERT*) and extract contextualized (*dynamic*) word vectors (based on the R package [text](https://www.r-text.org/)).
+1.  A collection of [pre-trained static word vectors](https://psychbruce.github.io/WordVector_RData.pdf) in the .RData compressed format.
+2.  A group of functions to process, analyze, and visualize word vectors.
+3.  A range of tests to examine conceptual associations, including the *Word Embedding Association Test* (Caliskan et al., 2017) and the *Relative Norm Distance* (Garg et al., 2018), with permutation test of significance.
+4.  A set of training methods to locally train (*static*) word vectors from text corpora, including *Word2Vec* (Mikolov et al., 2013), *GloVe* (Pennington et al., 2014), and *FastText* (Bojanowski et al., 2017).
 
 ⚠️ *All users should update the package to version ≥ 0.3.2. Old versions may have slow processing speed and other problems.*
 
@@ -18,7 +17,7 @@ An integrative toolbox of word embedding research that provides:
 
 <!-- badges: end -->
 
-<img src="https://s1.ax1x.com/2020/07/28/aAjUJg.jpg" width="120px" height="42px"/>
+<img src="https://psychbruce.github.io/img/CC-BY-NC-SA.jpg" width="120px" height="42px"/>
 
 ## Author
 
@@ -31,9 +30,9 @@ Han-Wu-Shuang (Bruce) Bao 包寒吴霜
 ## Citation
 
 -   Bao, H.-W.-S. (2022). *PsychWordVec: Word embedding research framework for psychological science*. <https://CRAN.R-project.org/package=PsychWordVec>
-    -   *Note*: This is the original citation format. Please refer to the information when you `library(PsychWordVec)` for the APA-7 format of your installed version.
--   Bao, H.-W.-S., Wang, Z.-X., Cheng, X., Su, Z., Yang, Y., Zhang, G.-Y., Wang, B., & Cai, H. (2023). Using word embeddings to investigate human psychology: Methods and applications. *Advances in Psychological Science, 31*(6), 887--904.\
-    [包寒吴霜, 王梓西, 程曦, 苏展, 杨盈, 张光耀, 王博, 蔡华俭. (2023). 基于词嵌入技术的心理学研究：方法及应用. *心理科学进展, 31*(6), 887--904.]
+    -   *Note*: This is the original citation. Please refer to the information when you `library(PsychWordVec)` for the APA-7 format of the version you installed.
+-   Bao, H.-W.-S., Wang, Z., Cheng, X., Su, Z., Yang, Y., Zhang, G., Wang, B., & Cai, H. (2023). Using word embeddings to investigate human psychology: Methods and applications. *Advances in Psychological Science, 31*(6), 887–904.\
+    [包寒吴霜, 王梓西, 程曦, 苏展, 杨盈, 张光耀, 王博, 蔡华俭. (2023). 基于词嵌入技术的心理学研究：方法及应用. *心理科学进展, 31*(6), 887–904.]
 
 ## Installation
 
@@ -48,14 +47,14 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
 
 ## Types of Data for `PsychWordVec`
 
-|                  | `embed`                        | `wordvec`                    |
-|------------------|--------------------------------|------------------------------|
-| Basic class      | matrix                         | data.table                   |
-| Row size         | vocabulary size                | vocabulary size              |
-| Column size      | dimension size                 | 2 (variables: `word`, `vec`) |
-| Advantage        | faster (with matrix operation) | easier to inspect and manage |
-| Function to get  | `as_embed()`                   | `as_wordvec()`               |
-| Function to load | `load_embed()`                 | `load_wordvec()`             |
+|   | `embed` | `wordvec` |
+|------------------------|------------------------|------------------------|
+| Basic class | matrix | data.table |
+| Row size | vocabulary size | vocabulary size |
+| Column size | dimension size | 2 (variables: `word`, `vec`) |
+| Advantage | faster (with matrix operation) | easier to inspect and manage |
+| Function to get | `as_embed()` | `as_wordvec()` |
+| Function to load | `load_embed()` | `load_wordvec()` |
 
 : Note: Word embedding refers to a natural language processing technique that embeds word semantics into a low-dimensional **embedding matrix**, with each word (actually token) quantified as a **numeric vector** representing its (uninterpretable) semantic features. Users are suggested to import [word vectors data](https://psychbruce.github.io/WordVector_RData.pdf) as the `embed` class using the function `load_embed()`, which would automatically normalize all word vectors to the unit length 1 (see the `normalize()` function) and accelerate the running of most functions in `PsychWordVec`.
 
@@ -90,11 +89,5 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
 -   Local Training of Static Word Embeddings (Word2Vec, GloVe, and FastText)
     -   `tokenize()`: tokenize raw text
     -   `train_wordvec()`: train static word embeddings
--   Pre-trained Language Models (PLM) and Contextualized Word Embeddings
-    -   `text_init()`: set up a Python environment for PLM
-    -   `text_model_download()`: download PLMs from [Hugging Face](https://huggingface.co/models) to local ".cache" folder
-    -   `text_model_remove()`: remove PLMs from local ".cache" folder
-    -   `text_to_vec()`: extract contextualized token and text embeddings
-    -   `text_unmask()`: \<deprecated\> \<please use [FMAT](https://psychbruce.github.io/FMAT/)\> fill in the blank mask(s) in a query
 
 See the documentation (help pages) for their usage and details.

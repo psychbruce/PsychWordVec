@@ -2,6 +2,11 @@
 
 ⚠️ *All users should update the package to version ≥ 0.3.2. Old versions may have slow processing speed and other problems.*
 
+# PsychWordVec 2025.3
+
+-   Deprecated all `text_*()` functions.
+-   Other tiny changes.
+
 # PsychWordVec 2023.9
 
 ## Minor Changes
@@ -131,3 +136,4 @@
 # PsychWordVec 0.0.1 (Mar 2022)
 
 -   Basic functions and the [WordVector_RData.pdf](https://psychbruce.github.io/WordVector_RData.pdf) file.
+

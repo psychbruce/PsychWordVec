@@ -1,7 +1,7 @@
 Package: PsychWordVec
 Title: Word Embedding Research Framework for Psychological Science
-Version: 2023.9
-Date: 2023-09-27
+Version: 2025.3
+Date: 2025-03-30
 Authors@R:
     c(person(given = "Han-Wu-Shuang",
              family = "Bao",
@@ -13,17 +13,14 @@ Description:
     An integrative toolbox of word embedding research that provides:
     (1) a collection of 'pre-trained' static word vectors in the '.RData'
     compressed format <https://psychbruce.github.io/WordVector_RData.pdf>;
-    (2) a series of functions to process, analyze, and visualize word vectors;
+    (2) a group of functions to process, analyze, and visualize word vectors;
     (3) a range of tests to examine conceptual associations, including
     the Word Embedding Association Test <doi:10.1126/science.aal4230>
     and the Relative Norm Distance <doi:10.1073/pnas.1720347115>,
-    with permutation test of significance;
+    with permutation test of significance; and
     (4) a set of training methods to locally train (static) word vectors
-    from text corpora, including 'Word2Vec' <arXiv:1301.3781>,
-    'GloVe' <doi:10.3115/v1/D14-1162>, and 'FastText' <arXiv:1607.04606>;
-    (5) a group of functions to download 'pre-trained' language models
-    (e.g., 'GPT', 'BERT') and extract contextualized (dynamic) word vectors
-    (based on the R package 'text').
+    from text corpora, including 'Word2Vec' <doi:10.48550/arXiv.1301.3781>,
+    'GloVe' <doi:10.3115/v1/D14-1162>, and 'FastText' <doi:10.48550/arXiv.1607.04606>.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -34,6 +31,6 @@ Depends: R (>= 4.0.0)
 Imports:
     bruceR, dplyr, stringr, data.table, purrr, vroom, cli,
     ggplot2, ggrepel, corrplot, psych, Rtsne, rgl, qgraph,
-    rsparse, text2vec, word2vec, fastTextR, text, reticulate
-Suggests: wordsalad, sweater, glue
-RoxygenNote: 7.2.3
+    rsparse, text2vec, word2vec, fastTextR
+Suggests: text, wordsalad, sweater, glue
+RoxygenNote: 7.3.2
