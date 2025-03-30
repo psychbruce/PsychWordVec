@@ -1,108 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/404.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/index.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/as_embed.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/cosine_similarity.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/data_transform.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/data_wordvec_load.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/data_wordvec_subset.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/demodata.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/dict_expand.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/dict_reliability.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/get_wordvec.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/most_similar.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/normalize.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/orth_procrustes.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/pair_similarity.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/plot_network.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/plot_similarity.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/plot_wordvec.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/plot_wordvec_tSNE.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/reexports.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/sum_wordvec.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/tab_similarity.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/test_RND.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/test_WEAT.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/text_init.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/text_model_download.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/text_model_remove.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/text_to_vec.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/text_unmask.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/tokenize.html</loc>
-  </url>
-  <url>
-    <loc>https://psychbruce.github.io/PsychWordVec/reference/train_wordvec.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://psychbruce.github.io/PsychWordVec/404.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/LICENSE-text.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/authors.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/index.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/news/index.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/as_embed.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/cosine_similarity.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/data_transform.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/data_wordvec_load.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/data_wordvec_subset.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/demodata.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/dict_expand.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/dict_reliability.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/get_wordvec.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/index.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/most_similar.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/normalize.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/orth_procrustes.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/pair_similarity.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/plot_network.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/plot_similarity.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/plot_wordvec.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/plot_wordvec_tSNE.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/reexports.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/sum_wordvec.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/tab_similarity.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/test_RND.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/test_WEAT.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/tokenize.html</loc></url>
+<url><loc>https://psychbruce.github.io/PsychWordVec/reference/train_wordvec.html</loc></url>
 </urlset>
+
