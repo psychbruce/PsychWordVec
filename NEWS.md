@@ -136,4 +136,3 @@
 # PsychWordVec 0.0.1 (Mar 2022)
 
 -   Basic functions and the [WordVector_RData.pdf](https://psychbruce.github.io/WordVector_RData.pdf) file.
-
