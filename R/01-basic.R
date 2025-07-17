@@ -58,7 +58,7 @@
     {underline https://psychbruce.github.io/PsychWordVec}
 
     {magenta To use this package in publications, please cite:}
-    Bao, H.-W.-S. ({pkg.date}). "),
+    Bao, H. W. S. ({pkg.date}). "),
     glue::glue_col("{italic PsychWordVec: Word embedding research framework for psychological science}"),
     glue::glue_col(" (Version {inst.ver}) [Computer software]. "),
     glue::glue_col("{underline https://CRAN.R-project.org/package=PsychWordVec}"),

@@ -21,7 +21,7 @@ An integrative toolbox of word embedding research that provides:
 
 ## Author
 
-Han-Wu-Shuang (Bruce) Bao 包寒吴霜
+Bruce H. W. S. Bao 包寒吴霜
 
 📬 [baohws\@foxmail.com](mailto:baohws@foxmail.com)
 
@@ -29,9 +29,8 @@ Han-Wu-Shuang (Bruce) Bao 包寒吴霜
 
 ## Citation
 
--   Bao, H.-W.-S. (2022). *PsychWordVec: Word embedding research framework for psychological science*. <https://CRAN.R-project.org/package=PsychWordVec>
-    -   *Note*: This is the original citation. Please refer to the information when you `library(PsychWordVec)` for the APA-7 format of the version you installed.
--   Bao, H.-W.-S., Wang, Z., Cheng, X., Su, Z., Yang, Y., Zhang, G., Wang, B., & Cai, H. (2023). Using word embeddings to investigate human psychology: Methods and applications. *Advances in Psychological Science, 31*(6), 887–904.\
+-   Bao, H. W. S. (2022). *PsychWordVec: Word embedding research framework for psychological science*. <https://CRAN.R-project.org/package=PsychWordVec>
+-   Bao, H. W. S., Wang, Z., Cheng, X., Su, Z., Yang, Y., Zhang, G., Wang, B., & Cai, H. (2023). Using word embeddings to investigate human psychology: Methods and applications. *Advances in Psychological Science, 31*(6), 887–904.\
     [包寒吴霜, 王梓西, 程曦, 苏展, 杨盈, 张光耀, 王博, 蔡华俭. (2023). 基于词嵌入技术的心理学研究：方法及应用. *心理科学进展, 31*(6), 887–904.]
 
 ## Installation
@@ -48,7 +47,7 @@ devtools::install_github("psychbruce/PsychWordVec", force=TRUE)
 ## Types of Data for `PsychWordVec`
 
 |   | `embed` | `wordvec` |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | Basic class | matrix | data.table |
 | Row size | vocabulary size | vocabulary size |
 | Column size | dimension size | 2 (variables: `word`, `vec`) |
