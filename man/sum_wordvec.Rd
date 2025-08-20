@@ -7,32 +7,26 @@
 sum_wordvec(data, x = NULL, verbose = TRUE)
 }
 \arguments{
-\item{data}{A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
-\code{\link[PsychWordVec:as_embed]{embed}} (matrix),
-see \code{\link{data_wordvec_load}}.}
+\item{data}{A \code{\link[=as_wordvec]{wordvec}} (data.table) or \code{\link[=as_embed]{embed}} (matrix), see \code{\link[=data_wordvec_load]{data_wordvec_load()}}.}
 
 \item{x}{Can be:
 \itemize{
-  \item{\code{NULL}: use the sum of all word vectors in \code{data}}
-  \item{a single word:
-
-  \code{"China"}}
-
-  \item{a list of words:
-
-  \code{c("king", "queen")}}
-
-  \code{cc(" king , queen ; man | woman")}
-
-  \item{an R formula (\code{~ xxx}) specifying
-  words that positively and negatively
-  contribute to the similarity (for word analogy):
-
-  \code{~ boy - he + she}
-
-  \code{~ king - man + woman}
-
-  \code{~ Beijing - China + Japan}}
+\item \code{NULL}: use the sum of all word vectors in \code{data}
+\item a single word:
+\itemize{
+\item \code{"China"}
+}
+\item a vector of words:
+\itemize{
+\item \code{c("king", "queen")}
+\item \code{cc(" king , queen ; man | woman")}
+}
+\item an R formula (\code{~ xxx}) specifying words that positively and negatively contribute to the similarity (for word analogy):
+\itemize{
+\item \code{~ boy - he + she}
+\item \code{~ king - man + woman}
+\item \code{~ Beijing - China + Japan}
+}
 }}
 
 \item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
@@ -45,8 +39,7 @@ Calculate the sum vector of multiple words.
 }
 \section{Download}{
 
-Download pre-trained word vectors data (\code{.RData}):
-\url{https://psychbruce.github.io/WordVector_RData.pdf}
+Download pre-trained word vectors data (\code{.RData}): \url{https://psychbruce.github.io/WordVector_RData.pdf}
 }
 
 \examples{
@@ -54,11 +47,11 @@ Download pre-trained word vectors data (\code{.RData}):
 }
 }
 \seealso{
-\code{\link{normalize}}
+\code{\link[=normalize]{normalize()}}
 
-\code{\link{most_similar}}
+\code{\link[=most_similar]{most_similar()}}
 
-\code{\link{dict_expand}}
+\code{\link[=dict_expand]{dict_expand()}}
 
-\code{\link{dict_reliability}}
+\code{\link[=dict_reliability]{dict_reliability()}}
 }

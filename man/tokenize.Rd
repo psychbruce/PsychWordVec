@@ -15,33 +15,24 @@ tokenize(
 )
 }
 \arguments{
-\item{text}{A character vector of text,
-or a file path on disk containing text.}
+\item{text}{A character vector of text, or a file path on disk containing text.}
 
-\item{tokenizer}{Function used to tokenize the text.
-Defaults to \code{\link[text2vec:tokenizers]{text2vec::word_tokenizer}}.}
+\item{tokenizer}{Function used to tokenize the text. Defaults to \code{\link[text2vec:tokenizers]{text2vec::word_tokenizer()}}.}
 
-\item{split}{Separator between tokens, only used when \code{simplify=TRUE}.
-Defaults to \code{" "}.}
+\item{split}{Separator between tokens, only used when \code{simplify=TRUE}. Defaults to \code{" "}.}
 
-\item{remove}{Strings (in regular expression) to be removed from the text.
-Defaults to \code{"_|'|<br/>|<br />|e\\\\.g\\\\.|i\\\\.e\\\\."}.
-You may turn off this by specifying \code{remove=NULL}.}
+\item{remove}{Strings (in regular expression) to be removed from the text. Defaults to \code{"_|'|<br/>|<br />|e\\\\\\\\.g\\\\\\\\.|i\\\\\\\\.e\\\\\\\\."}. You may turn off this by specifying \code{remove=NULL}.}
 
-\item{encoding}{Text encoding (only used if \code{text} is a file).
-Defaults to \code{"UTF-8"}.}
+\item{encoding}{Text encoding (only used if \code{text} is a file). Defaults to \code{"UTF-8"}.}
 
-\item{simplify}{Return a character vector (\code{TRUE}) or a list of character vectors (\code{FALSE}).
-Defaults to \code{TRUE}.}
+\item{simplify}{Return a character vector (\code{TRUE}) or a list of character vectors (\code{FALSE}). Defaults to \code{TRUE}.}
 
 \item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
 }
 \value{
 \itemize{
-  \item{\code{simplify=TRUE}: A tokenized character vector,
-  with each element as a sentence.}
-  \item{\code{simplify=FALSE}: A list of tokenized character vectors,
-  with each element as a vector of tokens in a sentence.}
+\item \code{simplify=TRUE}: A tokenized character vector, with each element as a sentence.
+\item \code{simplify=FALSE}: A list of tokenized character vectors, with each element as a vector of tokens in a sentence.
 }
 }
 \description{
@@ -64,5 +55,5 @@ texts[1:20]  # all sentences in txt2[1]
 }
 }
 \seealso{
-\code{\link{train_wordvec}}
+\code{\link[=train_wordvec]{train_wordvec()}}
 }

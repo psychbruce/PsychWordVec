@@ -2,9 +2,7 @@
 % Please edit documentation in R/01-basic.R
 \name{data_transform}
 \alias{data_transform}
-\title{Transform plain text of word vectors into
-\code{wordvec} (data.table) or \code{embed} (matrix),
-saved in a compressed ".RData" file.}
+\title{Transform plain text of word vectors into \code{wordvec} (data.table) or \code{embed} (matrix), saved in a compressed ".RData" file.}
 \usage{
 data_transform(
   file.load,
@@ -29,34 +27,22 @@ dog 0.301 0.302 0.303 0.304 0.305 ... 0.600}
 
 \item{file.save}{File name of to-be-saved R data (must be .RData).}
 
-\item{as}{Transform the text to which R object?
-\code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
-\code{\link[PsychWordVec:as_embed]{embed}} (matrix).
-Defaults to \code{wordvec}.}
+\item{as}{Transform the text to which R object? \code{\link[=as_wordvec]{wordvec}} (data.table) or \code{\link[=as_embed]{embed}} (matrix). Defaults to \code{wordvec}.}
 
 \item{sep}{Column separator. Defaults to \code{" "}.}
 
-\item{header}{Is the 1st row a header (e.g., meta-information such as "2000000 300")?
-Defaults to \code{"auto"}, which automatically determines whether there is a header.
-If \code{TRUE}, then the 1st row will be dropped.}
+\item{header}{Is the 1st row a header (e.g., meta-information such as "2000000 300")? Defaults to \code{"auto"}, which automatically determines whether there is a header. If \code{TRUE}, the 1st row will be dropped.}
 
-\item{encoding}{File encoding. Defaults to \code{"auto"}
-(using \code{\link[vroom:vroom_lines]{vroom::vroom_lines()}} to fast read the file).
-If specified to any other value (e.g., \code{"UTF-8"}),
-then it uses \code{\link[base:readLines]{readLines()}} to read the file,
-which is much slower than \code{vroom}.}
+\item{encoding}{File encoding. Defaults to \code{"auto"} (using \code{\link[vroom:vroom_lines]{vroom::vroom_lines()}} to fast read the file). If specified to any other value (e.g., \code{"UTF-8"}), it uses \code{\link[=readLines]{readLines()}} to read the file, which is much slower than \code{vroom}.}
 
 \item{compress}{Compression method for the saved file. Defaults to \code{"bzip2"}.
-
-Options include:
 \itemize{
-  \item \code{1} or \code{"gzip"}: modest file size (fastest)
-  \item \code{2} or \code{"bzip2"}: small file size (fast)
-  \item \code{3} or \code{"xz"}: minimized file size (slow)
+\item \code{1} or \code{"gzip"}: modest file size (fastest)
+\item \code{2} or \code{"bzip2"}: small file size (fast)
+\item \code{3} or \code{"xz"}: minimized file size (slow)
 }}
 
-\item{compress.level}{Compression level from \code{0} (none) to \code{9}
-(maximal compression for minimal file size). Defaults to \code{9}.}
+\item{compress.level}{Compression level from \code{0} (none) to \code{9} (maximal compression for minimal file size). Defaults to \code{9}.}
 
 \item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
 }
@@ -64,19 +50,14 @@ Options include:
 A \code{wordvec} (data.table) or \code{embed} (matrix).
 }
 \description{
-Transform plain text of word vectors into
-\code{wordvec} (data.table) or \code{embed} (matrix),
-saved in a compressed ".RData" file.
-
-\emph{Speed}: In total (preprocess + compress + save),
-it can process about 30000 words/min
-with the slowest settings (\code{compress="xz"}, \code{compress.level=9})
-on a modern computer (HP ProBook 450, Windows 11, Intel i7-1165G7 CPU, 32GB RAM).
+Transform plain text of word vectors into \code{wordvec} (data.table) or \code{embed} (matrix), saved in a compressed ".RData" file.
+}
+\details{
+\emph{Speed}: In total (preprocess + compress + save), it can process about 30000 words/min with the slowest settings (\code{compress="xz"}, \code{compress.level=9}) on a modern computer (HP ProBook 450, Windows 11, Intel i7-1165G7 CPU, 32GB RAM).
 }
 \section{Download}{
 
-Download pre-trained word vectors data (\code{.RData}):
-\url{https://psychbruce.github.io/WordVector_RData.pdf}
+Download pre-trained word vectors data (\code{.RData}): \url{https://psychbruce.github.io/WordVector_RData.pdf}
 }
 
 \examples{
@@ -95,11 +76,11 @@ data_transform(file.load="cc.zh.300.vec",   # plain text file
 
 }
 \seealso{
-\code{\link{as_wordvec}} / \code{\link{as_embed}}
+\code{\link[=as_wordvec]{as_wordvec()}} / \code{\link[=as_embed]{as_embed()}}
 
-\code{\link{load_wordvec}} / \code{\link{load_embed}}
+\code{\link[=load_wordvec]{load_wordvec()}} / \code{\link[=load_embed]{load_embed()}}
 
-\code{\link{normalize}}
+\code{\link[=normalize]{normalize()}}
 
-\code{\link{data_wordvec_subset}}
+\code{\link[=data_wordvec_subset]{data_wordvec_subset()}}
 }

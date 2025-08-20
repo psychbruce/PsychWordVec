@@ -18,45 +18,28 @@ test_RND(
 )
 }
 \arguments{
-\item{data}{A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
-\code{\link[PsychWordVec:as_embed]{embed}} (matrix),
-see \code{\link{data_wordvec_load}}.}
+\item{data}{A \code{\link[=as_wordvec]{wordvec}} (data.table) or \code{\link[=as_embed]{embed}} (matrix), see \code{\link[=data_wordvec_load]{data_wordvec_load()}}.}
 
 \item{T1}{Target words of a single category (a vector of words or a pattern of regular expression).}
 
-\item{A1, A2}{Attribute words (a vector of words or a pattern of regular expression).
-Both must be specified.}
+\item{A1, A2}{Attribute words (a vector of words or a pattern of regular expression). Both must be specified.}
 
-\item{use.pattern}{Defaults to \code{FALSE} (using a vector of words).
-If you use regular expression in \code{T1}, \code{T2}, \code{A1}, and \code{A2},
-please specify this argument as \code{TRUE}.}
+\item{use.pattern}{Defaults to \code{FALSE} (using a vector of words). If you use regular expression in \code{T1}, \code{T2}, \code{A1}, and \code{A2}, please specify this argument as \code{TRUE}.}
 
-\item{labels}{Labels for target and attribute concepts (a named \code{list}),
-such as (the default)
-\code{list(T1="Target", A1="Attrib1", A2="Attrib2")}.}
+\item{labels}{Labels for target and attribute concepts (a named \code{list}), such as (the default) \code{list(T1="Target", A1="Attrib1", A2="Attrib2")}.}
 
-\item{p.perm}{Permutation test to get exact or approximate \emph{p} value of the overall effect.
-Defaults to \code{TRUE}. See also the \code{\link[sweater:weat_exact]{sweater}} package.}
+\item{p.perm}{Permutation test to get exact or approximate \emph{p} value of the overall effect. Defaults to \code{TRUE}. See also \code{\link[sweater:weat_resampling]{sweater::weat_exact()}}.}
 
 \item{p.nsim}{Number of samples for resampling in permutation test. Defaults to \code{10000}.
 
-If \code{p.nsim} is larger than the number of all possible permutations (rearrangements of data),
-then it will be ignored and an exact permutation test will be conducted.
-Otherwise (in most cases for real data and always for SC-WEAT), a resampling test is performed,
-which takes much less computation time and produces the approximate \emph{p} value
-(comparable to the exact one).}
+If \code{p.nsim} is larger than the number of all possible permutations (rearrangements of data), it will be ignored and an exact permutation test will be conducted. Otherwise (in most cases for real data and always for SC-WEAT), a resampling test is performed, which takes much less computation time and produces the approximate \emph{p} value (comparable to the exact one).}
 
-\item{p.side}{One-sided (\code{1}) or two-sided (\code{2}) \emph{p} value.
-Defaults to \code{2}.
+\item{p.side}{One-sided (\code{1}) or two-sided (\code{2}) \emph{p} value. Defaults to \code{2}.
 
-In Caliskan et al.'s (2017) article, they reported one-sided \emph{p} value for WEAT.
-Here, I suggest reporting two-sided \emph{p} value as a more conservative estimate.
-The users take the full responsibility for the choice.
+In Caliskan et al.'s (2017) article, they reported one-sided \emph{p} value for WEAT. Here, I suggest reporting two-sided \emph{p} value as a more conservative estimate. The users take the full responsibility for the choice.
 \itemize{
-  \item{The one-sided \emph{p} value is calculated as the proportion of sampled permutations
-        where the difference in means is greater than the test statistic.}
-  \item{The two-sided \emph{p} value is calculated as the proportion of sampled permutations
-        where the absolute difference is greater than the test statistic.}
+\item The one-sided \emph{p} value is calculated as the proportion of sampled permutations where the difference in means is greater than the test statistic.
+\item The two-sided \emph{p} value is calculated as the proportion of sampled permutations where the absolute difference is greater than the test statistic.
 }}
 
 \item{seed}{Random seed for reproducible results of permutation test. Defaults to \code{NULL}.}
@@ -64,31 +47,28 @@ The users take the full responsibility for the choice.
 \value{
 A \code{list} object of new class \code{rnd}:
 \describe{
-  \item{\code{words.valid}}{
-    Valid (actually matched) words}
-  \item{\code{words.not.found}}{
-    Words not found}
-  \item{\code{data.raw}}{
-    A \code{data.table} of (absolute and relative) norm distances}
-  \item{\code{eff.label}}{
-    Description for the difference between the two attribute concepts}
-  \item{\code{eff.type}}{
-    Effect type: RND}
-  \item{\code{eff}}{
-    Raw effect and p value (if \code{p.perm=TRUE})}
-  \item{\code{eff.interpretation}}{
-    Interpretation of the RND score}
+\item{\code{words.valid}}{
+Valid (actually matched) words}
+\item{\code{words.not.found}}{
+Words not found}
+\item{\code{data.raw}}{
+A \code{data.table} of (absolute and relative) norm distances}
+\item{\code{eff.label}}{
+Description for the difference between the two attribute concepts}
+\item{\code{eff.type}}{
+Effect type: RND}
+\item{\code{eff}}{
+Raw effect and p value (if \code{p.perm=TRUE})}
+\item{\code{eff.interpretation}}{
+Interpretation of the RND score}
 }
 }
 \description{
-Tabulate data and conduct the permutation test of significance
-for the \emph{Relative Norm Distance} (RND; also known as \emph{Relative Euclidean Distance}).
-This is an alternative method to \link[PsychWordVec:test_WEAT]{Single-Category WEAT}.
+Tabulate data and conduct the permutation test of significance for the \emph{Relative Norm Distance} (RND; also known as \emph{Relative Euclidean Distance}). This is an alternative method to \link[=test_WEAT]{Single-Category WEAT}.
 }
 \section{Download}{
 
-Download pre-trained word vectors data (\code{.RData}):
-\url{https://psychbruce.github.io/WordVector_RData.pdf}
+Download pre-trained word vectors data (\code{.RData}): \url{https://psychbruce.github.io/WordVector_RData.pdf}
 }
 
 \examples{
@@ -107,20 +87,16 @@ rnd
 }
 }
 \references{
-Garg, N., Schiebinger, L., Jurafsky, D., & Zou, J. (2018).
-Word embeddings quantify 100 years of gender and ethnic stereotypes.
-\emph{Proceedings of the National Academy of Sciences, 115}(16), E3635--E3644.
+Garg, N., Schiebinger, L., Jurafsky, D., & Zou, J. (2018). Word embeddings quantify 100 years of gender and ethnic stereotypes. \emph{Proceedings of the National Academy of Sciences, 115}(16), E3635--E3644.
 
-Bhatia, N., & Bhatia, S. (2021).
-Changes in gender stereotypes over time: A computational analysis.
-\emph{Psychology of Women Quarterly, 45}(1), 106--125.
+Bhatia, N., & Bhatia, S. (2021). Changes in gender stereotypes over time: A computational analysis. \emph{Psychology of Women Quarterly, 45}(1), 106--125.
 }
 \seealso{
-\code{\link{tab_similarity}}
+\code{\link[=tab_similarity]{tab_similarity()}}
 
-\code{\link{dict_expand}}
+\code{\link[=dict_expand]{dict_expand()}}
 
-\code{\link{dict_reliability}}
+\code{\link[=dict_reliability]{dict_reliability()}}
 
-\code{\link{test_WEAT}}
+\code{\link[=test_WEAT]{test_WEAT()}}
 }

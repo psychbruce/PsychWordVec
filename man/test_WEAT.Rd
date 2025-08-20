@@ -20,99 +20,69 @@ test_WEAT(
 )
 }
 \arguments{
-\item{data}{A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
-\code{\link[PsychWordVec:as_embed]{embed}} (matrix),
-see \code{\link{data_wordvec_load}}.}
+\item{data}{A \code{\link[=as_wordvec]{wordvec}} (data.table) or \code{\link[=as_embed]{embed}} (matrix), see \code{\link[=data_wordvec_load]{data_wordvec_load()}}.}
 
-\item{T1, T2}{Target words (a vector of words or a pattern of regular expression).
-If only \code{T1} is specified,
-it will tabulate data for single-category WEAT (SC-WEAT).}
+\item{T1, T2}{Target words (a vector of words or a pattern of regular expression). If only \code{T1} is specified, it will tabulate data for single-category WEAT (SC-WEAT).}
 
-\item{A1, A2}{Attribute words (a vector of words or a pattern of regular expression).
-Both must be specified.}
+\item{A1, A2}{Attribute words (a vector of words or a pattern of regular expression). Both must be specified.}
 
-\item{use.pattern}{Defaults to \code{FALSE} (using a vector of words).
-If you use regular expression in \code{T1}, \code{T2}, \code{A1}, and \code{A2},
-please specify this argument as \code{TRUE}.}
+\item{use.pattern}{Defaults to \code{FALSE} (using a vector of words). If you use regular expression in \code{T1}, \code{T2}, \code{A1}, and \code{A2}, please specify this argument as \code{TRUE}.}
 
-\item{labels}{Labels for target and attribute concepts (a named \code{list}),
-such as (the default)
-\code{list(T1="Target1", T2="Target2", A1="Attrib1", A2="Attrib2")}.}
+\item{labels}{Labels for target and attribute concepts (a named \code{list}), such as (the default) \code{list(T1="Target1", T2="Target2", A1="Attrib1", A2="Attrib2")}.}
 
-\item{p.perm}{Permutation test to get exact or approximate \emph{p} value of the overall effect.
-Defaults to \code{TRUE}. See also the \code{\link[sweater:weat_exact]{sweater}} package.}
+\item{p.perm}{Permutation test to get exact or approximate \emph{p} value of the overall effect. Defaults to \code{TRUE}. See also \code{\link[sweater:weat_resampling]{sweater::weat_exact()}}.}
 
 \item{p.nsim}{Number of samples for resampling in permutation test. Defaults to \code{10000}.
 
-If \code{p.nsim} is larger than the number of all possible permutations (rearrangements of data),
-then it will be ignored and an exact permutation test will be conducted.
-Otherwise (in most cases for real data and always for SC-WEAT), a resampling test is performed,
-which takes much less computation time and produces the approximate \emph{p} value
-(comparable to the exact one).}
+If \code{p.nsim} is larger than the number of all possible permutations (rearrangements of data), it will be ignored and an exact permutation test will be conducted. Otherwise (in most cases for real data and always for SC-WEAT), a resampling test is performed, which takes much less computation time and produces the approximate \emph{p} value (comparable to the exact one).}
 
-\item{p.side}{One-sided (\code{1}) or two-sided (\code{2}) \emph{p} value.
-Defaults to \code{2}.
+\item{p.side}{One-sided (\code{1}) or two-sided (\code{2}) \emph{p} value. Defaults to \code{2}.
 
-In Caliskan et al.'s (2017) article, they reported one-sided \emph{p} value for WEAT.
-Here, I suggest reporting two-sided \emph{p} value as a more conservative estimate.
-The users take the full responsibility for the choice.
+In Caliskan et al.'s (2017) article, they reported one-sided \emph{p} value for WEAT. Here, I suggest reporting two-sided \emph{p} value as a more conservative estimate. The users take the full responsibility for the choice.
 \itemize{
-  \item{The one-sided \emph{p} value is calculated as the proportion of sampled permutations
-        where the difference in means is greater than the test statistic.}
-  \item{The two-sided \emph{p} value is calculated as the proportion of sampled permutations
-        where the absolute difference is greater than the test statistic.}
+\item The one-sided \emph{p} value is calculated as the proportion of sampled permutations where the difference in means is greater than the test statistic.
+\item The two-sided \emph{p} value is calculated as the proportion of sampled permutations where the absolute difference is greater than the test statistic.
 }}
 
 \item{seed}{Random seed for reproducible results of permutation test. Defaults to \code{NULL}.}
 
 \item{pooled.sd}{Method used to calculate the pooled \emph{SD} for effect size estimate in WEAT.
 \itemize{
-  \item{Defaults to \code{"Caliskan"}: \code{sd(data.diff$cos_sim_diff)}, which is highly suggested
-        and identical to Caliskan et al.'s (2017) original approach.}
-  \item{Otherwise specified, it will calculate the pooled \emph{SD} as:
-        \eqn{\sqrt{[(n_1 - 1) * \sigma_1^2 + (n_2 - 1) * \sigma_2^2] / (n_1 + n_2 - 2)}}.
-
-        This is \strong{NOT suggested} because it may \emph{overestimate} the effect size,
-        especially when there are only a few T1 and T2 words that have small variances.}
+\item Defaults to \code{"Caliskan"}: \code{sd(data.diff$cos_sim_diff)}, which is suggested and identical to Caliskan et al.'s (2017) original approach.
+\item Otherwise specified, it will calculate the pooled \emph{SD} as: \eqn{\sqrt{[(n_1 - 1) * \sigma_1^2 + (n_2 - 1) * \sigma_2^2] / (n_1 + n_2 - 2)}}. This is \emph{NOT suggested} because it may \emph{overestimate} the effect size, especially when there are only a few T1 and T2 words that have small variances.
 }}
 }
 \value{
 A \code{list} object of new class \code{weat}:
 \describe{
-  \item{\code{words.valid}}{
-    Valid (actually matched) words}
-  \item{\code{words.not.found}}{
-    Words not found}
-  \item{\code{data.raw}}{
-    A \code{data.table} of cosine similarities between all word pairs}
-  \item{\code{data.mean}}{
-    A \code{data.table} of \emph{mean} cosine similarities
-    \emph{across} all attribute words}
-  \item{\code{data.diff}}{
-    A \code{data.table} of \emph{differential} mean cosine similarities
-    \emph{between} the two attribute concepts}
-  \item{\code{eff.label}}{
-    Description for the difference between the two attribute concepts}
-  \item{\code{eff.type}}{
-    Effect type: WEAT or SC-WEAT}
-  \item{\code{eff}}{
-    Raw effect, standardized effect size, and p value (if \code{p.perm=TRUE})}
+\item{\code{words.valid}}{
+Valid (actually matched) words}
+\item{\code{words.not.found}}{
+Words not found}
+\item{\code{data.raw}}{
+A \code{data.table} of cosine similarities between all word pairs}
+\item{\code{data.mean}}{
+A \code{data.table} of \emph{mean} cosine similarities \emph{across} all attribute words}
+\item{\code{data.diff}}{
+A \code{data.table} of \emph{differential} mean cosine similarities \emph{between} the two attribute concepts}
+\item{\code{eff.label}}{
+Description for the difference between the two attribute concepts}
+\item{\code{eff.type}}{
+Effect type: WEAT or SC-WEAT}
+\item{\code{eff}}{
+Raw effect, standardized effect size, and p value (if \code{p.perm=TRUE})}
 }
 }
 \description{
-Tabulate data (cosine similarity and standardized effect size) and
-conduct the permutation test of significance for the
-\emph{Word Embedding Association Test} (WEAT) and
-\emph{Single-Category Word Embedding Association Test} (SC-WEAT).
+Tabulate data (cosine similarity and standardized effect size) and conduct the permutation test of significance for the \emph{Word Embedding Association Test} (WEAT) and \emph{Single-Category Word Embedding Association Test} (SC-WEAT).
 \itemize{
-  \item{For WEAT, two-samples permutation test is conducted (i.e., rearrangements of data).}
-  \item{For SC-WEAT, one-sample permutation test is conducted (i.e., rearrangements of +/- signs to data).}
+\item For WEAT, two-samples permutation test is conducted (i.e., rearrangements of data).
+\item For SC-WEAT, one-sample permutation test is conducted (i.e., rearrangements of +/- signs to data).
 }
 }
 \section{Download}{
 
-Download pre-trained word vectors data (\code{.RData}):
-\url{https://psychbruce.github.io/WordVector_RData.pdf}
+Download pre-trained word vectors data (\code{.RData}): \url{https://psychbruce.github.io/WordVector_RData.pdf}
 }
 
 \examples{
@@ -185,16 +155,14 @@ Caliskan.WEAT7.supp
 
 }
 \references{
-Caliskan, A., Bryson, J. J., & Narayanan, A. (2017).
-Semantics derived automatically from language corpora contain human-like biases.
-\emph{Science, 356}(6334), 183--186.
+Caliskan, A., Bryson, J. J., & Narayanan, A. (2017). Semantics derived automatically from language corpora contain human-like biases. \emph{Science, 356}(6334), 183--186.
 }
 \seealso{
-\code{\link{tab_similarity}}
+\link{tab_similarity}
 
-\code{\link{dict_expand}}
+\code{\link[=dict_expand]{dict_expand()}}
 
-\code{\link{dict_reliability}}
+\code{\link[=dict_reliability]{dict_reliability()}}
 
-\code{\link{test_RND}}
+\code{\link[=test_RND]{test_RND()}}
 }

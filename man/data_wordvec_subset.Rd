@@ -4,7 +4,7 @@
 \alias{data_wordvec_subset}
 \alias{subset.wordvec}
 \alias{subset.embed}
-\title{Extract a subset of word vectors data (with S3 methods).}
+\title{[S3 method] Extract a subset of word vectors data.}
 \usage{
 data_wordvec_subset(
   x,
@@ -24,52 +24,41 @@ data_wordvec_subset(
 \arguments{
 \item{x}{Can be:
 \itemize{
-  \item{a \code{wordvec} or \code{embed} loaded by \code{\link{data_wordvec_load}}}
-  \item{an .RData file transformed by \code{\link{data_transform}}}
+\item a \code{wordvec} or \code{embed} loaded by \code{\link[=data_wordvec_load]{data_wordvec_load()}}
+\item an .RData file transformed by \code{\link[=data_transform]{data_transform()}}
 }}
 
 \item{words}{[Option 1] Character string(s).}
 
-\item{pattern}{[Option 2] Regular expression (see \code{\link[stringr:str_subset]{str_subset}}).
-If neither \code{words} nor \code{pattern} are specified (i.e., both are \code{NULL}),
-then all words in the data will be extracted.}
+\item{pattern}{[Option 2] \link[stringr:str_subset]{Regular expression}. If \code{words} and \code{pattern} are not specified, all words in the data will be extracted.}
 
-\item{as}{Reshape to
-\code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
-\code{\link[PsychWordVec:as_embed]{embed}} (matrix).
+\item{as}{Reshape to \code{\link[=as_wordvec]{wordvec}} (data.table) or \code{\link[=as_embed]{embed}} (matrix).
 Defaults to the original class of \code{x}.}
 
 \item{file.save}{File name of to-be-saved R data (must be .RData).}
 
 \item{compress}{Compression method for the saved file. Defaults to \code{"bzip2"}.
-
-Options include:
 \itemize{
-  \item \code{1} or \code{"gzip"}: modest file size (fastest)
-  \item \code{2} or \code{"bzip2"}: small file size (fast)
-  \item \code{3} or \code{"xz"}: minimized file size (slow)
+\item \code{1} or \code{"gzip"}: modest file size (fastest)
+\item \code{2} or \code{"bzip2"}: small file size (fast)
+\item \code{3} or \code{"xz"}: minimized file size (slow)
 }}
 
-\item{compress.level}{Compression level from \code{0} (none) to \code{9}
-(maximal compression for minimal file size). Defaults to \code{9}.}
+\item{compress.level}{Compression level from \code{0} (none) to \code{9} (maximal compression for minimal file size). Defaults to \code{9}.}
 
 \item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
 
-\item{...}{Parameters passed to \code{data_wordvec_subset}
-when using the S3 method \code{subset}.}
+\item{...}{Arguments passed on to \code{\link[=data_wordvec_subset]{data_wordvec_subset()}} when using the S3 method \code{subset}.}
 }
 \value{
 A subset of \code{wordvec} or \code{embed} of valid (available) words.
 }
 \description{
-Extract a subset of word vectors data (with S3 methods).
-You may specify either a \code{wordvec} or \code{embed} loaded by \code{\link{data_wordvec_load}})
-or an .RData file transformed by \code{\link{data_transform}}).
+Extract a subset of word vectors data. You may specify either a \code{wordvec} or \code{embed} loaded by \code{\link[=data_wordvec_load]{data_wordvec_load()}} or an .RData file transformed by \code{\link[=data_transform]{data_transform()}}).
 }
 \section{Download}{
 
-Download pre-trained word vectors data (\code{.RData}):
-\url{https://psychbruce.github.io/WordVector_RData.pdf}
+Download pre-trained word vectors data (\code{.RData}): \url{https://psychbruce.github.io/WordVector_RData.pdf}
 }
 
 \examples{
@@ -103,11 +92,11 @@ unlink("new.subset.RData")  # delete file for code check
 }
 }
 \seealso{
-\code{\link{as_wordvec}} / \code{\link{as_embed}}
+\code{\link[=as_wordvec]{as_wordvec()}} / \code{\link[=as_embed]{as_embed()}}
 
-\code{\link{load_wordvec}} / \code{\link{load_embed}}
+\code{\link[=load_wordvec]{load_wordvec()}} / \code{\link[=load_embed]{load_embed()}}
 
-\code{\link{get_wordvec}}
+\code{\link[=get_wordvec]{get_wordvec()}}
 
-\code{\link{data_transform}}
+\code{\link[=data_transform]{data_transform()}}
 }

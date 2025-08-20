@@ -7,45 +7,22 @@
 orth_procrustes(M, X)
 }
 \arguments{
-\item{M, X}{Two embedding matrices of the same size (rows and columns),
-can be \code{\link[PsychWordVec:as_embed]{embed}}
-or \code{\link[PsychWordVec:as_wordvec]{wordvec}} objects.
+\item{M, X}{Two embedding matrices of the same size (rows and columns), can be \code{\link[=as_embed]{embed}} or \code{\link[=as_wordvec]{wordvec}} objects.
 \itemize{
-  \item{\code{M} is the reference (anchor/baseline/target) matrix,
-        e.g., the embedding matrix learned at
-        the later year (\eqn{t + 1}).}
-  \item{\code{X} is the matrix to be transformed/rotated.}
+\item \code{M} is the reference (anchor/baseline/target) matrix, e.g., the embedding matrix learned at the later year (\eqn{t + 1}).
+\item \code{X} is the matrix to be transformed/rotated.
 }
-\emph{Note}: The function automatically extracts only
-the intersection (overlapped part) of words in \code{M} and \code{X}
-and sorts them in the same order (according to \code{M}).}
+
+\emph{Note}: The function automatically extracts only the intersection (overlapped part) of words in \code{M} and \code{X} and sorts them in the same order (according to \code{M}).}
 }
 \value{
-A \code{matrix} or \code{wordvec} object of
-\code{X} after rotation, depending on the class of
-\code{M} and \code{X}.
+A \code{matrix} or \code{wordvec} object of \code{X} after rotation, depending on the class of \code{M} and \code{X}.
 }
 \description{
-In order to compare word embeddings from different time periods,
-we must ensure that the embedding matrices are aligned to
-the same semantic space (coordinate axes).
-The Orthogonal Procrustes solution (Schönemann, 1966) is
-commonly used to align historical embeddings over time
-(Hamilton et al., 2016; Li et al., 2020).
-
-Note that this kind of rotation \emph{does not} change the
-relative relationships between vectors in the space,
-and thus \emph{does not} affect semantic similarities or distances
-within each embedding matrix.
-But it does influence the semantic relationships between
-different embedding matrices, and thus would be necessary
-for some purposes such as the "semantic drift analysis"
-(e.g., Hamilton et al., 2016; Li et al., 2020).
-
-This function produces the same results as by
-\code{cds::orthprocr()},
-\code{psych::Procrustes()}, and
-\code{pracma::procrustes()}.
+In order to compare word embeddings from different time periods, we must ensure that the embedding matrices are aligned to the same semantic space (coordinate axes). The Orthogonal Procrustes solution (Schönemann, 1966) is commonly used to align historical embeddings over time (Hamilton et al., 2016; Li et al., 2020). Note that this kind of rotation \emph{does not} change the relative relationships between vectors in the space, and thus \emph{does not} affect semantic similarities or distances within each embedding matrix. But it influences the semantic relationships between different embedding matrices, and thus would be necessary for some purposes such as the "semantic drift analysis" (e.g., Hamilton et al., 2016; Li et al., 2020).
+}
+\details{
+This function produces the same results as by \code{cds::orthprocr()}, \code{psych::Procrustes()}, and \code{pracma::procrustes()}.
 }
 \examples{
 \donttest{M = matrix(c(0,0,  1,2,  2,0,  3,2,  4,0), ncol=2, byrow=TRUE)
@@ -90,18 +67,12 @@ YR.wv  # aligned with M.wv, with the same order of words
 }
 }
 \references{
-Hamilton, W. L., Leskovec, J., & Jurafsky, D. (2016).
-Diachronic word embeddings reveal statistical laws of semantic change.
-In \emph{Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics}
-(Vol. 1, pp. 1489--1501). Association for Computational Linguistics.
+Hamilton, W. L., Leskovec, J., & Jurafsky, D. (2016). Diachronic word embeddings reveal statistical laws of semantic change. In \emph{Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics} (Vol. 1, pp. 1489--1501). Association for Computational Linguistics.
 
-Li, Y., Hills, T., & Hertwig, R. (2020).
-A brief history of risk. \emph{Cognition, 203}, 104344.
+Li, Y., Hills, T., & Hertwig, R. (2020). A brief history of risk. \emph{Cognition, 203}, 104344.
 
-Schönemann, P. H. (1966).
-A generalized solution of the orthogonal Procrustes problem.
-\emph{Psychometrika, 31}(1), 1--10.
+Schönemann, P. H. (1966). A generalized solution of the orthogonal Procrustes problem. \emph{Psychometrika, 31}(1), 1--10.
 }
 \seealso{
-\code{\link{as_wordvec}} / \code{\link{as_embed}}
+\code{\link[=as_wordvec]{as_wordvec()}} / \code{\link[=as_embed]{as_embed()}}
 }

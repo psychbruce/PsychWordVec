@@ -18,19 +18,11 @@ load_wordvec(file, normalize = TRUE)
 load_embed(file, normalize = TRUE)
 }
 \arguments{
-\item{file}{File name of .RData transformed by \code{\link{data_transform}}.
-Can also be an .RData file containing an embedding matrix with words as row names.}
+\item{file}{File name of .RData transformed by \code{\link[=data_transform]{data_transform()}}. Can also be an .RData file containing an embedding matrix with words as row names.}
 
-\item{as}{Load as
-\code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
-\code{\link[PsychWordVec:as_embed]{embed}} (matrix).
-Defaults to the original class of the R object in \code{file}.
-The two wrapper functions \code{load_wordvec} and \code{load_embed}
-automatically reshape the data to the corresponding class and
-normalize all word vectors (for faster future use).}
+\item{as}{Load as \code{\link[=as_wordvec]{wordvec}} (data.table) or \code{\link[=as_embed]{embed}} (matrix). Defaults to the original class of the R object in \code{file}. The two wrapper functions \code{\link[=load_wordvec]{load_wordvec()}} and \code{\link[=load_embed]{load_embed()}} automatically reshape the data to the corresponding class and normalize all word vectors (for faster future use).}
 
-\item{normalize}{Normalize all word vectors to unit length?
-Defaults to \code{FALSE}. See \code{\link{normalize}}.}
+\item{normalize}{Normalize all word vectors to unit length? Defaults to \code{FALSE}. See \code{\link[=normalize]{normalize()}}.}
 
 \item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
 }
@@ -42,8 +34,7 @@ Load word vectors data (\code{wordvec} or \code{embed}) from ".RData" file.
 }
 \section{Download}{
 
-Download pre-trained word vectors data (\code{.RData}):
-\url{https://psychbruce.github.io/WordVector_RData.pdf}
+Download pre-trained word vectors data (\code{.RData}): \url{https://psychbruce.github.io/WordVector_RData.pdf}
 }
 
 \examples{
@@ -70,11 +61,11 @@ d
 
 }
 \seealso{
-\code{\link{as_wordvec}} / \code{\link{as_embed}}
+\code{\link[=as_wordvec]{as_wordvec()}} / \code{\link[=as_embed]{as_embed()}}
 
-\code{\link{normalize}}
+\code{\link[=normalize]{normalize()}}
 
-\code{\link{data_transform}}
+\code{\link[=data_transform]{data_transform()}}
 
-\code{\link{data_wordvec_subset}}
+\code{\link[=data_wordvec_subset]{data_wordvec_subset()}}
 }

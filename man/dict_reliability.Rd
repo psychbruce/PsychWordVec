@@ -15,58 +15,45 @@ dict_reliability(
 )
 }
 \arguments{
-\item{data}{A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
-\code{\link[PsychWordVec:as_embed]{embed}} (matrix),
-see \code{\link{data_wordvec_load}}.}
+\item{data}{A \code{\link[=as_wordvec]{wordvec}} (data.table) or \code{\link[=as_embed]{embed}} (matrix), see \code{\link[=data_wordvec_load]{data_wordvec_load()}}.}
 
 \item{words}{[Option 1] Character string(s).}
 
-\item{pattern}{[Option 2] Regular expression (see \code{\link[stringr:str_subset]{str_subset}}).
-If neither \code{words} nor \code{pattern} are specified (i.e., both are \code{NULL}),
-then all words in the data will be extracted.}
+\item{pattern}{[Option 2] \link[stringr:str_subset]{Regular expression}. If \code{words} and \code{pattern} are not specified, all words in the data will be extracted.}
 
-\item{alpha}{Estimate the Cronbach's \eqn{\alpha}? Defaults to \code{TRUE}.
-Note that this can be \emph{misleading} and \emph{time-consuming}
-when the number of items/words is large.}
+\item{alpha}{Estimate the Cronbach's \eqn{\alpha}? Defaults to \code{TRUE}. Note that this can be \emph{misleading} and \emph{time-consuming} when the number of items/words is large.}
 
-\item{sort}{Sort items by the first principal component loading (PC1)?
-Defaults to \code{TRUE}.}
+\item{sort}{Sort items by the first principal component loading (PC1)? Defaults to \code{TRUE}.}
 
 \item{plot}{Visualize the cosine similarities? Defaults to \code{TRUE}.}
 
-\item{...}{Other parameters passed to \code{\link{plot_similarity}}.}
+\item{...}{Arguments passed on to \code{\link[=plot_similarity]{plot_similarity()}}.}
 }
 \value{
 A \code{list} object of new class \code{reliability}:
 \describe{
-  \item{\code{alpha}}{
-    Cronbach's \eqn{\alpha}}
-  \item{\code{eigen}}{
-    Eigen values from PCA}
-  \item{\code{pca}}{
-    PCA (only 1 principal component)}
-  \item{\code{pca.rotation}}{
-    PCA with varimax rotation (if potential principal components > 1)}
-  \item{\code{items}}{
-    Item statistics}
-  \item{\code{cos.sim.mat}}{
-    A matrix of cosine similarities of all word pairs}
-  \item{\code{cos.sim}}{
-    Lower triangular part of the matrix of cosine similarities}
+\item{\code{alpha}}{
+Cronbach's \eqn{\alpha}}
+\item{\code{eigen}}{
+Eigen values from PCA}
+\item{\code{pca}}{
+PCA (only 1 principal component)}
+\item{\code{pca.rotation}}{
+PCA with varimax rotation (if potential principal components > 1)}
+\item{\code{items}}{
+Item statistics}
+\item{\code{cos.sim.mat}}{
+A matrix of cosine similarities of all word pairs}
+\item{\code{cos.sim}}{
+Lower triangular part of the matrix of cosine similarities}
 }
 }
 \description{
-Reliability analysis (Cronbach's \eqn{\alpha} and average cosine similarity) and
-Principal Component Analysis (PCA) of a dictionary,
-with \link[PsychWordVec:plot_similarity]{visualization of cosine similarities}
-between words (ordered by the first principal component loading).
-Note that Cronbach's \eqn{\alpha} can be misleading
-when the number of items/words is large.
+Reliability analysis (Cronbach's \eqn{\alpha} and average cosine similarity) and Principal Component Analysis (PCA) of a dictionary, with \link[=plot_similarity]{visualization of cosine similarities} between words (ordered by the first principal component loading). Note that Cronbach's \eqn{\alpha} can be misleading when the number of items/words is large.
 }
 \section{Download}{
 
-Download pre-trained word vectors data (\code{.RData}):
-\url{https://psychbruce.github.io/WordVector_RData.pdf}
+Download pre-trained word vectors data (\code{.RData}): \url{https://psychbruce.github.io/WordVector_RData.pdf}
 }
 
 \examples{
@@ -83,20 +70,18 @@ dict_reliability(d, c(dict, dict.cn))
 }
 }
 \references{
-Nicolas, G., Bai, X., & Fiske, S. T. (2021).
-Comprehensive stereotype content dictionaries using a semi-automated method.
-\emph{European Journal of Social Psychology, 51}(1), 178--196.
+Nicolas, G., Bai, X., & Fiske, S. T. (2021). Comprehensive stereotype content dictionaries using a semi-automated method. \emph{European Journal of Social Psychology, 51}(1), 178--196.
 }
 \seealso{
-\code{\link{cosine_similarity}}
+\code{\link[=cosine_similarity]{cosine_similarity()}}
 
-\code{\link{pair_similarity}}
+\code{\link[=pair_similarity]{pair_similarity()}}
 
-\code{\link{plot_similarity}}
+\code{\link[=plot_similarity]{plot_similarity()}}
 
-\code{\link{tab_similarity}}
+\code{\link[=tab_similarity]{tab_similarity()}}
 
-\code{\link{most_similar}}
+\code{\link[=most_similar]{most_similar()}}
 
-\code{\link{dict_expand}}
+\code{\link[=dict_expand]{dict_expand()}}
 }

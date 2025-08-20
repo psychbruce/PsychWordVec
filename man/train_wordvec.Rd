@@ -32,141 +32,81 @@ train_wordvec(
 )
 }
 \arguments{
-\item{text}{A character vector of text,
-or a file path on disk containing text.}
+\item{text}{A character vector of text, or a file path on disk containing text.}
 
 \item{method}{Training algorithm:
 \itemize{
-  \item{\code{"word2vec"} (default):
-  using the \code{\link[word2vec:word2vec]{word2vec}} package}
-  \item{\code{"glove"}:
-  using the \code{\link[rsparse:GloVe]{rsparse}} and
-  \code{\link[text2vec:text2vec]{text2vec}} packages}
-  \item{\code{"fasttext"}:
-  using the \code{\link[fastTextR:ft_train]{fastTextR}} package}
+\item \code{"word2vec"} (default): using \code{\link[word2vec:word2vec]{word2vec::word2vec()}}
+\item \code{"glove"}: using \code{\link[rsparse:GloVe]{rsparse::GloVe()}} and \code{\link[text2vec:text2vec]{text2vec::text2vec()}}
+\item \code{"fasttext"}: using \code{\link[fastTextR:ft_train]{fastTextR::ft_train()}}
 }}
 
-\item{dims}{Number of dimensions of word vectors to be trained.
-Common choices include 50, 100, 200, 300, and 500.
-Defaults to \code{300}.}
+\item{dims}{Number of dimensions of word vectors to be trained. Common choices include 50, 100, 200, 300, and 500. Defaults to \code{300}.}
 
-\item{window}{Window size (number of nearby words behind/ahead the current word).
-It defines how many surrounding words to be included in training:
-[window] words behind and [window] words ahead ([window]*2 in total).
-Defaults to \code{5}.}
+\item{window}{Window size (number of nearby words behind/ahead the current word). It defines how many surrounding words to be included in training: [window] words behind and [window] words ahead ([window]*2 in total). Defaults to \code{5}.}
 
-\item{min.freq}{Minimum frequency of words to be included in training.
-Words that appear less than this value of times will be excluded from vocabulary.
-Defaults to \code{5} (take words that appear at least five times).}
+\item{min.freq}{Minimum frequency of words to be included in training. Words that appear less than this value of times will be excluded from vocabulary. Defaults to \code{5} (take words that appear at least five times).}
 
-\item{threads}{Number of CPU threads used for training.
-A modest value produces the fastest training.
-Too many threads are not always helpful.
-Defaults to \code{8}.}
+\item{threads}{Number of CPU threads used for training. A modest value produces the fastest training. Too many threads are not always helpful. Defaults to \code{8}.}
 
-\item{model}{\strong{<Only for Word2Vec / FastText>}
-
-Learning model architecture:
+\item{model}{\strong{[Only for Word2Vec / FastText]} Learning model architecture:
 \itemize{
-  \item{\code{"skip-gram"} (default): Skip-Gram,
-  which predicts surrounding words given the current word}
-  \item{\code{"cbow"}: Continuous Bag-of-Words,
-  which predicts the current word based on the context}
+\item \code{"skip-gram"} (default): Skip-Gram, which predicts surrounding words given the current word
+\item \code{"cbow"}: Continuous Bag-of-Words, which predicts the current word based on the context
 }}
 
-\item{loss}{\strong{<Only for Word2Vec / FastText>}
-
-Loss function (computationally efficient approximation):
+\item{loss}{\strong{[Only for Word2Vec / FastText]} Loss function (computationally efficient approximation):
 \itemize{
-  \item{\code{"ns"} (default): Negative Sampling}
-  \item{\code{"hs"}: Hierarchical Softmax}
+\item \code{"ns"} (default): Negative Sampling
+\item \code{"hs"}: Hierarchical Softmax
 }}
 
-\item{negative}{\strong{<Only for Negative Sampling in Word2Vec / FastText>}
+\item{negative}{\strong{[Only for Negative Sampling in Word2Vec / FastText]} Number of negative examples. Values in the range 5~20 are useful for small training datasets, while for large datasets the value can be as small as 2~5. Defaults to \code{5}.}
 
-Number of negative examples.
-Values in the range 5~20 are useful for small training datasets,
-while for large datasets the value can be as small as 2~5.
-Defaults to \code{5}.}
+\item{subsample}{\strong{[Only for Word2Vec / FastText]} Subsampling of frequent words (threshold for occurrence of words). Those that appear with higher frequency in the training data will be randomly down-sampled. Defaults to \code{0.0001} (\code{1e-04}).}
 
-\item{subsample}{\strong{<Only for Word2Vec / FastText>}
+\item{learning}{\strong{[Only for Word2Vec / FastText]} Initial (starting) learning rate, also known as alpha. Defaults to \code{0.05}.}
 
-Subsampling of frequent words (threshold for occurrence of words).
-Those that appear with higher frequency in the training data will be randomly down-sampled.
-Defaults to \code{0.0001} (\code{1e-04}).}
+\item{ngrams}{\strong{[Only for FastText]} Minimal and maximal ngram length. Defaults to \code{c(3, 6)}.}
 
-\item{learning}{\strong{<Only for Word2Vec / FastText>}
+\item{x.max}{\strong{[Only for GloVe]} Maximum number of co-occurrences to use in the weighting function. Defaults to \code{10}.}
 
-Initial (starting) learning rate, also known as alpha.
-Defaults to \code{0.05}.}
+\item{convergence}{\strong{[Only for GloVe]} Convergence tolerance for SGD iterations. Defaults to \code{-1}.}
 
-\item{ngrams}{\strong{<Only for FastText>}
-
-Minimal and maximal ngram length.
-Defaults to \code{c(3, 6)}.}
-
-\item{x.max}{\strong{<Only for GloVe>}
-
-Maximum number of co-occurrences to use in the weighting function.
-Defaults to \code{10}.}
-
-\item{convergence}{\strong{<Only for GloVe>}
-
-Convergence tolerance for SGD iterations. Defaults to \code{-1}.}
-
-\item{stopwords}{\strong{<Only for Word2Vec / GloVe>}
-
-A character vector of stopwords to be excluded from training.}
+\item{stopwords}{\strong{[Only for Word2Vec / GloVe]} A character vector of stopwords to be excluded from training.}
 
 \item{encoding}{Text encoding. Defaults to \code{"UTF-8"}.}
 
-\item{tolower}{Convert all upper-case characters to lower-case?
-Defaults to \code{FALSE}.}
+\item{tolower}{Convert all upper-case characters to lower-case? Defaults to \code{FALSE}.}
 
-\item{normalize}{Normalize all word vectors to unit length?
-Defaults to \code{FALSE}. See \code{\link{normalize}}.}
+\item{normalize}{Normalize all word vectors to unit length? Defaults to \code{FALSE}. See \code{\link[=normalize]{normalize()}}.}
 
-\item{iteration}{Number of training iterations.
-More iterations makes a more precise model,
-but computational cost is linearly proportional to iterations.
-Defaults to \code{5} for Word2Vec and FastText
-while \code{10} for GloVe.}
+\item{iteration}{Number of training iterations. More iterations makes a more precise model, but computational cost is linearly proportional to iterations. Defaults to \code{5} for Word2Vec and FastText while \code{10} for GloVe.}
 
-\item{tokenizer}{Function used to tokenize the text.
-Defaults to \code{\link[text2vec:tokenizers]{text2vec::word_tokenizer}}.}
+\item{tokenizer}{Function used to tokenize the text. Defaults to \code{\link[text2vec:tokenizers]{text2vec::word_tokenizer()}}.}
 
-\item{remove}{Strings (in regular expression) to be removed from the text.
-Defaults to \code{"_|'|<br/>|<br />|e\\\\.g\\\\.|i\\\\.e\\\\."}.
-You may turn off this by specifying \code{remove=NULL}.}
+\item{remove}{Strings (in regular expression) to be removed from the text. Defaults to \code{"_|'|<br/>|<br />|e\\\\\\\\.g\\\\\\\\.|i\\\\\\\\.e\\\\\\\\."}. You may turn off this by specifying \code{remove=NULL}.}
 
 \item{file.save}{File name of to-be-saved R data (must be .RData).}
 
 \item{compress}{Compression method for the saved file. Defaults to \code{"bzip2"}.
-
-Options include:
 \itemize{
-  \item \code{1} or \code{"gzip"}: modest file size (fastest)
-  \item \code{2} or \code{"bzip2"}: small file size (fast)
-  \item \code{3} or \code{"xz"}: minimized file size (slow)
+\item \code{1} or \code{"gzip"}: modest file size (fastest)
+\item \code{2} or \code{"bzip2"}: small file size (fast)
+\item \code{3} or \code{"xz"}: minimized file size (slow)
 }}
 
 \item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
 }
 \value{
-A \code{wordvec} (data.table) with three variables:
-\code{word}, \code{vec}, \code{freq}.
+A \code{wordvec} (data.table) with three variables: \code{word}, \code{vec}, \code{freq}.
 }
 \description{
-Train static word embeddings using the
-\code{\link[word2vec:word2vec]{Word2Vec}},
-\code{\link[rsparse:GloVe]{GloVe}}, or
-\code{\link[fastTextR:ft_train]{FastText}} algorithm
-with multi-threading.
+Train static word embeddings using the \link[word2vec:word2vec]{Word2Vec}, \link[rsparse:GloVe]{GloVe}, or \link[fastTextR:ft_train]{FastText} algorithm with multi-threading.
 }
 \section{Download}{
 
-Download pre-trained word vectors data (\code{.RData}):
-\url{https://psychbruce.github.io/WordVector_RData.pdf}
+Download pre-trained word vectors data (\code{.RData}): \url{https://psychbruce.github.io/WordVector_RData.pdf}
 }
 
 \examples{
@@ -217,27 +157,30 @@ most_similar(dt3, ~ boy - he + she, topn=5)  # evaluate performance
 \references{
 All-in-one package:
 \itemize{
-  \item{\url{https://CRAN.R-project.org/package=wordsalad}}
+\item \url{https://CRAN.R-project.org/package=wordsalad}
 }
+
 Word2Vec:
 \itemize{
-  \item{\url{https://code.google.com/archive/p/word2vec/}}
-  \item{\url{https://CRAN.R-project.org/package=word2vec}}
-  \item{\url{https://github.com/maxoodf/word2vec}}
+\item \url{https://code.google.com/archive/p/word2vec/}
+\item \url{https://CRAN.R-project.org/package=word2vec}
+\item \url{https://github.com/maxoodf/word2vec}
 }
+
 GloVe:
 \itemize{
-  \item{\url{https://nlp.stanford.edu/projects/glove/}}
-  \item{\url{https://text2vec.org/glove.html}}
-  \item{\url{https://CRAN.R-project.org/package=text2vec}}
-  \item{\url{https://CRAN.R-project.org/package=rsparse}}
+\item \url{https://nlp.stanford.edu/projects/glove/}
+\item \url{https://text2vec.org/glove.html}
+\item \url{https://CRAN.R-project.org/package=text2vec}
+\item \url{https://CRAN.R-project.org/package=rsparse}
 }
+
 FastText:
 \itemize{
-  \item{\url{https://fasttext.cc/}}
-  \item{\url{https://CRAN.R-project.org/package=fastTextR}}
+\item \url{https://fasttext.cc/}
+\item \url{https://CRAN.R-project.org/package=fastTextR}
 }
 }
 \seealso{
-\code{\link{tokenize}}
+\code{\link[=tokenize]{tokenize()}}
 }

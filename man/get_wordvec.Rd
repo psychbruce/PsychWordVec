@@ -15,25 +15,19 @@ get_wordvec(
 )
 }
 \arguments{
-\item{data}{A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
-\code{\link[PsychWordVec:as_embed]{embed}} (matrix),
-see \code{\link{data_wordvec_load}}.}
+\item{data}{A \code{\link[=as_wordvec]{wordvec}} (data.table) or \code{\link[=as_embed]{embed}} (matrix), see \code{\link[=data_wordvec_load]{data_wordvec_load()}}.}
 
 \item{words}{[Option 1] Character string(s).}
 
-\item{pattern}{[Option 2] Regular expression (see \code{\link[stringr:str_subset]{str_subset}}).
-If neither \code{words} nor \code{pattern} are specified (i.e., both are \code{NULL}),
-then all words in the data will be extracted.}
+\item{pattern}{[Option 2] \link[stringr:str_subset]{Regular expression}. If \code{words} and \code{pattern} are not specified, all words in the data will be extracted.}
 
 \item{plot}{Generate a plot to illustrate the word vectors? Defaults to \code{FALSE}.}
 
-\item{plot.dims}{Dimensions to be plotted (e.g., \code{1:100}).
-Defaults to \code{NULL} (plot all dimensions).}
+\item{plot.dims}{Dimensions to be plotted (e.g., \code{1:100}). Defaults to \code{NULL} (plot all dimensions).}
 
 \item{plot.step}{Step for value breaks. Defaults to \code{0.05}.}
 
-\item{plot.border}{Color of tile border. Defaults to \code{"white"}.
-To remove the border color, set \code{plot.border=NA}.}
+\item{plot.border}{Color of tile border. Defaults to \code{"white"}. To remove the border color, set \code{plot.border=NA}.}
 }
 \value{
 A \code{data.table} with words as columns and dimensions as rows.
@@ -43,8 +37,7 @@ Extract word vector(s), using either a list of words or a regular expression.
 }
 \section{Download}{
 
-Download pre-trained word vectors data (\code{.RData}):
-\url{https://psychbruce.github.io/WordVector_RData.pdf}
+Download pre-trained word vectors data (\code{.RData}): \url{https://psychbruce.github.io/WordVector_RData.pdf}
 }
 
 \examples{
@@ -103,9 +96,9 @@ unlink("wordvecs.png")  # delete file for code check
 }
 }
 \seealso{
-\code{\link{data_wordvec_subset}}
+\code{\link[=data_wordvec_subset]{data_wordvec_subset()}}
 
-\code{\link{plot_wordvec}}
+\code{\link[=plot_wordvec]{plot_wordvec()}}
 
-\code{\link{plot_wordvec_tSNE}}
+\code{\link[=plot_wordvec_tSNE]{plot_wordvec_tSNE()}}
 }

@@ -1,14 +1,14 @@
 Package: PsychWordVec
 Title: Word Embedding Research Framework for Psychological Science
-Version: 2025.3
-Date: 2025-03-30
+Version: 2025.8
+Date: 2025-08-15
 Authors@R:
-    c(person(given = "Han-Wu-Shuang",
+    c(person(given = "Han Wu Shuang",
              family = "Bao",
              role = c("aut", "cre"),
              email = "baohws@foxmail.com",
              comment = c(ORCID = "0000-0003-3043-710X")))
-Maintainer: Han-Wu-Shuang Bao <baohws@foxmail.com>
+Maintainer: Han Wu Shuang Bao <baohws@foxmail.com>
 Description:
     An integrative toolbox of word embedding research that provides:
     (1) a collection of 'pre-trained' static word vectors in the '.RData'
@@ -34,3 +34,4 @@ Imports:
     rsparse, text2vec, word2vec, fastTextR
 Suggests: text, wordsalad, sweater, glue
 RoxygenNote: 7.3.2
+Roxygen: list(markdown = TRUE)

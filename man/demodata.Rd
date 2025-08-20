@@ -4,9 +4,7 @@
 \alias{demodata}
 \title{Demo data (pre-trained using word2vec on Google News; 8000 vocab, 300 dims).}
 \format{
-A \code{data.table} (of new class \code{wordvec}) with two variables \code{word} and \code{vec},
-transformed from the raw data (see the URL in Source) into \code{.RData}
-using the \code{\link{data_transform}} function.
+A \code{data.table} (class \code{wordvec}) with two variables \code{word} and \code{vec}, transformed from the raw data (see the URL in Source) into \code{.RData} using \code{\link[=data_transform]{data_transform()}}.
 }
 \source{
 Google Code - word2vec (\url{https://code.google.com/archive/p/word2vec/})

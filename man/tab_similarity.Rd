@@ -15,37 +15,27 @@ tab_similarity(
 )
 }
 \arguments{
-\item{data}{A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
-\code{\link[PsychWordVec:as_embed]{embed}} (matrix),
-see \code{\link{data_wordvec_load}}.}
+\item{data}{A \code{\link[=as_wordvec]{wordvec}} (data.table) or \code{\link[=as_embed]{embed}} (matrix), see \code{\link[=data_wordvec_load]{data_wordvec_load()}}.}
 
 \item{words}{[Option 1] Character string(s).}
 
-\item{pattern}{[Option 2] Regular expression (see \code{\link[stringr:str_subset]{str_subset}}).
-If neither \code{words} nor \code{pattern} are specified (i.e., both are \code{NULL}),
-then all words in the data will be extracted.}
+\item{pattern}{[Option 2] \link[stringr:str_subset]{Regular expression}. If \code{words} and \code{pattern} are not specified, all words in the data will be extracted.}
 
-\item{words1, words2}{[Option 3]
-Two sets of words for only n1 * n2 word pairs. See examples.}
+\item{words1, words2}{[Option 3] Two sets of words for only n1 * n2 word pairs. See examples.}
 
-\item{unique}{Return unique word pairs (\code{TRUE})
-or all pairs with duplicates (\code{FALSE}; default).}
+\item{unique}{Return unique word pairs (\code{TRUE}) or all pairs with duplicates (\code{FALSE}; default).}
 
-\item{distance}{Compute cosine distance instead?
-Defaults to \code{FALSE} (cosine similarity).}
+\item{distance}{Compute cosine distance instead? Defaults to \code{FALSE} (cosine similarity).}
 }
 \value{
-A \code{data.table} of words, word pairs,
-and their cosine similarity (\code{cos_sim})
-or cosine distance (\code{cos_dist}).
+A \code{data.table} of words, word pairs, and their cosine similarity (\code{cos_sim}) or cosine distance (\code{cos_dist}).
 }
 \description{
 Tabulate cosine similarity/distance of word pairs.
 }
 \section{Download}{
 
-Download pre-trained word vectors data (\code{.RData}):
-\url{https://psychbruce.github.io/WordVector_RData.pdf}
+Download pre-trained word vectors data (\code{.RData}): \url{https://psychbruce.github.io/WordVector_RData.pdf}
 }
 
 \examples{
@@ -64,15 +54,15 @@ tab_similarity(demodata,
 }
 }
 \seealso{
-\code{\link{cosine_similarity}}
+\code{\link[=cosine_similarity]{cosine_similarity()}}
 
-\code{\link{pair_similarity}}
+\code{\link[=pair_similarity]{pair_similarity()}}
 
-\code{\link{plot_similarity}}
+\code{\link[=plot_similarity]{plot_similarity()}}
 
-\code{\link{most_similar}}
+\code{\link[=most_similar]{most_similar()}}
 
-\code{\link{test_WEAT}}
+\code{\link[=test_WEAT]{test_WEAT()}}
 
-\code{\link{test_RND}}
+\code{\link[=test_RND]{test_RND()}}
 }

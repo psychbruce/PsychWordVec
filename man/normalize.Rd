@@ -7,28 +7,24 @@
 normalize(x)
 }
 \arguments{
-\item{x}{A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
-\code{\link[PsychWordVec:as_embed]{embed}} (matrix),
-see \code{\link{data_wordvec_load}}.}
+\item{x}{A \code{\link[=as_wordvec]{wordvec}} (data.table) or \code{\link[=as_embed]{embed}} (matrix), see \code{\link[=data_wordvec_load]{data_wordvec_load()}}.}
 }
 \value{
-A \code{wordvec} (data.table) or \code{embed} (matrix) with \strong{normalized} word vectors.
+A \code{wordvec} (data.table) or \code{embed} (matrix) with \emph{normalized} word vectors.
 }
 \description{
-L2-normalization (scaling to unit euclidean length):
-the \emph{norm} of each vector in the vector space will be normalized to 1.
-It is necessary for any linear operation of word vectors.
-
-R code:
+L2-normalization (scaling to unit euclidean length): the \emph{norm} of each vector in the vector space will be normalized to 1. It is necessary for any linear operation of word vectors.
+}
+\details{
+R code inside:
 \itemize{
-  \item{Vector: \code{vec / sqrt(sum(vec^2))}}
-  \item{Matrix: \code{mat / sqrt(rowSums(mat^2))}}
+\item Vector: \code{vec / sqrt(sum(vec^2))}
+\item Matrix: \code{mat / sqrt(rowSums(mat^2))}
 }
 }
 \section{Download}{
 
-Download pre-trained word vectors data (\code{.RData}):
-\url{https://psychbruce.github.io/WordVector_RData.pdf}
+Download pre-trained word vectors data (\code{.RData}): \url{https://psychbruce.github.io/WordVector_RData.pdf}
 }
 
 \examples{
@@ -37,11 +33,11 @@ d = normalize(demodata)
 
 }
 \seealso{
-\code{\link{as_wordvec}} / \code{\link{as_embed}}
+\code{\link[=as_wordvec]{as_wordvec()}} / \code{\link[=as_embed]{as_embed()}}
 
-\code{\link{load_wordvec}} / \code{\link{load_embed}}
+\code{\link[=load_wordvec]{load_wordvec()}} / \code{\link[=load_embed]{load_embed()}}
 
-\code{\link{data_transform}}
+\code{\link[=data_transform]{data_transform()}}
 
-\code{\link{data_wordvec_subset}}
+\code{\link[=data_wordvec_subset]{data_wordvec_subset()}}
 }

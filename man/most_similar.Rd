@@ -15,50 +15,41 @@ most_similar(
 )
 }
 \arguments{
-\item{data}{A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
-\code{\link[PsychWordVec:as_embed]{embed}} (matrix),
-see \code{\link{data_wordvec_load}}.}
+\item{data}{A \code{\link[=as_wordvec]{wordvec}} (data.table) or \code{\link[=as_embed]{embed}} (matrix), see \code{\link[=data_wordvec_load]{data_wordvec_load()}}.}
 
 \item{x}{Can be:
 \itemize{
-  \item{\code{NULL}: use the sum of all word vectors in \code{data}}
-  \item{a single word:
-
-  \code{"China"}}
-
-  \item{a list of words:
-
-  \code{c("king", "queen")}}
-
-  \code{cc(" king , queen ; man | woman")}
-
-  \item{an R formula (\code{~ xxx}) specifying
-  words that positively and negatively
-  contribute to the similarity (for word analogy):
-
-  \code{~ boy - he + she}
-
-  \code{~ king - man + woman}
-
-  \code{~ Beijing - China + Japan}}
+\item \code{NULL}: use the sum of all word vectors in \code{data}
+\item a single word:
+\itemize{
+\item \code{"China"}
+}
+\item a vector of words:
+\itemize{
+\item \code{c("king", "queen")}
+\item \code{cc(" king , queen ; man | woman")}
+}
+\item an R formula (\code{~ xxx}) specifying words that positively and negatively contribute to the similarity (for word analogy):
+\itemize{
+\item \code{~ boy - he + she}
+\item \code{~ king - man + woman}
+\item \code{~ Beijing - China + Japan}
+}
 }}
 
 \item{topn}{Top-N most similar words. Defaults to \code{10}.}
 
 \item{above}{Defaults to \code{NULL}. Can be:
 \itemize{
-  \item{a threshold value to find all words with cosine similarities
-  higher than this value}
-  \item{a critical word to find all words with cosine similarities
-  higher than that with this critical word}
+\item a threshold value to find all words with cosine similarities higher than this value
+\item a critical word to find all words with cosine similarities higher than that with this critical word
 }
+
 If both \code{topn} and \code{above} are specified, \code{above} wins.}
 
-\item{keep}{Keep words specified in \code{x} in results?
-Defaults to \code{FALSE}.}
+\item{keep}{Keep words specified in \code{x} in results? Defaults to \code{FALSE}.}
 
-\item{row.id}{Return the row number of each word? Defaults to \code{TRUE},
-which may help determine the relative word frequency in some cases.}
+\item{row.id}{Return the row number of each word? Defaults to \code{TRUE}, which may help determine the relative word frequency in some cases.}
 
 \item{verbose}{Print information to the console? Defaults to \code{TRUE}.}
 }
@@ -66,15 +57,11 @@ which may help determine the relative word frequency in some cases.}
 A \code{data.table} with the most similar words and their cosine similarities.
 }
 \description{
-Find the Top-N most similar words, which replicates the results produced
-by the Python \code{gensim} module \code{most_similar()} function.
-(Exact replication of \code{gensim} requires the same word vectors data,
-not the \code{demodata} used here in examples.)
+Find the Top-N most similar words, which replicates the results produced by the Python \code{gensim} module \code{most_similar()} function. (Exact replication of \code{gensim} requires the same word vectors data, not the \code{demodata} used here in examples.)
 }
 \section{Download}{
 
-Download pre-trained word vectors data (\code{.RData}):
-\url{https://psychbruce.github.io/WordVector_RData.pdf}
+Download pre-trained word vectors data (\code{.RData}): \url{https://psychbruce.github.io/WordVector_RData.pdf}
 }
 
 \examples{
@@ -108,17 +95,17 @@ str(ms)
 }
 }
 \seealso{
-\code{\link{sum_wordvec}}
+\code{\link[=sum_wordvec]{sum_wordvec()}}
 
-\code{\link{dict_expand}}
+\code{\link[=dict_expand]{dict_expand()}}
 
-\code{\link{dict_reliability}}
+\code{\link[=dict_reliability]{dict_reliability()}}
 
-\code{\link{cosine_similarity}}
+\code{\link[=cosine_similarity]{cosine_similarity()}}
 
-\code{\link{pair_similarity}}
+\code{\link[=pair_similarity]{pair_similarity()}}
 
-\code{\link{plot_similarity}}
+\code{\link[=plot_similarity]{plot_similarity()}}
 
-\code{\link{tab_similarity}}
+\code{\link[=tab_similarity]{tab_similarity()}}
 }

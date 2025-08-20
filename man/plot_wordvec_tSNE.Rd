@@ -17,48 +17,33 @@ plot_wordvec_tSNE(
 \arguments{
 \item{x}{Can be:
 \itemize{
-  \item{a \code{data.table} returned by \code{\link{get_wordvec}}}
-  \item{a \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table)
-  or \code{\link[PsychWordVec:as_embed]{embed}} (matrix)
-  loaded by \code{\link{data_wordvec_load}}}
+\item a \code{data.table} returned from \code{\link[=get_wordvec]{get_wordvec()}}
+\item a \code{\link[=as_wordvec]{wordvec}} (data.table) or \code{\link[=as_embed]{embed}} (matrix) returned from \code{\link[=data_wordvec_load]{data_wordvec_load()}}
 }}
 
 \item{dims}{Output dimensionality: \code{2} (default, the most common choice) or \code{3}.}
 
-\item{perplexity}{Perplexity parameter, should not be larger than (number of words - 1) / 3.
-Defaults to \code{floor((length(dt)-1)/3)} (where columns of \code{dt} are words).
-See the \code{\link[Rtsne:Rtsne]{Rtsne}} package for details.}
+\item{perplexity}{Perplexity parameter, should not be larger than (number of words - 1) / 3. Defaults to \code{floor((length(dt)-1)/3)} (where columns of \code{dt} are words). See \code{\link[Rtsne:Rtsne]{Rtsne::Rtsne()}} for details.}
 
-\item{theta}{Speed/accuracy trade-off (increase for less accuracy), set to 0 for exact t-SNE.
-Defaults to 0.5.}
+\item{theta}{Speed/accuracy trade-off (increase for less accuracy), set to 0 for exact t-SNE. Defaults to \code{0.5}.}
 
-\item{colors}{A character vector specifying (1) the categories of words (for 2-D plot only)
-or (2) the exact colors of words (for 2-D and 3-D plot). See examples for its usage.}
+\item{colors}{A character vector specifying (1) the categories of words (for 2-D plot only) or (2) the exact colors of words (for 2-D and 3-D plot). See examples for its usage.}
 
 \item{seed}{Random seed for reproducible results. Defaults to \code{NULL}.}
 
 \item{custom.Rtsne}{User-defined \code{\link[Rtsne:Rtsne]{Rtsne}} object using the same \code{dt}.}
 }
 \value{
-2-D: A \code{ggplot} object.
-You may extract the data from this object using \code{$data}.
+2-D: A \code{ggplot} object. You may extract the data from this object using \verb{$data}.
 
-3-D: Nothing but only the data was invisibly returned,
-because \code{\link[rgl:plot3d]{rgl::plot3d()}} is
-"called for the side effect of drawing the plot"
-and thus cannot return any 3-D plot object.
+3-D: Nothing but only the data was invisibly returned, because \code{\link[rgl:plot3d]{rgl::plot3d()}} is "called for the side effect of drawing the plot" and thus cannot return any 3-D plot object.
 }
 \description{
-Visualize word vectors with dimensionality reduced
-using the t-Distributed Stochastic Neighbor Embedding (t-SNE) method
-(i.e., projecting high-dimensional vectors into a low-dimensional vector space),
-implemented by \code{\link[Rtsne:Rtsne]{Rtsne::Rtsne()}}.
-You should specify a random seed if you expect reproducible results.
+Visualize word vectors with dimensionality reduced using the t-Distributed Stochastic Neighbor Embedding (t-SNE) method (i.e., projecting high-dimensional vectors into a low-dimensional vector space), implemented by \code{\link[Rtsne:Rtsne]{Rtsne::Rtsne()}}. You should specify a random seed if you expect reproducible results.
 }
 \section{Download}{
 
-Download pre-trained word vectors data (\code{.RData}):
-\url{https://psychbruce.github.io/WordVector_RData.pdf}
+Download pre-trained word vectors data (\code{.RData}): \url{https://psychbruce.github.io/WordVector_RData.pdf}
 }
 
 \examples{
@@ -92,16 +77,12 @@ plot_wordvec_tSNE(dt, dims=3, colors=colors, seed=1)
 }
 }
 \references{
-Hinton, G. E., & Salakhutdinov, R. R. (2006).
-Reducing the dimensionality of data with neural networks.
-\emph{Science, 313}(5786), 504--507.
+Hinton, G. E., & Salakhutdinov, R. R. (2006). Reducing the dimensionality of data with neural networks. \emph{Science, 313}(5786), 504--507.
 
-van der Maaten, L., & Hinton, G. (2008).
-Visualizing data using t-SNE.
-\emph{Journal of Machine Learning Research, 9}, 2579--2605.
+van der Maaten, L., & Hinton, G. (2008). Visualizing data using t-SNE. \emph{Journal of Machine Learning Research, 9}, 2579--2605.
 }
 \seealso{
-\code{\link{plot_wordvec}}
+\code{\link[=plot_wordvec]{plot_wordvec()}}
 
-\code{\link{plot_network}}
+\code{\link[=plot_network]{plot_network()}}
 }

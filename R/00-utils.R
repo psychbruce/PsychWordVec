@@ -29,12 +29,10 @@ if(FALSE) {
 #' whereas a few are selected from less frequent words and appended.
 #'
 #' @format
-#' A \code{data.table} (of new class \code{wordvec}) with two variables \code{word} and \code{vec},
-#' transformed from the raw data (see the URL in Source) into \code{.RData}
-#' using the \code{\link{data_transform}} function.
+#' A `data.table` (class `wordvec`) with two variables `word` and `vec`, transformed from the raw data (see the URL in Source) into `.RData` using [data_transform()].
 #'
 #' @source
-#' Google Code - word2vec (\url{https://code.google.com/archive/p/word2vec/})
+#' Google Code - word2vec (<https://code.google.com/archive/p/word2vec/>)
 #'
 #' @usage
 #' data(demodata)

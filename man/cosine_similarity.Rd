@@ -15,8 +15,7 @@ cos_dist(v1, v2)
 \arguments{
 \item{v1, v2}{Numeric vector (of the same length).}
 
-\item{distance}{Compute cosine distance instead?
-Defaults to \code{FALSE} (cosine similarity).}
+\item{distance}{Compute cosine distance instead? Defaults to \code{FALSE} (cosine similarity).}
 }
 \value{
 A value of cosine similarity/distance.
@@ -44,9 +43,9 @@ cos_dist(v1=c(1,1,0), v2=c(0,0,1))  # 1
 
 }
 \seealso{
-\code{\link{pair_similarity}}
+\code{\link[=pair_similarity]{pair_similarity()}}
 
-\code{\link{tab_similarity}}
+\code{\link[=tab_similarity]{tab_similarity()}}
 
-\code{\link{most_similar}}
+\code{\link[=most_similar]{most_similar()}}
 }

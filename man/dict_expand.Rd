@@ -7,17 +7,11 @@
 dict_expand(data, words, threshold = 0.5, iteration = 5, verbose = TRUE)
 }
 \arguments{
-\item{data}{A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
-\code{\link[PsychWordVec:as_embed]{embed}} (matrix),
-see \code{\link{data_wordvec_load}}.}
+\item{data}{A \code{\link[=as_wordvec]{wordvec}} (data.table) or \code{\link[=as_embed]{embed}} (matrix), see \code{\link[=data_wordvec_load]{data_wordvec_load()}}.}
 
-\item{words}{A single word or a list of words,
-used to calculate the
-\link[PsychWordVec:sum_wordvec]{sum vector}.}
+\item{words}{A single word or a list of words, used to calculate the \link[=sum_wordvec]{sum vector}.}
 
-\item{threshold}{Threshold of cosine similarity,
-used to find all words with similarities higher than this value.
-Defaults to \code{0.5}. A low threshold may lead to failure of convergence.}
+\item{threshold}{Threshold of cosine similarity, used to find all words with similarities higher than this value. Defaults to \code{0.5}. A low threshold may lead to failure of convergence.}
 
 \item{iteration}{Number of maximum iterations. Defaults to \code{5}.}
 
@@ -31,8 +25,7 @@ Expand a dictionary from the most similar words.
 }
 \section{Download}{
 
-Download pre-trained word vectors data (\code{.RData}):
-\url{https://psychbruce.github.io/WordVector_RData.pdf}
+Download pre-trained word vectors data (\code{.RData}): \url{https://psychbruce.github.io/WordVector_RData.pdf}
 }
 
 \examples{
@@ -54,9 +47,9 @@ dict.cn  # adequate to represent "China"
 }
 }
 \seealso{
-\code{\link{sum_wordvec}}
+\code{\link[=sum_wordvec]{sum_wordvec()}}
 
-\code{\link{most_similar}}
+\code{\link[=most_similar]{most_similar()}}
 
-\code{\link{dict_reliability}}
+\code{\link[=dict_reliability]{dict_reliability()}}
 }

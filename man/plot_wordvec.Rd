@@ -9,19 +9,15 @@ plot_wordvec(x, dims = NULL, step = 0.05, border = "white")
 \arguments{
 \item{x}{Can be:
 \itemize{
-  \item{a \code{data.table} returned by \code{\link{get_wordvec}}}
-  \item{a \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table)
-  or \code{\link[PsychWordVec:as_embed]{embed}} (matrix)
-  loaded by \code{\link{data_wordvec_load}}}
+\item a \code{data.table} returned from \code{\link[=get_wordvec]{get_wordvec()}}
+\item a \code{\link[=as_wordvec]{wordvec}} (data.table) or \code{\link[=as_embed]{embed}} (matrix) returned from \code{\link[=data_wordvec_load]{data_wordvec_load()}}
 }}
 
-\item{dims}{Dimensions to be plotted (e.g., \code{1:100}).
-Defaults to \code{NULL} (plot all dimensions).}
+\item{dims}{Dimensions to be plotted (e.g., \code{1:100}). Defaults to \code{NULL} (plot all dimensions).}
 
 \item{step}{Step for value breaks. Defaults to \code{0.05}.}
 
-\item{border}{Color of tile border. Defaults to \code{"white"}.
-To remove the border color, set \code{border=NA}.}
+\item{border}{Color of tile border. Defaults to \code{"white"}. To remove the border color, set \code{border=NA}.}
 }
 \value{
 A \code{ggplot} object.
@@ -31,8 +27,7 @@ Visualize word vectors.
 }
 \section{Download}{
 
-Download pre-trained word vectors data (\code{.RData}):
-\url{https://psychbruce.github.io/WordVector_RData.pdf}
+Download pre-trained word vectors data (\code{.RData}): \url{https://psychbruce.github.io/WordVector_RData.pdf}
 }
 
 \examples{
@@ -68,9 +63,9 @@ unlink("wordvecs.png")  # delete file for code check
 }
 }
 \seealso{
-\code{\link{get_wordvec}}
+\code{\link[=get_wordvec]{get_wordvec()}}
 
-\code{\link{plot_similarity}}
+\code{\link[=plot_similarity]{plot_similarity()}}
 
-\code{\link{plot_wordvec_tSNE}}
+\code{\link[=plot_wordvec_tSNE]{plot_wordvec_tSNE()}}
 }

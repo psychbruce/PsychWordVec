@@ -1,52 +1,30 @@
 #### Initialize ####
 
 
+#' @keywords internal
+"_PACKAGE"
+
+
 #' @import stringr
 #' @import ggplot2
 #' @import data.table
 #' @importFrom stats cor
-#' @importFrom utils head menu packageVersion capture.output
+#' @importFrom utils head menu capture.output
 #' @importFrom corrplot corrplot
 #' @importFrom grDevices png pdf dev.off
 #' @importFrom dplyr %>% select left_join
 #' @importFrom bruceR cc dtime import export Glue Print print_table
 .onAttach = function(libname, pkgname) {
-  ## Version Check
-  new = FALSE
-  inst.ver = as.character(packageVersion("PsychWordVec"))
-  pkg.date = substr(utils::packageDate("PsychWordVec"), 1, 4)
-  xml = suppressWarnings({
-    try({
-      readLines("https://cran.r-project.org/web/packages/PsychWordVec/index.html")
-    }, silent=TRUE)
-  })
-
-  ## Update Message
-  if(!inherits(xml, "try-error")) {
-    try({
-      cran.ver = xml[grep("Version:", xml, fixed=TRUE) + 1]
-      cran.ymd = xml[grep("Published:", xml, fixed=TRUE) + 1]
-      if(!is.na(cran.ver) & length(cran.ver)==1) {
-        cran.ver = substr(cran.ver, 5, nchar(cran.ver) - 5)
-        cran.ymd = substr(cran.ymd, 5, nchar(cran.ymd) - 5)
-        if(numeric_version(inst.ver) < numeric_version(cran.ver))
-          new = TRUE
-      }
-    }, silent=TRUE)
-  }
-
-  ## Loaded Package
+  inst.ver = as.character(utils::packageVersion("PsychWordVec"))
   pkgs = c("data.table", "dplyr", "stringr", "ggplot2")
-
   suppressMessages({
     suppressWarnings({
       loaded = sapply(pkgs, require, character.only=TRUE)
     })
   })
-
-  ## Welcome Message
   if(all(loaded)) {
-    packageStartupMessage(glue::glue_col("
+    packageStartupMessage(
+    glue::glue_col("
 
     {magenta PsychWordVec (v{inst.ver})}
     {blue Word Embedding Research Framework for Psychological Science}
@@ -58,13 +36,12 @@
     {underline https://psychbruce.github.io/PsychWordVec}
 
     {magenta To use this package in publications, please cite:}
-    Bao, H. W. S. ({pkg.date}). "),
-    glue::glue_col("{italic PsychWordVec: Word embedding research framework for psychological science}"),
-    glue::glue_col(" (Version {inst.ver}) [Computer software]. "),
-    glue::glue_col("{underline https://CRAN.R-project.org/package=PsychWordVec}"),
-    "\n")
+    Bao, H. W. S. (2022). {italic PsychWordVec: Word embedding research framework for psychological science} (Version {inst.ver}) [Computer software]. {underline https://doi.org/10.32614/CRAN.package.PsychWordVec}
+
+    "))
   } else {
-    packageStartupMessage(glue::glue_col("
+    packageStartupMessage(
+    glue::glue_col("
 
     These R packages have not been installed:
     {paste(pkgs[loaded==FALSE], collapse=', ')}
@@ -73,17 +50,6 @@
 
     "))
   }
-
-  ## Update Info
-  if(new)
-    packageStartupMessage(glue::glue_col("
-
-    NEWS: A new version of PsychWordVec ({cran.ver}) is available ({cran.ymd})!
-
-    ***** Please update *****
-    install.packages(\"PsychWordVec\")
-
-    "))
 }
 
 
@@ -92,36 +58,27 @@
 
 #' Normalize all word vectors to the unit length 1.
 #'
-#' @description
-#' L2-normalization (scaling to unit euclidean length):
-#' the \emph{norm} of each vector in the vector space will be normalized to 1.
-#' It is necessary for any linear operation of word vectors.
+#' L2-normalization (scaling to unit euclidean length): the *norm* of each vector in the vector space will be normalized to 1. It is necessary for any linear operation of word vectors.
 #'
-#' R code:
-#' \itemize{
-#'   \item{Vector: \code{vec / sqrt(sum(vec^2))}}
-#'   \item{Matrix: \code{mat / sqrt(rowSums(mat^2))}}
-#' }
+#' R code inside:
+#' - Vector: `vec / sqrt(sum(vec^2))`
+#' - Matrix: `mat / sqrt(rowSums(mat^2))`
 #'
-#' @param x A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
-#' \code{\link[PsychWordVec:as_embed]{embed}} (matrix),
-#' see \code{\link{data_wordvec_load}}.
+#' @param x A [`wordvec`][as_wordvec] (data.table) or [`embed`][as_embed] (matrix), see [data_wordvec_load()].
 #'
 #' @return
-#' A \code{wordvec} (data.table) or \code{embed} (matrix) with \strong{normalized} word vectors.
+#' A `wordvec` (data.table) or `embed` (matrix) with *normalized* word vectors.
 #'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#' @inheritSection as_embed Download
 #'
 #' @seealso
-#' \code{\link{as_wordvec}} / \code{\link{as_embed}}
+#' [as_wordvec()] / [as_embed()]
 #'
-#' \code{\link{load_wordvec}} / \code{\link{load_embed}}
+#' [load_wordvec()] / [load_embed()]
 #'
-#' \code{\link{data_transform}}
+#' [data_transform()]
 #'
-#' \code{\link{data_wordvec_subset}}
+#' [data_wordvec_subset()]
 #'
 #' @examples
 #' d = normalize(demodata)
@@ -156,35 +113,29 @@ force_normalize = function(x, verbose=TRUE) {
 }
 
 
-#' Word vectors data class: \code{wordvec} and \code{embed}.
+#' Word vectors data class: `wordvec` and `embed`.
 #'
-#' \code{PsychWordVec} uses two types of word vectors data:
-#' \code{wordvec} (data.table, with two variables \code{word} and \code{vec})
-#' and \code{embed} (matrix, with dimensions as columns and words as row names).
-#' Note that matrix operation makes \code{embed} much faster than \code{wordvec}.
-#' Users are suggested to reshape data to \code{embed} before using the other functions.
+#' `PsychWordVec` uses two types of word vectors data: `wordvec` (data.table, with two variables `word` and `vec`) and `embed` (matrix, with dimensions as columns and words as row names). Note that matrix operation makes `embed` much faster than `wordvec`. Users are suggested to reshape data to `embed` before using the other functions.
 #'
-#' @describeIn as_embed From \code{wordvec} (data.table) to \code{embed} (matrix).
+#' @describeIn as_embed From `wordvec` (data.table) to `embed` (matrix).
 #'
 #' @param x Object to be reshaped. See examples.
-#' @param normalize Normalize all word vectors to unit length?
-#' Defaults to \code{FALSE}. See \code{\link{normalize}}.
+#' @param normalize Normalize all word vectors to unit length? Defaults to `FALSE`. See [normalize()].
 #'
 #' @return
-#' A \code{wordvec} (data.table) or \code{embed} (matrix).
+#' A `wordvec` (data.table) or `embed` (matrix).
 #'
 #' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#' Download pre-trained word vectors data (`.RData`): <https://psychbruce.github.io/WordVector_RData.pdf>
 #'
 #' @seealso
-#' \code{\link{load_wordvec}} / \code{\link{load_embed}}
+#' [load_wordvec()] / [load_embed()]
 #'
-#' \code{\link{normalize}}
+#' [normalize()]
 #'
-#' \code{\link{data_transform}}
+#' [data_transform()]
 #'
-#' \code{\link{data_wordvec_subset}}
+#' [data_wordvec_subset()]
 #'
 #' @examples
 #' dt = head(demodata, 10)
@@ -265,7 +216,7 @@ as_embed = function(x, normalize=FALSE) {
 }
 
 
-#' @describeIn as_embed From \code{embed} (matrix) to \code{wordvec} (data.table).
+#' @describeIn as_embed From `embed` (matrix) to `wordvec` (data.table).
 #' @export
 as_wordvec = function(x, normalize=FALSE) {
   if(is.wordvec(x) & normalize==FALSE) return(x)
@@ -417,8 +368,7 @@ str.wordvec = function(object, ...) {
 
 
 #' @rdname as_embed
-#' @param i,j Row (\code{i}) and column (\code{j}) filter to be used in \code{embed[i, j]}.
-## @param ... Not used.
+#' @param i,j Row (`i`) and column (`j`) filter to be used in `embed[i, j]`.
 #' @export
 `[.embed` = function(x, i, j) {
   if(missing(i) & missing(j)) {
@@ -501,7 +451,7 @@ str.wordvec = function(object, ...) {
 
 
 #' @rdname as_embed
-#' @param pattern Regular expression to be used in \code{embed[pattern("...")]}.
+#' @param pattern Regular expression to be used in `embed[pattern("...")]`.
 #' @export
 pattern = function(pattern) {
   class(pattern) = c("pattern", "character")
@@ -543,68 +493,44 @@ unique.wordvec = function(x, ...) {
 #### Transform and Load ####
 
 
-#' Transform plain text of word vectors into
-#' \code{wordvec} (data.table) or \code{embed} (matrix),
-#' saved in a compressed ".RData" file.
+#' Transform plain text of word vectors into `wordvec` (data.table) or `embed` (matrix), saved in a compressed ".RData" file.
 #'
-#' @description
-#' Transform plain text of word vectors into
-#' \code{wordvec} (data.table) or \code{embed} (matrix),
-#' saved in a compressed ".RData" file.
+#' Transform plain text of word vectors into `wordvec` (data.table) or `embed` (matrix), saved in a compressed ".RData" file.
 #'
-#' \emph{Speed}: In total (preprocess + compress + save),
-#' it can process about 30000 words/min
-#' with the slowest settings (\code{compress="xz"}, \code{compress.level=9})
-#' on a modern computer (HP ProBook 450, Windows 11, Intel i7-1165G7 CPU, 32GB RAM).
+#' *Speed*: In total (preprocess + compress + save), it can process about 30000 words/min with the slowest settings (`compress="xz"`, `compress.level=9`) on a modern computer (HP ProBook 450, Windows 11, Intel i7-1165G7 CPU, 32GB RAM).
 #'
 #' @param file.load File name of raw text (must be plain text).
 #'
-#' Data must be in this format (values separated by \code{sep}):
+#' Data must be in this format (values separated by `sep`):
 #'
 #' cat 0.001 0.002 0.003 0.004 0.005 ... 0.300
 #'
 #' dog 0.301 0.302 0.303 0.304 0.305 ... 0.600
 #' @param file.save File name of to-be-saved R data (must be .RData).
-#' @param as Transform the text to which R object?
-#' \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
-#' \code{\link[PsychWordVec:as_embed]{embed}} (matrix).
-#' Defaults to \code{wordvec}.
-#' @param sep Column separator. Defaults to \code{" "}.
-#' @param header Is the 1st row a header (e.g., meta-information such as "2000000 300")?
-#' Defaults to \code{"auto"}, which automatically determines whether there is a header.
-#' If \code{TRUE}, then the 1st row will be dropped.
-#' @param encoding File encoding. Defaults to \code{"auto"}
-#' (using \code{\link[vroom:vroom_lines]{vroom::vroom_lines()}} to fast read the file).
-#' If specified to any other value (e.g., \code{"UTF-8"}),
-#' then it uses \code{\link[base:readLines]{readLines()}} to read the file,
-#' which is much slower than \code{vroom}.
-#' @param compress Compression method for the saved file. Defaults to \code{"bzip2"}.
-#'
-#' Options include:
-#' \itemize{
-#'   \item \code{1} or \code{"gzip"}: modest file size (fastest)
-#'   \item \code{2} or \code{"bzip2"}: small file size (fast)
-#'   \item \code{3} or \code{"xz"}: minimized file size (slow)
-#' }
-#' @param compress.level Compression level from \code{0} (none) to \code{9}
-#' (maximal compression for minimal file size). Defaults to \code{9}.
-#' @param verbose Print information to the console? Defaults to \code{TRUE}.
+#' @param as Transform the text to which R object? [`wordvec`][as_wordvec] (data.table) or [`embed`][as_embed] (matrix). Defaults to `wordvec`.
+#' @param sep Column separator. Defaults to `" "`.
+#' @param header Is the 1st row a header (e.g., meta-information such as "2000000 300")? Defaults to `"auto"`, which automatically determines whether there is a header. If `TRUE`, the 1st row will be dropped.
+#' @param encoding File encoding. Defaults to `"auto"` (using [vroom::vroom_lines()] to fast read the file). If specified to any other value (e.g., `"UTF-8"`), it uses [readLines()] to read the file, which is much slower than `vroom`.
+#' @param compress Compression method for the saved file. Defaults to `"bzip2"`.
+#' - `1` or `"gzip"`: modest file size (fastest)
+#' - `2` or `"bzip2"`: small file size (fast)
+#' - `3` or `"xz"`: minimized file size (slow)
+#' @param compress.level Compression level from `0` (none) to `9` (maximal compression for minimal file size). Defaults to `9`.
+#' @param verbose Print information to the console? Defaults to `TRUE`.
 #'
 #' @return
-#' A \code{wordvec} (data.table) or \code{embed} (matrix).
+#' A `wordvec` (data.table) or `embed` (matrix).
 #'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#' @inheritSection as_embed Download
 #'
 #' @seealso
-#' \code{\link{as_wordvec}} / \code{\link{as_embed}}
+#' [as_wordvec()] / [as_embed()]
 #'
-#' \code{\link{load_wordvec}} / \code{\link{load_embed}}
+#' [load_wordvec()] / [load_embed()]
 #'
-#' \code{\link{normalize}}
+#' [normalize()]
 #'
-#' \code{\link{data_wordvec_subset}}
+#' [data_wordvec_subset()]
 #'
 #' @examples
 #' \dontrun{
@@ -710,35 +636,26 @@ data_transform = function(
 }
 
 
-#' Load word vectors data (\code{wordvec} or \code{embed}) from ".RData" file.
+#' Load word vectors data (`wordvec` or `embed`) from ".RData" file.
 #'
 #' @inheritParams as_embed
 #' @inheritParams data_transform
-#' @param file File name of .RData transformed by \code{\link{data_transform}}.
-#' Can also be an .RData file containing an embedding matrix with words as row names.
-#' @param as Load as
-#' \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
-#' \code{\link[PsychWordVec:as_embed]{embed}} (matrix).
-#' Defaults to the original class of the R object in \code{file}.
-#' The two wrapper functions \code{load_wordvec} and \code{load_embed}
-#' automatically reshape the data to the corresponding class and
-#' normalize all word vectors (for faster future use).
+#' @param file File name of .RData transformed by [data_transform()]. Can also be an .RData file containing an embedding matrix with words as row names.
+#' @param as Load as [`wordvec`][as_wordvec] (data.table) or [`embed`][as_embed] (matrix). Defaults to the original class of the R object in `file`. The two wrapper functions [load_wordvec()] and [load_embed()] automatically reshape the data to the corresponding class and normalize all word vectors (for faster future use).
 #'
 #' @return
-#' A \code{wordvec} (data.table) or \code{embed} (matrix).
+#' A `wordvec` (data.table) or `embed` (matrix).
 #'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#' @inheritSection as_embed Download
 #'
 #' @seealso
-#' \code{\link{as_wordvec}} / \code{\link{as_embed}}
+#' [as_wordvec()] / [as_embed()]
 #'
-#' \code{\link{normalize}}
+#' [normalize()]
 #'
-#' \code{\link{data_transform}}
+#' [data_transform()]
 #'
-#' \code{\link{data_wordvec_subset}}
+#' [data_wordvec_subset()]
 #'
 #' @examples
 #' d = demodata[1:200]
@@ -878,45 +795,33 @@ extract_valid_subset = function(
 }
 
 
-#' Extract a subset of word vectors data (with S3 methods).
+#' \[S3 method\] Extract a subset of word vectors data.
 #'
-#' @description
-#' Extract a subset of word vectors data (with S3 methods).
-#' You may specify either a \code{wordvec} or \code{embed} loaded by \code{\link{data_wordvec_load}})
-#' or an .RData file transformed by \code{\link{data_transform}}).
+#' Extract a subset of word vectors data. You may specify either a `wordvec` or `embed` loaded by [data_wordvec_load()] or an .RData file transformed by [data_transform()]).
 #'
 #' @inheritParams data_transform
 #' @param x Can be:
-#' \itemize{
-#'   \item{a \code{wordvec} or \code{embed} loaded by \code{\link{data_wordvec_load}}}
-#'   \item{an .RData file transformed by \code{\link{data_transform}}}
-#' }
-#' @param words [Option 1] Character string(s).
-#' @param pattern [Option 2] Regular expression (see \code{\link[stringr:str_subset]{str_subset}}).
-#' If neither \code{words} nor \code{pattern} are specified (i.e., both are \code{NULL}),
-#' then all words in the data will be extracted.
-#' @param as Reshape to
-#' \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
-#' \code{\link[PsychWordVec:as_embed]{embed}} (matrix).
-#' Defaults to the original class of \code{x}.
-#' @param ... Parameters passed to \code{data_wordvec_subset}
-#' when using the S3 method \code{subset}.
+#' - a `wordvec` or `embed` loaded by [data_wordvec_load()]
+#' - an .RData file transformed by [data_transform()]
+#' @param words \[Option 1\] Character string(s).
+#' @param pattern \[Option 2\] [Regular expression][stringr::str_subset]. If `words` and `pattern` are not specified, all words in the data will be extracted.
+#' @param as Reshape to [`wordvec`][as_wordvec] (data.table) or [`embed`][as_embed] (matrix).
+#' Defaults to the original class of `x`.
+#' @param ... Arguments passed on to [data_wordvec_subset()] when using the S3 method `subset`.
 #'
 #' @return
-#' A subset of \code{wordvec} or \code{embed} of valid (available) words.
+#' A subset of `wordvec` or `embed` of valid (available) words.
 #'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#' @inheritSection as_embed Download
 #'
 #' @seealso
-#' \code{\link{as_wordvec}} / \code{\link{as_embed}}
+#' [as_wordvec()] / [as_embed()]
 #'
-#' \code{\link{load_wordvec}} / \code{\link{load_embed}}
+#' [load_wordvec()] / [load_embed()]
 #'
-#' \code{\link{get_wordvec}}
+#' [get_wordvec()]
 #'
-#' \code{\link{data_transform}}
+#' [data_transform()]
 #'
 #' @examples
 #' \donttest{## directly use `embed[i, j]` (3x faster than `wordvec`):
@@ -1022,29 +927,23 @@ subset.embed = function(x, ...) {
 #' Extract word vector(s), using either a list of words or a regular expression.
 #'
 #' @inheritParams data_wordvec_subset
-#' @param data A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
-#' \code{\link[PsychWordVec:as_embed]{embed}} (matrix),
-#' see \code{\link{data_wordvec_load}}.
-#' @param plot Generate a plot to illustrate the word vectors? Defaults to \code{FALSE}.
-#' @param plot.dims Dimensions to be plotted (e.g., \code{1:100}).
-#' Defaults to \code{NULL} (plot all dimensions).
-#' @param plot.step Step for value breaks. Defaults to \code{0.05}.
-#' @param plot.border Color of tile border. Defaults to \code{"white"}.
-#' To remove the border color, set \code{plot.border=NA}.
+#' @param data A [`wordvec`][as_wordvec] (data.table) or [`embed`][as_embed] (matrix), see [data_wordvec_load()].
+#' @param plot Generate a plot to illustrate the word vectors? Defaults to `FALSE`.
+#' @param plot.dims Dimensions to be plotted (e.g., `1:100`). Defaults to `NULL` (plot all dimensions).
+#' @param plot.step Step for value breaks. Defaults to `0.05`.
+#' @param plot.border Color of tile border. Defaults to `"white"`. To remove the border color, set `plot.border=NA`.
 #'
 #' @return
-#' A \code{data.table} with words as columns and dimensions as rows.
+#' A `data.table` with words as columns and dimensions as rows.
 #'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#' @inheritSection as_embed Download
 #'
 #' @seealso
-#' \code{\link{data_wordvec_subset}}
+#' [data_wordvec_subset()]
 #'
-#' \code{\link{plot_wordvec}}
+#' [plot_wordvec()]
 #'
-#' \code{\link{plot_wordvec_tSNE}}
+#' [plot_wordvec_tSNE()]
 #'
 #' @examples
 #' d = as_embed(demodata, normalize=TRUE)
@@ -1132,31 +1031,23 @@ get_wordembed = function(x, words=NULL, pattern=NULL, words.order=TRUE) {
 #' Visualize word vectors.
 #'
 #' @param x Can be:
-#' \itemize{
-#'   \item{a \code{data.table} returned by \code{\link{get_wordvec}}}
-#'   \item{a \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table)
-#'   or \code{\link[PsychWordVec:as_embed]{embed}} (matrix)
-#'   loaded by \code{\link{data_wordvec_load}}}
-#' }
-#' @param dims Dimensions to be plotted (e.g., \code{1:100}).
-#' Defaults to \code{NULL} (plot all dimensions).
-#' @param step Step for value breaks. Defaults to \code{0.05}.
-#' @param border Color of tile border. Defaults to \code{"white"}.
-#' To remove the border color, set \code{border=NA}.
+#' - a `data.table` returned from [get_wordvec()]
+#' - a [`wordvec`][as_wordvec] (data.table) or [`embed`][as_embed] (matrix) returned from [data_wordvec_load()]
+#' @param dims Dimensions to be plotted (e.g., `1:100`). Defaults to `NULL` (plot all dimensions).
+#' @param step Step for value breaks. Defaults to `0.05`.
+#' @param border Color of tile border. Defaults to `"white"`. To remove the border color, set `border=NA`.
 #'
 #' @return
-#' A \code{ggplot} object.
+#' A `ggplot` object.
 #'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#' @inheritSection as_embed Download
 #'
 #' @seealso
-#' \code{\link{get_wordvec}}
+#' [get_wordvec()]
 #'
-#' \code{\link{plot_similarity}}
+#' [plot_similarity()]
 #'
-#' \code{\link{plot_wordvec_tSNE}}
+#' [plot_wordvec_tSNE()]
 #'
 #' @examples
 #' \donttest{d = as_embed(demodata, normalize=TRUE)
@@ -1238,50 +1129,32 @@ plot_wordvec = function(
 
 #' Visualize word vectors with dimensionality reduced using t-SNE.
 #'
-#' Visualize word vectors with dimensionality reduced
-#' using the t-Distributed Stochastic Neighbor Embedding (t-SNE) method
-#' (i.e., projecting high-dimensional vectors into a low-dimensional vector space),
-#' implemented by \code{\link[Rtsne:Rtsne]{Rtsne::Rtsne()}}.
-#' You should specify a random seed if you expect reproducible results.
+#' Visualize word vectors with dimensionality reduced using the t-Distributed Stochastic Neighbor Embedding (t-SNE) method (i.e., projecting high-dimensional vectors into a low-dimensional vector space), implemented by [Rtsne::Rtsne()]. You should specify a random seed if you expect reproducible results.
 #'
 #' @inheritParams plot_wordvec
-#' @param dims Output dimensionality: \code{2} (default, the most common choice) or \code{3}.
-#' @param perplexity Perplexity parameter, should not be larger than (number of words - 1) / 3.
-#' Defaults to \code{floor((length(dt)-1)/3)} (where columns of \code{dt} are words).
-#' See the \code{\link[Rtsne:Rtsne]{Rtsne}} package for details.
-#' @param theta Speed/accuracy trade-off (increase for less accuracy), set to 0 for exact t-SNE.
-#' Defaults to 0.5.
-#' @param colors A character vector specifying (1) the categories of words (for 2-D plot only)
-#' or (2) the exact colors of words (for 2-D and 3-D plot). See examples for its usage.
-#' @param seed Random seed for reproducible results. Defaults to \code{NULL}.
-#' @param custom.Rtsne User-defined \code{\link[Rtsne:Rtsne]{Rtsne}} object using the same \code{dt}.
+#' @param dims Output dimensionality: `2` (default, the most common choice) or `3`.
+#' @param perplexity Perplexity parameter, should not be larger than (number of words - 1) / 3. Defaults to `floor((length(dt)-1)/3)` (where columns of `dt` are words). See [Rtsne::Rtsne()] for details.
+#' @param theta Speed/accuracy trade-off (increase for less accuracy), set to 0 for exact t-SNE. Defaults to `0.5`.
+#' @param colors A character vector specifying (1) the categories of words (for 2-D plot only) or (2) the exact colors of words (for 2-D and 3-D plot). See examples for its usage.
+#' @param seed Random seed for reproducible results. Defaults to `NULL`.
+#' @param custom.Rtsne User-defined [`Rtsne`][Rtsne::Rtsne] object using the same `dt`.
 #'
 #' @return
-#' 2-D: A \code{ggplot} object.
-#' You may extract the data from this object using \code{$data}.
+#' 2-D: A `ggplot` object. You may extract the data from this object using `$data`.
 #'
-#' 3-D: Nothing but only the data was invisibly returned,
-#' because \code{\link[rgl:plot3d]{rgl::plot3d()}} is
-#' "called for the side effect of drawing the plot"
-#' and thus cannot return any 3-D plot object.
+#' 3-D: Nothing but only the data was invisibly returned, because [rgl::plot3d()] is "called for the side effect of drawing the plot" and thus cannot return any 3-D plot object.
 #'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#' @inheritSection as_embed Download
 #'
 #' @references
-#' Hinton, G. E., & Salakhutdinov, R. R. (2006).
-#' Reducing the dimensionality of data with neural networks.
-#' \emph{Science, 313}(5786), 504--507.
+#' Hinton, G. E., & Salakhutdinov, R. R. (2006). Reducing the dimensionality of data with neural networks. *Science, 313*(5786), 504--507.
 #'
-#' van der Maaten, L., & Hinton, G. (2008).
-#' Visualizing data using t-SNE.
-#' \emph{Journal of Machine Learning Research, 9}, 2579--2605.
+#' van der Maaten, L., & Hinton, G. (2008). Visualizing data using t-SNE. *Journal of Machine Learning Research, 9*, 2579--2605.
 #'
 #' @seealso
-#' \code{\link{plot_wordvec}}
+#' [plot_wordvec()]
 #'
-#' \code{\link{plot_network}}
+#' [plot_network()]
 #'
 #' @examples
 #' \donttest{d = as_embed(demodata, normalize=TRUE)
@@ -1386,44 +1259,30 @@ plot_wordvec_tSNE = function(
 #' @inheritParams get_wordvec
 #' @inheritParams data_transform
 #' @param x Can be:
-#' \itemize{
-#'   \item{\code{NULL}: use the sum of all word vectors in \code{data}}
-#'   \item{a single word:
-#'
-#'   \code{"China"}}
-#'
-#'   \item{a list of words:
-#'
-#'   \code{c("king", "queen")}}
-#'
-#'   \code{cc(" king , queen ; man | woman")}
-#'
-#'   \item{an R formula (\code{~ xxx}) specifying
-#'   words that positively and negatively
-#'   contribute to the similarity (for word analogy):
-#'
-#'   \code{~ boy - he + she}
-#'
-#'   \code{~ king - man + woman}
-#'
-#'   \code{~ Beijing - China + Japan}}
-#' }
+#' - `NULL`: use the sum of all word vectors in `data`
+#' - a single word:
+#'   - `"China"`
+#' - a vector of words:
+#'   - `c("king", "queen")`
+#'   - `cc(" king , queen ; man | woman")`
+#' - an R formula (`~ xxx`) specifying words that positively and negatively contribute to the similarity (for word analogy):
+#'   - `~ boy - he + she`
+#'   - `~ king - man + woman`
+#'   - `~ Beijing - China + Japan`
 #'
 #' @return
 #' Normalized sum vector.
 #'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#' @inheritSection as_embed Download
 #'
 #' @seealso
-#' \code{\link{normalize}}
+#' [normalize()]
 #'
-#' \code{\link{most_similar}}
+#' [most_similar()]
 #'
-#' \code{\link{dict_expand}}
+#' [dict_expand()]
 #'
-#' \code{\link{dict_reliability}}
+#' [dict_reliability()]
 #'
 #' @examples
 #' \donttest{sum_wordvec(normalize(demodata), ~ king - man + woman)
@@ -1476,24 +1335,24 @@ sum_wordvec = function(data, x=NULL, verbose=TRUE) {
 #' @details
 #' Cosine similarity =
 #'
-#' \code{sum(v1 * v2) / ( sqrt(sum(v1^2)) * sqrt(sum(v2^2)) )}
+#' `sum(v1 * v2) / ( sqrt(sum(v1^2)) * sqrt(sum(v2^2)) )`
 #'
 #' Cosine distance =
 #'
-#' \code{1 - cosine_similarity(v1, v2)}
+#' `1 - cosine_similarity(v1, v2)`
 #'
 #' @param v1,v2 Numeric vector (of the same length).
-#' @param distance Compute cosine distance instead?
-#' Defaults to \code{FALSE} (cosine similarity).
+#' @param distance Compute cosine distance instead? Defaults to `FALSE` (cosine similarity).
 #'
-#' @return A value of cosine similarity/distance.
+#' @return
+#' A value of cosine similarity/distance.
 #'
 #' @seealso
-#' \code{\link{pair_similarity}}
+#' [pair_similarity()]
 #'
-#' \code{\link{tab_similarity}}
+#' [tab_similarity()]
 #'
-#' \code{\link{most_similar}}
+#' [most_similar()]
 #'
 #' @examples
 #' cos_sim(v1=c(1,1,1), v2=c(2,2,2))  # 1
@@ -1534,24 +1393,21 @@ cos_dist = function(v1, v2) {
 #' @inheritParams cosine_similarity
 #' @inheritParams get_wordvec
 #' @inheritParams data_wordvec_subset
-#' @param words1,words2 [Option 3]
-#' Two sets of words for only n1 * n2 word pairs. See examples.
+#' @param words1,words2 \[Option 3\] Two sets of words for only n1 * n2 word pairs. See examples.
 #'
 #' @return
 #' A matrix of pairwise cosine similarity/distance.
 #'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#' @inheritSection as_embed Download
 #'
 #' @seealso
-#' \code{\link{cosine_similarity}}
+#' [cosine_similarity()]
 #'
-#' \code{\link{plot_similarity}}
+#' [plot_similarity()]
 #'
-#' \code{\link{tab_similarity}}
+#' [tab_similarity()]
 #'
-#' \code{\link{most_similar}}
+#' [most_similar()]
 #'
 #' @examples
 #' pair_similarity(demodata, c("China", "Chinese"))
@@ -1595,30 +1451,25 @@ pair_similarity = function(
 #' Tabulate cosine similarity/distance of word pairs.
 #'
 #' @inheritParams pair_similarity
-#' @param unique Return unique word pairs (\code{TRUE})
-#' or all pairs with duplicates (\code{FALSE}; default).
+#' @param unique Return unique word pairs (`TRUE`) or all pairs with duplicates (`FALSE`; default).
 #'
 #' @return
-#' A \code{data.table} of words, word pairs,
-#' and their cosine similarity (\code{cos_sim})
-#' or cosine distance (\code{cos_dist}).
+#' A `data.table` of words, word pairs, and their cosine similarity (`cos_sim`) or cosine distance (`cos_dist`).
 #'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#' @inheritSection as_embed Download
 #'
 #' @seealso
-#' \code{\link{cosine_similarity}}
+#' [cosine_similarity()]
 #'
-#' \code{\link{pair_similarity}}
+#' [pair_similarity()]
 #'
-#' \code{\link{plot_similarity}}
+#' [plot_similarity()]
 #'
-#' \code{\link{most_similar}}
+#' [most_similar()]
 #'
-#' \code{\link{test_WEAT}}
+#' [test_WEAT()]
 #'
-#' \code{\link{test_RND}}
+#' [test_RND()]
 #'
 #' @examples
 #' \donttest{tab_similarity(demodata, cc("king, queen, man, woman"))
@@ -1670,44 +1521,32 @@ tab_similarity = function(
 #'
 #' @inheritParams tab_similarity
 #' @inheritParams corrplot::corrplot
-#' @param label Position of text labels.
-#' Defaults to \code{"auto"} (add labels if less than 20 words).
-#' Can be \code{TRUE} (left and top), \code{FALSE} (add no labels of words),
-#' or a character string (see the usage of \code{tl.pos} in \code{\link[corrplot:corrplot]{corrplot}}.
-#' @param value.color Color of values added on the plot.
-#' Defaults to \code{NULL} (add no values).
-#' @param value.percent Whether to transform values into percentage style for space saving.
-#' Defaults to \code{FALSE}.
-#' @param hclust.n Number of rectangles to be drawn on the plot according to
-#' the hierarchical clusters, only valid when \code{order="hclust"}.
-#' Defaults to \code{NULL} (add no rectangles).
-#' @param hclust.color Color of rectangle border, only valid when \code{hclust.n} >= 1.
-#' Defaults to \code{"black"}.
-#' @param hclust.line Line width of rectangle border, only valid when \code{hclust.n} >= 1.
-#' Defaults to \code{2}.
+#' @param label Position of text labels. Defaults to `"auto"` (add labels if less than 20 words). Can be `TRUE` (left and top), `FALSE` (add no labels of words), or a character string (see the usage of `tl.pos` in [corrplot::corrplot()].
+#' @param value.color Color of values added on the plot. Defaults to `NULL` (add no values).
+#' @param value.percent Whether to transform values into percentage style for space saving. Defaults to `FALSE`.
+#' @param hclust.n Number of rectangles to be drawn on the plot according to the hierarchical clusters, only valid when `order="hclust"`. Defaults to `NULL` (add no rectangles).
+#' @param hclust.color Color of rectangle border, only valid when `hclust.n` >= 1. Defaults to `"black"`.
+#' @param hclust.line Line width of rectangle border, only valid when `hclust.n` >= 1. Defaults to `2`.
 #' @param file File name to be saved, should be png or pdf.
-#' @param width,height Width and height (in inches) for the saved file.
-#' Defaults to \code{10} and \code{6}.
-#' @param dpi Dots per inch. Defaults to \code{500} (i.e., file resolution: 4000 * 3000).
-#' @param ... Other parameters passed to \code{\link[corrplot:corrplot]{corrplot}}.
+#' @param width,height Width and height (in inches) for the saved file. Defaults to `10` and `6`.
+#' @param dpi Dots per inch. Defaults to `500` (i.e., file resolution: 4000 * 3000).
+#' @param ... Arguments passed on to [corrplot::corrplot()].
 #'
 #' @return
 #' Invisibly return a matrix of cosine similarity between each pair of words.
 #'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#' @inheritSection as_embed Download
 #'
 #' @seealso
-#' \code{\link{cosine_similarity}}
+#' [cosine_similarity()]
 #'
-#' \code{\link{pair_similarity}}
+#' [pair_similarity()]
 #'
-#' \code{\link{tab_similarity}}
+#' [tab_similarity()]
 #'
-#' \code{\link{most_similar}}
+#' [most_similar()]
 #'
-#' \code{\link{plot_network}}
+#' [plot_network()]
 #'
 #' @examples
 #' \donttest{w1 = cc("king, queen, man, woman")
@@ -1800,45 +1639,36 @@ plot_similarity = function(
 #'
 #' @inheritParams plot_similarity
 #' @param index Use which index to perform network analysis?
-#' Can be \code{"pcor"} (partial correlation, default and suggested),
-#' \code{"cor"} (raw correlation),
-#' \code{"glasso"} (graphical lasso-estimation of partial correlation matrix
-#' using the \code{glasso} package),
-#' or \code{"sim"} (pairwise cosine similarity).
-#' @param alpha Significance level to be used for not showing edges. Defaults to \code{0.05}.
-#' @param bonf Bonferroni correction of \emph{p} value. Defaults to \code{FALSE}.
-#' @param max Maximum value for scaling edge widths and colors. Defaults to the highest value of the index.
-#' Can be \code{1} if you want to compare several graphs.
-#' @param node.size Node size. Defaults to 8*exp(-nNodes/80)+1.
-#' @param node.group Node group(s). Can be a named list (see examples) in which each element
-#' is a vector of integers identifying the numbers of the nodes that belong together, or a factor.
-#' @param node.color Node color(s). Can be a character vector of colors corresponding to \code{node.group}.
-#' Defaults to white (if \code{node.group} is not specified)
-#' or the palette of ggplot2 (if \code{node.group} is specified).
+#' - `"pcor"`: partial correlation (default and suggested)
+#' - `"cor"`: raw correlation
+#' - `"glasso"`: graphical lasso-estimation of partial correlation matrix (using the `glasso` package)
+#' - `"sim"`: pairwise cosine similarity
+#' @param alpha Significance level to be used for not showing edges. Defaults to `0.05`.
+#' @param bonf Bonferroni correction of *p* value. Defaults to `FALSE`.
+#' @param max Maximum value for scaling edge widths and colors. Defaults to the highest value of the index. Can be `1` if you want to compare several graphs.
+#' @param node.size Node size. Defaults to `8*exp(-nNodes/80)+1`.
+#' @param node.group Node group(s). Can be a named list (see examples) in which each element is a vector of integers identifying the numbers of the nodes that belong together, or a factor.
+#' @param node.color Node color(s). Can be a character vector of colors corresponding to `node.group`. Defaults to white (if `node.group` is not specified) or the palette of ggplot2 (if `node.group` is specified).
 #' @param label.text Node label of text. Defaults to original words.
-#' @param label.size Node label font size. Defaults to \code{1.2}.
-#' @param label.size.equal Make the font size of all labels equal. Defaults to \code{TRUE}.
-#' @param label.color Node label color. Defaults to \code{"black"}.
-#' @param edge.color Edge colors for positive and negative values, respectively.
-#' Defaults to \code{c("#009900", "#BF0000")}.
-#' @param edge.label Edge label of values. Defaults to \code{FALSE}.
-#' @param edge.label.size Edge label font size. Defaults to \code{1}.
-#' @param edge.label.color Edge label color. Defaults to \code{edge.color}.
-#' @param edge.label.bg Edge label background color. Defaults to \code{"white"}.
-#' @param ... Other parameters passed to \code{\link[qgraph:qgraph]{qgraph}}.
+#' @param label.size Node label font size. Defaults to `1.2`.
+#' @param label.size.equal Make the font size of all labels equal. Defaults to `TRUE`.
+#' @param label.color Node label color. Defaults to `"black"`.
+#' @param edge.color Edge colors for positive and negative values, respectively. Defaults to `c("#009900", "#BF0000")`.
+#' @param edge.label Edge label of values. Defaults to `FALSE`.
+#' @param edge.label.size Edge label font size. Defaults to `1`.
+#' @param edge.label.color Edge label color. Defaults to `edge.color`.
+#' @param edge.label.bg Edge label background color. Defaults to `"white"`.
+#' @param ... Arguments passed on to [qgraph::qgraph()].
 #'
 #' @return
-#' Invisibly return a \code{\link[qgraph:qgraph]{qgraph}} object,
-#' which further can be plotted using \code{plot()}.
+#' Invisibly return a [`qgraph`][qgraph::qgraph] object, which further can be plotted using `plot()`.
 #'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#' @inheritSection as_embed Download
 #'
 #' @seealso
-#' \code{\link{plot_similarity}}
+#' [plot_similarity()]
 #'
-#' \code{\link{plot_wordvec_tSNE}}
+#' [plot_wordvec_tSNE()]
 #'
 #' @examples
 #' \donttest{d = as_embed(demodata, normalize=TRUE)
@@ -1966,48 +1796,38 @@ plot_network = function(
 
 #' Find the Top-N most similar words.
 #'
-#' Find the Top-N most similar words, which replicates the results produced
-#' by the Python \code{gensim} module \code{most_similar()} function.
-#' (Exact replication of \code{gensim} requires the same word vectors data,
-#' not the \code{demodata} used here in examples.)
+#' Find the Top-N most similar words, which replicates the results produced by the Python `gensim` module `most_similar()` function. (Exact replication of `gensim` requires the same word vectors data, not the `demodata` used here in examples.)
 #'
 #' @inheritParams get_wordvec
 #' @inheritParams sum_wordvec
-#' @param topn Top-N most similar words. Defaults to \code{10}.
-#' @param above Defaults to \code{NULL}. Can be:
-#' \itemize{
-#'   \item{a threshold value to find all words with cosine similarities
-#'   higher than this value}
-#'   \item{a critical word to find all words with cosine similarities
-#'   higher than that with this critical word}
-#' }
-#' If both \code{topn} and \code{above} are specified, \code{above} wins.
-#' @param keep Keep words specified in \code{x} in results?
-#' Defaults to \code{FALSE}.
-#' @param row.id Return the row number of each word? Defaults to \code{TRUE},
-#' which may help determine the relative word frequency in some cases.
+#' @param topn Top-N most similar words. Defaults to `10`.
+#' @param above Defaults to `NULL`. Can be:
+#' - a threshold value to find all words with cosine similarities higher than this value
+#' - a critical word to find all words with cosine similarities higher than that with this critical word
+#'
+#' If both `topn` and `above` are specified, `above` wins.
+#' @param keep Keep words specified in `x` in results? Defaults to `FALSE`.
+#' @param row.id Return the row number of each word? Defaults to `TRUE`, which may help determine the relative word frequency in some cases.
 #'
 #' @return
-#' A \code{data.table} with the most similar words and their cosine similarities.
+#' A `data.table` with the most similar words and their cosine similarities.
 #'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#' @inheritSection as_embed Download
 #'
 #' @seealso
-#' \code{\link{sum_wordvec}}
+#' [sum_wordvec()]
 #'
-#' \code{\link{dict_expand}}
+#' [dict_expand()]
 #'
-#' \code{\link{dict_reliability}}
+#' [dict_reliability()]
 #'
-#' \code{\link{cosine_similarity}}
+#' [cosine_similarity()]
 #'
-#' \code{\link{pair_similarity}}
+#' [pair_similarity()]
 #'
-#' \code{\link{plot_similarity}}
+#' [plot_similarity()]
 #'
-#' \code{\link{tab_similarity}}
+#' [tab_similarity()]
 #'
 #' @examples
 #' d = as_embed(demodata, normalize=TRUE)
@@ -2095,27 +1915,21 @@ most_similar = function(
 #' Expand a dictionary from the most similar words.
 #'
 #' @inheritParams most_similar
-#' @param words A single word or a list of words,
-#' used to calculate the
-#' \link[PsychWordVec:sum_wordvec]{sum vector}.
-#' @param threshold Threshold of cosine similarity,
-#' used to find all words with similarities higher than this value.
-#' Defaults to \code{0.5}. A low threshold may lead to failure of convergence.
-#' @param iteration Number of maximum iterations. Defaults to \code{5}.
+#' @param words A single word or a list of words, used to calculate the [sum vector][sum_wordvec].
+#' @param threshold Threshold of cosine similarity, used to find all words with similarities higher than this value. Defaults to `0.5`. A low threshold may lead to failure of convergence.
+#' @param iteration Number of maximum iterations. Defaults to `5`.
 #'
 #' @return
 #' An expanded list (character vector) of words.
 #'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#' @inheritSection as_embed Download
 #'
 #' @seealso
-#' \code{\link{sum_wordvec}}
+#' [sum_wordvec()]
 #'
-#' \code{\link{most_similar}}
+#' [most_similar()]
 #'
-#' \code{\link{dict_reliability}}
+#' [dict_reliability()]
 #'
 #' @examples
 #' \donttest{dict = dict_expand(demodata, "king")
@@ -2171,62 +1985,50 @@ dict_expand = function(
 
 #' Reliability analysis and PCA of a dictionary.
 #'
-#' Reliability analysis (Cronbach's \eqn{\alpha} and average cosine similarity) and
-#' Principal Component Analysis (PCA) of a dictionary,
-#' with \link[PsychWordVec:plot_similarity]{visualization of cosine similarities}
-#' between words (ordered by the first principal component loading).
-#' Note that Cronbach's \eqn{\alpha} can be misleading
-#' when the number of items/words is large.
+#' Reliability analysis (Cronbach's \eqn{\alpha} and average cosine similarity) and Principal Component Analysis (PCA) of a dictionary, with [visualization of cosine similarities][plot_similarity] between words (ordered by the first principal component loading). Note that Cronbach's \eqn{\alpha} can be misleading when the number of items/words is large.
 #'
 #' @inheritParams plot_similarity
-#' @param alpha Estimate the Cronbach's \eqn{\alpha}? Defaults to \code{TRUE}.
-#' Note that this can be \emph{misleading} and \emph{time-consuming}
-#' when the number of items/words is large.
-#' @param sort Sort items by the first principal component loading (PC1)?
-#' Defaults to \code{TRUE}.
-#' @param plot Visualize the cosine similarities? Defaults to \code{TRUE}.
-#' @param ... Other parameters passed to \code{\link{plot_similarity}}.
+#' @param alpha Estimate the Cronbach's \eqn{\alpha}? Defaults to `TRUE`. Note that this can be *misleading* and *time-consuming* when the number of items/words is large.
+#' @param sort Sort items by the first principal component loading (PC1)? Defaults to `TRUE`.
+#' @param plot Visualize the cosine similarities? Defaults to `TRUE`.
+#' @param ... Arguments passed on to [plot_similarity()].
 #'
 #' @return
-#' A \code{list} object of new class \code{reliability}:
+#' A `list` object of new class `reliability`:
 #' \describe{
-#'   \item{\code{alpha}}{
+#'   \item{`alpha`}{
 #'     Cronbach's \eqn{\alpha}}
-#'   \item{\code{eigen}}{
+#'   \item{`eigen`}{
 #'     Eigen values from PCA}
-#'   \item{\code{pca}}{
+#'   \item{`pca`}{
 #'     PCA (only 1 principal component)}
-#'   \item{\code{pca.rotation}}{
+#'   \item{`pca.rotation`}{
 #'     PCA with varimax rotation (if potential principal components > 1)}
-#'   \item{\code{items}}{
+#'   \item{`items`}{
 #'     Item statistics}
-#'   \item{\code{cos.sim.mat}}{
+#'   \item{`cos.sim.mat`}{
 #'     A matrix of cosine similarities of all word pairs}
-#'   \item{\code{cos.sim}}{
+#'   \item{`cos.sim`}{
 #'     Lower triangular part of the matrix of cosine similarities}
 #' }
 #'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#' @inheritSection as_embed Download
 #'
 #' @references
-#' Nicolas, G., Bai, X., & Fiske, S. T. (2021).
-#' Comprehensive stereotype content dictionaries using a semi-automated method.
-#' \emph{European Journal of Social Psychology, 51}(1), 178--196.
+#' Nicolas, G., Bai, X., & Fiske, S. T. (2021). Comprehensive stereotype content dictionaries using a semi-automated method. *European Journal of Social Psychology, 51*(1), 178--196.
 #'
 #' @seealso
-#' \code{\link{cosine_similarity}}
+#' [cosine_similarity()]
 #'
-#' \code{\link{pair_similarity}}
+#' [pair_similarity()]
 #'
-#' \code{\link{plot_similarity}}
+#' [plot_similarity()]
 #'
-#' \code{\link{tab_similarity}}
+#' [tab_similarity()]
 #'
-#' \code{\link{most_similar}}
+#' [most_similar()]
 #'
-#' \code{\link{dict_expand}}
+#' [dict_expand()]
 #'
 #' @examples
 #' \donttest{d = as_embed(demodata, normalize=TRUE)
@@ -2341,100 +2143,63 @@ print.reliability = function(x, digits=3, ...) {
 
 #' Word Embedding Association Test (WEAT) and Single-Category WEAT.
 #'
-#' Tabulate data (cosine similarity and standardized effect size) and
-#' conduct the permutation test of significance for the
-#' \emph{Word Embedding Association Test} (WEAT) and
-#' \emph{Single-Category Word Embedding Association Test} (SC-WEAT).
-#' \itemize{
-#'   \item{For WEAT, two-samples permutation test is conducted (i.e., rearrangements of data).}
-#'   \item{For SC-WEAT, one-sample permutation test is conducted (i.e., rearrangements of +/- signs to data).}
-#' }
+#' Tabulate data (cosine similarity and standardized effect size) and conduct the permutation test of significance for the *Word Embedding Association Test* (WEAT) and *Single-Category Word Embedding Association Test* (SC-WEAT).
+#' - For WEAT, two-samples permutation test is conducted (i.e., rearrangements of data).
+#' - For SC-WEAT, one-sample permutation test is conducted (i.e., rearrangements of +/- signs to data).
 #'
 #' @inheritParams tab_similarity
-#' @param T1,T2 Target words (a vector of words or a pattern of regular expression).
-#' If only \code{T1} is specified,
-#' it will tabulate data for single-category WEAT (SC-WEAT).
-#' @param A1,A2 Attribute words (a vector of words or a pattern of regular expression).
-#' Both must be specified.
-#' @param use.pattern Defaults to \code{FALSE} (using a vector of words).
-#' If you use regular expression in \code{T1}, \code{T2}, \code{A1}, and \code{A2},
-#' please specify this argument as \code{TRUE}.
-#' @param labels Labels for target and attribute concepts (a named \code{list}),
-#' such as (the default)
-#' \code{list(T1="Target1", T2="Target2", A1="Attrib1", A2="Attrib2")}.
-#' @param p.perm Permutation test to get exact or approximate \emph{p} value of the overall effect.
-#' Defaults to \code{TRUE}. See also the \code{\link[sweater:weat_exact]{sweater}} package.
-#' @param p.nsim Number of samples for resampling in permutation test. Defaults to \code{10000}.
+#' @param T1,T2 Target words (a vector of words or a pattern of regular expression). If only `T1` is specified, it will tabulate data for single-category WEAT (SC-WEAT).
+#' @param A1,A2 Attribute words (a vector of words or a pattern of regular expression). Both must be specified.
+#' @param use.pattern Defaults to `FALSE` (using a vector of words). If you use regular expression in `T1`, `T2`, `A1`, and `A2`, please specify this argument as `TRUE`.
+#' @param labels Labels for target and attribute concepts (a named `list`), such as (the default) `list(T1="Target1", T2="Target2", A1="Attrib1", A2="Attrib2")`.
+#' @param p.perm Permutation test to get exact or approximate *p* value of the overall effect. Defaults to `TRUE`. See also [sweater::weat_exact()].
+#' @param p.nsim Number of samples for resampling in permutation test. Defaults to `10000`.
 #'
-#' If \code{p.nsim} is larger than the number of all possible permutations (rearrangements of data),
-#' then it will be ignored and an exact permutation test will be conducted.
-#' Otherwise (in most cases for real data and always for SC-WEAT), a resampling test is performed,
-#' which takes much less computation time and produces the approximate \emph{p} value
-#' (comparable to the exact one).
-#' @param p.side One-sided (\code{1}) or two-sided (\code{2}) \emph{p} value.
-#' Defaults to \code{2}.
+#' If `p.nsim` is larger than the number of all possible permutations (rearrangements of data), it will be ignored and an exact permutation test will be conducted. Otherwise (in most cases for real data and always for SC-WEAT), a resampling test is performed, which takes much less computation time and produces the approximate *p* value (comparable to the exact one).
+#' @param p.side One-sided (`1`) or two-sided (`2`) *p* value. Defaults to `2`.
 #'
-#' In Caliskan et al.'s (2017) article, they reported one-sided \emph{p} value for WEAT.
-#' Here, I suggest reporting two-sided \emph{p} value as a more conservative estimate.
-#' The users take the full responsibility for the choice.
-#' \itemize{
-#'   \item{The one-sided \emph{p} value is calculated as the proportion of sampled permutations
-#'         where the difference in means is greater than the test statistic.}
-#'   \item{The two-sided \emph{p} value is calculated as the proportion of sampled permutations
-#'         where the absolute difference is greater than the test statistic.}
-#' }
-#' @param seed Random seed for reproducible results of permutation test. Defaults to \code{NULL}.
-#' @param pooled.sd Method used to calculate the pooled \emph{SD} for effect size estimate in WEAT.
-#' \itemize{
-#'   \item{Defaults to \code{"Caliskan"}: \code{sd(data.diff$cos_sim_diff)}, which is highly suggested
-#'         and identical to Caliskan et al.'s (2017) original approach.}
-#'   \item{Otherwise specified, it will calculate the pooled \emph{SD} as:
-#'         \eqn{\sqrt{[(n_1 - 1) * \sigma_1^2 + (n_2 - 1) * \sigma_2^2] / (n_1 + n_2 - 2)}}.
-#'
-#'         This is \strong{NOT suggested} because it may \emph{overestimate} the effect size,
-#'         especially when there are only a few T1 and T2 words that have small variances.}
-#' }
+#' In Caliskan et al.'s (2017) article, they reported one-sided *p* value for WEAT. Here, I suggest reporting two-sided *p* value as a more conservative estimate. The users take the full responsibility for the choice.
+#' - The one-sided *p* value is calculated as the proportion of sampled permutations where the difference in means is greater than the test statistic.
+#' - The two-sided *p* value is calculated as the proportion of sampled permutations where the absolute difference is greater than the test statistic.
+#' @param seed Random seed for reproducible results of permutation test. Defaults to `NULL`.
+#' @param pooled.sd Method used to calculate the pooled *SD* for effect size estimate in WEAT.
+#' - Defaults to `"Caliskan"`: `sd(data.diff$cos_sim_diff)`, which is suggested and identical to Caliskan et al.'s (2017) original approach.
+#' - Otherwise specified, it will calculate the pooled *SD* as: \eqn{\sqrt{[(n_1 - 1) * \sigma_1^2 + (n_2 - 1) * \sigma_2^2] / (n_1 + n_2 - 2)}}. This is *NOT suggested* because it may *overestimate* the effect size, especially when there are only a few T1 and T2 words that have small variances.
 #'
 #' @return
-#' A \code{list} object of new class \code{weat}:
+#' A `list` object of new class `weat`:
 #' \describe{
-#'   \item{\code{words.valid}}{
+#'   \item{`words.valid`}{
 #'     Valid (actually matched) words}
-#'   \item{\code{words.not.found}}{
+#'   \item{`words.not.found`}{
 #'     Words not found}
-#'   \item{\code{data.raw}}{
-#'     A \code{data.table} of cosine similarities between all word pairs}
-#'   \item{\code{data.mean}}{
-#'     A \code{data.table} of \emph{mean} cosine similarities
-#'     \emph{across} all attribute words}
-#'   \item{\code{data.diff}}{
-#'     A \code{data.table} of \emph{differential} mean cosine similarities
-#'     \emph{between} the two attribute concepts}
-#'   \item{\code{eff.label}}{
+#'   \item{`data.raw`}{
+#'     A `data.table` of cosine similarities between all word pairs}
+#'   \item{`data.mean`}{
+#'     A `data.table` of *mean* cosine similarities *across* all attribute words}
+#'   \item{`data.diff`}{
+#'     A `data.table` of *differential* mean cosine similarities *between* the two attribute concepts}
+#'   \item{`eff.label`}{
 #'     Description for the difference between the two attribute concepts}
-#'   \item{\code{eff.type}}{
+#'   \item{`eff.type`}{
 #'     Effect type: WEAT or SC-WEAT}
-#'   \item{\code{eff}}{
-#'     Raw effect, standardized effect size, and p value (if \code{p.perm=TRUE})}
+#'   \item{`eff`}{
+#'     Raw effect, standardized effect size, and p value (if `p.perm=TRUE`)}
 #' }
 #'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#' @inheritSection as_embed Download
 #'
 #' @references
-#' Caliskan, A., Bryson, J. J., & Narayanan, A. (2017).
-#' Semantics derived automatically from language corpora contain human-like biases.
-#' \emph{Science, 356}(6334), 183--186.
+#' Caliskan, A., Bryson, J. J., & Narayanan, A. (2017). Semantics derived automatically from language corpora contain human-like biases. *Science, 356*(6334), 183--186.
 #'
 #' @seealso
-#' \code{\link{tab_similarity}}
+#' [tab_similarity]
 #'
-#' \code{\link{dict_expand}}
+#' [dict_expand()]
 #'
-#' \code{\link{dict_reliability}}
+#' [dict_reliability()]
 #'
-#' \code{\link{test_RND}}
+#' [test_RND()]
 #'
 #' @examples
 #' ## cc() is more convenient than c()!
@@ -2759,56 +2524,46 @@ print.weat = function(x, digits=3, ...) {
 
 #' Relative Norm Distance (RND) analysis.
 #'
-#' Tabulate data and conduct the permutation test of significance
-#' for the \emph{Relative Norm Distance} (RND; also known as \emph{Relative Euclidean Distance}).
-#' This is an alternative method to \link[PsychWordVec:test_WEAT]{Single-Category WEAT}.
+#' Tabulate data and conduct the permutation test of significance for the *Relative Norm Distance* (RND; also known as *Relative Euclidean Distance*). This is an alternative method to [Single-Category WEAT][test_WEAT].
 #'
 #' @inheritParams test_WEAT
 #' @param T1 Target words of a single category (a vector of words or a pattern of regular expression).
-#' @param labels Labels for target and attribute concepts (a named \code{list}),
-#' such as (the default)
-#' \code{list(T1="Target", A1="Attrib1", A2="Attrib2")}.
+#' @param labels Labels for target and attribute concepts (a named `list`), such as (the default) `list(T1="Target", A1="Attrib1", A2="Attrib2")`.
 #'
 #' @return
-#' A \code{list} object of new class \code{rnd}:
+#' A `list` object of new class `rnd`:
 #' \describe{
-#'   \item{\code{words.valid}}{
+#'   \item{`words.valid`}{
 #'     Valid (actually matched) words}
-#'   \item{\code{words.not.found}}{
+#'   \item{`words.not.found`}{
 #'     Words not found}
-#'   \item{\code{data.raw}}{
-#'     A \code{data.table} of (absolute and relative) norm distances}
-#'   \item{\code{eff.label}}{
+#'   \item{`data.raw`}{
+#'     A `data.table` of (absolute and relative) norm distances}
+#'   \item{`eff.label`}{
 #'     Description for the difference between the two attribute concepts}
-#'   \item{\code{eff.type}}{
+#'   \item{`eff.type`}{
 #'     Effect type: RND}
-#'   \item{\code{eff}}{
-#'     Raw effect and p value (if \code{p.perm=TRUE})}
-#'   \item{\code{eff.interpretation}}{
+#'   \item{`eff`}{
+#'     Raw effect and p value (if `p.perm=TRUE`)}
+#'   \item{`eff.interpretation`}{
 #'     Interpretation of the RND score}
 #' }
 #'
-#' @section Download:
-#' Download pre-trained word vectors data (\code{.RData}):
-#' \url{https://psychbruce.github.io/WordVector_RData.pdf}
+#' @inheritSection as_embed Download
 #'
 #' @references
-#' Garg, N., Schiebinger, L., Jurafsky, D., & Zou, J. (2018).
-#' Word embeddings quantify 100 years of gender and ethnic stereotypes.
-#' \emph{Proceedings of the National Academy of Sciences, 115}(16), E3635--E3644.
+#' Garg, N., Schiebinger, L., Jurafsky, D., & Zou, J. (2018). Word embeddings quantify 100 years of gender and ethnic stereotypes. *Proceedings of the National Academy of Sciences, 115*(16), E3635--E3644.
 #'
-#' Bhatia, N., & Bhatia, S. (2021).
-#' Changes in gender stereotypes over time: A computational analysis.
-#' \emph{Psychology of Women Quarterly, 45}(1), 106--125.
+#' Bhatia, N., & Bhatia, S. (2021). Changes in gender stereotypes over time: A computational analysis. *Psychology of Women Quarterly, 45*(1), 106--125.
 #'
 #' @seealso
-#' \code{\link{tab_similarity}}
+#' [tab_similarity()]
 #'
-#' \code{\link{dict_expand}}
+#' [dict_expand()]
 #'
-#' \code{\link{dict_reliability}}
+#' [dict_reliability()]
 #'
-#' \code{\link{test_WEAT}}
+#' [test_WEAT()]
 #'
 #' @examples
 #' \donttest{rnd = test_RND(
@@ -2963,61 +2718,28 @@ print.rnd = function(x, digits=3, ...) {
 
 #' Orthogonal Procrustes rotation for matrix alignment.
 #'
-#' @description
-#' In order to compare word embeddings from different time periods,
-#' we must ensure that the embedding matrices are aligned to
-#' the same semantic space (coordinate axes).
-#' The Orthogonal Procrustes solution (Schönemann, 1966) is
-#' commonly used to align historical embeddings over time
-#' (Hamilton et al., 2016; Li et al., 2020).
+#' In order to compare word embeddings from different time periods, we must ensure that the embedding matrices are aligned to the same semantic space (coordinate axes). The Orthogonal Procrustes solution (Schönemann, 1966) is commonly used to align historical embeddings over time (Hamilton et al., 2016; Li et al., 2020). Note that this kind of rotation *does not* change the relative relationships between vectors in the space, and thus *does not* affect semantic similarities or distances within each embedding matrix. But it influences the semantic relationships between different embedding matrices, and thus would be necessary for some purposes such as the "semantic drift analysis" (e.g., Hamilton et al., 2016; Li et al., 2020).
 #'
-#' Note that this kind of rotation \emph{does not} change the
-#' relative relationships between vectors in the space,
-#' and thus \emph{does not} affect semantic similarities or distances
-#' within each embedding matrix.
-#' But it does influence the semantic relationships between
-#' different embedding matrices, and thus would be necessary
-#' for some purposes such as the "semantic drift analysis"
-#' (e.g., Hamilton et al., 2016; Li et al., 2020).
+#' This function produces the same results as by `cds::orthprocr()`, `psych::Procrustes()`, and `pracma::procrustes()`.
 #'
-#' This function produces the same results as by
-#' \code{cds::orthprocr()},
-#' \code{psych::Procrustes()}, and
-#' \code{pracma::procrustes()}.
+#' @param M,X Two embedding matrices of the same size (rows and columns), can be [`embed`][as_embed] or [`wordvec`][as_wordvec] objects.
+#' - `M` is the reference (anchor/baseline/target) matrix, e.g., the embedding matrix learned at the later year (\eqn{t + 1}).
+#' - `X` is the matrix to be transformed/rotated.
 #'
-#' @param M,X Two embedding matrices of the same size (rows and columns),
-#' can be \code{\link[PsychWordVec:as_embed]{embed}}
-#' or \code{\link[PsychWordVec:as_wordvec]{wordvec}} objects.
-#' \itemize{
-#'   \item{\code{M} is the reference (anchor/baseline/target) matrix,
-#'         e.g., the embedding matrix learned at
-#'         the later year (\eqn{t + 1}).}
-#'   \item{\code{X} is the matrix to be transformed/rotated.}
-#' }
-#' \emph{Note}: The function automatically extracts only
-#' the intersection (overlapped part) of words in \code{M} and \code{X}
-#' and sorts them in the same order (according to \code{M}).
+#' *Note*: The function automatically extracts only the intersection (overlapped part) of words in `M` and `X` and sorts them in the same order (according to `M`).
 #'
 #' @return
-#' A \code{matrix} or \code{wordvec} object of
-#' \code{X} after rotation, depending on the class of
-#' \code{M} and \code{X}.
+#' A `matrix` or `wordvec` object of `X` after rotation, depending on the class of `M` and `X`.
 #'
 #' @references
-#' Hamilton, W. L., Leskovec, J., & Jurafsky, D. (2016).
-#' Diachronic word embeddings reveal statistical laws of semantic change.
-#' In \emph{Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics}
-#' (Vol. 1, pp. 1489--1501). Association for Computational Linguistics.
+#' Hamilton, W. L., Leskovec, J., & Jurafsky, D. (2016). Diachronic word embeddings reveal statistical laws of semantic change. In *Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics* (Vol. 1, pp. 1489--1501). Association for Computational Linguistics.
 #'
-#' Li, Y., Hills, T., & Hertwig, R. (2020).
-#' A brief history of risk. \emph{Cognition, 203}, 104344.
+#' Li, Y., Hills, T., & Hertwig, R. (2020). A brief history of risk. *Cognition, 203*, 104344.
 #'
-#' Schönemann, P. H. (1966).
-#' A generalized solution of the orthogonal Procrustes problem.
-#' \emph{Psychometrika, 31}(1), 1--10.
+#' Schönemann, P. H. (1966). A generalized solution of the orthogonal Procrustes problem. *Psychometrika, 31*(1), 1--10.
 #'
 #' @seealso
-#' \code{\link{as_wordvec}} / \code{\link{as_embed}}
+#' [as_wordvec()] / [as_embed()]
 #'
 #' @examples
 #' \donttest{M = matrix(c(0,0,  1,2,  2,0,  3,2,  4,0), ncol=2, byrow=TRUE)
@@ -3092,5 +2814,4 @@ orthogonal_procrustes = function(M, X) {
   rm(M, X, MX, svdMX, R)
   return(XR)
 }
-
 

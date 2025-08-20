@@ -27,29 +27,19 @@ plot_similarity(
 )
 }
 \arguments{
-\item{data}{A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
-\code{\link[PsychWordVec:as_embed]{embed}} (matrix),
-see \code{\link{data_wordvec_load}}.}
+\item{data}{A \code{\link[=as_wordvec]{wordvec}} (data.table) or \code{\link[=as_embed]{embed}} (matrix), see \code{\link[=data_wordvec_load]{data_wordvec_load()}}.}
 
 \item{words}{[Option 1] Character string(s).}
 
-\item{pattern}{[Option 2] Regular expression (see \code{\link[stringr:str_subset]{str_subset}}).
-If neither \code{words} nor \code{pattern} are specified (i.e., both are \code{NULL}),
-then all words in the data will be extracted.}
+\item{pattern}{[Option 2] \link[stringr:str_subset]{Regular expression}. If \code{words} and \code{pattern} are not specified, all words in the data will be extracted.}
 
-\item{words1, words2}{[Option 3]
-Two sets of words for only n1 * n2 word pairs. See examples.}
+\item{words1, words2}{[Option 3] Two sets of words for only n1 * n2 word pairs. See examples.}
 
-\item{label}{Position of text labels.
-Defaults to \code{"auto"} (add labels if less than 20 words).
-Can be \code{TRUE} (left and top), \code{FALSE} (add no labels of words),
-or a character string (see the usage of \code{tl.pos} in \code{\link[corrplot:corrplot]{corrplot}}.}
+\item{label}{Position of text labels. Defaults to \code{"auto"} (add labels if less than 20 words). Can be \code{TRUE} (left and top), \code{FALSE} (add no labels of words), or a character string (see the usage of \code{tl.pos} in \code{\link[corrplot:corrplot]{corrplot::corrplot()}}.}
 
-\item{value.color}{Color of values added on the plot.
-Defaults to \code{NULL} (add no values).}
+\item{value.color}{Color of values added on the plot. Defaults to \code{NULL} (add no values).}
 
-\item{value.percent}{Whether to transform values into percentage style for space saving.
-Defaults to \code{FALSE}.}
+\item{value.percent}{Whether to transform values into percentage style for space saving. Defaults to \code{FALSE}.}
 
 \item{order}{Character, the ordering method of the correlation matrix.
 \itemize{
@@ -67,24 +57,19 @@ See function \code{\link[corrplot]{corrMatOrder}} for details.}
 \code{'ward.D'}, \code{'ward.D2'}, \code{'single'}, \code{'complete'},
 \code{'average'}, \code{'mcquitty'}, \code{'median'} or \code{'centroid'}.}
 
-\item{hclust.n}{Number of rectangles to be drawn on the plot according to
-the hierarchical clusters, only valid when \code{order="hclust"}.
-Defaults to \code{NULL} (add no rectangles).}
+\item{hclust.n}{Number of rectangles to be drawn on the plot according to the hierarchical clusters, only valid when \code{order="hclust"}. Defaults to \code{NULL} (add no rectangles).}
 
-\item{hclust.color}{Color of rectangle border, only valid when \code{hclust.n} >= 1.
-Defaults to \code{"black"}.}
+\item{hclust.color}{Color of rectangle border, only valid when \code{hclust.n} >= 1. Defaults to \code{"black"}.}
 
-\item{hclust.line}{Line width of rectangle border, only valid when \code{hclust.n} >= 1.
-Defaults to \code{2}.}
+\item{hclust.line}{Line width of rectangle border, only valid when \code{hclust.n} >= 1. Defaults to \code{2}.}
 
 \item{file}{File name to be saved, should be png or pdf.}
 
-\item{width, height}{Width and height (in inches) for the saved file.
-Defaults to \code{10} and \code{6}.}
+\item{width, height}{Width and height (in inches) for the saved file. Defaults to \code{10} and \code{6}.}
 
 \item{dpi}{Dots per inch. Defaults to \code{500} (i.e., file resolution: 4000 * 3000).}
 
-\item{...}{Other parameters passed to \code{\link[corrplot:corrplot]{corrplot}}.}
+\item{...}{Arguments passed on to \code{\link[corrplot:corrplot]{corrplot::corrplot()}}.}
 }
 \value{
 Invisibly return a matrix of cosine similarity between each pair of words.
@@ -94,8 +79,7 @@ Visualize cosine similarity of word pairs.
 }
 \section{Download}{
 
-Download pre-trained word vectors data (\code{.RData}):
-\url{https://psychbruce.github.io/WordVector_RData.pdf}
+Download pre-trained word vectors data (\code{.RData}): \url{https://psychbruce.github.io/WordVector_RData.pdf}
 }
 
 \examples{
@@ -133,13 +117,13 @@ unlink("plot.png")  # delete file for code check
 }
 }
 \seealso{
-\code{\link{cosine_similarity}}
+\code{\link[=cosine_similarity]{cosine_similarity()}}
 
-\code{\link{pair_similarity}}
+\code{\link[=pair_similarity]{pair_similarity()}}
 
-\code{\link{tab_similarity}}
+\code{\link[=tab_similarity]{tab_similarity()}}
 
-\code{\link{most_similar}}
+\code{\link[=most_similar]{most_similar()}}
 
-\code{\link{plot_network}}
+\code{\link[=plot_network]{plot_network()}}
 }

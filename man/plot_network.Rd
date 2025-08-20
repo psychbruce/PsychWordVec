@@ -32,38 +32,31 @@ plot_network(
 )
 }
 \arguments{
-\item{data}{A \code{\link[PsychWordVec:as_wordvec]{wordvec}} (data.table) or
-\code{\link[PsychWordVec:as_embed]{embed}} (matrix),
-see \code{\link{data_wordvec_load}}.}
+\item{data}{A \code{\link[=as_wordvec]{wordvec}} (data.table) or \code{\link[=as_embed]{embed}} (matrix), see \code{\link[=data_wordvec_load]{data_wordvec_load()}}.}
 
 \item{words}{[Option 1] Character string(s).}
 
-\item{pattern}{[Option 2] Regular expression (see \code{\link[stringr:str_subset]{str_subset}}).
-If neither \code{words} nor \code{pattern} are specified (i.e., both are \code{NULL}),
-then all words in the data will be extracted.}
+\item{pattern}{[Option 2] \link[stringr:str_subset]{Regular expression}. If \code{words} and \code{pattern} are not specified, all words in the data will be extracted.}
 
 \item{index}{Use which index to perform network analysis?
-Can be \code{"pcor"} (partial correlation, default and suggested),
-\code{"cor"} (raw correlation),
-\code{"glasso"} (graphical lasso-estimation of partial correlation matrix
-using the \code{glasso} package),
-or \code{"sim"} (pairwise cosine similarity).}
+\itemize{
+\item \code{"pcor"}: partial correlation (default and suggested)
+\item \code{"cor"}: raw correlation
+\item \code{"glasso"}: graphical lasso-estimation of partial correlation matrix (using the \code{glasso} package)
+\item \code{"sim"}: pairwise cosine similarity
+}}
 
 \item{alpha}{Significance level to be used for not showing edges. Defaults to \code{0.05}.}
 
 \item{bonf}{Bonferroni correction of \emph{p} value. Defaults to \code{FALSE}.}
 
-\item{max}{Maximum value for scaling edge widths and colors. Defaults to the highest value of the index.
-Can be \code{1} if you want to compare several graphs.}
+\item{max}{Maximum value for scaling edge widths and colors. Defaults to the highest value of the index. Can be \code{1} if you want to compare several graphs.}
 
-\item{node.size}{Node size. Defaults to 8*exp(-nNodes/80)+1.}
+\item{node.size}{Node size. Defaults to \code{8*exp(-nNodes/80)+1}.}
 
-\item{node.group}{Node group(s). Can be a named list (see examples) in which each element
-is a vector of integers identifying the numbers of the nodes that belong together, or a factor.}
+\item{node.group}{Node group(s). Can be a named list (see examples) in which each element is a vector of integers identifying the numbers of the nodes that belong together, or a factor.}
 
-\item{node.color}{Node color(s). Can be a character vector of colors corresponding to \code{node.group}.
-Defaults to white (if \code{node.group} is not specified)
-or the palette of ggplot2 (if \code{node.group} is specified).}
+\item{node.color}{Node color(s). Can be a character vector of colors corresponding to \code{node.group}. Defaults to white (if \code{node.group} is not specified) or the palette of ggplot2 (if \code{node.group} is specified).}
 
 \item{label.text}{Node label of text. Defaults to original words.}
 
@@ -73,8 +66,7 @@ or the palette of ggplot2 (if \code{node.group} is specified).}
 
 \item{label.color}{Node label color. Defaults to \code{"black"}.}
 
-\item{edge.color}{Edge colors for positive and negative values, respectively.
-Defaults to \code{c("#009900", "#BF0000")}.}
+\item{edge.color}{Edge colors for positive and negative values, respectively. Defaults to \code{c("#009900", "#BF0000")}.}
 
 \item{edge.label}{Edge label of values. Defaults to \code{FALSE}.}
 
@@ -86,24 +78,21 @@ Defaults to \code{c("#009900", "#BF0000")}.}
 
 \item{file}{File name to be saved, should be png or pdf.}
 
-\item{width, height}{Width and height (in inches) for the saved file.
-Defaults to \code{10} and \code{6}.}
+\item{width, height}{Width and height (in inches) for the saved file. Defaults to \code{10} and \code{6}.}
 
 \item{dpi}{Dots per inch. Defaults to \code{500} (i.e., file resolution: 4000 * 3000).}
 
-\item{...}{Other parameters passed to \code{\link[qgraph:qgraph]{qgraph}}.}
+\item{...}{Arguments passed on to \code{\link[qgraph:qgraph]{qgraph::qgraph()}}.}
 }
 \value{
-Invisibly return a \code{\link[qgraph:qgraph]{qgraph}} object,
-which further can be plotted using \code{plot()}.
+Invisibly return a \code{\link[qgraph:qgraph]{qgraph}} object, which further can be plotted using \code{plot()}.
 }
 \description{
 Visualize a (partial correlation) network graph of words.
 }
 \section{Download}{
 
-Download pre-trained word vectors data (\code{.RData}):
-\url{https://psychbruce.github.io/WordVector_RData.pdf}
+Download pre-trained word vectors data (\code{.RData}): \url{https://psychbruce.github.io/WordVector_RData.pdf}
 }
 
 \examples{
@@ -143,7 +132,7 @@ plot_network(
 }
 }
 \seealso{
-\code{\link{plot_similarity}}
+\code{\link[=plot_similarity]{plot_similarity()}}
 
-\code{\link{plot_wordvec_tSNE}}
+\code{\link[=plot_wordvec_tSNE]{plot_wordvec_tSNE()}}
 }

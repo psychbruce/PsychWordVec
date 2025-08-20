@@ -18,8 +18,7 @@ pattern(pattern)
 \arguments{
 \item{x}{Object to be reshaped. See examples.}
 
-\item{normalize}{Normalize all word vectors to unit length?
-Defaults to \code{FALSE}. See \code{\link{normalize}}.}
+\item{normalize}{Normalize all word vectors to unit length? Defaults to \code{FALSE}. See \code{\link[=normalize]{normalize()}}.}
 
 \item{i, j}{Row (\code{i}) and column (\code{j}) filter to be used in \code{embed[i, j]}.}
 
@@ -29,11 +28,7 @@ Defaults to \code{FALSE}. See \code{\link{normalize}}.}
 A \code{wordvec} (data.table) or \code{embed} (matrix).
 }
 \description{
-\code{PsychWordVec} uses two types of word vectors data:
-\code{wordvec} (data.table, with two variables \code{word} and \code{vec})
-and \code{embed} (matrix, with dimensions as columns and words as row names).
-Note that matrix operation makes \code{embed} much faster than \code{wordvec}.
-Users are suggested to reshape data to \code{embed} before using the other functions.
+\code{PsychWordVec} uses two types of word vectors data: \code{wordvec} (data.table, with two variables \code{word} and \code{vec}) and \code{embed} (matrix, with dimensions as columns and words as row names). Note that matrix operation makes \code{embed} much faster than \code{wordvec}. Users are suggested to reshape data to \code{embed} before using the other functions.
 }
 \section{Functions}{
 \itemize{
@@ -44,8 +39,7 @@ Users are suggested to reshape data to \code{embed} before using the other funct
 }}
 \section{Download}{
 
-Download pre-trained word vectors data (\code{.RData}):
-\url{https://psychbruce.github.io/WordVector_RData.pdf}
+Download pre-trained word vectors data (\code{.RData}): \url{https://psychbruce.github.io/WordVector_RData.pdf}
 }
 
 \examples{
@@ -88,11 +82,11 @@ embed["that", 4]
 }
 }
 \seealso{
-\code{\link{load_wordvec}} / \code{\link{load_embed}}
+\code{\link[=load_wordvec]{load_wordvec()}} / \code{\link[=load_embed]{load_embed()}}
 
-\code{\link{normalize}}
+\code{\link[=normalize]{normalize()}}
 
-\code{\link{data_transform}}
+\code{\link[=data_transform]{data_transform()}}
 
-\code{\link{data_wordvec_subset}}
+\code{\link[=data_wordvec_subset]{data_wordvec_subset()}}
 }
