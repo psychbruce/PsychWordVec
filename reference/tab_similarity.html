@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2025.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2025.8</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,9 +54,7 @@
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>A <code><a href="as_embed.html">wordvec</a></code> (data.table) or
-<code><a href="as_embed.html">embed</a></code> (matrix),
-see <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</p></dd>
+<dd><p>A <code><a href="as_embed.html">wordvec</a></code> (data.table) or <code><a href="as_embed.html">embed</a></code> (matrix), see <code><a href="data_wordvec_load.html">data_wordvec_load()</a></code>.</p></dd>
 
 
 <dt id="arg-words">words<a class="anchor" aria-label="anchor" href="#arg-words"></a></dt>
@@ -64,47 +62,39 @@ see <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</p></dd
 
 
 <dt id="arg-pattern">pattern<a class="anchor" aria-label="anchor" href="#arg-pattern"></a></dt>
-<dd><p>[Option 2] Regular expression (see <code><a href="https://stringr.tidyverse.org/reference/str_subset.html" class="external-link">str_subset</a></code>).
-If neither <code>words</code> nor <code>pattern</code> are specified (i.e., both are <code>NULL</code>),
-then all words in the data will be extracted.</p></dd>
+<dd><p>[Option 2] <a href="https://stringr.tidyverse.org/reference/str_subset.html" class="external-link">Regular expression</a>. If <code>words</code> and <code>pattern</code> are not specified, all words in the data will be extracted.</p></dd>
 
 
 <dt id="arg-words-words-">words1, words2<a class="anchor" aria-label="anchor" href="#arg-words-words-"></a></dt>
-<dd><p>[Option 3]
-Two sets of words for only n1 * n2 word pairs. See examples.</p></dd>
+<dd><p>[Option 3] Two sets of words for only n1 * n2 word pairs. See examples.</p></dd>
 
 
 <dt id="arg-unique">unique<a class="anchor" aria-label="anchor" href="#arg-unique"></a></dt>
-<dd><p>Return unique word pairs (<code>TRUE</code>)
-or all pairs with duplicates (<code>FALSE</code>; default).</p></dd>
+<dd><p>Return unique word pairs (<code>TRUE</code>) or all pairs with duplicates (<code>FALSE</code>; default).</p></dd>
 
 
 <dt id="arg-distance">distance<a class="anchor" aria-label="anchor" href="#arg-distance"></a></dt>
-<dd><p>Compute cosine distance instead?
-Defaults to <code>FALSE</code> (cosine similarity).</p></dd>
+<dd><p>Compute cosine distance instead? Defaults to <code>FALSE</code> (cosine similarity).</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <code>data.table</code> of words, word pairs,
-and their cosine similarity (<code>cos_sim</code>)
-or cosine distance (<code>cos_dist</code>).</p>
+    <p>A <code>data.table</code> of words, word pairs, and their cosine similarity (<code>cos_sim</code>) or cosine distance (<code>cos_dist</code>).</p>
     </div>
     <div class="section level2">
     <h2 id="download">Download<a class="anchor" aria-label="anchor" href="#download"></a></h2>
 
 
-<p>Download pre-trained word vectors data (<code>.RData</code>):
-<a href="https://psychbruce.github.io/WordVector_RData.pdf" class="external-link">https://psychbruce.github.io/WordVector_RData.pdf</a></p>
+<p>Download pre-trained word vectors data (<code>.RData</code>): <a href="https://psychbruce.github.io/WordVector_RData.pdf" class="external-link">https://psychbruce.github.io/WordVector_RData.pdf</a></p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="cosine_similarity.html">cosine_similarity</a></code></p>
-<p><code><a href="pair_similarity.html">pair_similarity</a></code></p>
-<p><code><a href="plot_similarity.html">plot_similarity</a></code></p>
-<p><code><a href="most_similar.html">most_similar</a></code></p>
-<p><code><a href="test_WEAT.html">test_WEAT</a></code></p>
-<p><code><a href="test_RND.html">test_RND</a></code></p></div>
+    <div class="dont-index"><p><code><a href="cosine_similarity.html">cosine_similarity()</a></code></p>
+<p><code><a href="pair_similarity.html">pair_similarity()</a></code></p>
+<p><code><a href="plot_similarity.html">plot_similarity()</a></code></p>
+<p><code><a href="most_similar.html">most_similar()</a></code></p>
+<p><code><a href="test_WEAT.html">test_WEAT()</a></code></p>
+<p><code><a href="test_RND.html">test_RND()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -191,7 +181,7 @@ or cosine distance (<code>cos_dist</code>).</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Han-Wu-Shuang Bao.</p>
+  <p>Developed by Han Wu Shuang Bao.</p>
 </div>
 
 <div class="pkgdown-footer-right">

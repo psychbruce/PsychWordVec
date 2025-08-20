@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2025.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2025.8</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,34 +54,27 @@
 
 
 <dl><dt id="arg-text">text<a class="anchor" aria-label="anchor" href="#arg-text"></a></dt>
-<dd><p>A character vector of text,
-or a file path on disk containing text.</p></dd>
+<dd><p>A character vector of text, or a file path on disk containing text.</p></dd>
 
 
 <dt id="arg-tokenizer">tokenizer<a class="anchor" aria-label="anchor" href="#arg-tokenizer"></a></dt>
-<dd><p>Function used to tokenize the text.
-Defaults to <code><a href="https://rdrr.io/pkg/text2vec/man/tokenizers.html" class="external-link">text2vec::word_tokenizer</a></code>.</p></dd>
+<dd><p>Function used to tokenize the text. Defaults to <code><a href="https://rdrr.io/pkg/text2vec/man/tokenizers.html" class="external-link">text2vec::word_tokenizer()</a></code>.</p></dd>
 
 
 <dt id="arg-split">split<a class="anchor" aria-label="anchor" href="#arg-split"></a></dt>
-<dd><p>Separator between tokens, only used when <code>simplify=TRUE</code>.
-Defaults to <code>" "</code>.</p></dd>
+<dd><p>Separator between tokens, only used when <code>simplify=TRUE</code>. Defaults to <code>" "</code>.</p></dd>
 
 
 <dt id="arg-remove">remove<a class="anchor" aria-label="anchor" href="#arg-remove"></a></dt>
-<dd><p>Strings (in regular expression) to be removed from the text.
-Defaults to <code>"_|'|&lt;br/&gt;|&lt;br /&gt;|e\\.g\\.|i\\.e\\."</code>.
-You may turn off this by specifying <code>remove=NULL</code>.</p></dd>
+<dd><p>Strings (in regular expression) to be removed from the text. Defaults to <code>"_|'|&lt;br/&gt;|&lt;br /&gt;|e\\\\.g\\\\.|i\\\\.e\\\\."</code>. You may turn off this by specifying <code>remove=NULL</code>.</p></dd>
 
 
 <dt id="arg-encoding">encoding<a class="anchor" aria-label="anchor" href="#arg-encoding"></a></dt>
-<dd><p>Text encoding (only used if <code>text</code> is a file).
-Defaults to <code>"UTF-8"</code>.</p></dd>
+<dd><p>Text encoding (only used if <code>text</code> is a file). Defaults to <code>"UTF-8"</code>.</p></dd>
 
 
 <dt id="arg-simplify">simplify<a class="anchor" aria-label="anchor" href="#arg-simplify"></a></dt>
-<dd><p>Return a character vector (<code>TRUE</code>) or a list of character vectors (<code>FALSE</code>).
-Defaults to <code>TRUE</code>.</p></dd>
+<dd><p>Return a character vector (<code>TRUE</code>) or a list of character vectors (<code>FALSE</code>). Defaults to <code>TRUE</code>.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
@@ -91,14 +84,12 @@ Defaults to <code>TRUE</code>.</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
 
-<ul><li><p><code>simplify=TRUE</code>: A tokenized character vector,
-  with each element as a sentence.</p></li>
-<li><p><code>simplify=FALSE</code>: A list of tokenized character vectors,
-  with each element as a vector of tokens in a sentence.</p></li>
+<ul><li><p><code>simplify=TRUE</code>: A tokenized character vector, with each element as a sentence.</p></li>
+<li><p><code>simplify=FALSE</code>: A list of tokenized character vectors, with each element as a vector of tokens in a sentence.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="train_wordvec.html">train_wordvec</a></code></p></div>
+    <div class="dont-index"><p><code><a href="train_wordvec.html">train_wordvec()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -109,7 +100,7 @@ Defaults to <code>TRUE</code>.</p></dd>
 <span class="r-in"><span>  <span class="st">"However, my computer is not among the \"Top 10\" list."</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">tokenize</span><span class="op">(</span><span class="va">txt1</span>, simplify<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tokenized: 4 sentences (time cost = 0.3 secs)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tokenized: 4 sentences (time cost = 0.2 secs)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "I"          "love"       "natural"    "language"   "processing"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6] "NLP"       </span>
@@ -169,7 +160,7 @@ Defaults to <code>TRUE</code>.</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Han-Wu-Shuang Bao.</p>
+  <p>Developed by Han Wu Shuang Bao.</p>
 </div>
 
 <div class="pkgdown-footer-right">

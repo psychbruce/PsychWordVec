@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2025.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2025.8</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,9 +71,7 @@
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>A <code><a href="as_embed.html">wordvec</a></code> (data.table) or
-<code><a href="as_embed.html">embed</a></code> (matrix),
-see <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</p></dd>
+<dd><p>A <code><a href="as_embed.html">wordvec</a></code> (data.table) or <code><a href="as_embed.html">embed</a></code> (matrix), see <code><a href="data_wordvec_load.html">data_wordvec_load()</a></code>.</p></dd>
 
 
 <dt id="arg-words">words<a class="anchor" aria-label="anchor" href="#arg-words"></a></dt>
@@ -81,18 +79,15 @@ see <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</p></dd
 
 
 <dt id="arg-pattern">pattern<a class="anchor" aria-label="anchor" href="#arg-pattern"></a></dt>
-<dd><p>[Option 2] Regular expression (see <code><a href="https://stringr.tidyverse.org/reference/str_subset.html" class="external-link">str_subset</a></code>).
-If neither <code>words</code> nor <code>pattern</code> are specified (i.e., both are <code>NULL</code>),
-then all words in the data will be extracted.</p></dd>
+<dd><p>[Option 2] <a href="https://stringr.tidyverse.org/reference/str_subset.html" class="external-link">Regular expression</a>. If <code>words</code> and <code>pattern</code> are not specified, all words in the data will be extracted.</p></dd>
 
 
 <dt id="arg-index">index<a class="anchor" aria-label="anchor" href="#arg-index"></a></dt>
-<dd><p>Use which index to perform network analysis?
-Can be <code>"pcor"</code> (partial correlation, default and suggested),
-<code>"cor"</code> (raw correlation),
-<code>"glasso"</code> (graphical lasso-estimation of partial correlation matrix
-using the <code>glasso</code> package),
-or <code>"sim"</code> (pairwise cosine similarity).</p></dd>
+<dd><p>Use which index to perform network analysis?</p><ul><li><p><code>"pcor"</code>: partial correlation (default and suggested)</p></li>
+<li><p><code>"cor"</code>: raw correlation</p></li>
+<li><p><code>"glasso"</code>: graphical lasso-estimation of partial correlation matrix (using the <code>glasso</code> package)</p></li>
+<li><p><code>"sim"</code>: pairwise cosine similarity</p></li>
+</ul></dd>
 
 
 <dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
@@ -104,23 +99,19 @@ or <code>"sim"</code> (pairwise cosine similarity).</p></dd>
 
 
 <dt id="arg-max">max<a class="anchor" aria-label="anchor" href="#arg-max"></a></dt>
-<dd><p>Maximum value for scaling edge widths and colors. Defaults to the highest value of the index.
-Can be <code>1</code> if you want to compare several graphs.</p></dd>
+<dd><p>Maximum value for scaling edge widths and colors. Defaults to the highest value of the index. Can be <code>1</code> if you want to compare several graphs.</p></dd>
 
 
 <dt id="arg-node-size">node.size<a class="anchor" aria-label="anchor" href="#arg-node-size"></a></dt>
-<dd><p>Node size. Defaults to 8*exp(-nNodes/80)+1.</p></dd>
+<dd><p>Node size. Defaults to <code>8*exp(-nNodes/80)+1</code>.</p></dd>
 
 
 <dt id="arg-node-group">node.group<a class="anchor" aria-label="anchor" href="#arg-node-group"></a></dt>
-<dd><p>Node group(s). Can be a named list (see examples) in which each element
-is a vector of integers identifying the numbers of the nodes that belong together, or a factor.</p></dd>
+<dd><p>Node group(s). Can be a named list (see examples) in which each element is a vector of integers identifying the numbers of the nodes that belong together, or a factor.</p></dd>
 
 
 <dt id="arg-node-color">node.color<a class="anchor" aria-label="anchor" href="#arg-node-color"></a></dt>
-<dd><p>Node color(s). Can be a character vector of colors corresponding to <code>node.group</code>.
-Defaults to white (if <code>node.group</code> is not specified)
-or the palette of ggplot2 (if <code>node.group</code> is specified).</p></dd>
+<dd><p>Node color(s). Can be a character vector of colors corresponding to <code>node.group</code>. Defaults to white (if <code>node.group</code> is not specified) or the palette of ggplot2 (if <code>node.group</code> is specified).</p></dd>
 
 
 <dt id="arg-label-text">label.text<a class="anchor" aria-label="anchor" href="#arg-label-text"></a></dt>
@@ -140,8 +131,7 @@ or the palette of ggplot2 (if <code>node.group</code> is specified).</p></dd>
 
 
 <dt id="arg-edge-color">edge.color<a class="anchor" aria-label="anchor" href="#arg-edge-color"></a></dt>
-<dd><p>Edge colors for positive and negative values, respectively.
-Defaults to <code>c("#009900", "#BF0000")</code>.</p></dd>
+<dd><p>Edge colors for positive and negative values, respectively. Defaults to <code>c("#009900", "#BF0000")</code>.</p></dd>
 
 
 <dt id="arg-edge-label">edge.label<a class="anchor" aria-label="anchor" href="#arg-edge-label"></a></dt>
@@ -165,8 +155,7 @@ Defaults to <code>c("#009900", "#BF0000")</code>.</p></dd>
 
 
 <dt id="arg-width-height">width, height<a class="anchor" aria-label="anchor" href="#arg-width-height"></a></dt>
-<dd><p>Width and height (in inches) for the saved file.
-Defaults to <code>10</code> and <code>6</code>.</p></dd>
+<dd><p>Width and height (in inches) for the saved file. Defaults to <code>10</code> and <code>6</code>.</p></dd>
 
 
 <dt id="arg-dpi">dpi<a class="anchor" aria-label="anchor" href="#arg-dpi"></a></dt>
@@ -174,25 +163,23 @@ Defaults to <code>10</code> and <code>6</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Other parameters passed to <code><a href="https://rdrr.io/pkg/qgraph/man/qgraph.html" class="external-link">qgraph</a></code>.</p></dd>
+<dd><p>Arguments passed on to <code><a href="https://rdrr.io/pkg/qgraph/man/qgraph.html" class="external-link">qgraph::qgraph()</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Invisibly return a <code><a href="https://rdrr.io/pkg/qgraph/man/qgraph.html" class="external-link">qgraph</a></code> object,
-which further can be plotted using <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>.</p>
+    <p>Invisibly return a <code><a href="https://rdrr.io/pkg/qgraph/man/qgraph.html" class="external-link">qgraph</a></code> object, which further can be plotted using <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="download">Download<a class="anchor" aria-label="anchor" href="#download"></a></h2>
 
 
-<p>Download pre-trained word vectors data (<code>.RData</code>):
-<a href="https://psychbruce.github.io/WordVector_RData.pdf" class="external-link">https://psychbruce.github.io/WordVector_RData.pdf</a></p>
+<p>Download pre-trained word vectors data (<code>.RData</code>): <a href="https://psychbruce.github.io/WordVector_RData.pdf" class="external-link">https://psychbruce.github.io/WordVector_RData.pdf</a></p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="plot_similarity.html">plot_similarity</a></code></p>
-<p><code><a href="plot_wordvec_tSNE.html">plot_wordvec_tSNE</a></code></p></div>
+    <div class="dont-index"><p><code><a href="plot_similarity.html">plot_similarity()</a></code></p>
+<p><code><a href="plot_wordvec_tSNE.html">plot_wordvec_tSNE()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -244,7 +231,7 @@ which further can be plotted using <code><a href="https://rdrr.io/r/graphics/plo
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Han-Wu-Shuang Bao.</p>
+  <p>Developed by Han Wu Shuang Bao.</p>
 </div>
 
 <div class="pkgdown-footer-right">

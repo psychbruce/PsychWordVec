@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2025.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2025.8</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,19 +46,20 @@
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>A <code><a href="as_embed.html">wordvec</a></code> (data.table) or
-<code><a href="as_embed.html">embed</a></code> (matrix),
-see <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</p></dd>
+<dd><p>A <code><a href="as_embed.html">wordvec</a></code> (data.table) or <code><a href="as_embed.html">embed</a></code> (matrix), see <code><a href="data_wordvec_load.html">data_wordvec_load()</a></code>.</p></dd>
 
 
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>Can be:</p><ul><li><p><code>NULL</code>: use the sum of all word vectors in <code>data</code></p></li>
-<li><p>a single word:  <code>"China"</code></p></li>
-<li><p>a list of words:  <code>c("king", "queen")</code></p>
-<p><code>cc(" king , queen ; man | woman")</code></p></li>
-<li><p>an R formula (<code>~ xxx</code>) specifying
-  words that positively and negatively
-  contribute to the similarity (for word analogy):  <code>~ boy - he + she</code>  <code>~ king - man + woman</code>  <code>~ Beijing - China + Japan</code></p></li>
+<li><p>a single word:</p><ul><li><p><code>"China"</code></p></li>
+</ul></li>
+<li><p>a vector of words:</p><ul><li><p><code>c("king", "queen")</code></p></li>
+<li><p><code>cc(" king , queen ; man | woman")</code></p></li>
+</ul></li>
+<li><p>an R formula (<code>~ xxx</code>) specifying words that positively and negatively contribute to the similarity (for word analogy):</p><ul><li><p><code>~ boy - he + she</code></p></li>
+<li><p><code>~ king - man + woman</code></p></li>
+<li><p><code>~ Beijing - China + Japan</code></p></li>
+</ul></li>
 </ul></dd>
 
 
@@ -74,15 +75,14 @@ see <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</p></dd
     <h2 id="download">Download<a class="anchor" aria-label="anchor" href="#download"></a></h2>
 
 
-<p>Download pre-trained word vectors data (<code>.RData</code>):
-<a href="https://psychbruce.github.io/WordVector_RData.pdf" class="external-link">https://psychbruce.github.io/WordVector_RData.pdf</a></p>
+<p>Download pre-trained word vectors data (<code>.RData</code>): <a href="https://psychbruce.github.io/WordVector_RData.pdf" class="external-link">https://psychbruce.github.io/WordVector_RData.pdf</a></p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="normalize.html">normalize</a></code></p>
-<p><code><a href="most_similar.html">most_similar</a></code></p>
-<p><code><a href="dict_expand.html">dict_expand</a></code></p>
-<p><code><a href="dict_reliability.html">dict_reliability</a></code></p></div>
+    <div class="dont-index"><p><code><a href="normalize.html">normalize()</a></code></p>
+<p><code><a href="most_similar.html">most_similar()</a></code></p>
+<p><code><a href="dict_expand.html">dict_expand()</a></code></p>
+<p><code><a href="dict_reliability.html">dict_reliability()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -220,7 +220,7 @@ see <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</p></dd
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Han-Wu-Shuang Bao.</p>
+  <p>Developed by Han Wu Shuang Bao.</p>
 </div>
 
 <div class="pkgdown-footer-right">

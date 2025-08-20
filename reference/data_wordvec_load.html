@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2025.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2025.8</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,23 +55,15 @@
 
 
 <dl><dt id="arg-file">file<a class="anchor" aria-label="anchor" href="#arg-file"></a></dt>
-<dd><p>File name of .RData transformed by <code><a href="data_transform.html">data_transform</a></code>.
-Can also be an .RData file containing an embedding matrix with words as row names.</p></dd>
+<dd><p>File name of .RData transformed by <code><a href="data_transform.html">data_transform()</a></code>. Can also be an .RData file containing an embedding matrix with words as row names.</p></dd>
 
 
 <dt id="arg-as">as<a class="anchor" aria-label="anchor" href="#arg-as"></a></dt>
-<dd><p>Load as
-<code><a href="as_embed.html">wordvec</a></code> (data.table) or
-<code><a href="as_embed.html">embed</a></code> (matrix).
-Defaults to the original class of the R object in <code>file</code>.
-The two wrapper functions <code>load_wordvec</code> and <code>load_embed</code>
-automatically reshape the data to the corresponding class and
-normalize all word vectors (for faster future use).</p></dd>
+<dd><p>Load as <code><a href="as_embed.html">wordvec</a></code> (data.table) or <code><a href="as_embed.html">embed</a></code> (matrix). Defaults to the original class of the R object in <code>file</code>. The two wrapper functions <code>load_wordvec()</code> and <code>load_embed()</code> automatically reshape the data to the corresponding class and normalize all word vectors (for faster future use).</p></dd>
 
 
 <dt id="arg-normalize">normalize<a class="anchor" aria-label="anchor" href="#arg-normalize"></a></dt>
-<dd><p>Normalize all word vectors to unit length?
-Defaults to <code>FALSE</code>. See <code><a href="normalize.html">normalize</a></code>.</p></dd>
+<dd><p>Normalize all word vectors to unit length? Defaults to <code>FALSE</code>. See <code><a href="normalize.html">normalize()</a></code>.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
@@ -86,15 +78,14 @@ Defaults to <code>FALSE</code>. See <code><a href="normalize.html">normalize</a>
     <h2 id="download">Download<a class="anchor" aria-label="anchor" href="#download"></a></h2>
 
 
-<p>Download pre-trained word vectors data (<code>.RData</code>):
-<a href="https://psychbruce.github.io/WordVector_RData.pdf" class="external-link">https://psychbruce.github.io/WordVector_RData.pdf</a></p>
+<p>Download pre-trained word vectors data (<code>.RData</code>): <a href="https://psychbruce.github.io/WordVector_RData.pdf" class="external-link">https://psychbruce.github.io/WordVector_RData.pdf</a></p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="as_embed.html">as_wordvec</a></code> / <code><a href="as_embed.html">as_embed</a></code></p>
-<p><code><a href="normalize.html">normalize</a></code></p>
-<p><code><a href="data_transform.html">data_transform</a></code></p>
-<p><code><a href="data_wordvec_subset.html">data_wordvec_subset</a></code></p></div>
+    <div class="dont-index"><p><code><a href="as_embed.html">as_wordvec()</a></code> / <code><a href="as_embed.html">as_embed()</a></code></p>
+<p><code><a href="normalize.html">normalize()</a></code></p>
+<p><code><a href="data_transform.html">data_transform()</a></code></p>
+<p><code><a href="data_wordvec_subset.html">data_wordvec_subset()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -103,7 +94,7 @@ Defaults to <code>FALSE</code>. See <code><a href="normalize.html">normalize</a>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/save.html" class="external-link">save</a></span><span class="op">(</span><span class="va">d</span>, file<span class="op">=</span><span class="st">"demo.RData"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">d</span> <span class="op">=</span> <span class="fu">load_wordvec</span><span class="op">(</span><span class="st">"demo.RData"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Word vectors data: 200 vocab, 300 dims (time cost = 0.004 secs)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Word vectors data: 200 vocab, 300 dims (time cost = 0.003 secs)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> All word vectors have been normalized to unit length 1.</span>
 <span class="r-in"><span><span class="va">d</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;"># wordvec (data.table)</span><span style="color: #555555;">: [200 × 2] (normalized)</span></span>
@@ -159,7 +150,7 @@ Defaults to <code>FALSE</code>. See <code><a href="normalize.html">normalize</a>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Han-Wu-Shuang Bao.</p>
+  <p>Developed by Han Wu Shuang Bao.</p>
 </div>
 
 <div class="pkgdown-footer-right">

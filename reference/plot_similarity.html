@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2025.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2025.8</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,9 +66,7 @@
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>A <code><a href="as_embed.html">wordvec</a></code> (data.table) or
-<code><a href="as_embed.html">embed</a></code> (matrix),
-see <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</p></dd>
+<dd><p>A <code><a href="as_embed.html">wordvec</a></code> (data.table) or <code><a href="as_embed.html">embed</a></code> (matrix), see <code><a href="data_wordvec_load.html">data_wordvec_load()</a></code>.</p></dd>
 
 
 <dt id="arg-words">words<a class="anchor" aria-label="anchor" href="#arg-words"></a></dt>
@@ -76,31 +74,23 @@ see <code><a href="data_wordvec_load.html">data_wordvec_load</a></code>.</p></dd
 
 
 <dt id="arg-pattern">pattern<a class="anchor" aria-label="anchor" href="#arg-pattern"></a></dt>
-<dd><p>[Option 2] Regular expression (see <code><a href="https://stringr.tidyverse.org/reference/str_subset.html" class="external-link">str_subset</a></code>).
-If neither <code>words</code> nor <code>pattern</code> are specified (i.e., both are <code>NULL</code>),
-then all words in the data will be extracted.</p></dd>
+<dd><p>[Option 2] <a href="https://stringr.tidyverse.org/reference/str_subset.html" class="external-link">Regular expression</a>. If <code>words</code> and <code>pattern</code> are not specified, all words in the data will be extracted.</p></dd>
 
 
 <dt id="arg-words-words-">words1, words2<a class="anchor" aria-label="anchor" href="#arg-words-words-"></a></dt>
-<dd><p>[Option 3]
-Two sets of words for only n1 * n2 word pairs. See examples.</p></dd>
+<dd><p>[Option 3] Two sets of words for only n1 * n2 word pairs. See examples.</p></dd>
 
 
 <dt id="arg-label">label<a class="anchor" aria-label="anchor" href="#arg-label"></a></dt>
-<dd><p>Position of text labels.
-Defaults to <code>"auto"</code> (add labels if less than 20 words).
-Can be <code>TRUE</code> (left and top), <code>FALSE</code> (add no labels of words),
-or a character string (see the usage of <code>tl.pos</code> in <code><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html" class="external-link">corrplot</a></code>.</p></dd>
+<dd><p>Position of text labels. Defaults to <code>"auto"</code> (add labels if less than 20 words). Can be <code>TRUE</code> (left and top), <code>FALSE</code> (add no labels of words), or a character string (see the usage of <code>tl.pos</code> in <code><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html" class="external-link">corrplot::corrplot()</a></code>.</p></dd>
 
 
 <dt id="arg-value-color">value.color<a class="anchor" aria-label="anchor" href="#arg-value-color"></a></dt>
-<dd><p>Color of values added on the plot.
-Defaults to <code>NULL</code> (add no values).</p></dd>
+<dd><p>Color of values added on the plot. Defaults to <code>NULL</code> (add no values).</p></dd>
 
 
 <dt id="arg-value-percent">value.percent<a class="anchor" aria-label="anchor" href="#arg-value-percent"></a></dt>
-<dd><p>Whether to transform values into percentage style for space saving.
-Defaults to <code>FALSE</code>.</p></dd>
+<dd><p>Whether to transform values into percentage style for space saving. Defaults to <code>FALSE</code>.</p></dd>
 
 
 <dt id="arg-order">order<a class="anchor" aria-label="anchor" href="#arg-order"></a></dt>
@@ -120,19 +110,15 @@ Defaults to <code>FALSE</code>.</p></dd>
 
 
 <dt id="arg-hclust-n">hclust.n<a class="anchor" aria-label="anchor" href="#arg-hclust-n"></a></dt>
-<dd><p>Number of rectangles to be drawn on the plot according to
-the hierarchical clusters, only valid when <code>order="hclust"</code>.
-Defaults to <code>NULL</code> (add no rectangles).</p></dd>
+<dd><p>Number of rectangles to be drawn on the plot according to the hierarchical clusters, only valid when <code>order="hclust"</code>. Defaults to <code>NULL</code> (add no rectangles).</p></dd>
 
 
 <dt id="arg-hclust-color">hclust.color<a class="anchor" aria-label="anchor" href="#arg-hclust-color"></a></dt>
-<dd><p>Color of rectangle border, only valid when <code>hclust.n</code> &gt;= 1.
-Defaults to <code>"black"</code>.</p></dd>
+<dd><p>Color of rectangle border, only valid when <code>hclust.n</code> &gt;= 1. Defaults to <code>"black"</code>.</p></dd>
 
 
 <dt id="arg-hclust-line">hclust.line<a class="anchor" aria-label="anchor" href="#arg-hclust-line"></a></dt>
-<dd><p>Line width of rectangle border, only valid when <code>hclust.n</code> &gt;= 1.
-Defaults to <code>2</code>.</p></dd>
+<dd><p>Line width of rectangle border, only valid when <code>hclust.n</code> &gt;= 1. Defaults to <code>2</code>.</p></dd>
 
 
 <dt id="arg-file">file<a class="anchor" aria-label="anchor" href="#arg-file"></a></dt>
@@ -140,8 +126,7 @@ Defaults to <code>2</code>.</p></dd>
 
 
 <dt id="arg-width-height">width, height<a class="anchor" aria-label="anchor" href="#arg-width-height"></a></dt>
-<dd><p>Width and height (in inches) for the saved file.
-Defaults to <code>10</code> and <code>6</code>.</p></dd>
+<dd><p>Width and height (in inches) for the saved file. Defaults to <code>10</code> and <code>6</code>.</p></dd>
 
 
 <dt id="arg-dpi">dpi<a class="anchor" aria-label="anchor" href="#arg-dpi"></a></dt>
@@ -149,7 +134,7 @@ Defaults to <code>10</code> and <code>6</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Other parameters passed to <code><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html" class="external-link">corrplot</a></code>.</p></dd>
+<dd><p>Arguments passed on to <code><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html" class="external-link">corrplot::corrplot()</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -160,16 +145,15 @@ Defaults to <code>10</code> and <code>6</code>.</p></dd>
     <h2 id="download">Download<a class="anchor" aria-label="anchor" href="#download"></a></h2>
 
 
-<p>Download pre-trained word vectors data (<code>.RData</code>):
-<a href="https://psychbruce.github.io/WordVector_RData.pdf" class="external-link">https://psychbruce.github.io/WordVector_RData.pdf</a></p>
+<p>Download pre-trained word vectors data (<code>.RData</code>): <a href="https://psychbruce.github.io/WordVector_RData.pdf" class="external-link">https://psychbruce.github.io/WordVector_RData.pdf</a></p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="cosine_similarity.html">cosine_similarity</a></code></p>
-<p><code><a href="pair_similarity.html">pair_similarity</a></code></p>
-<p><code><a href="tab_similarity.html">tab_similarity</a></code></p>
-<p><code><a href="most_similar.html">most_similar</a></code></p>
-<p><code><a href="plot_network.html">plot_network</a></code></p></div>
+    <div class="dont-index"><p><code><a href="cosine_similarity.html">cosine_similarity()</a></code></p>
+<p><code><a href="pair_similarity.html">pair_similarity()</a></code></p>
+<p><code><a href="tab_similarity.html">tab_similarity()</a></code></p>
+<p><code><a href="most_similar.html">most_similar()</a></code></p>
+<p><code><a href="plot_network.html">plot_network()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -219,7 +203,7 @@ Defaults to <code>10</code> and <code>6</code>.</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Han-Wu-Shuang Bao.</p>
+  <p>Developed by Han Wu Shuang Bao.</p>
 </div>
 
 <div class="pkgdown-footer-right">
