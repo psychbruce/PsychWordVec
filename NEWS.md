@@ -1,5 +1,9 @@
 **Please check the [latest news (change log)](https://psychbruce.github.io/PsychWordVec/news/index.html) and keep this package updated.**
 
+# PsychWordVec 2025.11
+
+-   Moved CRAN packages `text2vec`, `word2vec`, `rsparse`, `fastTextR` from Imports to Suggests.
+
 # PsychWordVec 2025.8
 
 -   Refined help pages in the style of Roxygen markdown.
