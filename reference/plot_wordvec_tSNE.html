@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PsychWordVec</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2025.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2025.11</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -120,15 +120,15 @@
 <span class="r-plt img"><img src="plot_wordvec_tSNE-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">plot_wordvec_tSNE</span><span class="op">(</span><span class="va">dt</span>, seed<span class="op">=</span><span class="fl">1234</span><span class="op">)</span><span class="op">$</span><span class="va">data</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      word          V1         V2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     man -64.1042673  104.38072</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   woman -57.0188420  128.27508</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    king  42.6066718  119.26386</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   queen  27.0101627  138.77027</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   China  20.3046927  -92.71403</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Beijing  44.7372144 -101.59005</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   Japan -14.0712526 -137.18134</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   Tokyo   0.5356203 -159.20452</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      word        V1        V2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     man -209.0042 -38.98062</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   woman -177.8955 -44.15574</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    king -127.9884  73.09223</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   queen -120.7618  42.35201</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   China  130.2159  16.86578</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Beijing  152.3808  41.24428</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   Japan  159.8935 -46.85079</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   Tokyo  193.1596 -43.56715</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">colors</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"#2B579A"</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"#B7472A"</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">plot_wordvec_tSNE</span><span class="op">(</span><span class="va">dt</span>, colors<span class="op">=</span><span class="va">colors</span>, seed<span class="op">=</span><span class="fl">1234</span><span class="op">)</span></span></span>
@@ -141,6 +141,10 @@
 <span class="r-in"><span>  <span class="fu">scale_y_continuous</span><span class="op">(</span>limits<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">200</span>, <span class="fl">200</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                     labels<span class="op">=</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">/</span><span class="fl">100</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu">scale_color_manual</span><span class="op">(</span>values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B7472A"</span>, <span class="st">"#2B579A"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 row containing missing values or values outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`geom_point()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 row containing missing values or values outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`geom_text_repel()`).</span>
 <span class="r-plt img"><img src="plot_wordvec_tSNE-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## 3-D:</span></span></span>
@@ -161,7 +165,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

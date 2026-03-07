@@ -1,0 +1,129 @@
+# Transform plain text of word vectors into `wordvec` (data.table) or `embed` (matrix), saved in a compressed ".RData" file.
+
+Transform plain text of word vectors into `wordvec` (data.table) or
+`embed` (matrix), saved in a compressed ".RData" file.
+
+## Usage
+
+``` r
+data_transform(
+  file.load,
+  file.save,
+  as = c("wordvec", "embed"),
+  sep = " ",
+  header = "auto",
+  encoding = "auto",
+  compress = "bzip2",
+  compress.level = 9,
+  verbose = TRUE
+)
+```
+
+## Arguments
+
+- file.load:
+
+  File name of raw text (must be plain text).
+
+  Data must be in this format (values separated by `sep`):
+
+  cat 0.001 0.002 0.003 0.004 0.005 ... 0.300
+
+  dog 0.301 0.302 0.303 0.304 0.305 ... 0.600
+
+- file.save:
+
+  File name of to-be-saved R data (must be .RData).
+
+- as:
+
+  Transform the text to which R object?
+  [`wordvec`](https://psychbruce.github.io/PsychWordVec/reference/as_embed.md)
+  (data.table) or
+  [`embed`](https://psychbruce.github.io/PsychWordVec/reference/as_embed.md)
+  (matrix). Defaults to `wordvec`.
+
+- sep:
+
+  Column separator. Defaults to `" "`.
+
+- header:
+
+  Is the 1st row a header (e.g., meta-information such as "2000000
+  300")? Defaults to `"auto"`, which automatically determines whether
+  there is a header. If `TRUE`, the 1st row will be dropped.
+
+- encoding:
+
+  File encoding. Defaults to `"auto"` (using
+  [`vroom::vroom_lines()`](https://vroom.tidyverse.org/reference/vroom_lines.html)
+  to fast read the file). If specified to any other value (e.g.,
+  `"UTF-8"`), it uses
+  [`readLines()`](https://rdrr.io/r/base/readLines.html) to read the
+  file, which is much slower than `vroom`.
+
+- compress:
+
+  Compression method for the saved file. Defaults to `"bzip2"`.
+
+  - `1` or `"gzip"`: modest file size (fastest)
+
+  - `2` or `"bzip2"`: small file size (fast)
+
+  - `3` or `"xz"`: minimized file size (slow)
+
+- compress.level:
+
+  Compression level from `0` (none) to `9` (maximal compression for
+  minimal file size). Defaults to `9`.
+
+- verbose:
+
+  Print information to the console? Defaults to `TRUE`.
+
+## Value
+
+A `wordvec` (data.table) or `embed` (matrix).
+
+## Details
+
+*Speed*: In total (preprocess + compress + save), it can process about
+30000 words/min with the slowest settings (`compress="xz"`,
+`compress.level=9`) on a modern computer (HP ProBook 450, Windows 11,
+Intel i7-1165G7 CPU, 32GB RAM).
+
+## Download
+
+Download pre-trained word vectors data (`.RData`):
+<https://psychbruce.github.io/WordVector_RData.pdf>
+
+## See also
+
+[`as_wordvec()`](https://psychbruce.github.io/PsychWordVec/reference/as_embed.md)
+/
+[`as_embed()`](https://psychbruce.github.io/PsychWordVec/reference/as_embed.md)
+
+[`load_wordvec()`](https://psychbruce.github.io/PsychWordVec/reference/data_wordvec_load.md)
+/
+[`load_embed()`](https://psychbruce.github.io/PsychWordVec/reference/data_wordvec_load.md)
+
+[`normalize()`](https://psychbruce.github.io/PsychWordVec/reference/normalize.md)
+
+[`data_wordvec_subset()`](https://psychbruce.github.io/PsychWordVec/reference/data_wordvec_subset.md)
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+# please first manually download plain text data of word vectors
+# e.g., from: https://fasttext.cc/docs/en/crawl-vectors.html
+
+# the text file must be on your disk
+# the following code cannot run unless you have the file
+library(bruceR)
+set.wd()
+data_transform(file.load="cc.zh.300.vec",   # plain text file
+               file.save="cc.zh.300.vec.RData",  # RData file
+               header=TRUE, compress="xz")  # of minimal size
+} # }
+```
